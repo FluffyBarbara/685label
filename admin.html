@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>685 Music | Ultimate Label Control Center</title>
+    <title>685 Music | Advanced Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -54,7 +54,6 @@
         .header-title { font-size: 26px; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 12px; }
         .badge-root { background: rgba(124,58,237,0.15); color: #A78BFA; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; border: 1px solid rgba(124,58,237,0.3); }
 
-        /* НАВИГАЦИЯ ПАНЕЛИ АДМИНА */
         .admin-nav { display: flex; gap: 12px; margin-bottom: 30px; border-bottom: 1px solid var(--border-light); padding-bottom: 15px; }
         .admin-tab-btn { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; color: var(--text-secondary); transition: 0.2s; }
         .admin-tab-btn.active, .admin-tab-btn:hover { background: var(--brand-primary); color: white; border-color: var(--brand-primary); }
@@ -62,7 +61,6 @@
         .admin-section { display: none; }
         .admin-section.active { display: block; }
 
-        /* МЕТРИКИ */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 18px; }
         .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -73,7 +71,6 @@
         .stat-info h4 { font-size: 13px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
         .stat-info span { font-size: 24px; font-weight: 800; color: var(--text-title); }
 
-        /* ТУЛБАР */
         .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 15px; flex-wrap: wrap; }
         .search-box { position: relative; flex: 1; max-width: 350px; }
         .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
@@ -86,7 +83,6 @@
         .btn-action:hover { background: rgba(255,255,255,0.1); }
         .btn-success-action { background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: rgba(16, 185, 129, 0.2); }
 
-        /* КАРТОЧКА РЕЛИЗА В АДМИНКЕ */
         .admin-releases-grid { display: grid; gap: 20px; }
         .admin-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px; display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.5fr; gap: 20px; align-items: start; transition: var(--transition); }
         .admin-card:hover { border-color: rgba(124, 58, 237, 0.4); }
@@ -122,7 +118,6 @@
 
     <div id="toast-container"></div>
 
-    <!-- АВТОРИЗАЦИЯ АДМИНА -->
     <div id="auth-view">
         <div class="auth-card">
             <div class="auth-logo" style="font-size:24px; font-weight:800; margin-bottom:15px; color:white;"><i class="fa-solid fa-shield-halved"></i> 685 <span>ADMIN</span></div>
@@ -132,7 +127,6 @@
         </div>
     </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ С 15 СИСТЕМАМИ -->
     <div id="app-view">
         <header class="header">
             <div class="header-title">
@@ -145,7 +139,6 @@
             </div>
         </header>
 
-        <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ АДМИНКИ -->
         <div class="admin-nav">
             <button class="admin-tab-btn active" data-tab="tab-releases"><i class="fa-solid fa-compact-disc"></i> Модерация релизов</button>
             <button class="admin-tab-btn" data-tab="tab-pitching"><i class="fa-solid fa-bullhorn"></i> Питчинг в плейлисты</button>
@@ -154,7 +147,6 @@
             <button class="admin-tab-btn" data-tab="tab-smartlinks"><i class="fa-solid fa-link"></i> Smart-Ссылки</button>
         </div>
 
-        <!-- МЕТРИКИ -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div>
@@ -174,7 +166,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 1: МОДЕРАЦИЯ РЕЛИЗОВ -->
         <div class="admin-section active" id="tab-releases">
             <div class="toolbar">
                 <div class="search-box">
@@ -196,7 +187,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ПИТЧИНГ В ПЛЕЙЛИСТЫ -->
         <div class="admin-section" id="tab-pitching">
             <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков редакциях площадок</h3>
@@ -205,7 +195,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 3: ФИНАНСЫ И РОЯЛТИ -->
         <div class="admin-section" id="tab-finance">
             <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов и отчетов</h3>
@@ -214,11 +203,10 @@
                     <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block;">Сумма общего дохода (₽)</label>
                     <input type="number" id="finance-pool" class="styled-input" placeholder="Например: 50000" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
                 </div>
-                <button class="btn-action btn-success-action" onclick="alert('Расчет роялти запущен по условиям тарифов (80/90/100%)!')">Рассчитать роялти артистам</button>
+                <button class="btn-action btn-success-action" onclick="alert('Расчет роялти запущен по условиям тарифов!')">Рассчитать роялти артистам</button>
             </div>
         </div>
 
-        <!-- ВКЛАДКА 4: КАЛЕНДАРЬ РЕЛИЗОВ -->
         <div class="admin-section" id="tab-calendar">
             <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> График выхода релизов</h3>
@@ -227,7 +215,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 5: SMART-ССЫЛКИ -->
         <div class="admin-section" id="tab-smartlinks">
             <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-link" style="color:#3B82F6"></i> Генератор Smart-ссылок</h3>
@@ -237,7 +224,6 @@
         </div>
     </div>
 
-    <!-- СКРИПТЫ АДМИНКИ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -269,7 +255,6 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
         }
 
-        // Переключение вкладок админки
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
@@ -319,9 +304,9 @@
                     if (data.status === 'Ожидает модерации') pendingCount++;
                     if (data.status === 'Одобрено') {
                         approvedCount++;
-                        pitchingHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — ${data.artist} (${data.genre})</div><button class="btn-action" onclick="alert('Питч-заявка сформирована для редакции площадок!')">Отправить питч</button></div>`;
+                        pitchingHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — ${data.artist} (${data.genre})</div><button class="btn-action" onclick="alert('Питч-заявка сформирована!')">Отправить питч</button></div>`;
                         calendarHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> (${data.artist})</div><span style="color:var(--success);">Готов к премьере</span></div>`;
-                        smartLinksHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — <code>https://685music.link/${data.id.slice(0,6)}</code></div><button class="btn-action" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); alert('Смарт-ссылка скопирована!')">Копировать</button></div>`;
+                        smartLinksHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — <code>https://685music.link/${data.id.slice(0,6)}</code></div><button class="btn-action" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); alert('Ссылка скопирована!')">Копировать</button></div>`;
                     }
                 });
 
@@ -329,9 +314,9 @@
                 document.getElementById('stat-pending').innerText = pendingCount;
                 document.getElementById('stat-approved').innerText = approvedCount;
 
-                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary);">Нет одобренных релизов для питчинга.</p>';
+                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary);">Нет одобренных релизов.</p>';
                 document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary);">Календарь пуст.</p>';
-                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary);">Нет активных смарт-ссылок.</p>';
+                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary);">Нет смарт-ссылок.</p>';
 
                 renderList(allSubmissions);
             } catch (e) {
@@ -382,8 +367,8 @@
                                 <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Код трека">
                             </div>
                             <div class="code-input-group">
-                                <label>Причина отклонения / Правки</label>
-                                <textarea id="reason-${d.id}" rows="2" placeholder="Замечания для артиста...">${d.rejectReason || ''}</textarea>
+                                <label>Причина отклонения</label>
+                                <textarea id="reason-${d.id}" rows="2" placeholder="Замечания...">${d.rejectReason || ''}</textarea>
                             </div>
                         </div>
 
