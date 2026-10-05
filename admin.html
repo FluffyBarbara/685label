@@ -107,6 +107,8 @@
         .rel-actions select { width: 100%; background: var(--bg-input); color: white; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 12px; }
         .btn-save { background: var(--success); color: white; padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
         .btn-save:hover { background: #059669; }
+        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
+        .btn-delete:hover { background: rgba(239, 68, 68, 0.25); }
 
         .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -178,6 +180,7 @@
                         <option value="Ожидает модерации">Ожидают</option>
                         <option value="Одобрено">Одобренные</option>
                         <option value="Отклонено">Отклоненные</option>
+                        <option value="Запрос на удаление с площадок">Запросы на удаление</option>
                     </select>
                     <button class="btn-action btn-success-action" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)</button>
                 </div>
@@ -227,7 +230,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -337,6 +340,7 @@
                 const isApproved = d.status === 'Одобрено' ? 'selected' : '';
                 const isRejected = d.status === 'Отклонено' ? 'selected' : '';
                 const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
+                const isDelRequest = d.status === 'Запрос на удаление с площадок' ? 'selected' : '';
                 const isRejectedState = d.status === 'Отклонено';
 
                 let dspHtml = '';
@@ -345,7 +349,7 @@
                 container.innerHTML += `
                     <div class="admin-card" id="card-${d.id}">
                         <div class="rel-details">
-                            <h3>${d.title}</h3>
+                            <h3>${d.title} ${d.status === 'Запрос на удаление с площадок' ? '<span style="color:var(--danger); font-size:12px;">(ЗАПРОС НА УДАЛЕНИЕ!)</span>' : ''}</h3>
                             <p><i class="fa-solid fa-user-astronaut"></i> ${d.artist}</p>
                             <p><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
                             <div class="artist-badge"><i class="fa-solid fa-envelope"></i> ${d.userEmail || 'Артист'}</div>
@@ -377,12 +381,15 @@
                                 <option value="Ожидает модерации" ${isPending}>Ожидает модерации</option>
                                 <option value="Одобрено" ${isApproved}>Одобрено</option>
                                 <option value="Отклонено" ${isRejected}>Отклонено</option>
+                                <option value="Запрос на удаление с площадок" ${isDelRequest}>Запрос на удаление</option>
                             </select>
                             <button class="btn-save" data-id="${d.id}">Сохранить</button>
+                            <button class="btn-delete" data-id="${d.id}">Удалить релиз</button>
                         </div>
                     </div>`;
             });
 
+            // Сохранение изменений
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -405,6 +412,21 @@
                         notify("Изменения сохранены!");
                     } catch {
                         notify("Ошибка сохранения", "error");
+                    }
+                });
+            });
+
+            // Удаление релиза администратором
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    if (!confirm("Вы уверены, что хотите полностью удалить этот релиз из базы?")) return;
+                    try {
+                        await deleteDoc(doc(db, "track_submissions", id));
+                        notify("Релиз успешно удален!");
+                        loadReleases();
+                    } catch {
+                        notify("Ошибка удаления", "error");
                     }
                 });
             });
