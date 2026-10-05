@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>685 Music | ADMIN PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-primary: #7C3AED; /* Фиолетовый акцент для админки */
+            --brand-secondary: #4F46E5;
+            --bg-base: #030712;
+            --bg-surface: #111827;
+            --text-title: #F9FAFB;
+            --text-primary: #E5E7EB;
+            --text-secondary: #9CA3AF;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --success: #10B981;
+            --danger: #EF4444;
+            --radius-md: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-base); color: var(--text-primary); }
+        button { cursor: pointer; border: none; background: none; color: inherit; }
+        a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+
+        /* УВЕДОМЛЕНИЯ */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: #1F2937; border-left: 4px solid var(--brand-primary); padding: 16px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 12px; transform: translateX(120%); transition: 0.3s; font-weight: 600; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+
+        /* ЭКРАН ВХОДА (АДМИН) */
+        #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111827 0%, #030712 100%); }
+        .auth-card { background: var(--bg-surface); padding: 40px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .auth-logo { font-size: 28px; font-weight: 800; margin-bottom: 20px; color: var(--brand-primary); }
+        .auth-input { width: 100%; background: #030712; border: 1px solid var(--border-light); color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 15px; }
+        .auth-input:focus { outline: none; border-color: var(--brand-primary); }
+        .btn-main { width: 100%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: white; padding: 15px; border-radius: 8px; font-weight: 700; font-size: 16px; margin-top: 10px; transition: var(--transition); }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3); }
+
+        /* ДАШБОРД АДМИНА */
+        #app-view { display: none; padding: 40px; max-width: 1400px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+        .header-title { font-size: 28px; font-weight: 800; display: flex; align-items: center; gap: 15px; }
+        .badge-admin { background: rgba(124,58,237,0.2); color: var(--brand-primary); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 800; border: 1px solid rgba(124,58,237,0.3); }
+
+        /* ТАБЛИЦА РЕЛИЗОВ */
+        .admin-grid { display: grid; gap: 20px; }
+        .track-row { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px; display: grid; grid-template-columns: 2fr 1.5fr 1fr 1.5fr; gap: 20px; align-items: center; transition: var(--transition); }
+        .track-row:hover { border-color: rgba(124,58,237,0.4); }
+        
+        .col-info h3 { font-size: 20px; color: var(--text-title); margin-bottom: 5px; }
+        .col-info p { color: var(--text-secondary); font-size: 14px; margin-bottom: 4px; }
+        .artist-email { display: inline-block; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; font-size: 12px; color: var(--text-secondary); margin-top: 5px; }
+        
+        .col-links { display: flex; flex-direction: column; gap: 10px; }
+        .link-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; font-size: 13px; transition: 0.2s; border: 1px solid transparent; }
+        .link-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--border-light); text-decoration: none; }
+        .link-btn.cover i { color: #F59E0B; }
+        .link-btn.audio i { color: #3B82F6; }
+
+        .col-status select { width: 100%; background: #030712; color: white; border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; outline: none; }
+        .col-status select:focus { border-color: var(--brand-primary); }
+        
+        .col-actions { text-align: right; }
+        .btn-save { background: var(--success); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; transition: 0.2s; }
+        .btn-save:hover { background: #059669; transform: translateY(-2px); }
+
+        .platform-tag { display: inline-block; background: rgba(255,255,255,0.1); font-size: 11px; padding: 3px 8px; border-radius: 4px; margin: 2px 2px 0 0; }
+
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--brand-primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 50px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- ВХОД ДЛЯ АДМИНИСТРАТОРА -->
+    <div id="auth-view">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fa-solid fa-lock"></i> 685 MUSIC ADMIN</div>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Панель управления лейблом. Доступ только для авторизованного руководства.</p>
+            
+            <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
+            <input type="password" id="auth-password" class="auth-input" placeholder="Пароль">
+            
+            <button class="btn-main" id="auth-btn">Войти в админ-панель</button>
+        </div>
+    </div>
+
+    <!-- ИНТЕРФЕЙС АДМИНИСТРАТОРА -->
+    <div id="app-view">
+        <header class="header">
+            <div class="header-title">
+                <i class="fa-solid fa-server"></i> База Релизов
+                <span class="badge-admin">ROOT ACCESS</span>
+            </div>
+            <div>
+                <span id="admin-email" style="margin-right: 20px; font-weight: 600;"></span>
+                <button id="logout-btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 10px 20px; border-radius: 8px; font-weight: 700;">Выйти</button>
+            </div>
+        </header>
+
+        <div class="admin-grid" id="data-container">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- FIREBASE СКРИПТЫ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
+            authDomain: "music-label-e2581.firebaseapp.com",
+            databaseURL: "https://music-label-e2581-default-rtdb.firebaseio.com",
+            projectId: "music-label-e2581",
+            storageBucket: "music-label-e2581.firebasestorage.app",
+            messagingSenderId: "523951358095",
+            appId: "1:523951358095:web:b09a4a0d9a910c52e070fa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Уникальный ID владельца (ВАШ)
+        const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
+
+        function notify(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check' : 'fa-triangle-exclamation';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        // АВТОРИЗАЦИЯ
+        document.getElementById('auth-btn').addEventListener('click', async () => {
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-password').value;
+            if(!email || !pass) return notify("Введите данные", "error");
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                notify("Неверный логин или пароль", "error");
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        // ПРОВЕРКА UID
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.uid === ADMIN_UID) {
+                    // Если это вы - пускаем
+                    document.getElementById('auth-view').style.display = 'none';
+                    document.getElementById('app-view').style.display = 'block';
+                    document.getElementById('admin-email').innerText = user.email;
+                    loadAllReleases();
+                } else {
+                    // Если это обычный артист нашел ссылку админки - блокируем и выкидываем
+                    signOut(auth);
+                    notify("В ДОСТУПЕ ОТКАЗАНО. Вы не являетесь администратором.", "error");
+                }
+            } else {
+                document.getElementById('auth-view').style.display = 'flex';
+                document.getElementById('app-view').style.display = 'none';
+            }
+        });
+
+        // ЗАГРУЗКА ВСЕХ ЗАЯВОК (ДОСТУПНО ТОЛЬКО АДМИНУ)
+        async function loadAllReleases() {
+            const container = document.getElementById('data-container');
+            container.innerHTML = '<div class="loader"></div>';
+            
+            try {
+                // Запрашиваем ВСЮ коллекцию
+                const q = query(collection(db, "track_submissions"), orderBy("createdAt", "desc"));
+                const snap = await getDocs(q);
+                container.innerHTML = ''; 
+
+                if (snap.empty) {
+                    container.innerHTML = '<div style="text-align:center; padding: 50px; color: #9CA3AF;">База данных пуста. Заявок нет.</div>';
+                    return;
+                }
+
+                snap.forEach((documentSnapshot) => {
+                    const id = documentSnapshot.id;
+                    const d = documentSnapshot.data();
+                    const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleString('ru-RU') : 'Нет даты';
+                    
+                    // Генерируем теги площадок
+                    let platformsHtml = '';
+                    if(d.platforms && d.platforms.length > 0) {
+                        d.platforms.forEach(p => platformsHtml += `<span class="platform-tag">${p}</span>`);
+                    }
+
+                    // Цветовая логика для селекта статусов
+                    const isApproved = d.status === 'Одобрено' ? 'selected' : '';
+                    const isRejected = d.status === 'Отклонено' ? 'selected' : '';
+                    const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
+
+                    container.innerHTML += `
+                        <div class="track-row" id="row-${id}">
+                            <div class="col-info">
+                                <h3>${d.title}</h3>
+                                <p><i class="fa-solid fa-user" style="margin-right: 5px;"></i> ${d.artist}</p>
+                                <p><i class="fa-solid fa-compact-disc" style="margin-right: 5px;"></i> ${d.type} • ${d.genre}</p>
+                                <p><i class="fa-solid fa-clock" style="margin-right: 5px;"></i> Отправлен: ${date}</p>
+                                <div class="artist-email"><i class="fa-solid fa-envelope"></i> ${d.userEmail || 'Неизвестно'}</div>
+                                <div style="margin-top: 10px;">${platformsHtml}</div>
+                            </div>
+                            
+                            <div class="col-links">
+                                <a href="${d.audioUrl}" target="_blank" class="link-btn audio">
+                                    <i class="fa-solid fa-file-audio"></i> Скачать WAV Мастер
+                                </a>
+                                <a href="${d.coverUrl}" target="_blank" class="link-btn cover">
+                                    <i class="fa-solid fa-image"></i> Открыть Обложку
+                                </a>
+                            </div>
+
+                            <div class="col-status">
+                                <select id="status-${id}">
+                                    <option value="Ожидает модерации" ${isPending}>Ожидает модерации</option>
+                                    <option value="Одобрено" ${isApproved}>Одобрено (В работе)</option>
+                                    <option value="Отклонено" ${isRejected}>Отклонено</option>
+                                </select>
+                            </div>
+
+                            <div class="col-actions">
+                                <button class="btn-save" data-id="${id}">Сохранить статус</button>
+                            </div>
+                        </div>`;
+                });
+
+                // Добавляем слушатели на кнопки "Сохранить"
+                document.querySelectorAll('.btn-save').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const docId = e.target.getAttribute('data-id');
+                        const newStatus = document.getElementById(`status-${docId}`).value;
+                        const originalText = e.target.innerText;
+                        
+                        e.target.innerText = 'Сохранение...';
+                        e.target.disabled = true;
+
+                        try {
+                            const docRef = doc(db, "track_submissions", docId);
+                            await updateDoc(docRef, { status: newStatus });
+                            notify(`Статус обновлен на: ${newStatus}`);
+                            
+                            // Подсвечиваем рамку зеленым на секунду
+                            document.getElementById(`row-${docId}`).style.borderColor = '#10B981';
+                            setTimeout(() => { document.getElementById(`row-${docId}`).style.borderColor = 'rgba(255,255,255,0.1)'; }, 1500);
+
+                        } catch (err) {
+                            notify("Ошибка сохранения. Проверьте права.", "error");
+                        } finally {
+                            e.target.innerText = originalText;
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = '<div style="color:#EF4444; padding:20px; text-align:center;">ОШИБКА: Нет доступа к базе данных. Проверьте Firestore Rules.</div>';
+            }
+        }
+    </script>
+</body>
+</html>
