@@ -3,246 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>685 Music - Портал артиста</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>685 Music | Портал Артиста</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- ВИЗУАЛЬНЫЙ СТИЛЬ (CSS) --- */
         :root {
-            --primary: #d81b60;
-            --bg-color: #f4f6f9;
-            --surface: #ffffff;
-            --text-main: #1a1a1a;
-            --text-muted: #6e6e73;
-            --border: #e1e3e8;
-            --radius: 16px;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --primary: #E91E63;
+            --primary-hover: #C2185B;
+            --bg-dark: #0F172A;
+            --bg-panel: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border: #334155;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        input, select { font-family: inherit; }
 
-        /* ЭКРАН АВТОРИЗАЦИИ */
-        #auth-screen {
-            display: flex; 
-            align-items: center; justify-content: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f4f6f9 0%, #ffeaf1 100%);
-        }
-        .auth-card {
-            background: var(--surface); padding: 40px; border-radius: var(--radius);
-            box-shadow: var(--shadow); width: 100%; max-width: 400px; text-align: center;
-        }
-        .auth-card h1 { font-size: 28px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
-        .auth-card h1 span { color: var(--text-main); }
-        .auth-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+        /* --- Toast Уведомления --- */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--bg-panel); border-left: 4px solid var(--primary); padding: 16px 24px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: translateX(120%); transition: transform 0.3s ease; display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .toast.show { transform: translateX(0); }
+        .toast.error { border-left-color: #EF4444; }
+        .toast.success { border-left-color: var(--success); }
+
+        /* --- ЭКРАН АВТОРИЗАЦИИ --- */
+        #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top right, #1E293B, #0F172A); padding: 20px; }
+        .auth-card { background: var(--bg-panel); padding: 48px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); width: 100%; max-width: 440px; border: 1px solid var(--border); text-align: center; }
+        .auth-logo { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+        .auth-logo span { color: var(--primary); }
+        .auth-card p { color: var(--text-muted); margin-bottom: 32px; }
         
-        .auth-form { display: flex; flex-direction: column; gap: 15px; }
-        .auth-form input {
-            width: 100%; padding: 14px; border: 1px solid var(--border);
-            border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s;
-        }
-        .auth-form input:focus { border-color: var(--primary); }
-        .auth-switch { margin-top: 20px; font-size: 14px; color: var(--text-muted); cursor: pointer; }
-        .auth-switch:hover { color: var(--primary); }
-
-        /* ДАШБОРД АРТИСТА */
-        #app-screen { display: none; height: 100vh; }
+        .input-group { position: relative; margin-bottom: 20px; text-align: left; }
+        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .input-group input { width: 100%; background: #0F172A; border: 1px solid var(--border); color: var(--text-main); padding: 16px 16px 16px 48px; border-radius: var(--radius); font-size: 15px; transition: var(--transition); }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.1); outline: none; }
         
-        .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0; display: flex; flex-direction: column; }
-        .logo-container { padding: 0 24px 30px; }
-        .logo { font-size: 24px; color: var(--primary); font-weight: 700; }
-        .logo span { color: var(--text-main); }
-        .nav-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin: 20px 24px 10px; font-weight: 600; }
-        .nav-item { display: flex; align-items: center; padding: 12px 24px; text-decoration: none; color: var(--text-main); font-size: 14px; font-weight: 500; border-left: 3px solid transparent; }
-        .nav-item.active { background-color: #fff0f5; color: var(--primary); border-left-color: var(--primary); }
-
-        .main-content { flex: 1; overflow-y: auto; padding: 30px 50px; }
-        .topbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 40px; }
-        .user-profile { display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 14px; }
-        .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; }
-        .logout-btn:hover { color: var(--primary); text-decoration: underline; }
-
-        .content-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
-        .content-header p { color: var(--text-muted); margin-bottom: 30px; }
-
-        /* Шаги и формы */
-        .steps-nav { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 30px; }
-        .step { padding: 15px 30px; color: var(--text-muted); font-weight: 600; font-size: 15px; position: relative; }
-        .step.active { color: var(--primary); }
-        .step.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--primary); }
-
-        .step-content { display: none; }
-        .step-content.active { display: block; }
-
-        .form-card { background: var(--surface); border-radius: var(--radius); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow); }
-        .form-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .btn-main { width: 100%; background: var(--primary); color: white; padding: 16px; border-radius: var(--radius); font-size: 16px; font-weight: 600; transition: var(--transition); }
+        .btn-main:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-main:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+        .auth-switch { margin-top: 24px; color: var(--text-muted); font-size: 14px; font-weight: 500; transition: var(--transition); display: inline-block; }
+        .auth-switch:hover { color: var(--text-main); }
 
-        .link-input-zone { background: var(--bg-color); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-        .link-input-zone p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+        /* --- ГЛАВНОЕ ПРИЛОЖЕНИЕ --- */
+        #app-view { display: none; min-height: 100vh; }
         
-        .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-        .platform-checkbox { display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 14px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; font-size: 14px; font-weight: 500; }
+        /* Боковая панель */
+        .sidebar { width: 280px; background: var(--bg-panel); border-right: 1px solid var(--border); position: fixed; height: 100vh; padding: 32px 0; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar-logo { padding: 0 32px 40px; font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+        .sidebar-logo span { color: var(--primary); }
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
+        .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 24px; color: var(--text-muted); font-weight: 600; border-radius: 12px; transition: var(--transition); }
+        .nav-item i { font-size: 18px; width: 20px; text-align: center; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
+        .nav-item.active { background: var(--primary); color: white; }
         
-        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.2s; }
-        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); }
-        .form-actions { display: flex; justify-content: space-between; margin-top: 32px; padding-bottom: 40px; }
+        /* Основной контент */
+        .main-content { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .user-widget { display: flex; align-items: center; gap: 16px; background: var(--bg-panel); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--border); }
+        .user-avatar { width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .logout-btn { color: var(--text-muted); transition: var(--transition); margin-left: 8px; }
+        .logout-btn:hover { color: #EF4444; }
+
+        /* --- СТРАНИЦЫ --- */
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Форма релиза */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+        .form-input { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-main); padding: 16px; border-radius: var(--radius); transition: var(--transition); }
+        .form-input:focus { border-color: var(--primary); outline: none; }
+        select.form-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; }
+        
+        .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        .card-header { font-size: 18px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .card-header i { color: var(--primary); }
+        
+        .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+        .platform-label { display: flex; align-items: center; gap: 12px; background: #0F172A; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
+        .platform-label:hover { border-color: var(--primary); }
+        .platform-label input { accent-color: var(--primary); width: 18px; height: 18px; }
+
+        /* Список треков */
+        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+        .release-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: var(--transition); display: flex; flex-direction: column; gap: 16px; }
+        .release-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+        .status-badge { align-self: flex-start; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .release-info h3 { font-size: 20px; margin-bottom: 4px; }
+        .release-info p { color: var(--text-muted); font-size: 14px; }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+        /* Loader */
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- ЭКРАН 1: АВТОРИЗАЦИЯ -->
-    <div id="auth-screen">
+    <div id="toast-container"></div>
+
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <div id="auth-view">
         <div class="auth-card">
-            <h1>685 <span>music</span></h1>
-            <p id="auth-subtitle">Вход в панель артиста</p>
+            <div class="auth-logo">685 <span>music</span></div>
+            <p id="auth-subtitle">Вход в панель управления артиста</p>
             
-            <div class="auth-form">
-                <input type="email" id="auth-email" placeholder="Email" required>
-                <input type="password" id="auth-password" placeholder="Пароль" required>
-                <button class="btn btn-primary" id="auth-btn" style="width: 100%; padding: 14px;">Войти</button>
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="auth-email" placeholder="E-mail адрес" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="auth-password" placeholder="Пароль (минимум 6 символов)" required>
             </div>
             
-            <p class="auth-switch" id="auth-switch-mode">Нет аккаунта? Зарегистрироваться</p>
+            <button class="btn-main" id="auth-btn">Войти в систему</button>
+            <button class="auth-switch" id="auth-switch-mode">Создать аккаунт артиста</button>
         </div>
     </div>
 
-    <!-- ЭКРАН 2: ПАНЕЛЬ (ДАШБОРД) -->
-    <div id="app-screen" class="app-container">
+    <!-- ГЛАВНОЕ ПРИЛОЖЕНИЕ -->
+    <div id="app-view">
         
         <aside class="sidebar">
-            <div class="logo-container">
-                <h1 class="logo">685 <span>music</span></h1>
-            </div>
+            <div class="sidebar-logo">685 <span>music</span></div>
             <nav class="nav-menu">
-                <p class="nav-title">КАТАЛОГ</p>
-                <a href="#" class="nav-item active">Создать релиз</a>
+                <button class="nav-item active" data-target="dashboard">
+                    <i class="fa-solid fa-layer-group"></i> Мои релизы
+                </button>
+                <button class="nav-item" data-target="new-release">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Загрузить трек
+                </button>
+                <button class="nav-item" data-target="settings">
+                    <i class="fa-solid fa-gear"></i> Настройки
+                </button>
             </nav>
         </aside>
 
         <main class="main-content">
             <header class="topbar">
-                <div class="user-profile">
-                    <!-- Сюда будет подставляться почта вошедшего артиста -->
-                    <span id="user-display-email"></span> 
-                    <button class="logout-btn" id="logout-btn">Выйти</button>
+                <h1 class="page-title" id="current-page-title">Мои релизы</h1>
+                <div class="user-widget">
+                    <div class="user-avatar" id="user-initial">A</div>
+                    <span id="user-display-email" style="font-weight: 600; font-size: 14px;"></span>
+                    <button class="logout-btn" id="logout-btn" title="Выйти"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
             </header>
 
-            <div class="content-header">
-                <h2>Новый релиз</h2>
-                <p>Заполните информацию о релизе для отправки на дистрибуцию</p>
-            </div>
+            <!-- Раздел: Мои Релизы -->
+            <section class="page-section active" id="dashboard">
+                <div class="releases-grid" id="releases-container">
+                    <!-- Треки будут загружаться сюда скриптом -->
+                    <div style="grid-column: 1/-1; text-align: center;"><div class="loader"></div></div>
+                </div>
+            </section>
 
-            <div class="steps-nav">
-                <div class="step active" id="nav-step-1">1. Релиз</div>
-                <div class="step" id="nav-step-2">2. Трек-лист</div>
-                <div class="step" id="nav-step-3">3. Платформы</div>
-                <div class="step" id="nav-step-4">4. Проверка</div>
-            </div>
-
-            <!-- ШАГ 1 -->
-            <div class="step-content active" id="step-1">
-                <div class="form-card">
-                    <h3>Основная информация</h3>
+            <!-- Раздел: Новый релиз -->
+            <section class="page-section" id="new-release">
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-circle-info"></i> Основная информация</div>
                     <div class="form-grid">
                         <div class="form-group">
                             <label>Название релиза *</label>
-                            <input type="text" id="releaseTitle" placeholder="Введите название">
+                            <input type="text" id="r-title" class="form-input" placeholder="Например: В темноте">
                         </div>
                         <div class="form-group">
                             <label>Исполнитель *</label>
-                            <input type="text" id="releaseArtist" placeholder="Имя артиста">
+                            <input type="text" id="r-artist" class="form-input" placeholder="Псевдоним артиста">
                         </div>
                         <div class="form-group">
                             <label>Жанр *</label>
-                            <select id="releaseGenre">
+                            <select id="r-genre" class="form-input">
                                 <option value="Hip-Hop">Hip-Hop / Rap</option>
                                 <option value="Pop">Pop</option>
                                 <option value="Rock">Rock</option>
                                 <option value="R&B">R&B</option>
+                                <option value="Phonk">Phonk</option>
+                                <option value="Electronic">Electronic</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="form-card">
-                    <h3>Обложка релиза *</h3>
-                    <div class="link-input-zone">
-                        <p>Загрузите обложку на Яндекс.Диск или Google Drive и вставьте ссылку ниже.</p>
-                        <input type="url" id="releaseCoverLink" style="width:100%; padding:14px; border:1px solid #e1e3e8; border-radius:8px;" placeholder="https://..." required>
+
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-link"></i> Материалы (Облачные ссылки)</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Ссылка на обложку (Google Drive / Yandex) *</label>
+                            <input type="url" id="r-cover" class="form-input" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Ссылка на WAV мастер-файл *</label>
+                            <input type="url" id="r-audio" class="form-input" placeholder="https://...">
+                        </div>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <div></div>
-                    <button class="btn btn-primary" onclick="nextStep(2)">Далее →</button>
-                </div>
-            </div>
 
-            <!-- ШАГ 2 -->
-            <div class="step-content" id="step-2">
-                <div class="form-card">
-                    <h3>Ссылка на аудиофайл (WAV) *</h3>
-                    <div class="link-input-zone">
-                        <p>Загрузите ваш трек (формат WAV) на облачный диск и укажите открытую ссылку для скачивания.</p>
-                        <input type="url" id="releaseAudioLink" style="width:100%; padding:14px; border:1px solid #e1e3e8; border-radius:8px;" placeholder="https://..." required>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(1)">Назад</button>
-                    <button class="btn btn-primary" onclick="nextStep(3)">Далее →</button>
-                </div>
-            </div>
-
-            <!-- ШАГ 3 -->
-            <div class="step-content" id="step-3">
-                <div class="form-card">
-                    <h3>Выбор площадок</h3>
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-music"></i> Площадки для дистрибуции</div>
                     <div class="platforms-grid">
-                        <label class="platform-checkbox"><input type="checkbox" class="platform" value="Apple Music" checked> Apple Music</label>
-                        <label class="platform-checkbox"><input type="checkbox" class="platform" value="Spotify" checked> Spotify</label>
-                        <label class="platform-checkbox"><input type="checkbox" class="platform" value="VK Музыка" checked> VK Музыка</label>
-                        <label class="platform-checkbox"><input type="checkbox" class="platform" value="Яндекс Музыка" checked> Яндекс Музыка</label>
-                        <label class="platform-checkbox"><input type="checkbox" class="platform" value="Звук" checked> Звук</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Apple Music" checked> Apple Music</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Spotify" checked> Spotify</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="VK Музыка" checked> VK Музыка</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Яндекс Музыка" checked> Яндекс Музыка</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Звук" checked> Звук</label>
+                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="TikTok" checked> TikTok</label>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(2)">Назад</button>
-                    <button class="btn btn-primary" onclick="nextStep(4)">Далее →</button>
-                </div>
-            </div>
 
-            <!-- ШАГ 4 -->
-            <div class="step-content" id="step-4">
-                <div class="form-card">
-                    <h3>Финальная проверка</h3>
-                    <div style="background: #f9f9f9; padding: 20px; border-radius: 12px; line-height: 1.8; font-size: 15px;">
-                        <p><strong>Исполнитель:</strong> <span id="summaryArtist">-</span></p>
-                        <p><strong>Название релиза:</strong> <span id="summaryTitle">-</span></p>
-                        <p><strong>Жанр:</strong> <span id="summaryGenre">-</span></p>
+                <div style="text-align: right;">
+                    <button class="btn-main" id="submit-release-btn" style="width: auto; padding: 16px 40px;">Отправить на модерацию <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i></button>
+                </div>
+            </section>
+
+            <!-- Раздел: Настройки -->
+            <section class="page-section" id="settings">
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-shield-halved"></i> Настройки аккаунта</div>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Ваш аккаунт надежно защищен технологиями Firebase Auth.</p>
+                    <div class="form-group" style="max-width: 400px;">
+                        <label>Ваш E-mail</label>
+                        <input type="text" class="form-input" id="setting-email" disabled>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">Назад</button>
-                    <button class="btn btn-primary" id="submitBtn">Отправить релиз</button>
-                </div>
-            </div>
+            </section>
+
         </main>
     </div>
 
-    <!-- --- СИСТЕМА ЛОГИКИ И СИНХРОНИЗАЦИИ FIREBASE --- -->
+    <!-- FIREBASE & ЛОГИКА -->
     <script type="module">
-        // 1. Подключаем нужные модули (Auth для авторизации, Firestore для базы)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // 2. Ваши ключи доступа к проекту
+        // ВАШИ КЛЮЧИ FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
             authDomain: "music-label-e2581.firebaseapp.com",
@@ -255,125 +267,186 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app); // Инициализация системы пользователей
-        const db = getFirestore(app); // Инициализация базы данных
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        /* --- ЛОГИКА АВТОРИЗАЦИИ ПОЛЬЗОВАТЕЛЕЙ --- */
-        let isLoginMode = true;
-        const authScreen = document.getElementById('auth-screen');
-        const appScreen = document.getElementById('app-screen');
-        const authBtn = document.getElementById('auth-btn');
-        const switchModeBtn = document.getElementById('auth-switch-mode');
-        
-        // Переключение между Входом и Регистрацией
-        switchModeBtn.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('auth-subtitle').innerText = isLoginMode ? "Вход в панель артиста" : "Создание аккаунта";
-            authBtn.innerText = isLoginMode ? "Войти" : "Зарегистрироваться";
-            switchModeBtn.innerText = isLoginMode ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти";
-        });
-
-        // Отправка формы (Регистрация / Логин)
-        authBtn.addEventListener('click', async () => {
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
-            if(!email || !password) return alert("Введите почту и пароль");
-
-            try {
-                authBtn.innerText = "Подождите...";
-                if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password); // Вход
-                } else {
-                    await createUserWithEmailAndPassword(auth, email, password); // Регистрация
-                }
-            } catch (error) {
-                alert("Ошибка: Проверьте правильность данных или пароль (минимум 6 символов).");
-                authBtn.innerText = isLoginMode ? "Войти" : "Зарегистрироваться";
-            }
-        });
-
-        // СЛУШАТЕЛЬ СТАТУСА: Автоматически показывает дашборд, если пользователь вошел
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authScreen.style.display = 'none';
-                appScreen.style.display = 'flex';
-                document.getElementById('user-display-email').innerText = user.email; // Показываем почту артиста
-            } else {
-                authScreen.style.display = 'flex';
-                appScreen.style.display = 'none';
-                authBtn.innerText = isLoginMode ? "Войти" : "Зарегистрироваться";
-            }
-        });
-
-        // Кнопка Выйти
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
-
-
-        /* --- ЛОГИКА ПАНЕЛИ АРТИСТА (СИНХРОНИЗАЦИЯ С БАЗОЙ) --- */
-        window.nextStep = (stepNumber) => {
-            updateSummary();
-            document.querySelectorAll('.step-content, .step').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-            document.getElementById(`nav-step-${stepNumber}`).classList.add('active');
-        };
-
-        window.prevStep = (stepNumber) => {
-            document.querySelectorAll('.step-content, .step').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-            document.getElementById(`nav-step-${stepNumber}`).classList.add('active');
-        };
-
-        function updateSummary() {
-            document.getElementById('summaryArtist').innerText = document.getElementById('releaseArtist').value || '-';
-            document.getElementById('summaryTitle').innerText = document.getElementById('releaseTitle').value || '-';
-            document.getElementById('summaryGenre').innerText = document.getElementById('releaseGenre').value || '-';
+        /* --- СИСТЕМА УВЕДОМЛЕНИЙ --- */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-triangle-exclamation'}"></i> ${message}`;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
         }
 
-        // ОТПРАВКА ДАННЫХ В БАЗУ FIREBASE
-        document.getElementById('submitBtn').addEventListener('click', async () => {
-            // Проверка: точно ли пользователь вошел в систему
-            if (!auth.currentUser) return alert("Необходимо авторизоваться!");
+        /* --- ОБРАБОТКА ОШИБОК FIREBASE НА РУССКОМ --- */
+        function translateAuthError(code) {
+            switch (code) {
+                case 'auth/invalid-email': return 'Неверный формат почты.';
+                case 'auth/user-not-found': return 'Пользователь не найден. Зарегистрируйтесь.';
+                case 'auth/wrong-password': return 'Неверный пароль.';
+                case 'auth/email-already-in-use': return 'Эта почта уже зарегистрирована.';
+                case 'auth/weak-password': return 'Пароль слишком слабый (минимум 6 символов).';
+                case 'auth/unauthorized-domain': return 'Домен заблокирован. Добавьте его в Firebase Console.';
+                default: return 'Произошла ошибка проверки данных.';
+            }
+        }
 
-            const title = document.getElementById('releaseTitle').value.trim();
-            const artist = document.getElementById('releaseArtist').value.trim();
-            const genre = document.getElementById('releaseGenre').value;
-            const coverLink = document.getElementById('releaseCoverLink').value.trim();
-            const audioLink = document.getElementById('releaseAudioLink').value.trim();
+        /* --- АВТОРИЗАЦИЯ --- */
+        let isLogin = true;
+        const authBtn = document.getElementById('auth-btn');
+        const switchBtn = document.getElementById('auth-switch-mode');
+        const emailInp = document.getElementById('auth-email');
+        const passInp = document.getElementById('auth-password');
+
+        switchBtn.addEventListener('click', () => {
+            isLogin = !isLogin;
+            document.getElementById('auth-subtitle').innerText = isLogin ? "Вход в панель управления артиста" : "Создание нового аккаунта";
+            authBtn.innerText = isLogin ? "Войти в систему" : "Создать аккаунт";
+            switchBtn.innerText = isLogin ? "Создать аккаунт артиста" : "Уже есть аккаунт? Войти";
+        });
+
+        authBtn.addEventListener('click', async () => {
+            if(!emailInp.value || !passInp.value) return showToast("Заполните все поля", "error");
+            authBtn.innerHTML = '<div class="loader"></div>';
+            authBtn.disabled = true;
+
+            try {
+                if (isLogin) await signInWithEmailAndPassword(auth, emailInp.value, passInp.value);
+                else await createUserWithEmailAndPassword(auth, emailInp.value, passInp.value);
+            } catch (error) {
+                showToast(translateAuthError(error.code), "error");
+                authBtn.innerText = isLogin ? "Войти в систему" : "Создать аккаунт";
+                authBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-view').style.display = 'none';
+                document.getElementById('app-view').style.display = 'block';
+                document.getElementById('user-display-email').innerText = user.email;
+                document.getElementById('setting-email').value = user.email;
+                document.getElementById('user-initial').innerText = user.email.charAt(0).toUpperCase();
+                loadMyReleases(user.uid); // Загрузка треков пользователя
+            } else {
+                document.getElementById('auth-view').style.display = 'flex';
+                document.getElementById('app-view').style.display = 'none';
+                authBtn.innerText = isLogin ? "Войти в систему" : "Создать аккаунт";
+                authBtn.disabled = false;
+            }
+        });
+
+        /* --- НАВИГАЦИЯ ПО РАЗДЕЛАМ --- */
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.page-section');
+        const titleMap = { 'dashboard': 'Мои релизы', 'new-release': 'Загрузить трек', 'settings': 'Настройки' };
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                item.classList.add('active');
+                const targetId = item.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                document.getElementById('current-page-title').innerText = titleMap[targetId];
+                
+                if(targetId === 'dashboard' && auth.currentUser) loadMyReleases(auth.currentUser.uid);
+            });
+        });
+
+        /* --- ОТПРАВКА НОВОГО РЕЛИЗА --- */
+        document.getElementById('submit-release-btn').addEventListener('click', async () => {
+            const title = document.getElementById('r-title').value.trim();
+            const artist = document.getElementById('r-artist').value.trim();
+            const genre = document.getElementById('r-genre').value;
+            const cover = document.getElementById('r-cover').value.trim();
+            const audio = document.getElementById('r-audio').value.trim();
             
-            const platforms = [];
-            document.querySelectorAll('.platform:checked').forEach(cb => platforms.push(cb.value));
+            const platforms = Array.from(document.querySelectorAll('.platform-cb:checked')).map(cb => cb.value);
 
-            if (!title || !artist || !coverLink || !audioLink) {
-                return alert("Заполните все обязательные поля!");
+            if (!title || !artist || !cover || !audio) {
+                return showToast("Заполните все обязательные поля со ссылками", "error");
             }
 
-            const btn = document.getElementById('submitBtn');
-            btn.innerText = "Отправка...";
+            const btn = document.getElementById('submit-release-btn');
+            btn.innerHTML = '<div class="loader"></div>';
             btn.disabled = true;
 
             try {
-                // ДОБАВЛЕНИЕ ЗАПИСИ: Здесь происходит привязка данных к аккаунту артиста
                 await addDoc(collection(db, "track_submissions"), {
-                    userId: auth.currentUser.uid,       // Уникальный ID артиста
-                    userEmail: auth.currentUser.email,  // Почта артиста
-                    artist: artist,
-                    title: title,
-                    genre: genre,
-                    platforms: platforms,
-                    coverUrl: coverLink,
-                    audioUrl: audioLink,
+                    userId: auth.currentUser.uid,
+                    userEmail: auth.currentUser.email,
+                    artist, title, genre, platforms, coverUrl: cover, audioUrl: audio,
                     status: "Ожидает модерации",
                     createdAt: serverTimestamp()
                 });
 
-                alert("Успешно! Релиз отправлен.");
-                window.location.reload(); // Обновляем страницу для нового релиза
+                showToast("Релиз успешно отправлен на модерацию!");
+                // Очистка формы
+                ['r-title', 'r-artist', 'r-cover', 'r-audio'].forEach(id => document.getElementById(id).value = '');
+                
+                // Переход на главную
+                document.querySelector('[data-target="dashboard"]').click();
             } catch (error) {
-                alert("Ошибка при отправке: База данных отклонила запрос. Убедитесь, что правила Firestore обновлены.");
-                btn.innerText = "Отправить релиз";
+                showToast("Ошибка при отправке в базу", "error");
+            } finally {
+                btn.innerHTML = 'Отправить на модерацию <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>';
                 btn.disabled = false;
             }
         });
+
+        /* --- ЗАГРУЗКА РЕЛИЗОВ ПОЛЬЗОВАТЕЛЯ ИЗ БАЗЫ --- */
+        async function loadMyReleases(uid) {
+            const container = document.getElementById('releases-container');
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align: center;"><div class="loader"></div></div>';
+            
+            try {
+                // Создаем запрос: получить треки ТОЛЬКО текущего пользователя
+                const q = query(collection(db, "track_submissions"), where("userId", "==", uid));
+                const querySnapshot = await getDocs(q);
+                
+                container.innerHTML = ''; // Очищаем контейнер
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fa-solid fa-music"></i>
+                            <h3>У вас пока нет релизов</h3>
+                            <p>Перейдите в раздел "Загрузить трек", чтобы отправить первую работу.</p>
+                        </div>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const statusClass = data.status === "Ожидает модерации" ? "status-pending" : "status-approved";
+                    const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
+
+                    container.innerHTML += `
+                        <div class="release-card">
+                            <div class="status-badge ${statusClass}">${data.status}</div>
+                            <div class="release-info">
+                                <h3>${data.title}</h3>
+                                <p><i class="fa-solid fa-microphone-lines"></i> ${data.artist}</p>
+                                <p style="margin-top: 8px;"><i class="fa-solid fa-compact-disc"></i> ${data.genre} • ${date}</p>
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="empty-state">Ошибка загрузки треков. Проверьте права доступа.</div>';
+            }
+        }
     </script>
 </body>
 </html>
