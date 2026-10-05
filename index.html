@@ -470,7 +470,6 @@
                 </div>
 
                 <div class="pricing-grid">
-                    <!-- Тариф 1 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Стартовый</h3>
@@ -482,12 +481,10 @@
                             <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Платные UPC и ISRC коды</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Без приоритета в очереди</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Стартовый">Выбрать тариф</button>
                     </div>
 
-                    <!-- Тариф 2 (Популярный) -->
                     <div class="price-card popular">
                         <div class="price-header">
                             <h3>Профессиональный</h3>
@@ -499,12 +496,10 @@
                             <li><i class="fa-solid fa-check"></i> Ускоренная модерация (до 48 часов)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 90%</li>
                             <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
-                            <li><i class="fa-solid fa-check"></i> Безлимитная отправка релизов</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
                     </div>
 
-                    <!-- Тариф 3 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Лейбл</h3>
@@ -516,7 +511,6 @@
                             <li><i class="fa-solid fa-check"></i> VIP модерация (до 12 часов)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 100% (без комиссий)</li>
                             <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
-                            <li><i class="fa-solid fa-check"></i> Помощь в питчинге в плейлисты</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Лейбл">Стать резидентом</button>
                     </div>
@@ -527,17 +521,14 @@
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
                     <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Настройки профиля</div>
-                    
                     <div class="input-box" style="margin-bottom: 20px;">
                         <label>Никнейм музыканта</label>
                         <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
                     </div>
-
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
                     </div>
-
                     <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">Сохранить изменения</button>
                 </div>
             </section>
@@ -548,7 +539,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -580,7 +571,6 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // Оплата через ЮKassa в разработке
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const planName = e.target.getAttribute('data-plan');
@@ -753,15 +743,28 @@
             });
         });
 
-        // Функция снятия релиза с публикации в течение 20 минут
-        window.cancelRelease = async (id) => {
-            if (!confirm("Снять релиз с публикации? Он будет удален из очереди, и вы сможете исправить данные.")) return;
-            try {
-                await deleteDoc(doc(db, "track_submissions", id));
-                notify("Релиз снят с публикации для исправления.");
-                if(auth.currentUser) fetchReleases(auth.currentUser.uid);
-            } catch (err) {
-                notify("Не удалось отменить отправку", "error");
+        // Функция запроса на удаление или отзыва релиза в течение 20 минут
+        window.requestDeleteRelease = async (id, currentStatus, createdAtObj) => {
+            if (currentStatus === "Одобрено") {
+                if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
+                try {
+                    await updateDoc(doc(db, "track_submissions", id), {
+                        status: "Запрос на удаление с площадок"
+                    });
+                    notify("Запрос на удаление отправлен модератору.");
+                    if(auth.currentUser) fetchReleases(auth.currentUser.uid);
+                } catch {
+                    notify("Ошибка отправки запроса", "error");
+                }
+            } else {
+                if (!confirm("Вы уверены, что хотите удалить этот релиз?")) return;
+                try {
+                    await deleteDoc(doc(db, "track_submissions", id));
+                    notify("Релиз успешно удален.");
+                    if(auth.currentUser) fetchReleases(auth.currentUser.uid);
+                } catch {
+                    notify("Ошибка удаления", "error");
+                }
             }
         };
 
@@ -834,23 +837,40 @@
                     const d = docSnap.data();
                     let sClass = "status-pending";
                     if (d.status === "Одобрено") sClass = "status-approved";
-                    if (d.status === "Отклонено") sClass = "status-rejected";
+                    if (d.status === "Отклонено" || d.status.includes("удаление")) sClass = "status-rejected";
 
                     const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
                     const count = d.platforms ? d.platforms.length : 0;
 
-                    let cancelBtnHtml = '';
+                    let deleteActionHtml = '';
                     if (d.status === "Ожидает модерации" && d.createdAt) {
                         const createdAtMs = d.createdAt.toDate().getTime();
                         const nowMs = new Date().getTime();
                         const diffMinutes = (nowMs - createdAtMs) / (1000 * 60);
 
                         if (diffMinutes <= 20) {
-                            cancelBtnHtml = `
-                                <button onclick="cancelRelease('${id}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
+                            deleteActionHtml = `
+                                <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
                                     <i class="fa-solid fa-rotate-left"></i> Снять с публикации (осталось ${Math.ceil(20 - diffMinutes)} мин.)
                                 </button>`;
+                        } else {
+                            deleteActionHtml = `
+                                <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
+                                    <i class="fa-solid fa-trash"></i> Удалить релиз
+                                </button>`;
                         }
+                    } else if (d.status === "Одобрено") {
+                        deleteActionHtml = `
+                            <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
+                                <i class="fa-solid fa-trash"></i> Запросить удаление с площадок
+                            </button>`;
+                    } else if (d.status === "Запрос на удаление с площадок") {
+                        deleteActionHtml = `<div style="color: var(--warning); font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center;"><i class="fa-solid fa-clock"></i> Ожидает снятия с площадок администратором</div>`;
+                    } else {
+                        deleteActionHtml = `
+                            <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
+                                <i class="fa-solid fa-trash"></i> Удалить релиз
+                            </button>`;
                     }
 
                     let codesHtml = '';
@@ -882,7 +902,7 @@
                             </div>
                             ${codesHtml}
                             ${rejectHtml}
-                            ${cancelBtnHtml}
+                            ${deleteActionHtml}
                             <div class="track-footer">
                                 <span><i class="fa-solid fa-calendar-day"></i> ${date}</span>
                                 <span><i class="fa-solid fa-globe"></i> Площадок: ${count}</span>
