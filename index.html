@@ -117,7 +117,7 @@
         .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; display: inline-block; transition: var(--transition); }
         .auth-toggle:hover { color: var(--text-title); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        /* ЭКРАН ОЖИДАНИЯ ВЕРИФИКАЦИИ EMAIL */
+        /* ЭКРАН ВЕРИФИКАЦИИ EMAIL */
         #verify-view { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 20px; }
         .verify-card { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 50px; border-radius: var(--radius-lg); max-width: 450px; text-align: center; }
 
@@ -257,6 +257,12 @@
             <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
             <p class="auth-desc" id="auth-subtitle">Экосистема для независимых артистов</p>
             
+            <!-- Поле никнейма (видно только при регистрации) -->
+            <div class="input-wrapper" id="nickname-box" style="display: none;">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="auth-nickname" placeholder="Никнейм музыканта" autocomplete="nickname">
+            </div>
+
             <div class="input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
                 <input type="email" id="auth-email" placeholder="E-mail адрес" autocomplete="email">
@@ -278,7 +284,7 @@
         <div class="verify-card">
             <i class="fa-solid fa-paper-plane" style="font-size: 48px; color: var(--brand-primary); margin-bottom: 20px;"></i>
             <h2 style="color: white; margin-bottom: 10px;">Подтвердите вашу почту</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Мы отправили письмо с подтверждением. Перейдите по ссылке в письме, чтобы активировать аккаунт.</p>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Мы отправили письмо подтверждения. Перейдите по ссылке в письме, чтобы активировать аккаунт.</p>
             <button class="btn-glow" id="check-verify-btn" style="margin-bottom: 15px;">Я подтвердил почту</button>
             <button class="auth-toggle" id="resend-email-btn">Отправить письмо повторно</button>
             <div style="margin-top: 25px;"><button id="verify-logout" style="color: var(--danger); font-size: 14px; font-weight: 600;">Выйти из аккаунта</button></div>
@@ -315,7 +321,7 @@
                 <div class="user-menu">
                     <div class="user-avatar" id="user-avatar">A</div>
                     <div class="user-info">
-                        <span class="user-email" id="display-email">artist@mail.com</span>
+                        <span class="user-email" id="display-nickname">Артист</span>
                         <span class="user-role" id="user-role-text">Verified Artist</span>
                     </div>
                     <button class="btn-logout" id="logout-btn" title="Выйти из аккаунта">
@@ -429,14 +435,19 @@
             <!-- СЕКЦИЯ: НАСТРОЙКИ -->
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
-                    <div class="card-heading"><i class="fa-solid fa-shield-halved"></i> Безопасность аккаунта</div>
-                    <div class="input-box">
-                        <label>E-mail (Уникальный идентификатор)</label>
+                    <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Настройки профиля</div>
+                    
+                    <div class="input-box" style="margin-bottom: 20px;">
+                        <label>Никнейм музыканта</label>
+                        <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
+                    </div>
+
+                    <div class="input-box" style="margin-bottom: 25px;">
+                        <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
                     </div>
-                    <p style="color: var(--text-secondary); margin-top: 25px; font-size: 14px;">
-                        Ваш аккаунт защищен технологиями Firebase Auth. Все загруженные вами релизы привязаны к этому идентификатору.
-                    </p>
+
+                    <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">Сохранить изменения</button>
                 </div>
             </section>
         </main>
@@ -446,7 +457,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -481,18 +492,30 @@
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
+        const nickBox = document.getElementById('nickname-box');
         
         toggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
-            document.getElementById('auth-subtitle').innerText = isLoginMode ? "Экосистема для независимых артистов" : "Регистрация нового артиста";
-            authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
-            toggleBtn.innerText = isLoginMode ? "Создать новый аккаунт" : "Уже есть аккаунт? Войти";
+            if (isLoginMode) {
+                nickBox.style.display = 'none';
+                document.getElementById('auth-subtitle').innerText = "Экосистема для независимых артистов";
+                authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                toggleBtn.innerText = "Создать новый аккаунт";
+            } else {
+                nickBox.style.display = 'block';
+                document.getElementById('auth-subtitle').innerText = "Регистрация нового артиста";
+                authBtn.innerHTML = '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
+                toggleBtn.innerText = "Уже есть аккаунт? Войти";
+            }
         });
 
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
+            const nickname = document.getElementById('auth-nickname').value.trim();
+
             if(!email || !pass) return notify("Заполните почту и пароль", "error");
+            if(!isLoginMode && !nickname) return notify("Введите ваш никнейм", "error");
             
             authBtn.innerHTML = '<div class="btn-spinner"></div>';
             authBtn.disabled = true;
@@ -502,12 +525,18 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    // Сохраняем никнейм в базу данных пользователей
+                    await setDoc(doc(db, "users", cred.user.uid), {
+                        nickname: nickname,
+                        email: email,
+                        createdAt: serverTimestamp()
+                    });
                     await sendEmailVerification(cred.user);
                     notify("Аккаунт создан! Письмо отправлено на вашу почту.");
                 }
             } catch (err) {
                 notify("Ошибка: " + err.message, "error");
-                authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
+                authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span>' : '<span>Создать аккаунт</span>';
                 authBtn.disabled = false;
             }
         });
@@ -530,13 +559,48 @@
                 notify("Почта успешно подтверждена!");
                 location.reload();
             } else {
-                notify("Почта еще не подтверждена. Проверьте входящие или спам.", "error");
+                notify("Почта еще не подтверждена. Проверьте папку Спам.", "error");
+            }
+        });
+
+        // Функция загрузки и отображения никнейма в правом углу
+        async function loadUserProfile(user) {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            
+            let nickname = user.email.split('@')[0]; // Дефолт до заведения профиля
+            if (userSnap.exists() && userSnap.data().nickname) {
+                nickname = userSnap.data().nickname;
+            } else {
+                // Если аккаунт создан ранее без профиля в Firestore, создаем базовый
+                await setDoc(userRef, { nickname: nickname, email: user.email }, { merge: true });
+            }
+
+            document.getElementById('display-nickname').innerText = nickname;
+            document.getElementById('setting-nickname').value = nickname;
+            document.getElementById('setting-email').value = user.email;
+            document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
+        }
+
+        // Кнопка сохранения нового никнейма в настройках
+        document.getElementById('save-settings-btn').addEventListener('click', async () => {
+            const newNick = document.getElementById('setting-nickname').value.trim();
+            if (!newNick) return notify("Никнейм не может быть пустым", "error");
+
+            try {
+                const userRef = doc(db, "users", auth.currentUser.uid);
+                await setDoc(userRef, { nickname: newNick }, { merge: true });
+                document.getElementById('display-nickname').innerText = newNick;
+                document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
+                notify("Никнейм успешно обновлен!");
+            } catch (err) {
+                notify("Ошибка сохранения никнейма", "error");
             }
         });
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                await user.reload(); // Обновляем состояние верификации
+                await user.reload();
                 if (!user.emailVerified) {
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
@@ -547,10 +611,9 @@
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
-                document.getElementById('display-email').innerText = user.email;
-                document.getElementById('setting-email').value = user.email;
-                document.getElementById('user-avatar').innerText = user.email.charAt(0).toUpperCase();
                 
+                await loadUserProfile(user);
+
                 const adminBtn = document.getElementById('go-to-admin-btn');
                 const userRoleText = document.getElementById('user-role-text');
                 
@@ -611,9 +674,14 @@
             btn.disabled = true;
 
             try {
+                // Получаем актуальный никнейм перед отправкой
+                const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+                const currentNick = userSnap.exists() ? userSnap.data().nickname : auth.currentUser.email;
+
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid,
                     userEmail: auth.currentUser.email,
+                    userNickname: currentNick,
                     artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
                     status: "Ожидает модерации",
                     upc: "",
