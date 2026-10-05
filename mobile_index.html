@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>685 Music | Mobile App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-primary: #FF2A5F; --brand-secondary: #FF7043;
+            --bg-base: #050505; --bg-surface: #121212; --bg-input: #1e1e1e;
+            --text-title: #FFFFFF; --text-primary: #E2E8F0; --text-secondary: #94A3B8;
+            --border-light: rgba(255, 255, 255, 0.08);
+            --success: #10B981; --warning: #F59E0B; --danger: #EF4444;
+            --radius-md: 16px; --radius-sm: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-base); color: var(--text-primary); line-height: 1.5; padding-bottom: 80px; }
+        button, input, select { outline: none; border: none; background: none; color: inherit; font-family: inherit; }
+
+        /* УВЕДОМЛЕНИЯ */
+        #toast-container { position: fixed; top: 10px; left: 10px; right: 10px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: rgba(20,20,20,0.95); border: 1px solid var(--border-light); border-left: 4px solid var(--brand-primary); padding: 12px 16px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13px; color: #fff; transform: translateY(-150%); transition: transform 0.3s ease; }
+        .toast.show { transform: translateY(0); }
+
+        /* ЭКРАНЫ АВТОРИЗАЦИИ */
+        .auth-view-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle at top, #1a0b10 0%, var(--bg-base) 100%); }
+        .auth-card { width: 100%; max-width: 400px; text-align: center; }
+        .auth-logo { font-size: 40px; font-weight: 800; margin-bottom: 30px; color: var(--text-title); }
+        .auth-logo span { background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-wrapper { position: relative; margin-bottom: 15px; }
+        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+        .input-wrapper input { width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: white; padding: 16px 16px 16px 45px; border-radius: var(--radius-md); font-size: 15px; }
+        .input-wrapper input:focus { border-color: var(--brand-primary); }
+        .btn-glow { width: 100%; padding: 16px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-glow:disabled { opacity: 0.6; }
+        .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; padding: 10px; }
+
+        /* ОСНОВНОЙ ИНТЕРФЕЙС АППКИ */
+        #app-view { display: none; }
+        .top-bar { position: sticky; top: 0; background: rgba(18,18,18,0.9); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border-light); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 50; }
+        .top-bar-title { font-size: 20px; font-weight: 800; color: white; }
+        .user-avatar-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: white; }
+
+        .section { display: none; padding: 20px; animation: fadeUp 0.3s ease; }
+        .section.active { display: block; }
+
+        /* НИЖНЯЯ НАВИГАЦИЯ (BOTTOM NAV) */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-surface); border-top: 1px solid var(--border-light); display: flex; justify-content: space-around; padding: 10px 5px 20px 5px; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 10px; font-weight: 600; padding: 8px; width: 25%; }
+        .nav-item i { font-size: 20px; margin-bottom: 2px; }
+        .nav-item.active { color: var(--brand-primary); }
+
+        /* ФОРМЫ И КАРТОЧКИ */
+        .card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; }
+        .card-heading { font-size: 16px; font-weight: 700; color: white; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .card-heading i { color: var(--brand-primary); }
+        .input-box { margin-bottom: 15px; }
+        .input-box label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 6px; }
+        .styled-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: white; padding: 14px; border-radius: var(--radius-sm); font-size: 14px; }
+        .styled-input:focus { border-color: var(--brand-primary); }
+
+        /* ВЫБОР ПЛОЩАДОК */
+        .dsp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .dsp-label { display: flex; align-items: center; gap: 10px; background: var(--bg-input); padding: 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; }
+        .dsp-label input { display: none; }
+        .checkbox-box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+        .dsp-label input:checked + .checkbox-box { background: var(--brand-primary); border-color: var(--brand-primary); }
+        .checkbox-box i { opacity: 0; color: white; font-size: 10px; }
+        .dsp-label input:checked + .checkbox-box i { opacity: 1; }
+        .dsp-tools { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 12px; color: var(--brand-primary); font-weight: 700; }
+
+        /* РЕЛИЗЫ (КАТАЛОГ) */
+        .track-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .track-status { align-self: flex-start; padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .track-title { font-size: 18px; font-weight: 800; color: white; }
+        .track-meta { font-size: 12px; color: var(--text-secondary); }
+        .codes-box { background: var(--bg-input); padding: 10px; border-radius: 8px; font-size: 11px; font-family: monospace; display: flex; flex-direction: column; gap: 4px; }
+        .reject-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; padding: 10px; border-radius: 8px; font-size: 12px; }
+        .btn-action-mobile { width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; margin-top: 5px; text-align: center; }
+
+        /* ТАРИФЫ */
+        .price-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px 20px; margin-bottom: 15px; text-align: center; }
+        .price-card.popular { border-color: var(--brand-primary); background: linear-gradient(180deg, rgba(255,42,95,0.1) 0%, var(--bg-surface) 100%); }
+        .price-cost { font-size: 32px; font-weight: 800; color: white; margin: 15px 0; }
+        .price-features { text-align: left; list-style: none; font-size: 13px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .price-features li i { color: var(--success); margin-right: 8px; }
+        .price-features li.disabled { opacity: 0.5; }
+        .price-features li.disabled i { color: var(--text-secondary); }
+
+        .spinner { width: 30px; height: 30px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+        .empty-state i { font-size: 40px; color: var(--brand-primary); margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- АВТОРИЗАЦИЯ -->
+    <div id="auth-view" class="auth-view-container">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
+            <div id="nickname-box" class="input-wrapper" style="display: none;">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="auth-nickname" placeholder="Никнейм артиста">
+            </div>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="auth-email" placeholder="E-mail адрес">
+            </div>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="auth-password" placeholder="Пароль">
+            </div>
+            <button class="btn-glow" id="auth-btn">Войти</button>
+            <div class="auth-toggle" id="auth-toggle-btn">Создать аккаунт</div>
+        </div>
+    </div>
+
+    <!-- ВЕРИФИКАЦИЯ -->
+    <div id="verify-view" class="auth-view-container" style="display: none;">
+        <div class="auth-card" style="background:var(--bg-surface);">
+            <i class="fa-solid fa-paper-plane" style="font-size:40px; color:var(--brand-primary); margin-bottom:20px;"></i>
+            <h2 style="color:white; margin-bottom:10px; font-size:20px;">Подтвердите почту</h2>
+            <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">Перейдите по ссылке в письме.</p>
+            <button class="btn-glow" id="check-verify-btn" style="margin-bottom:15px;">Я подтвердил почту</button>
+            <div class="auth-toggle" id="verify-logout" style="color:var(--danger);">Выйти</div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app-view">
+        <div class="top-bar">
+            <div class="top-bar-title" id="page-title">Каталог</div>
+            <div class="user-avatar-btn" id="logout-btn" title="Выйти из аккаунта"><i class="fa-solid fa-right-from-bracket"></i></div>
+        </div>
+
+        <div class="section active" id="dashboard">
+            <div id="data-container"></div>
+        </div>
+
+        <div class="section" id="new-release">
+            <div class="card">
+                <div class="card-heading"><i class="fa-solid fa-circle-info"></i> О релизе</div>
+                <div class="input-box"><label>Название</label><input type="text" id="r-title" class="styled-input" placeholder="Название трека"></div>
+                <div class="input-box"><label>Артист</label><input type="text" id="r-artist" class="styled-input" placeholder="Псевдоним"></div>
+                <div class="input-box">
+                    <label>Жанр</label>
+                    <select id="r-genre" class="styled-input">
+                        <option>Hip-Hop / Rap</option><option>Emo-Rap / Trap</option><option>Phonk</option><option>Drill</option><option>Pop</option><option>Indie / Alternative</option><option>Rock</option><option>R&B / Soul</option><option>Electronic / Dance</option><option>House / Techno</option><option>Lo-Fi</option><option>Chanson</option><option>Metal</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label>Формат</label>
+                    <select id="r-type" class="styled-input"><option>Сингл</option><option>EP</option><option>Альбом</option></select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-heading"><i class="fa-solid fa-folder-open"></i> Файлы</div>
+                <div class="input-box"><label>Обложка (Drive/Yandex)</label><input type="url" id="r-cover" class="styled-input" placeholder="Ссылка"></div>
+                <div class="input-box"><label>WAV Мастер</label><input type="url" id="r-audio" class="styled-input" placeholder="Ссылка"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-heading"><i class="fa-solid fa-globe"></i> Площадки</div>
+                <div class="dsp-tools">
+                    <span onclick="selectAll(true)">Выбрать все</span>
+                    <span onclick="selectAll(false)">Снять все</span>
+                </div>
+                <div class="dsp-grid">
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Apple Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Apple</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Spotify" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Spotify</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="VK Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> VK</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Яндекс Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Яндекс</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Звук" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Звук</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="МТС Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> МТС</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="TikTok" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> TikTok</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="YouTube Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> YouTube</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Instagram / FB" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Meta</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="SoundCloud" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> SoundCloud</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tidal"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tidal</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Deezer"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Deezer</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Shazam"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Shazam</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Beatport"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Beatport</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tencent"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tencent</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="NetEase"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> NetEase</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Anghami"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Anghami</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Boomplay"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Boomplay</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Audiomack"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Audiomack</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Pandora"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Pandora</label>
+                    <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Qobuz"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Qobuz</label>
+                </div>
+            </div>
+
+            <button class="btn-glow" id="submit-btn" style="margin-bottom: 20px;">Отправить на модерацию</button>
+        </div>
+
+        <div class="section" id="pricing">
+            <div class="price-card">
+                <div class="price-header"><h3>Стартовый</h3><p>Для начинающих</p></div>
+                <div class="price-cost">200 ₽</div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> ТОП-5 площадок</li>
+                    <li><i class="fa-solid fa-check"></i> Модерация до 7 дней</li>
+                    <li><i class="fa-solid fa-check"></i> Роялти 80%</li>
+                    <li class="disabled"><i class="fa-solid fa-xmark"></i> Платные коды</li>
+                </ul>
+                <button class="btn-glow dummy-buy-btn" data-plan="Стартовый">Выбрать тариф</button>
+            </div>
+            <div class="price-card popular">
+                <div class="price-header"><h3>Профессиональный</h3></div>
+                <div class="price-cost">490 ₽</div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> 20+ мировых площадок</li>
+                    <li><i class="fa-solid fa-check"></i> Ускоренная модерация (48ч)</li>
+                    <li><i class="fa-solid fa-check"></i> Роялти 90%</li>
+                    <li><i class="fa-solid fa-check"></i> UPC и ISRC коды</li>
+                </ul>
+                <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
+            </div>
+            <div class="price-card">
+                <div class="price-header"><h3>Лейбл</h3></div>
+                <div class="price-cost">1 990 ₽</div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> Безлимит релизов</li>
+                    <li><i class="fa-solid fa-check"></i> VIP модерация 12 часов</li>
+                    <li><i class="fa-solid fa-check"></i> Выплата роялти 100%</li>
+                </ul>
+                <button class="btn-glow dummy-buy-btn" data-plan="Лейбл">Стать резидентом</button>
+            </div>
+        </div>
+
+        <div class="section" id="settings">
+            <div class="card">
+                <div class="input-box"><label>Никнейм</label><input type="text" id="setting-nickname" class="styled-input"></div>
+                <div class="input-box"><label>E-mail</label><input type="text" id="setting-email" class="styled-input" disabled style="opacity:0.5;"></div>
+                <button class="btn-glow" id="save-settings-btn">Сохранить</button>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" data-target="dashboard"><i class="fa-solid fa-layer-group"></i> Каталог</div>
+            <div class="nav-item" data-target="new-release"><i class="fa-solid fa-cloud-arrow-up"></i> Релиз</div>
+            <div class="nav-item" data-target="pricing"><i class="fa-solid fa-tags"></i> Тарифы</div>
+            <div class="nav-item" data-target="settings"><i class="fa-solid fa-user-shield"></i> Профиль</div>
+        </nav>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
+            authDomain: "music-label-e2581.firebaseapp.com",
+            databaseURL: "https://music-label-e2581-default-rtdb.firebaseio.com",
+            projectId: "music-label-e2581",
+            storageBucket: "music-label-e2581.firebasestorage.app",
+            messagingSenderId: "523951358095",
+            appId: "1:523951358095:web:b09a4a0d9a910c52e070fa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
+        function notify(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        document.querySelectorAll('.dummy-buy-btn').forEach(btn => btn.addEventListener('click', (e) => notify(`Оплата через ЮKassa в разработке.`, "error")));
+
+        let isLoginMode = true;
+        document.getElementById('auth-toggle-btn').addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('nickname-box').style.display = isLoginMode ? 'none' : 'block';
+            document.getElementById('auth-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
+            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Создать аккаунт' : 'Уже есть аккаунт? Войти';
+        });
+
+        document.getElementById('auth-btn').addEventListener('click', async () => {
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-password').value;
+            const nick = document.getElementById('auth-nickname').value.trim();
+            if(!email || !pass) return notify("Заполните все поля", "error");
+            try {
+                if (isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
+                else {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await setDoc(doc(db, "users", cred.user.uid), { nickname: nick, email, subscription: "Стартовый", createdAt: serverTimestamp() });
+                    await sendEmailVerification(cred.user);
+                    notify("Аккаунт создан! Проверьте почту.");
+                }
+            } catch (e) { notify("Ошибка: " + e.message, "error"); }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('verify-logout').addEventListener('click', () => signOut(auth));
+        document.getElementById('check-verify-btn').addEventListener('click', async () => {
+            await auth.currentUser.reload();
+            if (auth.currentUser.emailVerified) location.reload();
+            else notify("Почта еще не подтверждена.", "error");
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await user.reload();
+                if (!user.emailVerified) {
+                    document.getElementById('auth-view').style.display = 'none';
+                    document.getElementById('verify-view').style.display = 'flex';
+                    return;
+                }
+                document.getElementById('auth-view').style.display = 'none';
+                document.getElementById('verify-view').style.display = 'none';
+                document.getElementById('app-view').style.display = 'block';
+                
+                const uDoc = await getDoc(doc(db, "users", user.uid));
+                const nick = uDoc.exists() ? uDoc.data().nickname : user.email.split('@')[0];
+                document.getElementById('setting-nickname').value = nick;
+                document.getElementById('setting-email').value = user.email;
+                fetchReleases(user.uid);
+            } else {
+                document.getElementById('app-view').style.display = 'none';
+                document.getElementById('auth-view').style.display = 'flex';
+            }
+        });
+
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                link.classList.add('active');
+                const target = link.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+                document.getElementById('page-title').innerText = link.innerText.trim();
+                if(target === 'dashboard' && auth.currentUser) fetchReleases(auth.currentUser.uid);
+                window.scrollTo(0,0);
+            });
+        });
+
+        window.requestDeleteRelease = async (id, status) => {
+            if (status === "Одобрено") {
+                if (!confirm("Запросить снятие с площадок?")) return;
+                await updateDoc(doc(db, "track_submissions", id), { status: "Запрос на удаление с площадок" });
+                notify("Запрос отправлен.");
+            } else {
+                if (!confirm("Удалить релиз?")) return;
+                await deleteDoc(doc(db, "track_submissions", id));
+                notify("Удалено.");
+            }
+            fetchReleases(auth.currentUser.uid);
+        };
+
+        document.getElementById('submit-btn').addEventListener('click', async () => {
+            const title = document.getElementById('r-title').value.trim();
+            const artist = document.getElementById('r-artist').value.trim();
+            const genre = document.getElementById('r-genre').value;
+            const type = document.getElementById('r-type').value;
+            const cover = document.getElementById('r-cover').value.trim();
+            const audio = document.getElementById('r-audio').value.trim();
+            const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
+
+            if (!title || !artist || !cover || !audio) return notify("Заполните все поля!", "error");
+            if (platforms.length === 0) return notify("Выберите площадки", "error");
+
+            try {
+                const uDoc = await getDoc(doc(db, "users", auth.currentUser.uid));
+                await addDoc(collection(db, "track_submissions"), {
+                    userId: auth.currentUser.uid, userEmail: auth.currentUser.email, userNickname: uDoc.data()?.nickname || "",
+                    artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
+                    status: "Ожидает модерации", upc: "", isrc: "", rejectReason: "", createdAt: serverTimestamp()
+                });
+                notify("Отправлено на модерацию!");
+                document.querySelector('.nav-item[data-target="dashboard"]').click();
+            } catch { notify("Ошибка отправки.", "error"); }
+        });
+
+        async function fetchReleases(uid) {
+            const wrap = document.getElementById('data-container');
+            wrap.innerHTML = '<div class="spinner"></div>';
+            try {
+                const snap = await getDocs(query(collection(db, "track_submissions"), where("userId", "==", uid)));
+                if (snap.empty) return wrap.innerHTML = `<div class="empty-state"><i class="fa-solid fa-compact-disc"></i><br>Каталог пуст</div>`;
+                wrap.innerHTML = '';
+                snap.forEach(docSnap => {
+                    const id = docSnap.id, d = docSnap.data();
+                    let btnHtml = '';
+                    if (d.status === "Ожидает модерации" && d.createdAt) {
+                        const diff = (new Date() - d.createdAt.toDate()) / 60000;
+                        if (diff <= 20) btnHtml = `<button class="btn-action-mobile" style="background:rgba(239,68,68,0.15); color:var(--danger);" onclick="requestDeleteRelease('${id}', '${d.status}')">Снять (${Math.ceil(20-diff)}м)</button>`;
+                        else btnHtml = `<button class="btn-action-mobile" style="background:rgba(239,68,68,0.1); color:var(--danger);" onclick="requestDeleteRelease('${id}', '${d.status}')">Удалить</button>`;
+                    } else if (d.status === "Одобрено") btnHtml = `<button class="btn-action-mobile" style="background:rgba(239,68,68,0.1); color:var(--danger);" onclick="requestDeleteRelease('${id}', '${d.status}')">Снять с площадок</button>`;
+                    else if (d.status.includes("удаление")) btnHtml = `<div style="color:var(--warning); text-align:center; font-size:12px; margin-top:10px;">Ожидает снятия админом</div>`;
+                    else btnHtml = `<button class="btn-action-mobile" style="background:rgba(239,68,68,0.1); color:var(--danger);" onclick="requestDeleteRelease('${id}', '${d.status}')">Удалить</button>`;
+
+                    let codes = d.upc || d.isrc ? `<div class="codes-box">${d.upc ? `UPC: ${d.upc}<br>`:''}${d.isrc ? `ISRC: ${d.isrc}`:''}</div>` : '';
+                    let reject = d.status === "Отклонено" && d.rejectReason ? `<div class="reject-box">Отказ: ${d.rejectReason}</div>` : '';
+
+                    wrap.innerHTML += `
+                        <div class="track-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div class="track-title">${d.title}</div>
+                                    <div class="track-meta">${d.artist} • ${d.genre}</div>
+                                </div>
+                                <div class="track-status ${d.status === 'Одобрено' ? 'status-approved' : d.status === 'Ожидает модерации' ? 'status-pending' : 'status-rejected'}">${d.status}</div>
+                            </div>
+                            ${codes} ${reject} ${btnHtml}
+                        </div>`;
+                });
+            } catch { wrap.innerHTML = '<div class="empty-state">Ошибка загрузки</div>'; }
+        }
+    </script>
+</body>
+</html>
