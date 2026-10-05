@@ -316,10 +316,8 @@
         </div>
     </div>
 
-
     <!-- 3. ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
-        
         <aside class="sidebar">
             <div class="sidebar-brand"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
             <nav style="display: flex; flex-direction: column; gap: 8px;">
@@ -337,13 +335,12 @@
                 </button>
                 
                 <button class="nav-link" id="go-to-admin-btn" style="display: none; margin-top: 25px; color: #a78bfa; border: 1px dashed rgba(167,139,250,0.4); background: rgba(167,139,250,0.05);">
-                    <i class="fa-solid fa-server"></i> Панель Модератора
+                    <i class="fa-solid fa-server"></i> Модерация
                 </button>
             </nav>
         </aside>
 
         <main class="main-wrapper">
-            
             <header class="header">
                 <h1 class="header-title" id="page-title">Каталог релизов</h1>
                 <div class="user-menu">
@@ -367,7 +364,6 @@
 
             <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
             <section class="section" id="new-release">
-                
                 <div class="glass-card">
                     <div class="card-heading"><i class="fa-solid fa-circle-info"></i> Основные метаданные</div>
                     <div class="grid-2">
@@ -486,8 +482,7 @@
                             <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Платные UPC и ISRC коды</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Нет приоритетной поддержки</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Отсутствует питчинг в плейлисты</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Без приоритета в очереди</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Стартовый">Выбрать тариф</button>
                     </div>
@@ -553,7 +548,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -585,7 +580,7 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // Клик по тарифам (покупка через ЮKassa в разработке)
+        // Оплата через ЮKassa в разработке
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const planName = e.target.getAttribute('data-plan');
@@ -758,6 +753,18 @@
             });
         });
 
+        // Функция снятия релиза с публикации в течение 20 минут
+        window.cancelRelease = async (id) => {
+            if (!confirm("Снять релиз с публикации? Он будет удален из очереди, и вы сможете исправить данные.")) return;
+            try {
+                await deleteDoc(doc(db, "track_submissions", id));
+                notify("Релиз снят с публикации для исправления.");
+                if(auth.currentUser) fetchReleases(auth.currentUser.uid);
+            } catch (err) {
+                notify("Не удалось отменить отправку", "error");
+            }
+        };
+
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -822,14 +829,29 @@
                     return;
                 }
 
-                snap.forEach((doc) => {
-                    const d = doc.data();
+                snap.forEach((docSnap) => {
+                    const id = docSnap.id;
+                    const d = docSnap.data();
                     let sClass = "status-pending";
                     if (d.status === "Одобрено") sClass = "status-approved";
                     if (d.status === "Отклонено") sClass = "status-rejected";
 
                     const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
                     const count = d.platforms ? d.platforms.length : 0;
+
+                    let cancelBtnHtml = '';
+                    if (d.status === "Ожидает модерации" && d.createdAt) {
+                        const createdAtMs = d.createdAt.toDate().getTime();
+                        const nowMs = new Date().getTime();
+                        const diffMinutes = (nowMs - createdAtMs) / (1000 * 60);
+
+                        if (diffMinutes <= 20) {
+                            cancelBtnHtml = `
+                                <button onclick="cancelRelease('${id}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
+                                    <i class="fa-solid fa-rotate-left"></i> Снять с публикации (осталось ${Math.ceil(20 - diffMinutes)} мин.)
+                                </button>`;
+                        }
+                    }
 
                     let codesHtml = '';
                     if (d.upc || d.isrc) {
@@ -860,6 +882,7 @@
                             </div>
                             ${codesHtml}
                             ${rejectHtml}
+                            ${cancelBtnHtml}
                             <div class="track-footer">
                                 <span><i class="fa-solid fa-calendar-day"></i> ${date}</span>
                                 <span><i class="fa-solid fa-globe"></i> Площадок: ${count}</span>
