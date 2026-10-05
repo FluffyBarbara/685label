@@ -70,7 +70,7 @@
             border: 1px solid var(--border-light); border-left: 4px solid var(--brand-primary);
             padding: 16px 24px; border-radius: var(--radius-sm);
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 15px; font-weight: 600;
+            display: flex; align-items: center; gap: 15px; font-weight: 600; color: #fff;
             transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         .toast.show { transform: translateX(0); }
@@ -86,7 +86,7 @@
             background: var(--bg-glass); backdrop-filter: blur(30px);
             padding: 50px; border-radius: var(--radius-lg);
             border: 1px solid var(--border-light);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             width: 100%; max-width: 420px; text-align: center;
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -116,6 +116,10 @@
 
         .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; display: inline-block; transition: var(--transition); }
         .auth-toggle:hover { color: var(--text-title); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* ЭКРАН ОЖИДАНИЯ ВЕРИФИКАЦИИ EMAIL */
+        #verify-view { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 20px; }
+        .verify-card { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 50px; border-radius: var(--radius-lg); max-width: 450px; text-align: center; }
 
         /* ДАШБОРД */
         #app-view { display: none; min-height: 100vh; }
@@ -150,7 +154,7 @@
         .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 16px; box-shadow: 0 4px 15px rgba(255,42,95,0.3); }
         .user-info { display: flex; flex-direction: column; }
         .user-email { font-size: 14px; font-weight: 700; color: var(--text-title); }
-        .user-role { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .user-role { font-size: 12px; color: var(--success); font-weight: 600; }
         .btn-logout { margin-left: 10px; color: var(--text-secondary); font-size: 18px; transition: var(--transition); }
         .btn-logout:hover { color: var(--danger); transform: scale(1.1); }
 
@@ -224,10 +228,10 @@
         .track-artist { color: var(--text-primary); font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
         .track-meta { color: var(--text-secondary); font-size: 14px; display: flex; align-items: center; gap: 10px; }
         
-        /* Блок кодов в карточке пользователя */
         .track-codes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: 10px; font-size: 13px; font-family: monospace; display: flex; flex-direction: column; gap: 4px; }
-        .track-codes-box span { color: var(--text-secondary); }
         .track-codes-box b { color: #A78BFA; }
+
+        .reject-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; }
 
         .track-footer { margin-top: auto; padding-top: 20px; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
 
@@ -247,7 +251,7 @@
 
     <div id="toast-container"></div>
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <!-- 1. ЭКРАН АВТОРИЗАЦИИ -->
     <div id="auth-view">
         <div class="auth-card">
             <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
@@ -269,8 +273,20 @@
         </div>
     </div>
 
+    <!-- 2. ЭКРАН ВЕРИФИКАЦИИ ПОЧТЫ -->
+    <div id="verify-view" style="display: none;">
+        <div class="verify-card">
+            <i class="fa-solid fa-paper-plane" style="font-size: 48px; color: var(--brand-primary); margin-bottom: 20px;"></i>
+            <h2 style="color: white; margin-bottom: 10px;">Подтвердите вашу почту</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Мы отправили письмо с подтверждением. Перейдите по ссылке в письме, чтобы активировать аккаунт.</p>
+            <button class="btn-glow" id="check-verify-btn" style="margin-bottom: 15px;">Я подтвердил почту</button>
+            <button class="auth-toggle" id="resend-email-btn">Отправить письмо повторно</button>
+            <div style="margin-top: 25px;"><button id="verify-logout" style="color: var(--danger); font-size: 14px; font-weight: 600;">Выйти из аккаунта</button></div>
+        </div>
+    </div>
 
-    <!-- ДАШБОРД ПРИЛОЖЕНИЯ -->
+
+    <!-- 3. ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
         
         <aside class="sidebar">
@@ -429,7 +445,7 @@
     <!-- СКРИПТЫ И ЛОГИКА -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -454,7 +470,7 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             container.appendChild(toast);
             
@@ -482,27 +498,54 @@
             authBtn.disabled = true;
 
             try {
-                if (isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
-                else await createUserWithEmailAndPassword(auth, email, pass);
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await sendEmailVerification(cred.user);
+                    notify("Аккаунт создан! Письмо отправлено на вашу почту.");
+                }
             } catch (err) {
-                const msgs = {
-                    'auth/invalid-email': 'Некорректная почта.',
-                    'auth/user-not-found': 'Аккаунт не найден.',
-                    'auth/wrong-password': 'Неверный пароль.',
-                    'auth/email-already-in-use': 'Почта уже занята.',
-                    'auth/weak-password': 'Пароль от 6 символов.'
-                };
-                notify(msgs[err.code] || 'Ошибка системы.', "error");
+                notify("Ошибка: " + err.message, "error");
                 authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
                 authBtn.disabled = false;
             }
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('verify-logout').addEventListener('click', () => signOut(auth));
 
-        onAuthStateChanged(auth, (user) => {
+        document.getElementById('resend-email-btn').addEventListener('click', async () => {
+            try {
+                await sendEmailVerification(auth.currentUser);
+                notify("Письмо верификации отправлено повторно!");
+            } catch {
+                notify("Подождите перед повторной отправкой", "error");
+            }
+        });
+
+        document.getElementById('check-verify-btn').addEventListener('click', async () => {
+            await auth.currentUser.reload();
+            if (auth.currentUser.emailVerified) {
+                notify("Почта успешно подтверждена!");
+                location.reload();
+            } else {
+                notify("Почта еще не подтверждена. Проверьте входящие или спам.", "error");
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
+                await user.reload(); // Обновляем состояние верификации
+                if (!user.emailVerified) {
+                    document.getElementById('auth-view').style.display = 'none';
+                    document.getElementById('verify-view').style.display = 'flex';
+                    document.getElementById('app-view').style.display = 'none';
+                    return;
+                }
+
                 document.getElementById('auth-view').style.display = 'none';
+                document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
                 document.getElementById('display-email').innerText = user.email;
                 document.getElementById('setting-email').value = user.email;
@@ -518,12 +561,13 @@
                 } else {
                     adminBtn.style.display = 'none';
                     userRoleText.innerText = 'Verified Artist';
-                    userRoleText.style.color = 'var(--text-secondary)';
+                    userRoleText.style.color = 'var(--success)';
                 }
 
                 fetchReleases(user.uid);
             } else {
                 document.getElementById('auth-view').style.display = 'flex';
+                document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
                 authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span>' : '<span>Создать аккаунт</span>';
                 authBtn.disabled = false;
@@ -572,8 +616,9 @@
                     userEmail: auth.currentUser.email,
                     artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
                     status: "Ожидает модерации",
-                    upc: "", // Пусто до одобрения админом
-                    isrc: "", // Пусто до одобрения админом
+                    upc: "",
+                    isrc: "",
+                    rejectReason: "",
                     createdAt: serverTimestamp()
                 });
 
@@ -588,7 +633,6 @@
             }
         });
 
-        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА СИНХРОНИЗИРОВАННОГО С АДМИНКОЙ
         async function fetchReleases(uid) {
             const wrap = document.getElementById('data-container');
             wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
@@ -617,13 +661,20 @@
                     const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
                     const count = d.platforms ? d.platforms.length : 0;
 
-                    // Если админ заполнил коды, выводим их в карточке артиста
                     let codesHtml = '';
                     if (d.upc || d.isrc) {
                         codesHtml = `
                             <div class="track-codes-box">
                                 ${d.upc ? `<span>UPC: <b>${d.upc}</b></span>` : ''}
                                 ${d.isrc ? `<span>ISRC: <b>${d.isrc}</b></span>` : ''}
+                            </div>`;
+                    }
+
+                    let rejectHtml = '';
+                    if (d.status === "Отклонено" && d.rejectReason) {
+                        rejectHtml = `
+                            <div class="reject-box">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <b>Причина отказа:</b> ${d.rejectReason}
                             </div>`;
                     }
 
@@ -638,6 +689,7 @@
                                 <div class="track-meta"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</div>
                             </div>
                             ${codesHtml}
+                            ${rejectHtml}
                             <div class="track-footer">
                                 <span><i class="fa-solid fa-calendar-day"></i> ${date}</span>
                                 <span><i class="fa-solid fa-globe"></i> Площадок: ${count}</span>
