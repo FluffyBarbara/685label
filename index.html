@@ -382,14 +382,20 @@
                         <div class="input-box">
                             <label>Основной жанр *</label>
                             <select id="r-genre" class="styled-input">
-                                <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
                                 <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
+                                <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
+                                <option value="Phonk">Phonk</option>
+                                <option value="Drill">Drill</option>
                                 <option value="Pop">Pop</option>
-                                <option value="Rock / Alternative">Rock / Alternative</option>
+                                <option value="Indie / Alternative">Indie / Alternative</option>
+                                <option value="Rock">Rock</option>
                                 <option value="R&B / Soul">R&B / Soul</option>
                                 <option value="Electronic / Dance">Electronic / Dance</option>
-                                <option value="Phonk">Phonk</option>
-                                <option value="Indie">Indie</option>
+                                <option value="House / Techno">House / Techno</option>
+                                <option value="Lo-Fi">Lo-Fi</option>
+                                <option value="Chanson">Chanson</option>
+                                <option value="Metal / Hardcore">Metal / Hardcore</option>
+                                <option value="Classical / Instrumental">Classical / Instrumental</option>
                             </select>
                         </div>
                         <div class="input-box">
@@ -578,26 +584,14 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // Заглушка покупки тарифов (интеграция платежной системы)
+        // Обработка клика по тарифам (модуль оплаты через ЮKassa в разработке)
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
+            btn.addEventListener('click', (e) => {
                 const planName = e.target.getAttribute('data-plan');
                 if (planName === "Старт") {
                     return notify("Вы уже используете базовый тариф.", "success");
                 }
-
-                // Заглушка окна оплаты
-                const confirmed = confirm(`[Заглушка платежного шлюза ЮKassa]\n\nХотите подключить тариф "${planName}"?\nНажмите "OK" для симуляции успешной оплаты.`);
-                
-                if (confirmed) {
-                    try {
-                        const userRef = doc(db, "users", auth.currentUser.uid);
-                        await setDoc(userRef, { subscription: planName }, { merge: true });
-                        notify(`Оплата прошла успешно! Тариф "${planName}" активирован.`, "success");
-                    } catch (err) {
-                        notify("Ошибка активации тарифа", "error");
-                    }
-                }
+                notify(`Интеграция с платежным шлюзом ЮKassa для тарифа "${planName}" находится в разработке.`, "error");
             });
         });
 
@@ -784,13 +778,11 @@
             btn.disabled = true;
 
             try {
-                // Проверяем тариф пользователя
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
                 const currentPlan = userData.subscription || "Старт";
 
-                // Ограничения для тарифа "Старт" (доступен только 1 релиз)
                 if (currentPlan === "Старт") {
                     const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
                     const snapReleases = await getDocs(qReleases);
@@ -798,7 +790,7 @@
                     if (snapReleases.size >= 1) {
                         btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
                         btn.disabled = false;
-                        return notify("На бесплатном тарифе «Старт» доступен только 1 релиз. Перейдите на тариф Про или Лейбл для снятия ограничений!", "error");
+                        return notify("На бесплатном тарифе «Старт» доступен только 1 релиз. Дождитесь подключения оплаты через ЮKassa для снятия ограничений!", "error");
                     }
                 }
 
