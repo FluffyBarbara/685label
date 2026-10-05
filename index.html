@@ -218,11 +218,17 @@
         }
         .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
         
         .track-title { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; line-height: 1.2; }
         .track-artist { color: var(--text-primary); font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
         .track-meta { color: var(--text-secondary); font-size: 14px; display: flex; align-items: center; gap: 10px; }
         
+        /* Блок кодов в карточке пользователя */
+        .track-codes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: 10px; font-size: 13px; font-family: monospace; display: flex; flex-direction: column; gap: 4px; }
+        .track-codes-box span { color: var(--text-secondary); }
+        .track-codes-box b { color: #A78BFA; }
+
         .track-footer { margin-top: auto; padding-top: 20px; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
 
         .empty-dashboard {
@@ -280,7 +286,6 @@
                     <i class="fa-solid fa-user-shield"></i> Настройки
                 </button>
                 
-                <!-- КНОПКА ПАНЕЛИ АДМИНИСТРАТОРА (Скрыта для всех, кроме владельца) -->
                 <button class="nav-link" id="go-to-admin-btn" style="display: none; margin-top: 25px; color: #a78bfa; border: 1px dashed rgba(167,139,250,0.4); background: rgba(167,139,250,0.05);">
                     <i class="fa-solid fa-server"></i> Панель Модератора
                 </button>
@@ -441,7 +446,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ВАШ УНИКАЛЬНЫЙ ID АДМИНИСТРАТОРА
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
         window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
@@ -496,7 +500,6 @@
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // СЛУШАТЕЛЬ СТАТУСА АВТОРИЗАЦИИ
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('auth-view').style.display = 'none';
@@ -505,7 +508,6 @@
                 document.getElementById('setting-email').value = user.email;
                 document.getElementById('user-avatar').innerText = user.email.charAt(0).toUpperCase();
                 
-                // Проверяем, являетесь ли вы администратором
                 const adminBtn = document.getElementById('go-to-admin-btn');
                 const userRoleText = document.getElementById('user-role-text');
                 
@@ -528,12 +530,10 @@
             }
         });
 
-        // КЛИК НА КНОПКУ АДМИНКИ В МЕНЮ
         document.getElementById('go-to-admin-btn').addEventListener('click', () => {
             window.location.href = 'admin.html';
         });
 
-        // НАВИГАЦИЯ В МЕНЮ
         document.querySelectorAll('.nav-link[data-target]').forEach(link => {
             link.addEventListener('click', () => {
                 document.querySelectorAll('.nav-link[data-target]').forEach(n => n.classList.remove('active'));
@@ -550,7 +550,6 @@
             });
         });
 
-        // ОТПРАВКА ТРЕКА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -573,6 +572,8 @@
                     userEmail: auth.currentUser.email,
                     artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
                     status: "Ожидает модерации",
+                    upc: "", // Пусто до одобрения админом
+                    isrc: "", // Пусто до одобрения админом
                     createdAt: serverTimestamp()
                 });
 
@@ -587,7 +588,7 @@
             }
         });
 
-        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА АРТИСТА
+        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА СИНХРОНИЗИРОВАННОГО С АДМИНКОЙ
         async function fetchReleases(uid) {
             const wrap = document.getElementById('data-container');
             wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
@@ -609,21 +610,34 @@
 
                 snap.forEach((doc) => {
                     const d = doc.data();
-                    const isPending = d.status === "Ожидает модерации";
-                    const sClass = isPending ? "status-pending" : "status-approved";
+                    let sClass = "status-pending";
+                    if (d.status === "Одобрено") sClass = "status-approved";
+                    if (d.status === "Отклонено") sClass = "status-rejected";
+
                     const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
                     const count = d.platforms ? d.platforms.length : 0;
+
+                    // Если админ заполнил коды, выводим их в карточке артиста
+                    let codesHtml = '';
+                    if (d.upc || d.isrc) {
+                        codesHtml = `
+                            <div class="track-codes-box">
+                                ${d.upc ? `<span>UPC: <b>${d.upc}</b></span>` : ''}
+                                ${d.isrc ? `<span>ISRC: <b>${d.isrc}</b></span>` : ''}
+                            </div>`;
+                    }
 
                     wrap.innerHTML += `
                         <div class="track-card">
                             <div class="track-status ${sClass}">
-                                <i class="fa-solid ${isPending ? 'fa-clock' : 'fa-check-double'}"></i> ${d.status}
+                                <i class="fa-solid fa-circle"></i> ${d.status}
                             </div>
                             <div>
                                 <h3 class="track-title">${d.title}</h3>
                                 <div class="track-artist"><i class="fa-solid fa-user"></i> ${d.artist}</div>
                                 <div class="track-meta"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</div>
                             </div>
+                            ${codesHtml}
                             <div class="track-footer">
                                 <span><i class="fa-solid fa-calendar-day"></i> ${date}</span>
                                 <span><i class="fa-solid fa-globe"></i> Площадок: ${count}</span>
