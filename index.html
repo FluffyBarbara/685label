@@ -477,18 +477,19 @@
                     <!-- Тариф 1 -->
                     <div class="price-card">
                         <div class="price-header">
-                            <h3>Старт</h3>
+                            <h3>Стартовый</h3>
                             <p>Для начинающих артистов</p>
                         </div>
-                        <div class="price-cost">Бесплатно <span>/ релиз</span></div>
+                        <div class="price-cost">200 ₽ <span>/ релиз</span></div>
                         <ul class="price-features">
                             <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок</li>
                             <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Бесплатные UPC и ISRC коды</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Лимит: 1 релиз на аккаунт</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Платные UPC и ISRC коды</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Нет приоритетной поддержки</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Отсутствует питчинг в плейлисты</li>
                         </ul>
-                        <button class="btn-glow dummy-buy-btn" data-plan="Старт">Текущий тариф</button>
+                        <button class="btn-glow dummy-buy-btn" data-plan="Стартовый">Выбрать тариф</button>
                     </div>
 
                     <!-- Тариф 2 (Популярный) -->
@@ -584,13 +585,10 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // Обработка клика по тарифам (модуль оплаты через ЮKassa в разработке)
+        // Клик по тарифам (покупка через ЮKassa в разработке)
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const planName = e.target.getAttribute('data-plan');
-                if (planName === "Старт") {
-                    return notify("Вы уже используете базовый тариф.", "success");
-                }
                 notify(`Интеграция с платежным шлюзом ЮKassa для тарифа "${planName}" находится в разработке.`, "error");
             });
         });
@@ -634,7 +632,7 @@
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname,
                         email: email,
-                        subscription: "Старт",
+                        subscription: "Стартовый",
                         createdAt: serverTimestamp()
                     });
                     await sendEmailVerification(cred.user);
@@ -677,7 +675,7 @@
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
-                await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Старт" }, { merge: true });
+                await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Стартовый" }, { merge: true });
             }
 
             document.getElementById('display-nickname').innerText = nickname;
@@ -760,7 +758,6 @@
             });
         });
 
-        // ПРОВЕРКА ЛИМИТОВ ТАРИФА ПЕРЕД ОТПРАВКОЙ РЕЛИЗА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -781,19 +778,6 @@
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
-                const currentPlan = userData.subscription || "Старт";
-
-                if (currentPlan === "Старт") {
-                    const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
-                    const snapReleases = await getDocs(qReleases);
-                    
-                    if (snapReleases.size >= 1) {
-                        btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
-                        btn.disabled = false;
-                        return notify("На бесплатном тарифе «Старт» доступен только 1 релиз. Дождитесь подключения оплаты через ЮKassa для снятия ограничений!", "error");
-                    }
-                }
-
                 const currentNick = userData.nickname || auth.currentUser.email;
 
                 await addDoc(collection(db, "track_submissions"), {
