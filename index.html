@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>685 Music | Premium Artist Portal</title>
-    <!-- Премиальные шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Иконки FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ================= ДИЗАЙН-СИСТЕМА И ПЕРЕМЕННЫЕ ================= */
         :root {
             --brand-primary: #FF2A5F;
             --brand-secondary: #FF7043;
@@ -60,19 +57,13 @@
         button { cursor: pointer; border: none; background: none; color: inherit; outline: none; }
         input, select { font-family: inherit; outline: none; }
 
-        /* ================= АНИМАЦИИ И ЭФФЕКТЫ ================= */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 var(--brand-glow); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 42, 95, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
-        }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* ================= УВЕДОМЛЕНИЯ (TOASTS) ================= */
+        /* УВЕДОМЛЕНИЯ */
         #toast-container { position: fixed; top: 30px; right: 30px; z-index: 10000; display: flex; flex-direction: column; gap: 15px; }
         .toast {
             background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px);
@@ -86,17 +77,11 @@
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
-        /* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
+        /* ЭКРАН АВТОРИЗАЦИИ */
         #auth-view {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 20px; position: relative; overflow: hidden;
         }
-        #auth-view::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,42,95,0.05) 0%, transparent 60%);
-            animation: spin 30s linear infinite; z-index: -1;
-        }
-        
         .auth-card {
             background: var(--bg-glass); backdrop-filter: blur(30px);
             padding: 50px; border-radius: var(--radius-lg);
@@ -132,10 +117,9 @@
         .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; display: inline-block; transition: var(--transition); }
         .auth-toggle:hover { color: var(--text-title); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        /* ================= ГЛАВНЫЙ ИНТЕРФЕЙС (ДАШБОРД) ================= */
+        /* ДАШБОРД */
         #app-view { display: none; min-height: 100vh; }
         
-        /* БОКОВАЯ ПАНЕЛЬ */
         .sidebar {
             width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
             background: var(--bg-surface); border-right: 1px solid var(--border-light);
@@ -147,7 +131,7 @@
         .nav-link {
             display: flex; align-items: center; gap: 15px; padding: 16px 20px;
             color: var(--text-secondary); font-weight: 600; font-size: 15px;
-            border-radius: var(--radius-md); transition: var(--transition); margin-bottom: 8px;
+            border-radius: var(--radius-md); transition: var(--transition); margin-bottom: 8px; width: 100%; text-align: left;
         }
         .nav-link i { font-size: 18px; width: 20px; text-align: center; }
         .nav-link:hover { background: var(--bg-glass-hover); color: var(--text-title); }
@@ -157,7 +141,6 @@
         }
         .nav-link.active::before { content: ''; position: absolute; left: 0; top: 15%; height: 70%; width: 4px; background: var(--brand-primary); border-radius: 0 4px 4px 0; }
 
-        /* ОСНОВНОЙ КОНТЕНТ */
         .main-wrapper { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
         
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
@@ -171,28 +154,23 @@
         .btn-logout { margin-left: 10px; color: var(--text-secondary); font-size: 18px; transition: var(--transition); }
         .btn-logout:hover { color: var(--danger); transform: scale(1.1); }
 
-        /* УПРАВЛЕНИЕ ВИДИМОСТЬЮ СЕКЦИЙ */
         .section { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .section.active { display: block; }
 
-        /* ================= КОМПОНЕНТЫ ================= */
-        /* Карточки-контейнеры */
         .glass-card {
             background: var(--bg-surface); border: 1px solid var(--border-light);
             border-radius: var(--radius-lg); padding: 35px; margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;
         }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
         .card-heading { font-size: 20px; font-weight: 700; color: var(--text-title); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
         .card-heading i { color: var(--brand-primary); background: rgba(255,42,95,0.1); padding: 10px; border-radius: 10px; }
 
-        /* Сетки форм */
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
         .input-box { display: flex; flex-direction: column; gap: 10px; }
         .input-box label { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
         .styled-input {
             background: rgba(0,0,0,0.2); border: 1px solid var(--border-light); color: var(--text-title);
-            padding: 16px; border-radius: var(--radius-sm); font-size: 15px; transition: var(--transition);
+            padding: 16px; border-radius: var(--radius-sm); font-size: 15px; transition: var(--transition); width: 100%;
         }
         .styled-input:focus { border-color: var(--brand-primary); background: rgba(255,42,95,0.02); box-shadow: inset 0 0 0 1px var(--brand-primary); }
         
@@ -203,7 +181,6 @@
         }
         select.styled-input option { background: var(--bg-surface); color: var(--text-title); }
 
-        /* ПЛОЩАДКИ - КАСТОМНЫЕ ЧЕКБОКСЫ */
         .dsp-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
         .dsp-toolbar button { color: var(--brand-primary); font-weight: 700; font-size: 14px; padding: 5px 10px; transition: 0.2s; }
         .dsp-toolbar button:hover { color: #fff; text-shadow: 0 0 10px var(--brand-primary); }
@@ -227,7 +204,6 @@
         .dsp-label input:checked + .checkbox-box i { opacity: 1; transform: scale(1); }
         .dsp-label:has(input:checked) { border-color: var(--brand-primary); background: rgba(255,42,95,0.05); }
 
-        /* КАРТОЧКИ РЕЛИЗОВ В ДАШБОРДЕ */
         .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
         .track-card {
             background: var(--bg-surface); border: 1px solid var(--border-light);
@@ -263,10 +239,9 @@
 </head>
 <body>
 
-    <!-- Уведомления -->
     <div id="toast-container"></div>
 
-    <!-- ================= ЭКРАН 1: АВТОРИЗАЦИЯ ================= -->
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
     <div id="auth-view">
         <div class="auth-card">
             <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
@@ -289,13 +264,12 @@
     </div>
 
 
-    <!-- ================= ЭКРАН 2: ПРИЛОЖЕНИЕ (ДАШБОРД) ================= -->
+    <!-- ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
         
-        <!-- ЛЕВОЕ МЕНЮ -->
         <aside class="sidebar">
             <div class="sidebar-brand"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
-            <nav>
+            <nav style="display: flex; flex-direction: column; gap: 8px;">
                 <button class="nav-link active" data-target="dashboard">
                     <i class="fa-solid fa-layer-group"></i> Каталог релизов
                 </button>
@@ -305,20 +279,23 @@
                 <button class="nav-link" data-target="settings">
                     <i class="fa-solid fa-user-shield"></i> Настройки
                 </button>
+                
+                <!-- КНОПКА ПАНЕЛИ АДМИНИСТРАТОРА (Скрыта для всех, кроме владельца) -->
+                <button class="nav-link" id="go-to-admin-btn" style="display: none; margin-top: 25px; color: #a78bfa; border: 1px dashed rgba(167,139,250,0.4); background: rgba(167,139,250,0.05);">
+                    <i class="fa-solid fa-server"></i> Панель Модератора
+                </button>
             </nav>
         </aside>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ -->
         <main class="main-wrapper">
             
-            <!-- ШАПКА -->
             <header class="header">
                 <h1 class="header-title" id="page-title">Каталог релизов</h1>
                 <div class="user-menu">
                     <div class="user-avatar" id="user-avatar">A</div>
                     <div class="user-info">
                         <span class="user-email" id="display-email">artist@mail.com</span>
-                        <span class="user-role">Verified Artist</span>
+                        <span class="user-role" id="user-role-text">Verified Artist</span>
                     </div>
                     <button class="btn-logout" id="logout-btn" title="Выйти из аккаунта">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -326,15 +303,14 @@
                 </div>
             </header>
 
-            <!-- СЕКЦИЯ 1: МОИ РЕЛИЗЫ -->
+            <!-- СЕКЦИЯ: КАТАЛОГ РЕЛИЗОВ -->
             <section class="section active" id="dashboard">
                 <div class="releases-grid" id="data-container">
-                    <!-- Треки генерируются через JS -->
                     <div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ 2: НОВЫЙ РЕЛИЗ -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
             <section class="section" id="new-release">
                 
                 <div class="glass-card">
@@ -397,27 +373,23 @@
                     </div>
                     
                     <div class="dsp-grid">
-                        <!-- Основные -->
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Apple Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Apple Music</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Spotify" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Spotify</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="YouTube Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> YouTube Music</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="TikTok" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> TikTok / Resso</label>
-                        <!-- СНГ -->
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="VK Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> VK Музыка</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Яндекс Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Яндекс Музыка</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Звук" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Звук</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="МТС Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> МТС Музыка</label>
-                        <!-- Мировые -->
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Amazon Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Amazon Music</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Instagram / FB" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Meta (Inst/FB)</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Deezer" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Deezer</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tidal" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tidal</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="SoundCloud" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> SoundCloud</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Shazam"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Shazam</label>
-                        <!-- Региональные -->
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Beatport"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Beatport</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tencent"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tencent (China)</label>
-                        <label class="platform-label"><input type="checkbox" class="dsp-cb" value="NetEase"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> NetEase (China)</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="NetEase"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> NetEase (China)</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Anghami"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Anghami (MENA)</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Boomplay"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Boomplay (Africa)</label>
                         <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Audiomack"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Audiomack</label>
@@ -433,7 +405,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ 3: НАСТРОЙКИ -->
+            <!-- СЕКЦИЯ: НАСТРОЙКИ -->
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
                     <div class="card-heading"><i class="fa-solid fa-shield-halved"></i> Безопасность аккаунта</div>
@@ -449,13 +421,12 @@
         </main>
     </div>
 
-    <!-- ================= ЛОГИКА FIREBASE И ПРИЛОЖЕНИЯ ================= -->
+    <!-- СКРИПТЫ И ЛОГИКА -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
             authDomain: "music-label-e2581.firebaseapp.com",
@@ -470,7 +441,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // УТИЛИТЫ: Тосты и Чекбоксы
+        // ВАШ УНИКАЛЬНЫЙ ID АДМИНИСТРАТОРА
+        const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
+
         window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
 
         function notify(msg, type = 'success') {
@@ -485,7 +458,6 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // АВТОРИЗАЦИЯ
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -524,7 +496,7 @@
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // СЛУШАТЕЛЬ СТАТУСА
+        // СЛУШАТЕЛЬ СТАТУСА АВТОРИЗАЦИИ
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('auth-view').style.display = 'none';
@@ -532,6 +504,21 @@
                 document.getElementById('display-email').innerText = user.email;
                 document.getElementById('setting-email').value = user.email;
                 document.getElementById('user-avatar').innerText = user.email.charAt(0).toUpperCase();
+                
+                // Проверяем, являетесь ли вы администратором
+                const adminBtn = document.getElementById('go-to-admin-btn');
+                const userRoleText = document.getElementById('user-role-text');
+                
+                if (user.uid === ADMIN_UID) {
+                    adminBtn.style.display = 'flex';
+                    userRoleText.innerText = 'Label Administrator';
+                    userRoleText.style.color = '#a78bfa';
+                } else {
+                    adminBtn.style.display = 'none';
+                    userRoleText.innerText = 'Verified Artist';
+                    userRoleText.style.color = 'var(--text-secondary)';
+                }
+
                 fetchReleases(user.uid);
             } else {
                 document.getElementById('auth-view').style.display = 'flex';
@@ -541,10 +528,15 @@
             }
         });
 
+        // КЛИК НА КНОПКУ АДМИНКИ В МЕНЮ
+        document.getElementById('go-to-admin-btn').addEventListener('click', () => {
+            window.location.href = 'admin.html';
+        });
+
         // НАВИГАЦИЯ В МЕНЮ
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link[data-target]').forEach(link => {
             link.addEventListener('click', () => {
-                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.nav-link[data-target]').forEach(n => n.classList.remove('active'));
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 
                 link.classList.add('active');
@@ -595,7 +587,7 @@
             }
         });
 
-        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА
+        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА АРТИСТА
         async function fetchReleases(uid) {
             const wrap = document.getElementById('data-container');
             wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
