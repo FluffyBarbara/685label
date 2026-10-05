@@ -3,205 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>685 Music | Портал Артиста</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>685 Music | Premium Artist Portal</title>
+    <!-- Премиальные шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Иконки FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ================= ДИЗАЙН-СИСТЕМА И ПЕРЕМЕННЫЕ ================= */
         :root {
-            --primary: #E91E63;
-            --primary-hover: #D81B60;
-            --bg-dark: #0B0F19;
-            --bg-panel: #131A2A;
-            --bg-input: #1A2235;
-            --text-main: #F8FAFC;
-            --text-muted: #94A3B8;
-            --border: #2A3449;
+            --brand-primary: #FF2A5F;
+            --brand-secondary: #FF7043;
+            --brand-glow: rgba(255, 42, 95, 0.4);
+            
+            --bg-base: #050505;
+            --bg-surface: #0a0a0a;
+            --bg-glass: rgba(15, 15, 15, 0.6);
+            --bg-glass-hover: rgba(255, 255, 255, 0.03);
+            
+            --text-title: #FFFFFF;
+            --text-primary: #E2E8F0;
+            --text-secondary: #94A3B8;
+            
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(255, 42, 95, 0.5);
+            
             --success: #10B981;
             --warning: #F59E0B;
-            --radius: 14px;
+            --danger: #EF4444;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 42, 95, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 112, 67, 0.05), transparent 25%);
+            background-attachment: fixed;
+        }
 
-        button { cursor: pointer; border: none; background: none; color: inherit; }
-        input, select { font-family: inherit; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
 
-        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast { background: rgba(19, 26, 42, 0.95); backdrop-filter: blur(10px); border-left: 4px solid var(--primary); padding: 16px 24px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); display: flex; align-items: center; gap: 12px; font-weight: 500; border: 1px solid var(--border); border-left-width: 4px; }
+        button { cursor: pointer; border: none; background: none; color: inherit; outline: none; }
+        input, select { font-family: inherit; outline: none; }
+
+        /* ================= АНИМАЦИИ И ЭФФЕКТЫ ================= */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 var(--brand-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 42, 95, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ================= УВЕДОМЛЕНИЯ (TOASTS) ================= */
+        #toast-container { position: fixed; top: 30px; right: 30px; z-index: 10000; display: flex; flex-direction: column; gap: 15px; }
+        .toast {
+            background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light); border-left: 4px solid var(--brand-primary);
+            padding: 16px 24px; border-radius: var(--radius-sm);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 15px; font-weight: 600;
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
         .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: #EF4444; }
         .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
 
-        #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top right, #1A2235, #0B0F19); padding: 20px; }
-        .auth-card { background: var(--bg-panel); padding: 48px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7); width: 100%; max-width: 440px; border: 1px solid var(--border); text-align: center; }
-        .auth-logo { font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .auth-logo span { color: var(--primary); }
-        .auth-card p { color: var(--text-muted); margin-bottom: 32px; font-size: 15px; }
+        /* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
+        #auth-view {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 20px; position: relative; overflow: hidden;
+        }
+        #auth-view::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,42,95,0.05) 0%, transparent 60%);
+            animation: spin 30s linear infinite; z-index: -1;
+        }
         
-        .input-group { position: relative; margin-bottom: 20px; text-align: left; }
-        .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .input-group input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); padding: 16px 16px 16px 48px; border-radius: var(--radius); font-size: 15px; transition: var(--transition); }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.15); outline: none; }
-        
-        .btn-main { width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; padding: 16px; border-radius: var(--radius); font-size: 16px; font-weight: 700; transition: var(--transition); text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3); }
-        .btn-main:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-        
-        .auth-switch { margin-top: 24px; color: var(--text-muted); font-size: 14px; font-weight: 600; transition: var(--transition); display: inline-block; border-bottom: 1px dashed transparent; }
-        .auth-switch:hover { color: var(--primary); border-bottom-color: var(--primary); }
+        .auth-card {
+            background: var(--bg-glass); backdrop-filter: blur(30px);
+            padding: 50px; border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            width: 100%; max-width: 420px; text-align: center;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .auth-logo { font-size: 38px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1.5px; color: var(--text-title); }
+        .auth-logo span { background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .auth-desc { color: var(--text-secondary); margin-bottom: 35px; font-size: 15px; }
 
+        .input-wrapper { position: relative; margin-bottom: 20px; }
+        .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 16px; transition: var(--transition); }
+        .input-wrapper input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light);
+            color: var(--text-title); padding: 18px 18px 18px 50px; border-radius: var(--radius-md);
+            font-size: 15px; transition: var(--transition);
+        }
+        .input-wrapper input:focus { border-color: var(--brand-primary); background: rgba(255,42,95,0.03); box-shadow: 0 0 20px rgba(255,42,95,0.1); }
+        .input-wrapper input:focus + i { color: var(--brand-primary); }
+
+        .btn-glow {
+            width: 100%; padding: 18px; border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+            color: #fff; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
+            box-shadow: 0 10px 20px rgba(255,42,95,0.3); transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,42,95,0.4); }
+        .btn-glow:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; display: inline-block; transition: var(--transition); }
+        .auth-toggle:hover { color: var(--text-title); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* ================= ГЛАВНЫЙ ИНТЕРФЕЙС (ДАШБОРД) ================= */
         #app-view { display: none; min-height: 100vh; }
         
-        .sidebar { width: 280px; background: var(--bg-panel); border-right: 1px solid var(--border); position: fixed; height: 100vh; padding: 32px 0; display: flex; flex-direction: column; z-index: 100; }
-        .sidebar-logo { padding: 0 32px 40px; font-size: 28px; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
-        .sidebar-logo span { color: var(--primary); }
-        .nav-menu { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
-        .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 24px; color: var(--text-muted); font-weight: 600; border-radius: 12px; transition: var(--transition); }
-        .nav-item i { font-size: 18px; width: 20px; text-align: center; }
-        .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background: linear-gradient(90deg, rgba(233, 30, 99, 0.15) 0%, transparent 100%); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 4px 12px 12px 4px; }
+        /* БОКОВАЯ ПАНЕЛЬ */
+        .sidebar {
+            width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
+            background: var(--bg-surface); border-right: 1px solid var(--border-light);
+            padding: 40px 20px; display: flex; flex-direction: column; z-index: 100;
+        }
+        .sidebar-brand { font-size: 28px; font-weight: 800; color: var(--text-title); padding: 0 15px 40px; display: flex; align-items: center; gap: 12px; letter-spacing: -1px; }
+        .sidebar-brand span { color: var(--brand-primary); }
         
-        .main-content { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
-        .page-title { font-size: 28px; font-weight: 800; }
-        .user-widget { display: flex; align-items: center; gap: 16px; background: var(--bg-panel); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .user-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #FF7043); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; }
-        .logout-btn { color: var(--text-muted); transition: var(--transition); margin-left: 8px; padding: 4px; }
-        .logout-btn:hover { color: #EF4444; }
+        .nav-link {
+            display: flex; align-items: center; gap: 15px; padding: 16px 20px;
+            color: var(--text-secondary); font-weight: 600; font-size: 15px;
+            border-radius: var(--radius-md); transition: var(--transition); margin-bottom: 8px;
+        }
+        .nav-link i { font-size: 18px; width: 20px; text-align: center; }
+        .nav-link:hover { background: var(--bg-glass-hover); color: var(--text-title); }
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%);
+            color: var(--brand-primary); position: relative;
+        }
+        .nav-link.active::before { content: ''; position: absolute; left: 0; top: 15%; height: 70%; width: 4px; background: var(--brand-primary); border-radius: 0 4px 4px 0; }
 
-        .page-section { display: none; animation: fadeIn 0.4s ease; }
-        .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* ОСНОВНОЙ КОНТЕНТ */
+        .main-wrapper { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
+        .header-title { font-size: 32px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; }
+        
+        .user-menu { display: flex; align-items: center; gap: 20px; background: var(--bg-surface); padding: 10px 24px 10px 10px; border-radius: 50px; border: 1px solid var(--border-light); }
+        .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 16px; box-shadow: 0 4px 15px rgba(255,42,95,0.3); }
+        .user-info { display: flex; flex-direction: column; }
+        .user-email { font-size: 14px; font-weight: 700; color: var(--text-title); }
+        .user-role { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .btn-logout { margin-left: 10px; color: var(--text-secondary); font-size: 18px; transition: var(--transition); }
+        .btn-logout:hover { color: var(--danger); transform: scale(1.1); }
 
-        .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 20px; padding: 32px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-        .card-header { font-size: 20px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-        .card-header i { color: var(--primary); }
-        
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-        .form-group { display: flex; flex-direction: column; gap: 10px; }
-        .form-group label { font-size: 14px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input { background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); padding: 16px; border-radius: var(--radius); transition: var(--transition); font-size: 15px; }
-        .form-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1); }
-        select.form-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; cursor: pointer; }
-        
-        .platforms-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .platforms-toolbar button { color: var(--primary); font-size: 14px; font-weight: 600; transition: 0.2s; }
-        .platforms-toolbar button:hover { color: var(--primary-hover); text-decoration: underline; }
-        
-        .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-        .platform-label { display: flex; align-items: center; gap: 12px; background: var(--bg-input); padding: 16px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; transition: var(--transition); user-select: none; font-weight: 600; }
-        .platform-label:hover { border-color: var(--text-muted); background: rgba(255,255,255,0.02); }
-        .platform-label input { display: none; }
-        
-        .custom-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; transition: var(--transition); background: var(--bg-dark); }
-        .custom-checkbox i { color: white; font-size: 12px; opacity: 0; transform: scale(0); transition: var(--transition); }
-        
-        .platform-label input:checked + .custom-checkbox { background: var(--primary); border-color: var(--primary); }
-        .platform-label input:checked + .custom-checkbox i { opacity: 1; transform: scale(1); }
+        /* УПРАВЛЕНИЕ ВИДИМОСТЬЮ СЕКЦИЙ */
+        .section { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .section.active { display: block; }
 
-        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-        .release-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 20px; padding: 24px; transition: var(--transition); display: flex; flex-direction: column; gap: 16px; position: relative; overflow: hidden; }
-        .release-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--border); transition: 0.3s; }
-        .release-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-        .release-card:hover::before { background: var(--primary); }
-        
-        .status-badge { align-self: flex-start; padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
-        .status-approved { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
-        
-        .release-info h3 { font-size: 22px; margin-bottom: 6px; font-weight: 800; }
-        .release-info p { color: var(--text-muted); font-size: 15px; display: flex; align-items: center; gap: 8px; }
-        .release-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        /* ================= КОМПОНЕНТЫ ================= */
+        /* Карточки-контейнеры */
+        .glass-card {
+            background: var(--bg-surface); border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg); padding: 35px; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;
+        }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
+        .card-heading { font-size: 20px; font-weight: 700; color: var(--text-title); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .card-heading i { color: var(--brand-primary); background: rgba(255,42,95,0.1); padding: 10px; border-radius: 10px; }
 
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: var(--text-muted); background: var(--bg-panel); border-radius: 20px; border: 1px dashed var(--border); }
-        .empty-state i { font-size: 56px; margin-bottom: 20px; background: -webkit-linear-gradient(var(--primary), #FF7043); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .empty-state h3 { font-size: 24px; color: var(--text-main); margin-bottom: 8px; }
+        /* Сетки форм */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        .input-box { display: flex; flex-direction: column; gap: 10px; }
+        .input-box label { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .styled-input {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border-light); color: var(--text-title);
+            padding: 16px; border-radius: var(--radius-sm); font-size: 15px; transition: var(--transition);
+        }
+        .styled-input:focus { border-color: var(--brand-primary); background: rgba(255,42,95,0.02); box-shadow: inset 0 0 0 1px var(--brand-primary); }
+        
+        select.styled-input {
+            appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
+        }
+        select.styled-input option { background: var(--bg-surface); color: var(--text-title); }
 
-        .loader { border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; width: 28px; height: 28px; animation: spin 1s linear infinite; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* ПЛОЩАДКИ - КАСТОМНЫЕ ЧЕКБОКСЫ */
+        .dsp-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
+        .dsp-toolbar button { color: var(--brand-primary); font-weight: 700; font-size: 14px; padding: 5px 10px; transition: 0.2s; }
+        .dsp-toolbar button:hover { color: #fff; text-shadow: 0 0 10px var(--brand-primary); }
+        
+        .dsp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+        .dsp-label {
+            display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2);
+            padding: 16px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-light);
+            cursor: pointer; transition: var(--transition); user-select: none; font-weight: 600; color: var(--text-primary);
+        }
+        .dsp-label:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+        .dsp-label input { display: none; }
+        
+        .checkbox-box {
+            width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text-secondary);
+            display: flex; align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .checkbox-box i { color: #fff; font-size: 12px; opacity: 0; transform: scale(0.5); transition: var(--transition); }
+        
+        .dsp-label input:checked + .checkbox-box { background: var(--brand-primary); border-color: var(--brand-primary); box-shadow: 0 0 15px rgba(255,42,95,0.4); }
+        .dsp-label input:checked + .checkbox-box i { opacity: 1; transform: scale(1); }
+        .dsp-label:has(input:checked) { border-color: var(--brand-primary); background: rgba(255,42,95,0.05); }
+
+        /* КАРТОЧКИ РЕЛИЗОВ В ДАШБОРДЕ */
+        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .track-card {
+            background: var(--bg-surface); border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg); padding: 30px; transition: var(--transition);
+            display: flex; flex-direction: column; gap: 20px; position: relative;
+        }
+        .track-card:hover { transform: translateY(-8px); border-color: var(--brand-primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,42,95,0.1); }
+        
+        .track-status {
+            align-self: flex-start; padding: 6px 16px; border-radius: 50px; font-size: 12px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        
+        .track-title { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; line-height: 1.2; }
+        .track-artist { color: var(--text-primary); font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .track-meta { color: var(--text-secondary); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        
+        .track-footer { margin-top: auto; padding-top: 20px; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+
+        .empty-dashboard {
+            grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 100px 20px; text-align: center; background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-lg); border: 1px dashed var(--border-light);
+        }
+        .empty-dashboard i { font-size: 64px; margin-bottom: 25px; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .empty-dashboard h3 { font-size: 28px; color: var(--text-title); margin-bottom: 10px; font-weight: 800; }
+
+        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+        .btn-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
     </style>
 </head>
 <body>
 
+    <!-- Уведомления -->
     <div id="toast-container"></div>
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <!-- ================= ЭКРАН 1: АВТОРИЗАЦИЯ ================= -->
     <div id="auth-view">
         <div class="auth-card">
-            <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685 <span>music</span></div>
-            <p id="auth-subtitle">Система дистрибуции лейбла</p>
+            <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
+            <p class="auth-desc" id="auth-subtitle">Экосистема для независимых артистов</p>
             
-            <div class="input-group">
+            <div class="input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="auth-email" placeholder="E-mail адрес" required>
+                <input type="email" id="auth-email" placeholder="E-mail адрес" autocomplete="email">
             </div>
-            <div class="input-group">
+            <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
-                <input type="password" id="auth-password" placeholder="Пароль (минимум 6 символов)" required>
+                <input type="password" id="auth-password" placeholder="Пароль (от 6 символов)" autocomplete="current-password">
             </div>
             
-            <button class="btn-main" id="auth-btn">Войти в систему</button>
-            <button class="auth-switch" id="auth-switch-mode">Создать аккаунт артиста</button>
+            <button class="btn-glow" id="auth-btn">
+                <span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+            <button class="auth-toggle" id="auth-toggle-btn">Создать новый аккаунт</button>
         </div>
     </div>
 
-    <!-- ДАШБОРД -->
+
+    <!-- ================= ЭКРАН 2: ПРИЛОЖЕНИЕ (ДАШБОРД) ================= -->
     <div id="app-view">
+        
+        <!-- ЛЕВОЕ МЕНЮ -->
         <aside class="sidebar">
-            <div class="sidebar-logo"><i class="fa-solid fa-compact-disc"></i> 685 <span>music</span></div>
-            <nav class="nav-menu">
-                <button class="nav-item active" data-target="dashboard">
-                    <i class="fa-solid fa-layer-group"></i> Мои релизы
+            <div class="sidebar-brand"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
+            <nav>
+                <button class="nav-link active" data-target="dashboard">
+                    <i class="fa-solid fa-layer-group"></i> Каталог релизов
                 </button>
-                <button class="nav-item" data-target="new-release">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Загрузить трек
+                <button class="nav-link" data-target="new-release">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Дистрибуция
                 </button>
-                <button class="nav-item" data-target="settings">
-                    <i class="fa-solid fa-gear"></i> Настройки
+                <button class="nav-link" data-target="settings">
+                    <i class="fa-solid fa-user-shield"></i> Настройки
                 </button>
             </nav>
         </aside>
 
-        <main class="main-content">
-            <header class="topbar">
-                <h1 class="page-title" id="current-page-title">Мои релизы</h1>
-                <div class="user-widget">
-                    <div class="user-avatar" id="user-initial">A</div>
-                    <span id="user-display-email" style="font-weight: 600; font-size: 14px;"></span>
-                    <button class="logout-btn" id="logout-btn" title="Выйти"><i class="fa-solid fa-power-off"></i></button>
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <main class="main-wrapper">
+            
+            <!-- ШАПКА -->
+            <header class="header">
+                <h1 class="header-title" id="page-title">Каталог релизов</h1>
+                <div class="user-menu">
+                    <div class="user-avatar" id="user-avatar">A</div>
+                    <div class="user-info">
+                        <span class="user-email" id="display-email">artist@mail.com</span>
+                        <span class="user-role">Verified Artist</span>
+                    </div>
+                    <button class="btn-logout" id="logout-btn" title="Выйти из аккаунта">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
                 </div>
             </header>
 
-            <!-- Раздел: Мои Релизы -->
-            <section class="page-section active" id="dashboard">
-                <div class="releases-grid" id="releases-container">
-                    <div style="grid-column: 1/-1; padding: 50px 0;"><div class="loader"></div></div>
+            <!-- СЕКЦИЯ 1: МОИ РЕЛИЗЫ -->
+            <section class="section active" id="dashboard">
+                <div class="releases-grid" id="data-container">
+                    <!-- Треки генерируются через JS -->
+                    <div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>
                 </div>
             </section>
 
-            <!-- Раздел: Новый релиз -->
-            <section class="page-section" id="new-release">
-                <div class="card">
-                    <div class="card-header"><i class="fa-solid fa-circle-info"></i> Метаданные релиза</div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Название трека/альбома *</label>
-                            <input type="text" id="r-title" class="form-input" placeholder="Например: В темноте">
+            <!-- СЕКЦИЯ 2: НОВЫЙ РЕЛИЗ -->
+            <section class="section" id="new-release">
+                
+                <div class="glass-card">
+                    <div class="card-heading"><i class="fa-solid fa-circle-info"></i> Основные метаданные</div>
+                    <div class="grid-2">
+                        <div class="input-box">
+                            <label>Название релиза *</label>
+                            <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
                         </div>
-                        <div class="form-group">
-                            <label>Исполнитель (Main Artist) *</label>
-                            <input type="text" id="r-artist" class="form-input" placeholder="Псевдоним артиста">
+                        <div class="input-box">
+                            <label>Основной исполнитель *</label>
+                            <input type="text" id="r-artist" class="styled-input" placeholder="Ваш псевдоним">
                         </div>
-                        <div class="form-group">
-                            <label>Основной Жанр *</label>
-                            <select id="r-genre" class="form-input">
+                        <div class="input-box">
+                            <label>Основной жанр *</label>
+                            <select id="r-genre" class="styled-input">
                                 <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
                                 <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
                                 <option value="Pop">Pop</option>
@@ -212,9 +361,9 @@
                                 <option value="Indie">Indie</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Тип релиза</label>
-                            <select id="r-type" class="form-input">
+                        <div class="input-box">
+                            <label>Тип формата *</label>
+                            <select id="r-type" class="styled-input">
                                 <option value="Сингл">Сингл (1-3 трека)</option>
                                 <option value="EP">EP (4-6 треков)</option>
                                 <option value="Альбом">Альбом (от 7 треков)</option>
@@ -223,82 +372,90 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header"><i class="fa-solid fa-folder-open"></i> Файлы (Cloud Links)</div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Ссылка на обложку (От 3000x3000px, RGB) *</label>
-                            <input type="url" id="r-cover" class="form-input" placeholder="Google Drive, Яндекс.Диск...">
+                <div class="glass-card">
+                    <div class="card-heading"><i class="fa-solid fa-folder-open"></i> Исходные материалы (Ссылки)</div>
+                    <div class="grid-2">
+                        <div class="input-box">
+                            <label>Обложка (От 3000x3000px, RGB) *</label>
+                            <input type="url" id="r-cover" class="styled-input" placeholder="Ссылка на Google Drive, Яндекс.Диск">
                         </div>
-                        <div class="form-group">
-                            <label>Ссылка на аудио (WAV, 16/24 bit, 44.1 kHz) *</label>
-                            <input type="url" id="r-audio" class="form-input" placeholder="Открытая ссылка на скачивание">
+                        <div class="input-box">
+                            <label>WAV Мастер-файл (16/24 bit) *</label>
+                            <input type="url" id="r-audio" class="styled-input" placeholder="Открытая ссылка на скачивание трека">
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header"><i class="fa-solid fa-globe"></i> Площадки для дистрибуции</div>
-                    <div class="platforms-toolbar">
-                        <span style="color: var(--text-muted); font-size: 14px;">Выберите магазины для отгрузки:</span>
+                <div class="glass-card">
+                    <div class="card-heading"><i class="fa-solid fa-globe"></i> Цифровые площадки (DSP)</div>
+                    <div class="dsp-toolbar">
+                        <span style="color: var(--text-secondary); font-size: 14px;">Отметьте платформы для отгрузки:</span>
                         <div>
-                            <button type="button" onclick="togglePlatforms(true)">Выбрать все</button> | 
-                            <button type="button" onclick="togglePlatforms(false)">Снять все</button>
+                            <button type="button" onclick="selectAll(true)"><i class="fa-solid fa-check-double"></i> Выбрать все</button> | 
+                            <button type="button" onclick="selectAll(false)"><i class="fa-solid fa-xmark"></i> Снять все</button>
                         </div>
                     </div>
                     
-                    <div class="platforms-grid" id="platforms-wrapper">
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Apple Music" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Apple Music</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Spotify" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Spotify</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="YouTube Music" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> YouTube Music</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Amazon Music" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Amazon Music</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="TikTok" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> TikTok / Resso</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Instagram / Facebook" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Meta (Inst/FB)</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="VK Музыка" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> VK Музыка</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Яндекс Музыка" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Яндекс Музыка</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Звук" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Звук</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="МТС Музыка" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> МТС Музыка</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Deezer" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Deezer</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Tidal" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Tidal</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="SoundCloud" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> SoundCloud</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Beatport" checked><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Beatport</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Shazam"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Shazam</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Tencent"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Tencent (China)</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="NetEase"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> NetEase (China)</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Anghami"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Anghami (MENA)</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Boomplay"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Boomplay (Africa)</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Audiomack"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Audiomack</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Pandora"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Pandora</label>
-                        <label class="platform-label"><input type="checkbox" class="platform-cb" value="Qobuz"><div class="custom-checkbox"><i class="fa-solid fa-check"></i></div> Qobuz</label>
+                    <div class="dsp-grid">
+                        <!-- Основные -->
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Apple Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Apple Music</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Spotify" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Spotify</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="YouTube Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> YouTube Music</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="TikTok" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> TikTok / Resso</label>
+                        <!-- СНГ -->
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="VK Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> VK Музыка</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Яндекс Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Яндекс Музыка</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Звук" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Звук</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="МТС Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> МТС Музыка</label>
+                        <!-- Мировые -->
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Amazon Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Amazon Music</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Instagram / FB" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Meta (Inst/FB)</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Deezer" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Deezer</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tidal" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tidal</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="SoundCloud" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> SoundCloud</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Shazam"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Shazam</label>
+                        <!-- Региональные -->
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Beatport"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Beatport</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tencent"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tencent (China)</label>
+                        <label class="platform-label"><input type="checkbox" class="dsp-cb" value="NetEase"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> NetEase (China)</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Anghami"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Anghami (MENA)</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Boomplay"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Boomplay (Africa)</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Audiomack"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Audiomack</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Pandora"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Pandora</label>
+                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Qobuz"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Qobuz</label>
                     </div>
                 </div>
 
-                <div style="text-align: right; margin-bottom: 40px;">
-                    <button class="btn-main" id="submit-release-btn" style="width: auto; padding: 18px 48px; border-radius: 50px;">
-                        Отправить релиз <i class="fa-solid fa-rocket" style="margin-left: 10px;"></i>
+                <div style="text-align: right; margin-bottom: 50px;">
+                    <button class="btn-glow" id="submit-btn" style="width: auto; padding: 20px 50px; display: inline-flex; border-radius: 50px;">
+                        <span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>
                     </button>
                 </div>
             </section>
 
-            <!-- Раздел: Настройки -->
-            <section class="page-section" id="settings">
-                <div class="card">
-                    <div class="card-header"><i class="fa-solid fa-shield-halved"></i> Безопасность и аккаунт</div>
-                    <div class="form-group" style="max-width: 400px;">
-                        <label>Ваш E-mail (Уникальный ID)</label>
-                        <input type="text" class="form-input" id="setting-email" disabled style="opacity: 0.7;">
+            <!-- СЕКЦИЯ 3: НАСТРОЙКИ -->
+            <section class="section" id="settings">
+                <div class="glass-card" style="max-width: 600px;">
+                    <div class="card-heading"><i class="fa-solid fa-shield-halved"></i> Безопасность аккаунта</div>
+                    <div class="input-box">
+                        <label>E-mail (Уникальный идентификатор)</label>
+                        <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
                     </div>
+                    <p style="color: var(--text-secondary); margin-top: 25px; font-size: 14px;">
+                        Ваш аккаунт защищен технологиями Firebase Auth. Все загруженные вами релизы привязаны к этому идентификатору.
+                    </p>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- FIREBASE СИСТЕМА -->
+    <!-- ================= ЛОГИКА FIREBASE И ПРИЛОЖЕНИЯ ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+        // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
             authDomain: "music-label-e2581.firebaseapp.com",
@@ -306,193 +463,183 @@
             projectId: "music-label-e2581",
             storageBucket: "music-label-e2581.firebasestorage.app",
             messagingSenderId: "523951358095",
-            appId: "1:523951358095:web:b09a4a0d9a910c52e070fa",
-            measurementId: "G-GKPR5HKE62"
+            appId: "1:523951358095:web:b09a4a0d9a910c52e070fa"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.togglePlatforms = (state) => {
-            document.querySelectorAll('.platform-cb').forEach(cb => cb.checked = state);
-        };
+        // УТИЛИТЫ: Тосты и Чекбоксы
+        window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
 
-        function showToast(message, type = 'success') {
+        function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-triangle-exclamation';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             container.appendChild(toast);
             
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 4000);
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        function translateAuthError(code) {
-            const errors = {
-                'auth/invalid-email': 'Неверный формат почты.',
-                'auth/user-not-found': 'Пользователь не найден.',
-                'auth/wrong-password': 'Неверный пароль.',
-                'auth/email-already-in-use': 'Почта уже занята.',
-                'auth/weak-password': 'Пароль минимум 6 символов.',
-                'auth/unauthorized-domain': 'Домен не авторизован в Firebase.'
-            };
-            return errors[code] || 'Системная ошибка. Проверьте данные.';
-        }
-
-        let isLogin = true;
+        // АВТОРИЗАЦИЯ
+        let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
-        const switchBtn = document.getElementById('auth-switch-mode');
+        const toggleBtn = document.getElementById('auth-toggle-btn');
         
-        switchBtn.addEventListener('click', () => {
-            isLogin = !isLogin;
-            document.getElementById('auth-subtitle').innerText = isLogin ? "Система дистрибуции лейбла" : "Создание кабинета артиста";
-            authBtn.innerText = isLogin ? "Войти в систему" : "Зарегистрироваться";
-            switchBtn.innerText = isLogin ? "Создать аккаунт артиста" : "Уже есть аккаунт? Войти";
+        toggleBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-subtitle').innerText = isLoginMode ? "Экосистема для независимых артистов" : "Регистрация нового артиста";
+            authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
+            toggleBtn.innerText = isLoginMode ? "Создать новый аккаунт" : "Уже есть аккаунт? Войти";
         });
 
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
-            if(!email || !pass) return showToast("Заполните почту и пароль", "error");
+            if(!email || !pass) return notify("Заполните почту и пароль", "error");
             
-            authBtn.innerHTML = '<div class="loader" style="width:20px;height:20px;"></div>';
+            authBtn.innerHTML = '<div class="btn-spinner"></div>';
             authBtn.disabled = true;
 
             try {
-                if (isLogin) await signInWithEmailAndPassword(auth, email, pass);
+                if (isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
                 else await createUserWithEmailAndPassword(auth, email, pass);
-            } catch (error) {
-                showToast(translateAuthError(error.code), "error");
-                authBtn.innerText = isLogin ? "Войти в систему" : "Зарегистрироваться";
+            } catch (err) {
+                const msgs = {
+                    'auth/invalid-email': 'Некорректная почта.',
+                    'auth/user-not-found': 'Аккаунт не найден.',
+                    'auth/wrong-password': 'Неверный пароль.',
+                    'auth/email-already-in-use': 'Почта уже занята.',
+                    'auth/weak-password': 'Пароль от 6 символов.'
+                };
+                notify(msgs[err.code] || 'Ошибка системы.', "error");
+                authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
                 authBtn.disabled = false;
             }
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
+        // СЛУШАТЕЛЬ СТАТУСА
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
-                document.getElementById('user-display-email').innerText = user.email;
+                document.getElementById('display-email').innerText = user.email;
                 document.getElementById('setting-email').value = user.email;
-                document.getElementById('user-initial').innerText = user.email.charAt(0).toUpperCase();
-                loadMyReleases(user.uid);
+                document.getElementById('user-avatar').innerText = user.email.charAt(0).toUpperCase();
+                fetchReleases(user.uid);
             } else {
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
-                authBtn.innerText = isLogin ? "Войти в систему" : "Зарегистрироваться";
+                authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span>' : '<span>Создать аккаунт</span>';
                 authBtn.disabled = false;
             }
         });
 
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+        // НАВИГАЦИЯ В МЕНЮ
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 
-                item.classList.add('active');
-                const targetId = item.getAttribute('data-target');
-                document.getElementById(targetId).classList.add('active');
+                link.classList.add('active');
+                const target = link.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
                 
-                const titles = { 'dashboard': 'Мои релизы', 'new-release': 'Новый релиз', 'settings': 'Настройки' };
-                document.getElementById('current-page-title').innerText = titles[targetId];
+                const titles = { 'dashboard': 'Каталог релизов', 'new-release': 'Новая дистрибуция', 'settings': 'Настройки' };
+                document.getElementById('page-title').innerText = titles[target];
                 
-                if(targetId === 'dashboard' && auth.currentUser) loadMyReleases(auth.currentUser.uid);
+                if(target === 'dashboard' && auth.currentUser) fetchReleases(auth.currentUser.uid);
             });
         });
 
-        document.getElementById('submit-release-btn').addEventListener('click', async () => {
+        // ОТПРАВКА ТРЕКА
+        document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
             const genre = document.getElementById('r-genre').value;
             const type = document.getElementById('r-type').value;
             const cover = document.getElementById('r-cover').value.trim();
             const audio = document.getElementById('r-audio').value.trim();
-            const platforms = Array.from(document.querySelectorAll('.platform-cb:checked')).map(cb => cb.value);
+            const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
-            if (!title || !artist || !cover || !audio) {
-                return showToast("Заполните все обязательные поля со ссылками", "error");
-            }
-            if(platforms.length === 0) {
-                return showToast("Выберите хотя бы одну площадку", "error");
-            }
+            if (!title || !artist || !cover || !audio) return notify("Заполните все данные и ссылки!", "error");
+            if (platforms.length === 0) return notify("Выберите хотя бы 1 площадку", "error");
 
-            const btn = document.getElementById('submit-release-btn');
-            btn.innerHTML = '<div class="loader" style="width:20px;height:20px;"></div>';
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = '<div class="btn-spinner"></div>';
             btn.disabled = true;
 
             try {
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid,
                     userEmail: auth.currentUser.email,
-                    artist, title, genre, type, platforms, 
-                    coverUrl: cover, audioUrl: audio,
+                    artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
                     status: "Ожидает модерации",
                     createdAt: serverTimestamp()
                 });
 
-                showToast("Релиз успешно отправлен в 685 music!");
+                notify("Трек успешно отправлен на модерацию!");
                 ['r-title', 'r-artist', 'r-cover', 'r-audio'].forEach(id => document.getElementById(id).value = '');
                 document.querySelector('[data-target="dashboard"]').click();
-            } catch (error) {
-                showToast("Ошибка базы данных", "error");
+            } catch (err) {
+                notify("Ошибка подключения к базе.", "error");
             } finally {
-                btn.innerHTML = 'Отправить релиз <i class="fa-solid fa-rocket" style="margin-left: 10px;"></i>';
+                btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
                 btn.disabled = false;
             }
         });
 
-        async function loadMyReleases(uid) {
-            const container = document.getElementById('releases-container');
-            container.innerHTML = '<div style="grid-column: 1/-1; padding: 50px 0;"><div class="loader"></div></div>';
+        // ЗАГРУЗКА И ОТОБРАЖЕНИЕ КАТАЛОГА
+        async function fetchReleases(uid) {
+            const wrap = document.getElementById('data-container');
+            wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
             
             try {
                 const q = query(collection(db, "track_submissions"), where("userId", "==", uid));
-                const querySnapshot = await getDocs(q);
-                container.innerHTML = ''; 
+                const snap = await getDocs(q);
+                wrap.innerHTML = ''; 
 
-                if (querySnapshot.empty) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fa-solid fa-record-vinyl"></i>
-                            <h3>Ваш каталог пуст</h3>
-                            <p>Загрузите свой первый трек через меню "Загрузить трек".</p>
+                if (snap.empty) {
+                    wrap.innerHTML = `
+                        <div class="empty-dashboard">
+                            <i class="fa-solid fa-compact-disc"></i>
+                            <h3>Каталог пуст</h3>
+                            <p style="color: var(--text-secondary);">У вас пока нет релизов. Перейдите в раздел "Дистрибуция", чтобы загрузить трек.</p>
                         </div>`;
                     return;
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const isPending = data.status === "Ожидает модерации";
-                    const statusClass = isPending ? "status-pending" : "status-approved";
-                    const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Новый';
-                    const platformsCount = data.platforms ? data.platforms.length : 0;
+                snap.forEach((doc) => {
+                    const d = doc.data();
+                    const isPending = d.status === "Ожидает модерации";
+                    const sClass = isPending ? "status-pending" : "status-approved";
+                    const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
+                    const count = d.platforms ? d.platforms.length : 0;
 
-                    container.innerHTML += `
-                        <div class="release-card">
-                            <div class="status-badge ${statusClass}">
-                                <i class="fa-solid ${isPending ? 'fa-clock' : 'fa-check'}"></i> ${data.status}
+                    wrap.innerHTML += `
+                        <div class="track-card">
+                            <div class="track-status ${sClass}">
+                                <i class="fa-solid ${isPending ? 'fa-clock' : 'fa-check-double'}"></i> ${d.status}
                             </div>
-                            <div class="release-info">
-                                <h3>${data.title}</h3>
-                                <p><i class="fa-solid fa-user-astronaut" style="width:20px;"></i> ${data.artist}</p>
-                                <p><i class="fa-solid fa-compact-disc" style="width:20px;"></i> ${data.type} • ${data.genre}</p>
+                            <div>
+                                <h3 class="track-title">${d.title}</h3>
+                                <div class="track-artist"><i class="fa-solid fa-user"></i> ${d.artist}</div>
+                                <div class="track-meta"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</div>
                             </div>
-                            <div class="release-footer">
+                            <div class="track-footer">
                                 <span><i class="fa-solid fa-calendar-day"></i> ${date}</span>
-                                <span><i class="fa-solid fa-globe"></i> Площадок: ${platformsCount}</span>
+                                <span><i class="fa-solid fa-globe"></i> Площадок: ${count}</span>
                             </div>
                         </div>`;
                 });
-            } catch (error) {
-                container.innerHTML = '<div class="empty-state">Ошибка загрузки. Проверьте права Firestore.</div>';
+            } catch (e) {
+                wrap.innerHTML = '<div class="empty-dashboard"><h3>Ошибка загрузки</h3><p>Проверьте права Firestore Database.</p></div>';
             }
         }
     </script>
