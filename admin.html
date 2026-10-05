@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>685 Music | Label Management & Moderation</title>
+    <title>685 Music | Moderation Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -11,33 +11,26 @@
         :root {
             --brand-primary: #7C3AED;
             --brand-secondary: #4F46E5;
-            --brand-glow: rgba(124, 58, 237, 0.3);
-            
             --bg-base: #030712;
             --bg-surface: #0B0F19;
             --bg-input: #111827;
-            
             --text-title: #F9FAFB;
             --text-primary: #E5E7EB;
             --text-secondary: #9CA3AF;
-            
             --border-light: rgba(255, 255, 255, 0.08);
             --success: #10B981;
             --warning: #F59E0B;
             --danger: #EF4444;
-            
             --radius-md: 16px;
             --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-base); color: var(--text-primary); min-height: 100vh; }
-        
         button { cursor: pointer; border: none; background: none; color: inherit; outline: none; }
-        input, select { font-family: inherit; outline: none; }
+        input, select, textarea { font-family: inherit; outline: none; }
 
-        /* УВЕДОМЛЕНИЯ */
         #toast-container { position: fixed; top: 25px; right: 25px; z-index: 10000; display: flex; flex-direction: column; gap: 12px; }
         .toast {
             background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(15px);
@@ -50,160 +43,77 @@
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
-        /* ЭКРАН ВХОДА */
         #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111827 0%, #030712 100%); padding: 20px; }
-        .auth-card { background: var(--bg-surface); padding: 45px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        .auth-logo { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: var(--text-title); letter-spacing: -0.5px; }
-        .auth-logo span { color: var(--brand-primary); }
-        .auth-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: white; padding: 16px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 15px; transition: var(--transition); }
-        .auth-input:focus { border-color: var(--brand-primary); box-shadow: 0 0 15px var(--brand-glow); }
-        .btn-main { width: 100%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: white; padding: 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; transition: var(--transition); box-shadow: 0 8px 20px var(--brand-glow); }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 12px 25px var(--brand-glow); }
+        .auth-card { background: var(--bg-surface); padding: 45px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; max-width: 400px; text-align: center; }
+        .auth-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: white; padding: 16px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 15px; }
+        .auth-input:focus { border-color: var(--brand-primary); }
+        .btn-main { width: 100%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: white; padding: 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; }
 
-        /* ИНТЕРФЕЙС АДМИНКИ */
         #app-view { display: none; padding: 40px 60px; max-width: 1500px; margin: 0 auto; }
-        
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
-        .header-title { font-size: 28px; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 15px; }
-        .badge-root { background: rgba(124,58,237,0.15); color: #A78BFA; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; border: 1px solid rgba(124,58,237,0.3); }
+        .header-title { font-size: 28px; font-weight: 800; color: var(--text-title); }
 
-        /* СТАТИСТИКА */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 35px; }
         .stat-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px; display: flex; align-items: center; gap: 20px; }
         .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .stat-icon.total { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
         .stat-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
         .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-info h4 { font-size: 14px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
-        .stat-info span { font-size: 28px; font-weight: 800; color: var(--text-title); }
 
-        /* ПАНЕЛЬ УПРАВЛЕНИЯ И ПОИСК */
-        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
-        .search-box { position: relative; flex: 1; max-width: 400px; }
-        .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-        .search-box input { width: 100%; background: var(--bg-surface); border: 1px solid var(--border-light); color: white; padding: 14px 14px 14px 45px; border-radius: var(--radius-sm); font-size: 14px; }
-        .search-box input:focus { border-color: var(--brand-primary); outline: none; }
-        
-        .filter-tabs { display: flex; gap: 10px; }
-        .filter-btn { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; color: var(--text-secondary); transition: var(--transition); }
-        .filter-btn.active, .filter-btn:hover { background: var(--brand-primary); color: white; border-color: var(--brand-primary); }
-
-        /* КАРТОЧКА РЕЛИЗА В АДМИНКЕ */
         .admin-releases-grid { display: grid; gap: 20px; }
-        .admin-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 30px; display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.2fr; gap: 25px; align-items: start; transition: var(--transition); position: relative; }
-        .admin-card:hover { border-color: rgba(124, 58, 237, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .admin-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 30px; display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.2fr; gap: 25px; align-items: start; }
 
         .rel-details h3 { font-size: 22px; color: var(--text-title); margin-bottom: 8px; font-weight: 800; }
         .rel-details p { color: var(--text-primary); font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
         .artist-badge { display: inline-block; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; font-size: 12px; color: var(--text-secondary); margin-top: 8px; font-weight: 600; }
-        .dsp-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; }
-        .dsp-tag { background: rgba(124,58,237,0.1); color: #A78BFA; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(124,58,237,0.2); }
-
-        /* ССЫЛКИ НА ФАЙЛЫ */
+        
         .rel-files { display: flex; flex-direction: column; gap: 10px; }
-        .file-link { display: flex; align-items: center; gap: 10px; background: var(--bg-input); padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 13px; font-weight: 600; color: var(--text-primary); transition: 0.2s; }
-        .file-link:hover { border-color: var(--brand-primary); background: rgba(124,58,237,0.05); text-decoration: none; }
+        .file-link { display: flex; align-items: center; gap: 10px; background: var(--bg-input); padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 13px; font-weight: 600; color: var(--text-primary); }
         .file-link.audio i { color: #3B82F6; }
         .file-link.cover i { color: #F59E0B; }
 
-        /* ВВОД UPC И ISRC КОДОВ (ГЛАВНАЯ ФУНКЦИЯ) */
         .rel-codes { display: flex; flex-direction: column; gap: 12px; background: var(--bg-input); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
-        .code-input-group label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
-        .code-input-group input { width: 100%; background: var(--bg-base); border: 1px solid var(--border-light); color: white; padding: 10px 12px; border-radius: 6px; font-size: 13px; font-family: monospace; }
-        .code-input-group input:focus { border-color: var(--brand-primary); outline: none; }
-
-        /* СТАТУС И КНОПКА СОХРАНЕНИЯ */
-        .rel-actions { display: flex; flex-direction: column; gap: 12px; }
-        .rel-actions select { width: 100%; background: var(--bg-input); color: white; border: 1px solid var(--border-light); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; cursor: pointer; }
-        .rel-actions select:focus { border-color: var(--brand-primary); outline: none; }
+        .code-input-group label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .code-input-group input, .code-input-group textarea { width: 100%; background: var(--bg-base); border: 1px solid var(--border-light); color: white; padding: 10px 12px; border-radius: 6px; font-size: 13px; font-family: monospace; }
         
-        .btn-save { background: var(--success); color: white; padding: 12px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; transition: 0.2s; text-align: center; }
-        .btn-save:hover { background: #059669; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .rel-actions { display: flex; flex-direction: column; gap: 12px; }
+        .rel-actions select { width: 100%; background: var(--bg-input); color: white; border: 1px solid var(--border-light); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; }
+        .btn-save { background: var(--success); color: white; padding: 12px; border-radius: var(--radius-sm); font-weight: 700; text-align: center; }
 
         .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        @media(max-width: 1200px) {
-            .admin-card { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
 
-    <!-- АВТОРИЗАЦИЯ АДМИНА -->
     <div id="auth-view">
         <div class="auth-card">
-            <div class="auth-logo"><i class="fa-solid fa-shield-halved"></i> 685 <span>ADMIN</span></div>
-            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Закрытый шлюз управления дистрибуцией</p>
-            
-            <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
+            <h2 style="color:white; margin-bottom:20px;">ADMIN PORTAL</h2>
+            <input type="email" id="auth-email" class="auth-input" placeholder="E-mail">
             <input type="password" id="auth-password" class="auth-input" placeholder="Пароль">
-            
-            <button class="btn-main" id="auth-btn">Войти в систему</button>
+            <button class="btn-main" id="auth-btn">Войти</button>
         </div>
     </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ -->
     <div id="app-view">
         <header class="header">
-            <div class="header-title">
-                <i class="fa-solid fa-server"></i> Модерация и Кодирование Релизов
-                <span class="badge-root">ROOT SECURE</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <span id="admin-display-email" style="font-weight: 600; font-size: 14px; color: var(--text-secondary);"></span>
-                <button id="logout-btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 10px 20px; border-radius: 8px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2);">Выйти</button>
-            </div>
+            <div class="header-title">Модерация релизов</div>
+            <button id="logout-btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 10px 20px; border-radius: 8px; font-weight: 700;">Выйти</button>
         </header>
 
-        <!-- БЛОК СТАТИСТИКИ -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div>
-                <div class="stat-info">
-                    <h4>Всего релизов</h4>
-                    <span id="stat-total">0</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div>
-                <div class="stat-info">
-                    <h4>На модерации</h4>
-                    <span id="stat-pending">0</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon approved"><i class="fa-solid fa-check-circle"></i></div>
-                <div class="stat-info">
-                    <h4>Одобрено</h4>
-                    <span id="stat-approved">0</span>
-                </div>
-            </div>
+            <div class="stat-card"><div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div><div><h4>Всего</h4><span id="stat-total">0</span></div></div>
+            <div class="stat-card"><div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div><div><h4>Ожидают</h4><span id="stat-pending">0</span></div></div>
+            <div class="stat-card"><div class="stat-icon approved"><i class="fa-solid fa-check-circle"></i></div><div><h4>Одобрено</h4><span id="stat-approved">0</span></div></div>
         </div>
 
-        <!-- ПАНЕЛЬ ПОИСКА И ФИЛЬТРОВ -->
-        <div class="toolbar">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Поиск по названию, артисту или почте...">
-            </div>
-            <div class="filter-tabs">
-                <button class="filter-btn active" data-filter="all">Все</button>
-                <button class="filter-btn" data-filter="Ожидает модерации">Ожидают</button>
-                <button class="filter-btn" data-filter="Одобрено">Одобренные</button>
-                <button class="filter-btn" data-filter="Отклонено">Отклоненные</button>
-            </div>
-        </div>
-
-        <!-- СПИСОК РЕЛИЗОВ -->
         <div class="admin-releases-grid" id="admin-container">
             <div class="spinner"></div>
         </div>
     </div>
 
-    <!-- СКРИПТЫ АДМИНКИ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -222,16 +132,13 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
-        let allSubmissions = []; // Хранилище всех релизов для фильтрации
 
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i> <span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 50);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
@@ -240,9 +147,7 @@
         document.getElementById('auth-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
-            if(!email || !pass) return notify("Введите данные", "error");
-            try { await signInWithEmailAndPassword(auth, email, pass); }
-            catch { notify("Неверные данные авторизации", "error"); }
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch { notify("Ошибка входа", "error"); }
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
@@ -251,7 +156,6 @@
             if (user && user.uid === ADMIN_UID) {
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
-                document.getElementById('admin-display-email').innerText = user.email;
                 loadReleases();
             } else {
                 signOut(auth);
@@ -264,148 +168,108 @@
             const container = document.getElementById('admin-container');
             container.innerHTML = '<div class="spinner"></div>';
             
-            try {
-                const q = query(collection(db, "track_submissions"), orderBy("createdAt", "desc"));
-                const snap = await getDocs(q);
-                allSubmissions = [];
-                
-                let pendingCount = 0;
-                let approvedCount = 0;
-
-                snap.forEach(doc => {
-                    allSubmissions.push({ id: doc.id, ...doc.data() });
-                });
-
-                document.getElementById('stat-total').innerText = allSubmissions.length;
-                allSubmissions.forEach(item => {
-                    if (item.status === 'Ожидает модерации') pendingCount++;
-                    if (item.status === 'Одобрено') approvedCount++;
-                });
-                document.getElementById('stat-pending').innerText = pendingCount;
-                document.getElementById('stat-approved').innerText = approvedCount;
-
-                renderList(allSubmissions);
-            } catch (e) {
-                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger);">Ошибка загрузки. Проверьте правила Firestore Rules.</div>';
-            }
-        }
-
-        function renderList(items) {
-            const container = document.getElementById('admin-container');
+            const q = query(collection(db, "track_submissions"), orderBy("createdAt", "desc"));
+            const snap = await getDocs(q);
             container.innerHTML = '';
+            
+            let total = 0, pending = 0, approved = 0;
 
-            if (items.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 50px; color: var(--text-secondary); background: var(--bg-surface); border-radius: var(--radius-md);">Релизов не найдено</div>';
-                return;
-            }
+            snap.forEach(documentSnapshot => {
+                const id = documentSnapshot.id;
+                const d = documentSnapshot.data();
+                total++;
+                if(d.status === 'Ожидает модерации') pending++;
+                if(d.status === 'Одобрено') approved++;
 
-            items.forEach(d => {
-                const date = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ru-RU') : 'Недавно';
                 const isApproved = d.status === 'Одобрено' ? 'selected' : '';
                 const isRejected = d.status === 'Отклонено' ? 'selected' : '';
                 const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
-
-                let dspHtml = '';
-                if(d.platforms) d.platforms.forEach(p => dspHtml += `<span class="dsp-tag">${p}</span>`);
+                
+                // Если статус отклонен, блокируем поля кодов и показываем причину
+                const isRejectedState = d.status === 'Отклонено';
 
                 container.innerHTML += `
-                    <div class="admin-card" id="card-${d.id}">
+                    <div class="admin-card" id="card-${id}">
                         <div class="rel-details">
                             <h3>${d.title}</h3>
-                            <p><i class="fa-solid fa-user-astronaut"></i> <b>Артист:</b> ${d.artist}</p>
+                            <p><i class="fa-solid fa-user"></i> ${d.artist}</p>
                             <p><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
-                            <p><i class="fa-solid fa-calendar-day"></i> ${date}</p>
                             <div class="artist-badge"><i class="fa-solid fa-envelope"></i> ${d.userEmail || 'Артист'}</div>
-                            <div class="dsp-tags">${dspHtml}</div>
                         </div>
 
                         <div class="rel-files">
-                            <a href="${d.audioUrl}" target="_blank" class="file-link audio">
-                                <i class="fa-solid fa-file-audio fa-lg"></i> Скачать WAV Мастер
-                            </a>
-                            <a href="${d.coverUrl}" target="_blank" class="file-link cover">
-                                <i class="fa-solid fa-image fa-lg"></i> Посмотреть обложку
-                            </a>
+                            <a href="${d.audioUrl}" target="_blank" class="file-link audio"><i class="fa-solid fa-file-audio"></i> WAV Мастер</a>
+                            <a href="${d.coverUrl}" target="_blank" class="file-link cover"><i class="fa-solid fa-image"></i> Обложка</a>
                         </div>
 
                         <div class="rel-codes">
                             <div class="code-input-group">
-                                <label>UPC Код релиза (Штрихкод)</label>
-                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" placeholder="Например: 012345678905">
+                                <label>UPC Код</label>
+                                <input type="text" id="upc-${id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Штрихкод релиза">
                             </div>
                             <div class="code-input-group">
-                                <label>ISRC Код трека</label>
-                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" placeholder="Например: RU-XXX-26-00001">
+                                <label>ISRC Код</label>
+                                <input type="text" id="isrc-${id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Код трека">
+                            </div>
+                            <div class="code-input-group">
+                                <label>Причина отклонения (если отказ)</label>
+                                <textarea id="reason-${id}" rows="2" placeholder="Укажите почему релиз отклонен...">${d.rejectReason || ''}</textarea>
                             </div>
                         </div>
 
                         <div class="rel-actions">
-                            <select id="status-${d.id}">
+                            <select id="status-${id}" onchange="handleStatusChange('${id}')">
                                 <option value="Ожидает модерации" ${isPending}>Ожидает модерации</option>
-                                <option value="Одобрено" ${isApproved}>Одобрено (В отгрузке)</option>
+                                <option value="Одобрено" ${isApproved}>Одобрено</option>
                                 <option value="Отклонено" ${isRejected}>Отклонено</option>
                             </select>
-                            <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
+                            <button class="btn-save" data-id="${id}">Сохранить</button>
                         </div>
                     </div>`;
             });
 
-            // Навешиваем обработчики сохранения
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-pending').innerText = pending;
+            document.getElementById('stat-approved').innerText = approved;
+
+            // Обработчики сохранения
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
-                    const newStatus = document.getElementById(`status-${id}`).value;
-                    const newUpc = document.getElementById(`upc-${id}`).value.trim();
-                    const newIsrc = document.getElementById(`isrc-${id}`).value.trim();
-                    
-                    const btnEl = e.target;
-                    btnEl.innerText = 'Сохранение...';
-                    btnEl.disabled = true;
+                    const status = document.getElementById(`status-${id}`).value;
+                    const upc = document.getElementById(`upc-${id}`).value.trim();
+                    const isrc = document.getElementById(`isrc-${id}`).value.trim();
+                    const rejectReason = document.getElementById(`reason-${id}`).value.trim();
+
+                    if(status === 'Отклонено' && !rejectReason) {
+                        return notify("Укажите причину отклонения релиза!", "error");
+                    }
 
                     try {
-                        const ref = doc(db, "track_submissions", id);
-                        await updateDoc(ref, { 
-                            status: newStatus,
-                            upc: newUpc,
-                            isrc: newIsrc
+                        await updateDoc(doc(db, "track_submissions", id), {
+                            status, upc: status === 'Отклонено' ? '' : upc, isrc: status === 'Отклонено' ? '' : isrc, rejectReason
                         });
-                        notify("Изменения успешно сохранены в базу!");
-                        document.getElementById(`card-${id}`).style.borderColor = 'var(--success)';
-                        setTimeout(() => { document.getElementById(`card-${id}`).style.borderColor = 'var(--border-light)'; }, 1500);
-                    } catch (err) {
-                        notify("Ошибка сохранения данных", "error");
-                    } finally {
-                        btnEl.innerText = 'Сохранить изменения';
-                        btnEl.disabled = false;
+                        notify("Успешно сохранено!");
+                    } catch {
+                        notify("Ошибка сохранения", "error");
                     }
                 });
             });
         }
 
-        // ПОИСК И ФИЛЬТРАЦИЯ
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = allSubmissions.filter(item => 
-                item.title.toLowerCase().includes(val) || 
-                item.artist.toLowerCase().includes(val) || 
-                (item.userEmail && item.userEmail.toLowerCase().includes(val))
-            );
-            renderList(filtered);
-        });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                const filter = e.target.getAttribute('data-filter');
-                
-                if (filter === 'all') {
-                    renderList(allSubmissions);
-                } else {
-                    renderList(allSubmissions.filter(i => i.status === filter));
-                }
-            });
-        });
+        // Динамическое отключение полей при выборе статуса "Отклонено"
+        window.handleStatusChange = (id) => {
+            const status = document.getElementById(`status-${id}`).value;
+            const upcInp = document.getElementById(`upc-${id}`);
+            const isrcInp = document.getElementById(`isrc-${id}`);
+            if (status === 'Отклонено') {
+                upcInp.disabled = true; upcInp.value = '';
+                isrcInp.disabled = true; isrcInp.value = '';
+            } else {
+                upcInp.disabled = false;
+                isrcInp.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
