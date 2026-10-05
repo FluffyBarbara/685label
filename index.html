@@ -229,8 +229,8 @@
         .price-cost span { font-size: 16px; color: var(--text-secondary); font-weight: 600; }
         
         .price-features { display: flex; flex-direction: column; gap: 14px; list-style: none; flex: 1; }
-        .price-features li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-primary); }
-        .price-features li i { color: var(--success); font-size: 16px; }
+        .price-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; color: var(--text-primary); line-height: 1.4; }
+        .price-features li i { color: var(--success); font-size: 16px; margin-top: 2px; }
         .price-features li.disabled { color: var(--text-secondary); opacity: 0.5; }
         .price-features li.disabled i { color: var(--text-secondary); }
 
@@ -462,14 +462,15 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ -->
+            <!-- СЕКЦИЯ: ТАРИФЫ (ОБНОВЛЕННЫЕ) -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
-                    <p style="color: var(--text-secondary);">Выберите подходящие условия для дистрибуции вашей музыки на мировые площадки.</p>
+                    <p style="color: var(--text-secondary);">Выберите подходящие условия поддержки и модерации для вашей музыки.</p>
                 </div>
 
                 <div class="pricing-grid">
+                    <!-- Тариф 1 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Стартовый</h3>
@@ -477,14 +478,19 @@
                         </div>
                         <div class="price-cost">200 ₽ <span>/ релиз</span></div>
                         <ul class="price-features">
-                            <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок</li>
-                            <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
-                            <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Платные UPC и ISRC коды</li>
+                            <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок (VK, Я.Музыка, Звук, МТС, Apple)</li>
+                            <li><i class="fa-solid fa-check"></i> Базовая модерация релиза (до 7 рабочих дней)</li>
+                            <li><i class="fa-solid fa-check"></i> Поддержка по Email (гарантированный ответ до 48 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 80% (наш интерес 20%)</li>
+                            <li><i class="fa-solid fa-check"></i> Базовая статистика прослушиваний</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Отгрузка на мировые DSP (Spotify, TikTok)</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Генерация Smart-ссылок</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг в редакторские плейлисты</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Стартовый">Выбрать тариф</button>
                     </div>
 
+                    <!-- Тариф 2 -->
                     <div class="price-card popular">
                         <div class="price-header">
                             <h3>Профессиональный</h3>
@@ -492,14 +498,19 @@
                         </div>
                         <div class="price-cost">490 ₽ <span>/ релиз</span></div>
                         <ul class="price-features">
-                            <li><i class="fa-solid fa-check"></i> Отгрузка на 20+ мировых площадок</li>
-                            <li><i class="fa-solid fa-check"></i> Ускоренная модерация (до 48 часов)</li>
-                            <li><i class="fa-solid fa-check"></i> Выплата роялти 90%</li>
-                            <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
+                            <li><i class="fa-solid fa-check"></i> Отгрузка на 20+ мировых площадок (весь мир)</li>
+                            <li><i class="fa-solid fa-check"></i> Ускоренная модерация релиза (гарантия до 48 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Приоритетная поддержка (быстрый ответ до 24 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 90% (наш интерес 10%)</li>
+                            <li><i class="fa-solid fa-check"></i> Создание Smart-ссылок (Pre-save) для промо</li>
+                            <li><i class="fa-solid fa-check"></i> Подробная аналитика по странам и городам</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Безлимитная загрузка треков (подписка)</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг в редакторские плейлисты площадок</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
                     </div>
 
+                    <!-- Тариф 3 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Лейбл</h3>
@@ -507,10 +518,13 @@
                         </div>
                         <div class="price-cost">1 990 ₽ <span>/ месяц</span></div>
                         <ul class="price-features">
-                            <li><i class="fa-solid fa-check"></i> Безлимитная отгрузка релизов</li>
-                            <li><i class="fa-solid fa-check"></i> VIP модерация (до 12 часов)</li>
-                            <li><i class="fa-solid fa-check"></i> Выплата роялти 100% (без комиссий)</li>
-                            <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
+                            <li><i class="fa-solid fa-check"></i> Безлимитная отгрузка релизов без доплат</li>
+                            <li><i class="fa-solid fa-check"></i> Экспресс VIP-модерация (моментальная обработка, от 2 до 12 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> VIP-поддержка в Telegram (ответ от 5 минут до 4 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 100% (вы забираете всё без комиссий лейбла)</li>
+                            <li><i class="fa-solid fa-check"></i> Прямой питчинг в редакции (VK, Yandex, Spotify, Apple)</li>
+                            <li><i class="fa-solid fa-check"></i> Выделенный персональный менеджер релизов</li>
+                            <li><i class="fa-solid fa-check"></i> Приоритет в очереди на обработку выплат</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Лейбл">Стать резидентом</button>
                     </div>
@@ -615,10 +629,7 @@
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     await setDoc(doc(db, "users", cred.user.uid), {
-                        nickname: nickname,
-                        email: email,
-                        subscription: "Стартовый",
-                        createdAt: serverTimestamp()
+                        nickname: nickname, email: email, subscription: "Стартовый", createdAt: serverTimestamp()
                     });
                     await sendEmailVerification(cred.user);
                     notify("Аккаунт создан! Письмо отправлено на вашу почту.");
@@ -634,35 +645,25 @@
         document.getElementById('verify-logout').addEventListener('click', () => signOut(auth));
 
         document.getElementById('resend-email-btn').addEventListener('click', async () => {
-            try {
-                await sendEmailVerification(auth.currentUser);
-                notify("Письмо верификации отправлено повторно!");
-            } catch {
-                notify("Подождите перед повторной отправкой", "error");
-            }
+            try { await sendEmailVerification(auth.currentUser); notify("Письмо верификации отправлено повторно!"); } 
+            catch { notify("Подождите перед повторной отправкой", "error"); }
         });
 
         document.getElementById('check-verify-btn').addEventListener('click', async () => {
             await auth.currentUser.reload();
-            if (auth.currentUser.emailVerified) {
-                notify("Почта успешно подтверждена!");
-                location.reload();
-            } else {
-                notify("Почта еще не подтверждена. Проверьте папку Спам.", "error");
-            }
+            if (auth.currentUser.emailVerified) { notify("Почта успешно подтверждена!"); location.reload(); } 
+            else { notify("Почта еще не подтверждена.", "error"); }
         });
 
         async function loadUserProfile(user) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
-            
             let nickname = user.email.split('@')[0];
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
                 await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Стартовый" }, { merge: true });
             }
-
             document.getElementById('display-nickname').innerText = nickname;
             document.getElementById('setting-nickname').value = nickname;
             document.getElementById('setting-email').value = user.email;
@@ -672,16 +673,12 @@
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
             if (!newNick) return notify("Никнейм не может быть пустым", "error");
-
             try {
-                const userRef = doc(db, "users", auth.currentUser.uid);
-                await setDoc(userRef, { nickname: newNick }, { merge: true });
+                await setDoc(doc(db, "users", auth.currentUser.uid), { nickname: newNick }, { merge: true });
                 document.getElementById('display-nickname').innerText = newNick;
                 document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
                 notify("Никнейм успешно обновлен!");
-            } catch (err) {
-                notify("Ошибка сохранения никнейма", "error");
-            }
+            } catch { notify("Ошибка сохранения никнейма", "error"); }
         });
 
         onAuthStateChanged(auth, async (user) => {
@@ -693,7 +690,6 @@
                     document.getElementById('app-view').style.display = 'none';
                     return;
                 }
-
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
@@ -712,7 +708,6 @@
                     userRoleText.innerText = 'Verified Artist';
                     userRoleText.style.color = 'var(--success)';
                 }
-
                 fetchReleases(user.uid);
             } else {
                 document.getElementById('auth-view').style.display = 'flex';
@@ -723,48 +718,36 @@
             }
         });
 
-        document.getElementById('go-to-admin-btn').addEventListener('click', () => {
-            window.location.href = 'admin.html';
-        });
+        document.getElementById('go-to-admin-btn').addEventListener('click', () => window.location.href = 'admin.html');
 
         document.querySelectorAll('.nav-link[data-target]').forEach(link => {
             link.addEventListener('click', () => {
                 document.querySelectorAll('.nav-link[data-target]').forEach(n => n.classList.remove('active'));
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                
                 link.classList.add('active');
                 const target = link.getAttribute('data-target');
                 document.getElementById(target).classList.add('active');
-                
                 const titles = { 'dashboard': 'Каталог релизов', 'new-release': 'Новая дистрибуция', 'pricing': 'Тарифные планы', 'settings': 'Настройки' };
                 document.getElementById('page-title').innerText = titles[target];
-                
                 if(target === 'dashboard' && auth.currentUser) fetchReleases(auth.currentUser.uid);
             });
         });
 
-        // Функция запроса на удаление или отзыва релиза в течение 20 минут
-        window.requestDeleteRelease = async (id, currentStatus, createdAtObj) => {
+        window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
                 try {
-                    await updateDoc(doc(db, "track_submissions", id), {
-                        status: "Запрос на удаление с площадок"
-                    });
+                    await updateDoc(doc(db, "track_submissions", id), { status: "Запрос на удаление с площадок" });
                     notify("Запрос на удаление отправлен модератору.");
                     if(auth.currentUser) fetchReleases(auth.currentUser.uid);
-                } catch {
-                    notify("Ошибка отправки запроса", "error");
-                }
+                } catch { notify("Ошибка отправки запроса", "error"); }
             } else {
                 if (!confirm("Вы уверены, что хотите удалить этот релиз?")) return;
                 try {
                     await deleteDoc(doc(db, "track_submissions", id));
                     notify("Релиз успешно удален.");
                     if(auth.currentUser) fetchReleases(auth.currentUser.uid);
-                } catch {
-                    notify("Ошибка удаления", "error");
-                }
+                } catch { notify("Ошибка удаления", "error"); }
             }
         };
 
@@ -785,32 +768,34 @@
             btn.disabled = true;
 
             try {
+                // Проверка лимитов по тарифу
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
+                const currentPlan = userData.subscription || "Стартовый";
                 const currentNick = userData.nickname || auth.currentUser.email;
 
+                if (currentPlan === "Стартовый") {
+                    const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
+                    const snapReleases = await getDocs(qReleases);
+                    if (snapReleases.size >= 1) {
+                        btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
+                        btn.disabled = false;
+                        return notify("Лимит исчерпан. Оплатите тариф Про или Лейбл для снятия ограничений!", "error");
+                    }
+                }
+
                 await addDoc(collection(db, "track_submissions"), {
-                    userId: auth.currentUser.uid,
-                    userEmail: auth.currentUser.email,
-                    userNickname: currentNick,
+                    userId: auth.currentUser.uid, userEmail: auth.currentUser.email, userNickname: currentNick,
                     artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
-                    status: "Ожидает модерации",
-                    upc: "",
-                    isrc: "",
-                    rejectReason: "",
-                    createdAt: serverTimestamp()
+                    status: "Ожидает модерации", upc: "", isrc: "", rejectReason: "", createdAt: serverTimestamp()
                 });
 
                 notify("Трек успешно отправлен на модерацию!");
                 ['r-title', 'r-artist', 'r-cover', 'r-audio'].forEach(id => document.getElementById(id).value = '');
                 document.querySelector('[data-target="dashboard"]').click();
-            } catch (err) {
-                notify("Ошибка подключения к базе.", "error");
-            } finally {
-                btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
-                btn.disabled = false;
-            }
+            } catch { notify("Ошибка подключения к базе.", "error"); }
+            finally { btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>'; btn.disabled = false; }
         });
 
         async function fetchReleases(uid) {
@@ -844,57 +829,26 @@
 
                     let deleteActionHtml = '';
                     if (d.status === "Ожидает модерации" && d.createdAt) {
-                        const createdAtMs = d.createdAt.toDate().getTime();
-                        const nowMs = new Date().getTime();
-                        const diffMinutes = (nowMs - createdAtMs) / (1000 * 60);
-
+                        const diffMinutes = (new Date().getTime() - d.createdAt.toDate().getTime()) / (1000 * 60);
                         if (diffMinutes <= 20) {
-                            deleteActionHtml = `
-                                <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
-                                    <i class="fa-solid fa-rotate-left"></i> Снять с публикации (осталось ${Math.ceil(20 - diffMinutes)} мин.)
-                                </button>`;
+                            deleteActionHtml = `<button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;"><i class="fa-solid fa-rotate-left"></i> Снять с публикации (${Math.ceil(20 - diffMinutes)} мин.)</button>`;
                         } else {
-                            deleteActionHtml = `
-                                <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
-                                    <i class="fa-solid fa-trash"></i> Удалить релиз
-                                </button>`;
+                            deleteActionHtml = `<button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;"><i class="fa-solid fa-trash"></i> Удалить релиз</button>`;
                         }
                     } else if (d.status === "Одобрено") {
-                        deleteActionHtml = `
-                            <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
-                                <i class="fa-solid fa-trash"></i> Запросить удаление с площадок
-                            </button>`;
+                        deleteActionHtml = `<button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;"><i class="fa-solid fa-trash"></i> Запросить удаление с площадок</button>`;
                     } else if (d.status === "Запрос на удаление с площадок") {
                         deleteActionHtml = `<div style="color: var(--warning); font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center;"><i class="fa-solid fa-clock"></i> Ожидает снятия с площадок администратором</div>`;
                     } else {
-                        deleteActionHtml = `
-                            <button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;">
-                                <i class="fa-solid fa-trash"></i> Удалить релиз
-                            </button>`;
+                        deleteActionHtml = `<button onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; margin-top: 10px; width: 100%;"><i class="fa-solid fa-trash"></i> Удалить релиз</button>`;
                     }
 
-                    let codesHtml = '';
-                    if (d.upc || d.isrc) {
-                        codesHtml = `
-                            <div class="track-codes-box">
-                                ${d.upc ? `<span>UPC: <b>${d.upc}</b></span>` : ''}
-                                ${d.isrc ? `<span>ISRC: <b>${d.isrc}</b></span>` : ''}
-                            </div>`;
-                    }
-
-                    let rejectHtml = '';
-                    if (d.status === "Отклонено" && d.rejectReason) {
-                        rejectHtml = `
-                            <div class="reject-box">
-                                <i class="fa-solid fa-triangle-exclamation"></i> <b>Причина отказа:</b> ${d.rejectReason}
-                            </div>`;
-                    }
+                    let codesHtml = d.upc || d.isrc ? `<div class="track-codes-box">${d.upc ? `<span>UPC: <b>${d.upc}</b></span>` : ''}${d.isrc ? `<span>ISRC: <b>${d.isrc}</b></span>` : ''}</div>` : '';
+                    let rejectHtml = d.status === "Отклонено" && d.rejectReason ? `<div class="reject-box"><i class="fa-solid fa-triangle-exclamation"></i> <b>Причина отказа:</b> ${d.rejectReason}</div>` : '';
 
                     wrap.innerHTML += `
                         <div class="track-card">
-                            <div class="track-status ${sClass}">
-                                <i class="fa-solid fa-circle"></i> ${d.status}
-                            </div>
+                            <div class="track-status ${sClass}"><i class="fa-solid fa-circle"></i> ${d.status}</div>
                             <div>
                                 <h3 class="track-title">${d.title}</h3>
                                 <div class="track-artist"><i class="fa-solid fa-user"></i> ${d.artist}</div>
@@ -909,9 +863,7 @@
                             </div>
                         </div>`;
                 });
-            } catch (e) {
-                wrap.innerHTML = '<div class="empty-dashboard"><h3>Ошибка загрузки</h3><p>Проверьте права Firestore Database.</p></div>';
-            }
+            } catch { wrap.innerHTML = '<div class="empty-dashboard"><h3>Ошибка загрузки</h3></div>'; }
         }
     </script>
 </body>
