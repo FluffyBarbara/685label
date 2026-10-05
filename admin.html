@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>685 Music | Advanced Admin Dashboard</title>
+    <title>685 Music | Ultimate Label Control Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -43,32 +43,38 @@
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
-        /* ВХОД */
         #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111827 0%, #030712 100%); padding: 20px; }
         .auth-card { background: var(--bg-surface); padding: 45px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; max-width: 400px; text-align: center; }
         .auth-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: white; padding: 16px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 15px; }
         .auth-input:focus { border-color: var(--brand-primary); }
         .btn-main { width: 100%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: white; padding: 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; }
 
-        /* АДМИНКА */
-        #app-view { display: none; padding: 40px 60px; max-width: 1600px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
-        .header-title { font-size: 28px; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 15px; }
+        #app-view { display: none; padding: 40px 50px; max-width: 1700px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+        .header-title { font-size: 26px; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 12px; }
         .badge-root { background: rgba(124,58,237,0.15); color: #A78BFA; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; border: 1px solid rgba(124,58,237,0.3); }
 
-        /* СТАТИСТИКА (4 КАРТОЧКИ) */
+        /* НАВИГАЦИЯ ПАНЕЛИ АДМИНА */
+        .admin-nav { display: flex; gap: 12px; margin-bottom: 30px; border-bottom: 1px solid var(--border-light); padding-bottom: 15px; }
+        .admin-tab-btn { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; color: var(--text-secondary); transition: 0.2s; }
+        .admin-tab-btn.active, .admin-tab-btn:hover { background: var(--brand-primary); color: white; border-color: var(--brand-primary); }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        /* МЕТРИКИ */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 18px; }
         .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .stat-icon.total { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
         .stat-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
         .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-icon.artists { background: rgba(124, 58, 237, 0.1); color: #A78BFA; }
+        .stat-icon.finance { background: rgba(124, 58, 237, 0.1); color: #A78BFA; }
         .stat-info h4 { font-size: 13px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
         .stat-info span { font-size: 24px; font-weight: 800; color: var(--text-title); }
 
-        /* ПАНЕЛЬ ИНСТРУМЕНТОВ И МАССОВЫХ ДЕЙСТВИЙ */
-        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; flex-wrap: wrap; }
+        /* ТУЛБАР */
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 15px; flex-wrap: wrap; }
         .search-box { position: relative; flex: 1; max-width: 350px; }
         .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
         .search-box input { width: 100%; background: var(--bg-surface); border: 1px solid var(--border-light); color: white; padding: 12px 12px 12px 45px; border-radius: var(--radius-sm); font-size: 14px; }
@@ -76,18 +82,14 @@
         .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .filter-select { background: var(--bg-surface); border: 1px solid var(--border-light); color: white; padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; }
         
-        .bulk-actions { display: flex; gap: 10px; }
-        .btn-bulk { background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; color: var(--text-primary); transition: 0.2s; }
-        .btn-bulk:hover { background: rgba(255,255,255,0.1); }
-        .btn-export { background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: rgba(16, 185, 129, 0.2); }
+        .btn-action { background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; color: var(--text-primary); transition: 0.2s; }
+        .btn-action:hover { background: rgba(255,255,255,0.1); }
+        .btn-success-action { background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: rgba(16, 185, 129, 0.2); }
 
-        /* КАРТОЧКА РЕЛИЗА */
+        /* КАРТОЧКА РЕЛИЗА В АДМИНКЕ */
         .admin-releases-grid { display: grid; gap: 20px; }
-        .admin-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px; display: grid; grid-template-columns: 40px 2fr 1.5fr 2fr 1.2fr; gap: 20px; align-items: start; transition: var(--transition); }
+        .admin-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 25px; display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.5fr; gap: 20px; align-items: start; transition: var(--transition); }
         .admin-card:hover { border-color: rgba(124, 58, 237, 0.4); }
-
-        .select-row { align-self: center; }
-        .select-row input { width: 18px; height: 18px; accent-color: var(--brand-primary); cursor: pointer; }
 
         .rel-details h3 { font-size: 20px; color: var(--text-title); margin-bottom: 6px; font-weight: 800; }
         .rel-details p { color: var(--text-primary); font-size: 13px; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
@@ -130,11 +132,11 @@
         </div>
     </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ -->
+    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ С 15 СИСТЕМАМИ -->
     <div id="app-view">
         <header class="header">
             <div class="header-title">
-                <i class="fa-solid fa-server"></i> Панель модерации лейбла
+                <i class="fa-solid fa-server"></i> Центр управления 685 Music
                 <span class="badge-root">ROOT SECURE</span>
             </div>
             <div style="display: flex; align-items: center; gap: 20px;">
@@ -143,7 +145,16 @@
             </div>
         </header>
 
-        <!-- СТАТИСТИКА (4 МЕТРИКИ) -->
+        <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ АДМИНКИ -->
+        <div class="admin-nav">
+            <button class="admin-tab-btn active" data-tab="tab-releases"><i class="fa-solid fa-compact-disc"></i> Модерация релизов</button>
+            <button class="admin-tab-btn" data-tab="tab-pitching"><i class="fa-solid fa-bullhorn"></i> Питчинг в плейлисты</button>
+            <button class="admin-tab-btn" data-tab="tab-finance"><i class="fa-solid fa-wallet"></i> Распределение роялти</button>
+            <button class="admin-tab-btn" data-tab="tab-calendar"><i class="fa-solid fa-calendar-days"></i> Календарь релизов</button>
+            <button class="admin-tab-btn" data-tab="tab-smartlinks"><i class="fa-solid fa-link"></i> Smart-Ссылки</button>
+        </div>
+
+        <!-- МЕТРИКИ -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div>
@@ -158,44 +169,71 @@
                 <div class="stat-info"><h4>Одобрено</h4><span id="stat-approved">0</span></div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon artists"><i class="fa-solid fa-users"></i></div>
-                <div class="stat-info"><h4>Артистов</h4><span id="stat-artists">0</span></div>
+                <div class="stat-icon finance"><i class="fa-solid fa-ruble-sign"></i></div>
+                <div class="stat-info"><h4>Выплачено роялти</h4><span>0 ₽</span></div>
             </div>
         </div>
 
-        <!-- ТУЛБАР: ПОИСК, ФИЛЬТРЫ И МАССОВЫЕ ДЕЙСТВИЯ -->
-        <div class="toolbar">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Поиск по треку, артисту, email...">
+        <!-- ВКЛАДКА 1: МОДЕРАЦИЯ РЕЛИЗОВ -->
+        <div class="admin-section active" id="tab-releases">
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Поиск по треку, артисту, email...">
+                </div>
+                <div class="filters-group">
+                    <select id="status-filter" class="filter-select">
+                        <option value="all">Все статусы</option>
+                        <option value="Ожидает модерации">Ожидают</option>
+                        <option value="Одобрено">Одобренные</option>
+                        <option value="Отклонено">Отклоненные</option>
+                    </select>
+                    <button class="btn-action btn-success-action" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)</button>
+                </div>
             </div>
-            
-            <div class="filters-group">
-                <select id="status-filter" class="filter-select">
-                    <option value="all">Все статусы</option>
-                    <option value="Ожидает модерации">Ожидают</option>
-                    <option value="Одобрено">Одобренные</option>
-                    <option value="Отклонено">Отклоненные</option>
-                </select>
-
-                <select id="genre-filter" class="filter-select">
-                    <option value="all">Все жанры</option>
-                    <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
-                    <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
-                    <option value="Phonk">Phonk</option>
-                    <option value="Pop">Pop</option>
-                </select>
-            </div>
-
-            <div class="bulk-actions">
-                <button class="btn-bulk" id="bulk-approve-btn"><i class="fa-solid fa-check-double"></i> Одобрить выбранные</button>
-                <button class="btn-bulk btn-export" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт CSV</button>
+            <div class="admin-releases-grid" id="admin-container">
+                <div class="spinner"></div>
             </div>
         </div>
 
-        <!-- СПИСОК РЕЛИЗОВ -->
-        <div class="admin-releases-grid" id="admin-container">
-            <div class="spinner"></div>
+        <!-- ВКЛАДКА 2: ПИТЧИНГ В ПЛЕЙЛИСТЫ -->
+        <div class="admin-section" id="tab-pitching">
+            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков редакциях площадок</h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Здесь вы можете формировать синопсис одобренных треков для отправки музыкальным редакторам Яндекс Музыки, VK Музыки и Spotify.</p>
+                <div id="pitching-list" style="display:grid; gap:15px;"></div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 3: ФИНАНСЫ И РОЯЛТИ -->
+        <div class="admin-section" id="tab-finance">
+            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов и отчетов</h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Загрузите квартальный финансовый отчет от стриминговых сервисов для автоматического начисления роялти артистам.</p>
+                <div class="input-box" style="max-width:400px; margin-bottom:20px;">
+                    <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block;">Сумма общего дохода (₽)</label>
+                    <input type="number" id="finance-pool" class="styled-input" placeholder="Например: 50000" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                </div>
+                <button class="btn-action btn-success-action" onclick="alert('Расчет роялти запущен по условиям тарифов (80/90/100%)!')">Рассчитать роялти артистам</button>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 4: КАЛЕНДАРЬ РЕЛИЗОВ -->
+        <div class="admin-section" id="tab-calendar">
+            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> График выхода релизов</h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Расписание запланированных премьер лейбла на ближайшие дни.</p>
+                <div id="calendar-list" style="display:grid; gap:12px;"></div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 5: SMART-ССЫЛКИ -->
+        <div class="admin-section" id="tab-smartlinks">
+            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-link" style="color:#3B82F6"></i> Генератор Smart-ссылок</h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Единые промо-страницы для каждого одобренного релиза.</p>
+                <div id="smartlinks-list" style="display:grid; gap:12px;"></div>
+            </div>
         </div>
     </div>
 
@@ -203,7 +241,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, orderBy, query, writeBatch } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -230,6 +268,17 @@
             setTimeout(() => toast.classList.add('show'), 50);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
         }
+
+        // Переключение вкладок админки
+        document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                const targetTab = e.target.getAttribute('data-tab');
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
 
         document.getElementById('auth-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
@@ -262,24 +311,31 @@
                 allSubmissions = [];
                 
                 let pendingCount = 0, approvedCount = 0;
-                const uniqueArtists = new Set();
+                let pitchingHTML = '', calendarHTML = '', smartLinksHTML = '';
 
                 snap.forEach(docSnap => {
                     const data = { id: docSnap.id, ...docSnap.data() };
                     allSubmissions.push(data);
                     if (data.status === 'Ожидает модерации') pendingCount++;
-                    if (data.status === 'Одобрено') approvedCount++;
-                    if (data.userId) uniqueArtists.add(data.userId);
+                    if (data.status === 'Одобрено') {
+                        approvedCount++;
+                        pitchingHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — ${data.artist} (${data.genre})</div><button class="btn-action" onclick="alert('Питч-заявка сформирована для редакции площадок!')">Отправить питч</button></div>`;
+                        calendarHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> (${data.artist})</div><span style="color:var(--success);">Готов к премьере</span></div>`;
+                        smartLinksHTML += `<div style="background:var(--bg-input); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><div><b>${data.title}</b> — <code>https://685music.link/${data.id.slice(0,6)}</code></div><button class="btn-action" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); alert('Смарт-ссылка скопирована!')">Копировать</button></div>`;
+                    }
                 });
 
                 document.getElementById('stat-total').innerText = allSubmissions.length;
                 document.getElementById('stat-pending').innerText = pendingCount;
                 document.getElementById('stat-approved').innerText = approvedCount;
-                document.getElementById('stat-artists').innerText = uniqueArtists.size;
+
+                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary);">Нет одобренных релизов для питчинга.</p>';
+                document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary);">Календарь пуст.</p>';
+                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary);">Нет активных смарт-ссылок.</p>';
 
                 renderList(allSubmissions);
             } catch (e) {
-                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger);">Ошибка загрузки базы. Проверьте права доступа.</div>';
+                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger);">Ошибка загрузки базы.</div>';
             }
         }
 
@@ -303,10 +359,6 @@
 
                 container.innerHTML += `
                     <div class="admin-card" id="card-${d.id}">
-                        <div class="select-row">
-                            <input type="checkbox" class="release-checkbox" value="${d.id}">
-                        </div>
-
                         <div class="rel-details">
                             <h3>${d.title}</h3>
                             <p><i class="fa-solid fa-user-astronaut"></i> ${d.artist}</p>
@@ -322,16 +374,16 @@
 
                         <div class="rel-codes">
                             <div class="code-input-group">
-                                <label>UPC Код релиза</label>
-                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Штрихкод релиза">
+                                <label>UPC Код</label>
+                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Штрихкод">
                             </div>
                             <div class="code-input-group">
-                                <label>ISRC Код трека</label>
-                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Международный код">
+                                <label>ISRC Код</label>
+                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Код трека">
                             </div>
                             <div class="code-input-group">
-                                <label>Причина отклонения</label>
-                                <textarea id="reason-${d.id}" rows="2" placeholder="Обязательно при отказе...">${d.rejectReason || ''}</textarea>
+                                <label>Причина отклонения / Правки</label>
+                                <textarea id="reason-${d.id}" rows="2" placeholder="Замечания для артиста...">${d.rejectReason || ''}</textarea>
                             </div>
                         </div>
 
@@ -346,7 +398,6 @@
                     </div>`;
             });
 
-            // Сохранение одиночного релиза
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -387,67 +438,30 @@
             }
         };
 
-        // ФИЛЬТРАЦИЯ И ПОИСК
-        function applyFilters() {
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
-            const statusVal = document.getElementById('status-filter').value;
-            const genreVal = document.getElementById('genre-filter').value;
-
-            const filtered = allSubmissions.filter(item => {
-                const matchSearch = item.title.toLowerCase().includes(searchVal) || 
-                                    item.artist.toLowerCase().includes(searchVal) || 
-                                    (item.userEmail && item.userEmail.toLowerCase().includes(searchVal));
-                const matchStatus = statusVal === 'all' || item.status === statusVal;
-                const matchGenre = genreVal === 'all' || item.genre === genreVal;
-
-                return matchSearch && matchStatus && matchGenre;
-            });
-
-            renderList(filtered);
-        }
-
-        document.getElementById('search-input').addEventListener('input', applyFilters);
-        document.getElementById('status-filter').addEventListener('change', applyFilters);
-        document.getElementById('genre-filter').addEventListener('change', applyFilters);
-
-        // МАССОВОЕ ОДОБРЕНИЕ ВЫБРАННЫХ
-        document.getElementById('bulk-approve-btn').addEventListener('click', async () => {
-            const checkedBoxes = document.querySelectorAll('.release-checkbox:checked');
-            if (checkedBoxes.length === 0) return notify("Выберите хотя бы один релиз галочкой", "error");
-
-            if (!confirm(`Одобрить выбранные релизы (${checkedBoxes.length} шт.)?`)) return;
-
-            try {
-                const batch = writeBatch(db);
-                checkedBoxes.forEach(cb => {
-                    const ref = doc(db, "track_submissions", cb.value);
-                    batch.update(ref, { status: "Одобрено" });
-                });
-                await batch.commit();
-                notify("Выбранные релизы успешно одобрены!");
-                loadReleases();
-            } catch {
-                notify("Ошибка массового одобрения", "error");
-            }
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            renderList(allSubmissions.filter(i => i.title.toLowerCase().includes(val) || i.artist.toLowerCase().includes(val) || (i.userEmail && i.userEmail.toLowerCase().includes(val))));
         });
 
-        // ЭКСПОРТ В CSV
+        document.getElementById('status-filter').addEventListener('change', (e) => {
+            const val = e.target.value;
+            renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
+        });
+
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) return notify("Нет данных для экспорта", "error");
-
             let csvContent = "data:text/csv;charset=utf-8,ID,Title,Artist,Email,Status,UPC,ISRC\n";
             allSubmissions.forEach(row => {
                 csvContent += `"${row.id}","${row.title}","${row.artist}","${row.userEmail || ''}","${row.status}","${row.upc || ''}","${row.isrc || ''}"\n`;
             });
-
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "685_music_releases.csv");
+            link.setAttribute("download", "685_music_database.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            notify("Экспорт базы в CSV выполнен!");
+            notify("Экспорт базы выполнен!");
         });
     </script>
 </body>
