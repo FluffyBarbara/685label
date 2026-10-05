@@ -208,6 +208,32 @@
         .dsp-label input:checked + .checkbox-box i { opacity: 1; transform: scale(1); }
         .dsp-label:has(input:checked) { border-color: var(--brand-primary); background: rgba(255,42,95,0.05); }
 
+        /* СЕТКА ТАРИФОВ */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 20px; }
+        .price-card {
+            background: var(--bg-surface); border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg); padding: 40px 30px; display: flex; flex-direction: column; gap: 25px;
+            position: relative; transition: var(--transition);
+        }
+        .price-card.popular { border-color: var(--brand-primary); background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%); }
+        .price-card.popular::before {
+            content: 'ПОПУЛЯРНЫЙ'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff;
+            font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 50px; letter-spacing: 1px;
+        }
+        .price-card:hover { transform: translateY(-8px); border-color: var(--brand-primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        
+        .price-header h3 { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; }
+        .price-header p { color: var(--text-secondary); font-size: 14px; }
+        .price-cost { font-size: 38px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; }
+        .price-cost span { font-size: 16px; color: var(--text-secondary); font-weight: 600; }
+        
+        .price-features { display: flex; flex-direction: column; gap: 14px; list-style: none; flex: 1; }
+        .price-features li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-primary); }
+        .price-features li i { color: var(--success); font-size: 16px; }
+        .price-features li.disabled { color: var(--text-secondary); opacity: 0.5; }
+        .price-features li.disabled i { color: var(--text-secondary); }
+
         .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
         .track-card {
             background: var(--bg-surface); border: 1px solid var(--border-light);
@@ -257,7 +283,6 @@
             <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
             <p class="auth-desc" id="auth-subtitle">Экосистема для независимых артистов</p>
             
-            <!-- Поле никнейма (видно только при регистрации) -->
             <div class="input-wrapper" id="nickname-box" style="display: none;">
                 <i class="fa-solid fa-user"></i>
                 <input type="text" id="auth-nickname" placeholder="Никнейм музыканта" autocomplete="nickname">
@@ -303,6 +328,9 @@
                 </button>
                 <button class="nav-link" data-target="new-release">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Дистрибуция
+                </button>
+                <button class="nav-link" data-target="pricing">
+                    <i class="fa-solid fa-tags"></i> Тарифы
                 </button>
                 <button class="nav-link" data-target="settings">
                     <i class="fa-solid fa-user-shield"></i> Настройки
@@ -432,6 +460,67 @@
                 </div>
             </section>
 
+            <!-- СЕКЦИЯ: ТАРИФЫ -->
+            <section class="section" id="pricing">
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
+                    <p style="color: var(--text-secondary);">Выберите подходящие условия для дистрибуции вашей музыки на мировые площадки.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <!-- Тариф 1 -->
+                    <div class="price-card">
+                        <div class="price-header">
+                            <h3>Старт</h3>
+                            <p>Для начинающих артистов</p>
+                        </div>
+                        <div class="price-cost">Бесплатно <span>/ релиз</span></div>
+                        <ul class="price-features">
+                            <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок (VK, Я.Музыка, Spotify)</li>
+                            <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Бесплатные UPC и ISRC коды</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг в плейлисты</li>
+                        </ul>
+                        <button class="btn-glow dummy-buy-btn" data-plan="Старт">Выбрать тариф</button>
+                    </div>
+
+                    <!-- Тариф 2 (Популярный) -->
+                    <div class="price-card popular">
+                        <div class="price-header">
+                            <h3>Профессиональный</h3>
+                            <p>Для активных музыкантов</p>
+                        </div>
+                        <div class="price-cost">490 ₽ <span>/ релиз</span></div>
+                        <ul class="price-features">
+                            <li><i class="fa-solid fa-check"></i> Отгрузка на 20+ мировых площадок</li>
+                            <li><i class="fa-solid fa-check"></i> Ускоренная модерация (до 48 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 90%</li>
+                            <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Персональный менеджер</li>
+                        </ul>
+                        <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
+                    </div>
+
+                    <!-- Тариф 3 -->
+                    <div class="price-card">
+                        <div class="price-header">
+                            <h3>Лейбл</h3>
+                            <p>Для музыкальных команд и объединений</p>
+                        </div>
+                        <div class="price-cost">1 990 ₽ <span>/ месяц</span></div>
+                        <ul class="price-features">
+                            <li><i class="fa-solid fa-check"></i> Безлимитная отгрузка релизов</li>
+                            <li><i class="fa-solid fa-check"></i> Приоритетная VIP модерация (до 12 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> Выплата роялти 100% (без комиссий)</li>
+                            <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
+                            <li><i class="fa-solid fa-check"></i> Помощь в питчинге релизов в редакции площадок</li>
+                        </ul>
+                        <button class="btn-glow dummy-buy-btn" data-plan="Лейбл">Стать резидентом</button>
+                    </div>
+                </div>
+            </section>
+
             <!-- СЕКЦИЯ: НАСТРОЙКИ -->
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
@@ -489,6 +578,14 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
+        // Заглушка для кнопки покупки тарифов
+        document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const planName = e.target.getAttribute('data-plan');
+                notify(`Интеграция платежной системы в разработку. Выбран тариф: "${planName}".`, "success");
+            });
+        });
+
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -525,7 +622,6 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    // Сохраняем никнейм в базу данных пользователей
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname,
                         email: email,
@@ -563,16 +659,14 @@
             }
         });
 
-        // Функция загрузки и отображения никнейма в правом углу
         async function loadUserProfile(user) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
             
-            let nickname = user.email.split('@')[0]; // Дефолт до заведения профиля
+            let nickname = user.email.split('@')[0];
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
-                // Если аккаунт создан ранее без профиля в Firestore, создаем базовый
                 await setDoc(userRef, { nickname: nickname, email: user.email }, { merge: true });
             }
 
@@ -582,7 +676,6 @@
             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
         }
 
-        // Кнопка сохранения нового никнейма в настройках
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
             if (!newNick) return notify("Никнейм не может быть пустым", "error");
@@ -650,7 +743,7 @@
                 const target = link.getAttribute('data-target');
                 document.getElementById(target).classList.add('active');
                 
-                const titles = { 'dashboard': 'Каталог релизов', 'new-release': 'Новая дистрибуция', 'settings': 'Настройки' };
+                const titles = { 'dashboard': 'Каталог релизов', 'new-release': 'Новая дистрибуция', 'pricing': 'Тарифные планы', 'settings': 'Настройки' };
                 document.getElementById('page-title').innerText = titles[target];
                 
                 if(target === 'dashboard' && auth.currentUser) fetchReleases(auth.currentUser.uid);
@@ -674,7 +767,6 @@
             btn.disabled = true;
 
             try {
-                // Получаем актуальный никнейм перед отправкой
                 const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
                 const currentNick = userSnap.exists() ? userSnap.data().nickname : auth.currentUser.email;
 
