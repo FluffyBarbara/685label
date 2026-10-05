@@ -476,13 +476,13 @@
                         </div>
                         <div class="price-cost">Бесплатно <span>/ релиз</span></div>
                         <ul class="price-features">
-                            <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок (VK, Я.Музыка, Spotify)</li>
+                            <li><i class="fa-solid fa-check"></i> Отгрузка в ТОП-5 площадок</li>
                             <li><i class="fa-solid fa-check"></i> Стандартная модерация (до 7 дней)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 80%</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Бесплатные UPC и ISRC коды</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг в плейлисты</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Лимит: 1 релиз на аккаунт</li>
                         </ul>
-                        <button class="btn-glow dummy-buy-btn" data-plan="Старт">Выбрать тариф</button>
+                        <button class="btn-glow dummy-buy-btn" data-plan="Старт">Текущий тариф</button>
                     </div>
 
                     <!-- Тариф 2 (Популярный) -->
@@ -497,7 +497,7 @@
                             <li><i class="fa-solid fa-check"></i> Ускоренная модерация (до 48 часов)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 90%</li>
                             <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
-                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Персональный менеджер</li>
+                            <li><i class="fa-solid fa-check"></i> Безлимитная отправка релизов</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
                     </div>
@@ -506,15 +506,15 @@
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Лейбл</h3>
-                            <p>Для музыкальных команд и объединений</p>
+                            <p>Для музыкальных объединений</p>
                         </div>
                         <div class="price-cost">1 990 ₽ <span>/ месяц</span></div>
                         <ul class="price-features">
                             <li><i class="fa-solid fa-check"></i> Безлимитная отгрузка релизов</li>
-                            <li><i class="fa-solid fa-check"></i> Приоритетная VIP модерация (до 12 часов)</li>
+                            <li><i class="fa-solid fa-check"></i> VIP модерация (до 12 часов)</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 100% (без комиссий)</li>
                             <li><i class="fa-solid fa-check"></i> Бесплатные UPC и ISRC коды</li>
-                            <li><i class="fa-solid fa-check"></i> Помощь в питчинге релизов в редакции площадок</li>
+                            <li><i class="fa-solid fa-check"></i> Помощь в питчинге в плейлисты</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Лейбл">Стать резидентом</button>
                     </div>
@@ -578,11 +578,26 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        // Заглушка для кнопки покупки тарифов
+        // Заглушка покупки тарифов (интеграция платежной системы)
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 const planName = e.target.getAttribute('data-plan');
-                notify(`Интеграция платежной системы в разработку. Выбран тариф: "${planName}".`, "success");
+                if (planName === "Старт") {
+                    return notify("Вы уже используете базовый тариф.", "success");
+                }
+
+                // Заглушка окна оплаты
+                const confirmed = confirm(`[Заглушка платежного шлюза ЮKassa]\n\nХотите подключить тариф "${planName}"?\nНажмите "OK" для симуляции успешной оплаты.`);
+                
+                if (confirmed) {
+                    try {
+                        const userRef = doc(db, "users", auth.currentUser.uid);
+                        await setDoc(userRef, { subscription: planName }, { merge: true });
+                        notify(`Оплата прошла успешно! Тариф "${planName}" активирован.`, "success");
+                    } catch (err) {
+                        notify("Ошибка активации тарифа", "error");
+                    }
+                }
             });
         });
 
@@ -625,6 +640,7 @@
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname,
                         email: email,
+                        subscription: "Старт",
                         createdAt: serverTimestamp()
                     });
                     await sendEmailVerification(cred.user);
@@ -667,7 +683,7 @@
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
-                await setDoc(userRef, { nickname: nickname, email: user.email }, { merge: true });
+                await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Старт" }, { merge: true });
             }
 
             document.getElementById('display-nickname').innerText = nickname;
@@ -750,6 +766,7 @@
             });
         });
 
+        // ПРОВЕРКА ЛИМИТОВ ТАРИФА ПЕРЕД ОТПРАВКОЙ РЕЛИЗА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -767,8 +784,25 @@
             btn.disabled = true;
 
             try {
-                const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
-                const currentNick = userSnap.exists() ? userSnap.data().nickname : auth.currentUser.email;
+                // Проверяем тариф пользователя
+                const userRef = doc(db, "users", auth.currentUser.uid);
+                const userSnap = await getDoc(userRef);
+                const userData = userSnap.exists() ? userSnap.data() : {};
+                const currentPlan = userData.subscription || "Старт";
+
+                // Ограничения для тарифа "Старт" (доступен только 1 релиз)
+                if (currentPlan === "Старт") {
+                    const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
+                    const snapReleases = await getDocs(qReleases);
+                    
+                    if (snapReleases.size >= 1) {
+                        btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
+                        btn.disabled = false;
+                        return notify("На бесплатном тарифе «Старт» доступен только 1 релиз. Перейдите на тариф Про или Лейбл для снятия ограничений!", "error");
+                    }
+                }
+
+                const currentNick = userData.nickname || auth.currentUser.email;
 
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid,
@@ -861,8 +895,5 @@
             }
         }
     </script>
-    <div style="margin-top: 20px; font-size: 12px; color: var(--text-secondary); text-align: center;">
-    Продолжая, вы соглашаетесь с <a href="offer.html" target="_blank" style="color: var(--brand-primary);">Публичной офертой</a> и <a href="privacy.html" target="_blank" style="color: var(--brand-primary);">Политикой конфиденциальности</a>.
-</div>
 </body>
 </html>
