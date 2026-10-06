@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>685 Music | Premium Artist Portal</title>
     
-    <!-- Подключение шрифтов и иконок -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* === БАЗОВЫЕ ПЕРЕМЕННЫЕ === */
         :root {
             --brand-primary: #FF2A5F;
             --brand-secondary: #FF7043;
@@ -40,24 +38,23 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* === ГЛОБАЛЬНЫЕ СТИЛИ === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
         }
         
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.5;
+        body { 
+            background-color: var(--bg-base); 
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            line-height: 1.5; 
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(255, 42, 95, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(255, 112, 67, 0.05), transparent 25%);
-            background-attachment: fixed;
+                radial-gradient(circle at 15% 50%, rgba(255, 42, 95, 0.05), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(255, 112, 67, 0.05), transparent 25%); 
+            background-attachment: fixed; 
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -65,557 +62,817 @@
         ::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
 
-        button { cursor: pointer; border: none; background: none; color: inherit; outline: none; }
-        input, select, textarea { font-family: inherit; outline: none; border: none; }
+        button { 
+            cursor: pointer; 
+            border: none; 
+            background: none; 
+            color: inherit; 
+            outline: none; 
+        }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        input, select, textarea { 
+            font-family: inherit; 
+            outline: none; 
+            border: none; 
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* === УВЕДОМЛЕНИЯ (TOASTS) === */
-        #toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100000;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
-        .toast {
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-left: 4px solid var(--brand-primary);
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #fff;
-            transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+        @keyframes spin { 
+            100% { transform: rotate(360deg); } 
         }
+
+        #toast-container { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 100000; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+
+        .toast { 
+            background: rgba(15, 15, 15, 0.95); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-light); 
+            border-left: 4px solid var(--brand-primary); 
+            padding: 16px 20px; 
+            border-radius: var(--radius-sm); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            color: #fff; 
+            transform: translateX(120%); 
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+        }
+
         .toast.show { transform: translateX(0); }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
-        /* === ЭКРАНЫ АВТОРИЗАЦИИ === */
-        .auth-view-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1a0b10 0%, var(--bg-base) 100%);
-        }
-        .auth-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(30px);
-            padding: 45px 40px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .auth-logo {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -1.5px;
-            color: var(--text-title);
-        }
-        .auth-logo span {
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .auth-desc {
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 16px;
-        }
-        .input-wrapper i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 16px;
-            transition: var(--transition);
-        }
-        .input-wrapper input {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: var(--text-title);
-            padding: 16px 16px 16px 50px;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            transition: var(--transition);
-        }
-        .input-wrapper input:focus {
-            border-color: var(--brand-primary);
-            box-shadow: 0 0 15px rgba(255,42,95,0.1);
-        }
-        .input-wrapper input:focus + i {
-            color: var(--brand-primary);
-        }
-        .btn-glow {
-            width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            color: #fff;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 20px rgba(255,42,95,0.3);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .btn-glow:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255,42,95,0.4);
-        }
-        .btn-glow:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        .auth-toggle {
-            margin-top: 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-block;
-            transition: var(--transition);
-            padding: 10px;
-        }
-        .auth-toggle:hover {
-            color: var(--text-title);
+        .auth-view-container { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            position: relative; 
+            overflow: hidden; 
+            background: radial-gradient(circle at center, #1a0b10 0%, var(--bg-base) 100%); 
         }
 
-        /* === БОКОВАЯ И НИЖНЯЯ НАВИГАЦИЯ === */
-        #app-view { display: none; min-height: 100vh; }
-        
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: var(--bg-surface);
-            border-right: 1px solid var(--border-light);
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
-            transition: var(--transition);
-        }
-        .sidebar-brand {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--text-title);
-            padding: 0 15px 40px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            letter-spacing: -1px;
-        }
-        .sidebar-brand span { color: var(--brand-primary); }
-        
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 16px 20px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 15px;
-            border-radius: var(--radius-md);
-            transition: var(--transition);
-            margin-bottom: 8px;
-            width: 100%;
-            text-align: left;
-        }
-        .nav-link i { font-size: 18px; width: 20px; text-align: center; }
-        .nav-link:hover { background: var(--bg-glass-hover); color: var(--text-title); }
-        .nav-link.active {
-            background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%);
-            color: var(--brand-primary);
-            position: relative;
-        }
-        .nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 15%;
-            height: 70%;
-            width: 4px;
-            background: var(--brand-primary);
-            border-radius: 0 4px 4px 0;
+        .auth-card { 
+            background: var(--bg-glass); 
+            backdrop-filter: blur(30px); 
+            padding: 45px 40px; 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); 
+            width: 100%; 
+            max-width: 420px; 
+            text-align: center; 
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
-        .bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-surface);
-            border-top: 1px solid var(--border-light);
-            justify-content: space-around;
-            padding: 10px 5px 20px 5px;
-            z-index: 100;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-secondary);
-            font-size: 10px;
-            font-weight: 600;
-            padding: 8px;
-            width: 25%;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .nav-item i { font-size: 20px; margin-bottom: 2px; }
-        .nav-item.active { color: var(--brand-primary); }
-
-        /* === ОСНОВНОЙ КОНТЕНТ === */
-        .main-wrapper {
-            margin-left: 280px;
-            padding: 40px 60px;
-            min-height: 100vh;
-            transition: var(--transition);
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .header-title {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--text-title);
-            letter-spacing: -1px;
-        }
-        
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: var(--bg-surface);
-            padding: 8px 24px 8px 8px;
-            border-radius: 50px;
-            border: 1px solid var(--border-light);
-        }
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: #fff;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(255,42,95,0.3);
-        }
-        .user-info { display: flex; flex-direction: column; }
-        .user-email { font-size: 14px; font-weight: 700; color: var(--text-title); }
-        .user-role { font-size: 12px; color: var(--success); font-weight: 600; }
-        .btn-logout { margin-left: 10px; color: var(--text-secondary); font-size: 18px; transition: var(--transition); }
-        .btn-logout:hover { color: var(--danger); transform: scale(1.1); }
-
-        .section { display: none; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .section.active { display: block; }
-
-        /* === КАРТОЧКИ И ФОРМЫ === */
-        .glass-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .card-heading {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-title);
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .card-heading i {
-            color: var(--brand-primary);
-            background: rgba(255,42,95,0.1);
-            padding: 10px;
-            border-radius: 10px;
+        .auth-logo { 
+            font-size: 36px; 
+            font-weight: 800; 
+            margin-bottom: 10px; 
+            letter-spacing: -1.5px; 
+            color: var(--text-title); 
         }
 
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
-        .input-box { display: flex; flex-direction: column; gap: 8px; }
-        .input-box label {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .auth-logo span { 
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
-        .styled-input {
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: var(--text-title);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            transition: var(--transition);
-            width: 100%;
-        }
-        .styled-input:focus {
-            border-color: var(--brand-primary);
-            background: rgba(255,42,95,0.02);
-            box-shadow: inset 0 0 0 1px var(--brand-primary);
-        }
-        
-        select.styled-input {
-            appearance: none;
-            cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-        }
-        select.styled-input option { background: var(--bg-surface); color: var(--text-title); }
 
-        /* === ПЛОЩАДКИ (DSPs) === */
-        .dsp-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-light);
+        .auth-desc { 
+            color: var(--text-secondary); 
+            margin-bottom: 30px; 
+            font-size: 14px; 
         }
-        .dsp-toolbar button {
-            color: var(--brand-primary);
-            font-weight: 700;
-            font-size: 14px;
-            padding: 5px 10px;
-            transition: 0.2s;
-        }
-        .dsp-toolbar button:hover { color: #fff; }
-        
-        .dsp-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .dsp-label {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: var(--bg-input);
-            padding: 14px 18px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: var(--transition);
-            user-select: none;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-        .dsp-label:hover { border-color: rgba(255,255,255,0.2); }
-        .dsp-label input { display: none; }
-        
-        .checkbox-box {
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            border: 2px solid var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-        .checkbox-box i { color: #fff; font-size: 12px; opacity: 0; transform: scale(0.5); transition: var(--transition); }
-        .dsp-label input:checked + .checkbox-box {
-            background: var(--brand-primary);
-            border-color: var(--brand-primary);
-            box-shadow: 0 0 15px rgba(255,42,95,0.4);
-        }
-        .dsp-label input:checked + .checkbox-box i { opacity: 1; transform: scale(1); }
-        .dsp-label:has(input:checked) { border-color: var(--brand-primary); background: rgba(255,42,95,0.05); }
 
-        /* === СЕТКА ТАРИФОВ === */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
+        .input-wrapper { 
+            position: relative; 
+            margin-bottom: 16px; 
         }
-        .price-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            position: relative;
-            transition: var(--transition);
-        }
-        .price-card.popular {
-            border-color: var(--brand-primary);
-            background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%);
-        }
-        .price-card.popular::before {
-            content: 'ПОПУЛЯРНЫЙ';
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            color: #fff;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 14px;
-            border-radius: 50px;
-            letter-spacing: 1px;
-        }
-        .price-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-        .price-header h3 { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; }
-        .price-header p { color: var(--text-secondary); font-size: 14px; font-weight: 600; }
-        .price-cost { font-size: 38px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; margin: 10px 0; }
-        .price-cost span { font-size: 16px; color: var(--text-secondary); font-weight: 600; }
-        
-        .price-features { display: flex; flex-direction: column; gap: 14px; list-style: none; flex: 1; margin-bottom: 20px; }
-        .price-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; color: var(--text-primary); line-height: 1.4; }
-        .price-features li i { color: var(--success); font-size: 16px; margin-top: 2px; }
-        .price-features li.disabled { color: var(--text-secondary); opacity: 0.5; }
-        .price-features li.disabled i { color: var(--text-secondary); }
 
-        /* === КАТАЛОГ РЕЛИЗОВ === */
-        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .track-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 25px;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
+        .input-wrapper i { 
+            position: absolute; 
+            left: 18px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--text-secondary); 
+            font-size: 16px; 
+            transition: var(--transition); 
         }
-        .track-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--brand-primary);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+
+        .input-wrapper input { 
+            width: 100%; 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-title); 
+            padding: 16px 16px 16px 50px; 
+            border-radius: var(--radius-md); 
+            font-size: 15px; 
+            transition: var(--transition); 
+        }
+
+        .input-wrapper input:focus { 
+            border-color: var(--brand-primary); 
+            box-shadow: 0 0 15px rgba(255,42,95,0.1); 
+        }
+
+        .input-wrapper input:focus + i { 
+            color: var(--brand-primary); 
+        }
+
+        .btn-glow { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: var(--radius-md); 
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            color: #fff; 
+            font-weight: 700; 
+            font-size: 16px; 
+            letter-spacing: 0.5px; 
+            box-shadow: 0 10px 20px rgba(255,42,95,0.3); 
+            transition: var(--transition); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+
+        .btn-glow:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(255,42,95,0.4); 
+        }
+
+        .btn-glow:disabled { 
+            opacity: 0.7; 
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: none; 
+        }
+
+        .auth-toggle { 
+            margin-top: 20px; 
+            color: var(--text-secondary); 
+            font-size: 14px; 
+            font-weight: 600; 
+            display: inline-block; 
+            transition: var(--transition); 
+            padding: 10px; 
+        }
+
+        .auth-toggle:hover { 
+            color: var(--text-title); 
+        }
+
+        #app-view { 
+            display: none; 
+            min-height: 100vh; 
         }
         
-        .track-status {
-            align-self: flex-start;
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .sidebar { 
+            width: 280px; 
+            height: 100vh; 
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            background: var(--bg-surface); 
+            border-right: 1px solid var(--border-light); 
+            padding: 40px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 100; 
+            transition: var(--transition); 
         }
+
+        .sidebar-brand { 
+            font-size: 28px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+            padding: 0 15px 40px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            letter-spacing: -1px; 
+        }
+
+        .sidebar-brand span { 
+            color: var(--brand-primary); 
+        }
+
+        .nav-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            padding: 16px 20px; 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+            font-size: 15px; 
+            border-radius: var(--radius-md); 
+            transition: var(--transition); 
+            margin-bottom: 8px; 
+            width: 100%; 
+            text-align: left; 
+        }
+
+        .nav-link i { 
+            font-size: 18px; 
+            width: 20px; 
+            text-align: center; 
+        }
+
+        .nav-link:hover { 
+            background: var(--bg-glass-hover); 
+            color: var(--text-title); 
+        }
+
+        .nav-link.active { 
+            background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%); 
+            color: var(--brand-primary); 
+            position: relative; 
+        }
+
+        .nav-link.active::before { 
+            content: ''; 
+            position: absolute; 
+            left: 0; 
+            top: 15%; 
+            height: 70%; 
+            width: 4px; 
+            background: var(--brand-primary); 
+            border-radius: 0 4px 4px 0; 
+        }
+
+        .bottom-nav { 
+            display: none; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: var(--bg-surface); 
+            border-top: 1px solid var(--border-light); 
+            justify-content: space-around; 
+            padding: 10px 5px 20px 5px; 
+            z-index: 100; 
+        }
+
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 4px; 
+            color: var(--text-secondary); 
+            font-size: 10px; 
+            font-weight: 600; 
+            padding: 8px; 
+            width: 25%; 
+            cursor: pointer; 
+            transition: var(--transition); 
+        }
+
+        .nav-item i { 
+            font-size: 20px; 
+            margin-bottom: 2px; 
+        }
+
+        .nav-item.active { 
+            color: var(--brand-primary); 
+        }
+
+        .main-wrapper { 
+            margin-left: 280px; 
+            padding: 40px 60px; 
+            min-height: 100vh; 
+            transition: var(--transition); 
+        }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+        }
+
+        .header-title { 
+            font-size: 32px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+            letter-spacing: -1px; 
+        }
+
+        .user-menu { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            background: var(--bg-surface); 
+            padding: 8px 24px 8px 8px; 
+            border-radius: 50px; 
+            border: 1px solid var(--border-light); 
+        }
+
+        .user-avatar { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 800; 
+            color: #fff; 
+            font-size: 16px; 
+            box-shadow: 0 4px 15px rgba(255,42,95,0.3); 
+        }
+
+        .user-info { 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .user-email { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--text-title); 
+        }
+
+        .user-role { 
+            font-size: 12px; 
+            color: var(--success); 
+            font-weight: 600; 
+        }
+
+        .btn-logout { 
+            margin-left: 10px; 
+            color: var(--text-secondary); 
+            font-size: 18px; 
+            transition: var(--transition); 
+        }
+
+        .btn-logout:hover { 
+            color: var(--danger); 
+            transform: scale(1.1); 
+        }
+
+        .section { 
+            display: none; 
+            animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+
+        .section.active { 
+            display: block; 
+        }
+
+        .glass-card { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-lg); 
+            padding: 35px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+        }
+
+        .card-heading { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: var(--text-title); 
+            margin-bottom: 25px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .card-heading i { 
+            color: var(--brand-primary); 
+            background: rgba(255,42,95,0.1); 
+            padding: 10px; 
+            border-radius: 10px; 
+        }
+
+        .grid-2 { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 25px; 
+        }
+
+        .input-box { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
+
+        .input-box label { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        .styled-input { 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-title); 
+            padding: 16px; 
+            border-radius: var(--radius-sm); 
+            font-size: 15px; 
+            transition: var(--transition); 
+            width: 100%; 
+        }
+
+        .styled-input:focus { 
+            border-color: var(--brand-primary); 
+            background: rgba(255,42,95,0.02); 
+            box-shadow: inset 0 0 0 1px var(--brand-primary); 
+        }
+        
+        select.styled-input { 
+            appearance: none; 
+            cursor: pointer; 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
+            background-repeat: no-repeat; 
+            background-position: right 16px center; 
+            background-size: 16px; 
+        }
+
+        select.styled-input option { 
+            background: var(--bg-surface); 
+            color: var(--text-title); 
+        }
+
+        .dsp-toolbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid var(--border-light); 
+        }
+
+        .dsp-toolbar button { 
+            color: var(--brand-primary); 
+            font-weight: 700; 
+            font-size: 14px; 
+            padding: 5px 10px; 
+            transition: 0.2s; 
+        }
+
+        .dsp-toolbar button:hover { 
+            color: #fff; 
+        }
+        
+        .dsp-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 15px; 
+        }
+
+        .dsp-label { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: rgba(0,0,0,0.2); 
+            padding: 14px 18px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border-light); 
+            cursor: pointer; 
+            transition: var(--transition); 
+            user-select: none; 
+            font-weight: 600; 
+            color: var(--text-primary); 
+            font-size: 14px; 
+        }
+
+        .dsp-label:hover { 
+            border-color: rgba(255,255,255,0.2); 
+        }
+
+        .dsp-label input { 
+            display: none; 
+        }
+        
+        .checkbox-box { 
+            width: 22px; 
+            height: 22px; 
+            border-radius: 6px; 
+            border: 2px solid var(--text-secondary); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: var(--transition); 
+        }
+
+        .checkbox-box i { 
+            color: #fff; 
+            font-size: 12px; 
+            opacity: 0; 
+            transform: scale(0.5); 
+            transition: var(--transition); 
+        }
+
+        .dsp-label input:checked + .checkbox-box { 
+            background: var(--brand-primary); 
+            border-color: var(--brand-primary); 
+            box-shadow: 0 0 15px rgba(255,42,95,0.4); 
+        }
+
+        .dsp-label input:checked + .checkbox-box i { 
+            opacity: 1; 
+            transform: scale(1); 
+        }
+
+        .dsp-label:has(input:checked) { 
+            border-color: var(--brand-primary); 
+            background: rgba(255,42,95,0.05); 
+        }
+
+        .pricing-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            margin-top: 20px; 
+        }
+
+        .price-card { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-lg); 
+            padding: 40px 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            position: relative; 
+            transition: var(--transition); 
+        }
+
+        .price-card.popular { 
+            border-color: var(--brand-primary); 
+            background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%); 
+        }
+
+        .price-card.popular::before { 
+            content: 'ПОПУЛЯРНЫЙ'; 
+            position: absolute; 
+            top: -14px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            color: #fff; 
+            font-size: 11px; 
+            font-weight: 800; 
+            padding: 4px 14px; 
+            border-radius: 50px; 
+            letter-spacing: 1px; 
+        }
+
+        .price-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+        }
+
+        .price-header h3 { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+            margin-bottom: 5px; 
+        }
+
+        .price-header p { 
+            color: var(--text-secondary); 
+            font-size: 14px; 
+            font-weight: 600; 
+        }
+
+        .price-cost { 
+            font-size: 38px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+            letter-spacing: -1px; 
+            margin: 10px 0; 
+        }
+
+        .price-cost span { 
+            font-size: 16px; 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+        }
+
+        .price-features { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 14px; 
+            list-style: none; 
+            flex: 1; 
+            margin-bottom: 20px; 
+        }
+
+        .price-features li { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+            font-size: 13.5px; 
+            color: var(--text-primary); 
+            line-height: 1.4; 
+        }
+
+        .price-features li i { 
+            color: var(--success); 
+            font-size: 16px; 
+            margin-top: 2px; 
+        }
+
+        .price-features li.disabled { 
+            color: var(--text-secondary); 
+            opacity: 0.5; 
+        }
+
+        .price-features li.disabled i { 
+            color: var(--text-secondary); 
+        }
+
+        .releases-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .track-card { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-lg); 
+            padding: 25px; 
+            transition: var(--transition); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            position: relative; 
+        }
+
+        .track-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--brand-primary); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); 
+        }
+
+        .track-status { 
+            align-self: flex-start; 
+            padding: 6px 14px; 
+            border-radius: 50px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
         .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
         .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
         
-        .track-title { font-size: 22px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; line-height: 1.2; }
-        .track-artist { color: var(--text-primary); font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-        .track-meta { color: var(--text-secondary); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .track-title { 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+            margin-bottom: 5px; 
+            line-height: 1.2; 
+        }
+
+        .track-artist { 
+            color: var(--text-primary); 
+            font-weight: 600; 
+            font-size: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 5px; 
+        }
+
+        .track-meta { 
+            color: var(--text-secondary); 
+            font-size: 13px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
         
-        .track-codes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-family: monospace; display: flex; flex-direction: column; gap: 4px; }
-        .track-codes-box b { color: #A78BFA; }
-        .reject-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; padding: 12px; border-radius: 8px; font-size: 12px; line-height: 1.4; }
-
-        .btn-action-mobile {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 5px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        .btn-action-mobile:hover { opacity: 0.8; }
-
-        .track-footer {
-            margin-top: auto;
-            padding-top: 15px;
-            border-top: 1px dashed var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 600;
+        .track-codes-box { 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid var(--border-light); 
+            padding: 10px 14px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            font-family: monospace; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px; 
         }
 
-        .empty-dashboard {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 80px 20px;
-            text-align: center;
-            background: rgba(255,255,255,0.02);
-            border-radius: var(--radius-lg);
-            border: 1px dashed var(--border-light);
+        .track-codes-box b { 
+            color: #A78BFA; 
         }
-        .empty-dashboard i { font-size: 56px; margin-bottom: 20px; color: var(--brand-primary); }
-        .empty-dashboard h3 { font-size: 24px; color: var(--text-title); margin-bottom: 10px; font-weight: 800; }
 
-        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
-        .btn-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+        .reject-box { 
+            background: rgba(239,68,68,0.1); 
+            border: 1px solid rgba(239,68,68,0.3); 
+            color: #FCA5A5; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            line-height: 1.4; 
+        }
+
+        .btn-action-mobile { 
+            width: 100%; 
+            padding: 10px 14px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 12px; 
+            margin-top: 5px; 
+            text-align: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            transition: var(--transition); 
+        }
+
+        .btn-action-mobile:hover { 
+            opacity: 0.8; 
+        }
+
+        .track-footer { 
+            margin-top: auto; 
+            padding-top: 15px; 
+            border-top: 1px dashed var(--border-light); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+        }
+
+        .empty-dashboard { 
+            grid-column: 1 / -1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 80px 20px; 
+            text-align: center; 
+            background: rgba(255,255,255,0.02); 
+            border-radius: var(--radius-lg); 
+            border: 1px dashed var(--border-light); 
+        }
+
+        .empty-dashboard i { 
+            font-size: 56px; 
+            margin-bottom: 20px; 
+            color: var(--brand-primary); 
+        }
+
+        .empty-dashboard h3 { 
+            font-size: 24px; 
+            color: var(--text-title); 
+            margin-bottom: 10px; 
+            font-weight: 800; 
+        }
+
+        .spinner { 
+            width: 40px; 
+            height: 40px; 
+            border: 4px solid var(--border-light); 
+            border-top-color: var(--brand-primary); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin: 0 auto; 
+        }
+
+        .btn-spinner { 
+            width: 20px; 
+            height: 20px; 
+            border: 2px solid rgba(255,255,255,0.3); 
+            border-top-color: #fff; 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
 
         /* === ЧАТ ПОДДЕРЖКИ (ВИДЖЕТ) === */
         #chat-widget-btn {
@@ -636,7 +893,11 @@
             z-index: 9999;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #chat-widget-btn:hover { transform: scale(1.1); }
+
+        #chat-widget-btn:hover { 
+            transform: scale(1.1); 
+        }
+
         #chat-badge {
             position: absolute;
             top: 0;
@@ -668,11 +929,13 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             overflow: hidden;
         }
+
         #chat-window.open {
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
         }
+
         .chat-header {
             background: rgba(255,42,95,0.1);
             padding: 18px 20px;
@@ -683,6 +946,7 @@
             align-items: center;
             border-bottom: 1px solid var(--border-light);
         }
+
         .chat-body {
             flex: 1;
             padding: 15px;
@@ -697,14 +961,17 @@
             flex-direction: column;
             max-width: 85%;
         }
+
         .chat-msg-container.user {
             align-self: flex-end;
             align-items: flex-end;
         }
+
         .chat-msg-container.admin {
             align-self: flex-start;
             align-items: flex-start;
         }
+
         .chat-msg {
             padding: 12px 16px;
             border-radius: 16px;
@@ -712,17 +979,20 @@
             line-height: 1.4;
             word-break: break-word;
         }
+
         .chat-msg-container.user .chat-msg {
             background: var(--brand-primary);
             color: white;
             border-bottom-right-radius: 4px;
         }
+
         .chat-msg-container.admin .chat-msg {
             background: var(--bg-input);
             color: white;
             border-bottom-left-radius: 4px;
             border: 1px solid var(--border-light);
         }
+
         .chat-time {
             font-size: 10px;
             color: var(--text-secondary);
@@ -745,6 +1015,7 @@
             gap: 10px;
             background: var(--bg-base);
         }
+
         .chat-input {
             flex: 1;
             background: var(--bg-input);
@@ -756,7 +1027,11 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        .chat-input:focus { border-color: var(--brand-primary); }
+
+        .chat-input:focus { 
+            border-color: var(--brand-primary); 
+        }
+
         .chat-send {
             width: 45px;
             height: 45px;
@@ -771,34 +1046,76 @@
             flex-shrink: 0;
             transition: transform 0.2s;
         }
-        .chat-send:hover { transform: scale(1.1); }
+
+        .chat-send:hover { 
+            transform: scale(1.1); 
+        }
 
         /* === АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ И МОБИЛЬНЫХ === */
         @media(max-width: 1024px) {
-            .sidebar { width: 80px; padding: 30px 10px; align-items: center; }
-            .sidebar-brand span, .nav-link span { display: none; }
-            .sidebar-brand { padding: 0 0 20px; font-size: 20px; justify-content: center; }
-            .nav-link { justify-content: center; padding: 14px; }
-            .main-wrapper { margin-left: 80px; padding: 30px 20px; }
-            .grid-2 { grid-template-columns: 1fr; }
+            .sidebar { 
+                width: 80px; 
+                padding: 30px 10px; 
+                align-items: center; 
+            }
+            .sidebar-brand span, .nav-link span { 
+                display: none; 
+            }
+            .sidebar-brand { 
+                padding: 0 0 20px; 
+                font-size: 20px; 
+                justify-content: center; 
+            }
+            .nav-link { 
+                justify-content: center; 
+                padding: 14px; 
+            }
+            .main-wrapper { 
+                margin-left: 80px; 
+                padding: 30px 20px; 
+            }
+            .grid-2 { 
+                grid-template-columns: 1fr; 
+            }
         }
         
         @media(max-width: 600px) {
-            .sidebar { display: none; } /* Скрываем боковую панель на мобильных */
-            .bottom-nav { display: flex; } /* Показываем нижнюю навигацию */
+            .sidebar { 
+                display: none; 
+            } 
+            .bottom-nav { 
+                display: flex; 
+            } 
             
             .main-wrapper {
                 margin-left: 0;
-                margin-bottom: 80px; /* Отступ для нижней панели */
+                margin-bottom: 80px; 
                 padding: 20px 15px;
             }
-            .header-title { font-size: 26px; }
-            .auth-card { padding: 35px 20px; }
-            .glass-card { padding: 25px 20px; }
-            .releases-grid { grid-template-columns: 1fr; }
             
-            /* Адаптация чата под экран телефона */
-            #chat-widget-btn { bottom: 90px; right: 20px; width: 55px; height: 55px; }
+            .header-title { 
+                font-size: 26px; 
+            }
+            
+            .auth-card { 
+                padding: 35px 20px; 
+            }
+            
+            .glass-card { 
+                padding: 25px 20px; 
+            }
+            
+            .releases-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            #chat-widget-btn { 
+                bottom: 90px; 
+                right: 20px; 
+                width: 55px; 
+                height: 55px; 
+            }
+            
             #chat-window {
                 width: calc(100% - 30px);
                 right: 15px;
@@ -850,6 +1167,7 @@
                 <i class="fa-solid fa-envelope"></i>
                 <input type="email" id="auth-email" placeholder="E-mail адрес" autocomplete="email">
             </div>
+            
             <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" id="auth-password" placeholder="Пароль (от 6 символов)" autocomplete="current-password">
@@ -862,6 +1180,7 @@
             <button class="btn-glow" id="auth-btn">
                 <span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
             </button>
+            
             <button class="auth-toggle" id="auth-toggle-btn">Создать новый аккаунт</button>
         </div>
     </div>
@@ -872,17 +1191,25 @@
             <i class="fa-solid fa-paper-plane" style="font-size: 48px; color: var(--brand-primary); margin-bottom: 20px;"></i>
             <h2 style="color: white; margin-bottom: 10px;">Подтвердите вашу почту</h2>
             <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Мы отправили письмо подтверждения. Перейдите по ссылке в письме, чтобы активировать аккаунт.</p>
+            
             <button class="btn-glow" id="check-verify-btn" style="margin-bottom: 15px;">Я подтвердил почту</button>
             <button class="auth-toggle" id="resend-email-btn" style="margin-bottom: 15px;">Отправить письмо повторно</button>
-            <div><button id="verify-logout" style="color: var(--danger); font-size: 14px; font-weight: 600; background: none; border: none; cursor: pointer;">Выйти из аккаунта</button></div>
+            
+            <div>
+                <button id="verify-logout" style="color: var(--danger); font-size: 14px; font-weight: 600; background: none; border: none; cursor: pointer;">Выйти из аккаунта</button>
+            </div>
         </div>
     </div>
 
     <!-- 3. ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
+        
         <!-- БОКОВАЯ НАВИГАЦИЯ (ДЕСКТОП) -->
         <aside class="sidebar">
-            <div class="sidebar-brand"><i class="fa-solid fa-compact-disc"></i> <span>685m</span></div>
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-compact-disc"></i> <span>685m</span>
+            </div>
+            
             <nav style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
                 <button class="nav-link active" data-target="dashboard">
                     <i class="fa-solid fa-layer-group"></i> <span>Каталог релизов</span>
@@ -920,6 +1247,7 @@
         </nav>
 
         <main class="main-wrapper">
+            
             <header class="header">
                 <h1 class="header-title" id="page-title">Каталог релизов</h1>
                 <div class="user-menu">
@@ -937,7 +1265,9 @@
             <!-- СЕКЦИЯ: КАТАЛОГ РЕЛИЗОВ -->
             <section class="section active" id="dashboard">
                 <div class="releases-grid" id="data-container">
-                    <div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>
+                    <div style="grid-column: 1/-1; padding: 100px 0;">
+                        <div class="spinner"></div>
+                    </div>
                 </div>
             </section>
 
@@ -1139,9 +1469,34 @@
     <!-- СКРИПТЫ И ЛОГИКА FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            sendEmailVerification, 
+            onAuthStateChanged, 
+            signOut, 
+            sendPasswordResetEmail, 
+            updatePassword 
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            serverTimestamp, 
+            query, 
+            where, 
+            getDocs, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            deleteDoc, 
+            updateDoc, 
+            onSnapshot, 
+            arrayUnion 
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+        // === ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ ===
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
             authDomain: "music-label-e2581.firebaseapp.com",
@@ -1156,10 +1511,12 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // UID Владельца
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
         window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
 
+        // === ФУНКЦИЯ УВЕДОМЛЕНИЙ ===
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1169,9 +1526,13 @@
             container.appendChild(toast);
             
             setTimeout(() => toast.classList.add('show'), 50);
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.remove(), 400); 
+            }, 4000);
         }
 
+        // Заглушка для оплаты тарифов
         document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const planName = e.target.getAttribute('data-plan');
@@ -1179,7 +1540,7 @@
             });
         });
 
-        // --- УМНОЕ ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ---
+        // === УМНОЕ ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ===
         function formatChatTime(ts) {
             if (!ts) return '';
             const date = new Date(ts);
@@ -1187,8 +1548,8 @@
             const yesterday = new Date(today);
             yesterday.setDate(yesterday.getDate() - 1);
 
-            const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
-            const isYesterday = date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth() && date.getFullYear() === yesterday.getFullYear();
+            const isToday = date.toDateString() === today.toDateString();
+            const isYesterday = date.toDateString() === yesterday.toDateString();
 
             const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
@@ -1200,16 +1561,18 @@
             return `${day}.${month}.${date.getFullYear()}, ${timeStr}`;
         }
 
-        // --- ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE) ---
+        // === ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE) ===
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
         const chatBadge = document.getElementById('chat-badge');
         const chatInput = document.getElementById('chat-input');
         const typingIndicator = document.getElementById('typing-indicator');
+        
         let currentChatUnsub = null;
         let isTyping = false;
         let typingTimer;
 
+        // Открытие чата
         chatBtn.addEventListener('click', () => {
             chatWindow.classList.add('open');
             chatBtn.style.transform = 'scale(0)';
@@ -1218,12 +1581,13 @@
             }
         });
 
+        // Закрытие чата
         document.getElementById('close-chat-btn').addEventListener('click', () => {
             chatWindow.classList.remove('open');
             chatBtn.style.transform = 'scale(1)';
         });
 
-        // Индикатор набора текста
+        // Индикатор набора текста "Пользователь печатает..."
         chatInput.addEventListener('input', () => {
             if (!auth.currentUser) return;
             if (!isTyping) {
@@ -1237,6 +1601,7 @@
             }, 1500);
         });
 
+        // Отправка сообщения
         document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
         chatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') sendChatMessage();
@@ -1247,6 +1612,8 @@
             if(!val || !auth.currentUser) return;
             
             chatInput.value = '';
+            
+            // Сбрасываем статус печати
             clearTimeout(typingTimer);
             isTyping = false;
 
@@ -1277,16 +1644,19 @@
                         adminTyping: false
                     });
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Ошибка чата:", e); }
         }
 
+        // Отрисовка сообщений
         function renderChatMessages(msgs) {
             const body = document.getElementById('chat-body');
             body.innerHTML = '';
+            
             if(msgs.length === 0) {
                 body.innerHTML = '<div style="text-align:center; color:var(--text-secondary); font-size:12px; margin-top:20px;">Напишите ваш вопрос или предложение. Менеджер ответит в ближайшее время.</div>';
                 return;
             }
+            
             msgs.forEach(m => {
                 const isUser = m.sender === 'user';
                 body.innerHTML += `
@@ -1298,7 +1668,8 @@
             body.scrollTop = body.scrollHeight;
         }
 
-        // --- ЛОГИКА АВТОРИЗАЦИИ И СМЕНЫ ПАРОЛЯ ---
+
+        // === ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ ===
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -1322,6 +1693,7 @@
             }
         });
 
+        // Сброс пароля
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             if (!email) return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
@@ -1333,6 +1705,7 @@
             }
         });
 
+        // Авторизация / Регистрация
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -1366,31 +1739,42 @@
         document.getElementById('verify-logout').addEventListener('click', () => signOut(auth));
 
         document.getElementById('resend-email-btn').addEventListener('click', async () => {
-            try { await sendEmailVerification(auth.currentUser); notify("Письмо верификации отправлено повторно!"); } 
-            catch { notify("Подождите перед повторной отправкой", "error"); }
+            try { 
+                await sendEmailVerification(auth.currentUser); 
+                notify("Письмо верификации отправлено повторно!"); 
+            } catch { 
+                notify("Подождите перед повторной отправкой", "error"); 
+            }
         });
 
         document.getElementById('check-verify-btn').addEventListener('click', async () => {
             await auth.currentUser.reload();
-            if (auth.currentUser.emailVerified) { notify("Почта успешно подтверждена!"); location.reload(); } 
-            else { notify("Почта еще не подтверждена.", "error"); }
+            if (auth.currentUser.emailVerified) { 
+                notify("Почта успешно подтверждена!"); 
+                location.reload(); 
+            } else { 
+                notify("Почта еще не подтверждена.", "error"); 
+            }
         });
 
         async function loadUserProfile(user) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
             let nickname = user.email.split('@')[0];
+            
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
                 await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Базовый" }, { merge: true });
             }
+            
             document.getElementById('display-nickname').innerText = nickname;
             document.getElementById('setting-nickname').value = nickname;
             document.getElementById('setting-email').value = user.email;
             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
         }
 
+        // Сохранение настроек и смена пароля
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
             const newPassword = document.getElementById('setting-new-password').value;
@@ -1435,9 +1819,12 @@
             }
         });
 
+        // Отслеживание состояния сессии
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 await user.reload();
+                
+                // Проверка верификации почты
                 if (!user.emailVerified) {
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
@@ -1445,6 +1832,7 @@
                     chatBtn.style.display = 'none';
                     return;
                 }
+                
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
@@ -1455,6 +1843,7 @@
                 const adminBtn = document.getElementById('go-to-admin-btn');
                 const userRoleText = document.getElementById('user-role-text');
                 
+                // Если пользователь = Админ
                 if (user.uid === ADMIN_UID) {
                     adminBtn.style.display = 'flex';
                     userRoleText.innerText = 'Label Administrator';
@@ -1464,17 +1853,23 @@
                     userRoleText.innerText = 'Verified Artist';
                     userRoleText.style.color = 'var(--success)';
                 }
+                
                 fetchReleases(user.uid);
 
-                // Слушатель чата
+                // Слушатель чата пользователя в реальном времени
                 if(currentChatUnsub) currentChatUnsub();
                 currentChatUnsub = onSnapshot(doc(db, "support_chats", user.uid), (docSnap) => {
                     if(docSnap.exists()) {
                         const d = docSnap.data();
                         
-                        if (d.adminTyping) typingIndicator.style.display = 'block';
-                        else typingIndicator.style.display = 'none';
+                        // Показываем индикатор печати админа
+                        if (d.adminTyping) {
+                            typingIndicator.style.display = 'block';
+                        } else {
+                            typingIndicator.style.display = 'none';
+                        }
 
+                        // Уведомление на иконке (красная/зеленая точка)
                         if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
                             chatBadge.style.display = 'block';
                         } else {
@@ -1490,6 +1885,7 @@
                 });
 
             } else {
+                // Если не авторизован
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
@@ -1500,12 +1896,14 @@
             }
         });
 
+        // Навигация
         document.getElementById('go-to-admin-btn').addEventListener('click', () => window.location.href = 'admin.html');
 
         document.querySelectorAll('.nav-link[data-target], .nav-item[data-target]').forEach(link => {
             link.addEventListener('click', () => {
                 document.querySelectorAll('.nav-link[data-target], .nav-item[data-target]').forEach(n => n.classList.remove('active'));
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
                 link.classList.add('active');
                 
                 // Для мобильной навигации дублируем активный класс
@@ -1522,6 +1920,7 @@
             });
         });
 
+        // Запрос на удаление релиза
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
@@ -1540,6 +1939,7 @@
             }
         };
 
+        // ОТПРАВКА НОВОГО РЕЛИЗА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -1557,7 +1957,7 @@
             btn.disabled = true;
 
             try {
-                // Проверка лимитов по тарифу
+                // Проверка лимитов по тарифу (согласно новой политике)
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
@@ -1581,19 +1981,41 @@
                     }
                 }
 
+                // Запись релиза в базу
                 await addDoc(collection(db, "track_submissions"), {
-                    userId: auth.currentUser.uid, userEmail: auth.currentUser.email, userNickname: currentNick,
-                    artist, title, genre, type, platforms, coverUrl: cover, audioUrl: audio,
-                    status: "Ожидает модерации", upc: "", isrc: "", rejectReason: "", createdAt: serverTimestamp()
+                    userId: auth.currentUser.uid, 
+                    userEmail: auth.currentUser.email, 
+                    userNickname: currentNick,
+                    artist, 
+                    title, 
+                    genre, 
+                    type, 
+                    platforms, 
+                    coverUrl: cover, 
+                    audioUrl: audio,
+                    status: "Ожидает модерации", 
+                    upc: "", 
+                    isrc: "", 
+                    rejectReason: "", 
+                    createdAt: serverTimestamp()
                 });
 
                 notify("Трек успешно отправлен на модерацию!");
+                
+                // Очистка формы
                 ['r-title', 'r-artist', 'r-cover', 'r-audio'].forEach(id => document.getElementById(id).value = '');
+                
+                // Возврат в каталог
                 document.querySelector('.nav-item[data-target="dashboard"]').click();
-            } catch { notify("Ошибка подключения к базе.", "error"); }
-            finally { btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>'; btn.disabled = false; }
+            } catch { 
+                notify("Ошибка подключения к базе.", "error"); 
+            } finally { 
+                btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>'; 
+                btn.disabled = false; 
+            }
         });
 
+        // ЗАГРУЗКА РЕЛИЗОВ ПОЛЬЗОВАТЕЛЯ
         async function fetchReleases(uid) {
             const wrap = document.getElementById('data-container');
             wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
@@ -1617,6 +2039,7 @@
                     const id = docSnap.id;
                     const d = docSnap.data();
                     let sClass = "status-pending";
+                    
                     if (d.status === "Одобрено") sClass = "status-approved";
                     if (d.status === "Отклонено" || d.status.includes("удаление")) sClass = "status-rejected";
 
@@ -1624,6 +2047,7 @@
                     const count = d.platforms ? d.platforms.length : 0;
 
                     let deleteActionHtml = '';
+                    
                     if (d.status === "Ожидает модерации" && d.createdAt) {
                         const diffMinutes = (new Date().getTime() - d.createdAt.toDate().getTime()) / (1000 * 60);
                         if (diffMinutes <= 20) {
@@ -1643,7 +2067,10 @@
                                 <i class="fa-solid fa-trash"></i> Запросить удаление с площадок
                             </button>`;
                     } else if (d.status === "Запрос на удаление с площадок") {
-                        deleteActionHtml = `<div style="color: var(--warning); font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center;"><i class="fa-solid fa-clock"></i> Ожидает снятия с площадок администратором</div>`;
+                        deleteActionHtml = `
+                            <div style="color: var(--warning); font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center;">
+                                <i class="fa-solid fa-clock"></i> Ожидает снятия с площадок администратором
+                            </div>`;
                     } else {
                         deleteActionHtml = `
                             <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2);">
