@@ -57,10 +57,7 @@
         button { cursor: pointer; border: none; background: none; color: inherit; outline: none; }
         input, select { font-family: inherit; outline: none; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* УВЕДОМЛЕНИЯ */
@@ -68,8 +65,7 @@
         .toast {
             background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px);
             border: 1px solid var(--border-light); border-left: 4px solid var(--brand-primary);
-            padding: 16px 24px; border-radius: var(--radius-sm);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            padding: 16px 24px; border-radius: var(--radius-sm); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             display: flex; align-items: center; gap: 15px; font-weight: 600; color: #fff;
             transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
@@ -77,77 +73,65 @@
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
+        /* ЧАТ-ВИДЖЕТ ПОЛЬЗОВАТЕЛЯ */
+        #chat-widget-btn { position: fixed; bottom: 30px; right: 40px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(255,42,95,0.4); z-index: 9999; transition: transform 0.3s; }
+        #chat-widget-btn:hover { transform: scale(1.1); }
+        #chat-badge { position: absolute; top: 0; right: 0; width: 16px; height: 16px; background: var(--success); border-radius: 50%; border: 3px solid var(--bg-base); display: none; }
+        
+        #chat-window { position: fixed; bottom: 100px; right: 40px; width: 350px; height: 500px; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); display: flex; flex-direction: column; z-index: 9999; transform: translateY(20px); opacity: 0; pointer-events: none; transition: 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden; }
+        #chat-window.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .chat-header { background: rgba(255,42,95,0.1); padding: 15px 20px; font-weight: 800; color: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { padding: 10px 14px; border-radius: 12px; font-size: 13px; max-width: 80%; line-height: 1.4; width: fit-content; word-break: break-word; }
+        .chat-msg.user { background: var(--brand-primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-msg.admin { background: var(--bg-glass); color: white; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-light); }
+        .chat-footer { padding: 15px; border-top: 1px solid var(--border-light); display: flex; gap: 10px; background: var(--bg-base); }
+        .chat-input { flex: 1; background: var(--bg-glass); border: 1px solid var(--border-light); color: white; padding: 10px 15px; border-radius: 50px; font-size: 13px; outline: none; transition: 0.3s; }
+        .chat-input:focus { border-color: var(--brand-primary); }
+        .chat-send { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
+        .chat-send:hover { transform: scale(1.1); }
+        
+        @media(max-width: 600px) {
+            #chat-window { width: calc(100% - 30px); right: 15px; left: 15px; bottom: 90px; }
+            #chat-widget-btn { bottom: 90px; right: 15px; width: 55px; height: 55px; }
+        }
+
         /* ЭКРАН АВТОРИЗАЦИИ */
-        #auth-view {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            padding: 20px; position: relative; overflow: hidden;
-        }
-        .auth-card {
-            background: var(--bg-glass); backdrop-filter: blur(30px);
-            padding: 50px; border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            width: 100%; max-width: 420px; text-align: center;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        #auth-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow: hidden; }
+        .auth-card { background: var(--bg-glass); backdrop-filter: blur(30px); padding: 50px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); box-shadow: 0 30px 60px rgba(0,0,0,0.6); width: 100%; max-width: 420px; text-align: center; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .auth-logo { font-size: 38px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1.5px; color: var(--text-title); }
         .auth-logo span { background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .auth-desc { color: var(--text-secondary); margin-bottom: 35px; font-size: 15px; }
 
         .input-wrapper { position: relative; margin-bottom: 20px; }
         .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 16px; transition: var(--transition); }
-        .input-wrapper input {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light);
-            color: var(--text-title); padding: 18px 18px 18px 50px; border-radius: var(--radius-md);
-            font-size: 15px; transition: var(--transition);
-        }
+        .input-wrapper input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); color: var(--text-title); padding: 18px 18px 18px 50px; border-radius: var(--radius-md); font-size: 15px; transition: var(--transition); }
         .input-wrapper input:focus { border-color: var(--brand-primary); background: rgba(255,42,95,0.03); box-shadow: 0 0 20px rgba(255,42,95,0.1); }
         .input-wrapper input:focus + i { color: var(--brand-primary); }
 
-        .btn-glow {
-            width: 100%; padding: 18px; border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            color: #fff; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
-            box-shadow: 0 10px 20px rgba(255,42,95,0.3); transition: var(--transition);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+        .btn-glow { width: 100%; padding: 18px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; box-shadow: 0 10px 20px rgba(255,42,95,0.3); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,42,95,0.4); }
         .btn-glow:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
-
         .auth-toggle { margin-top: 25px; color: var(--text-secondary); font-size: 14px; font-weight: 600; display: inline-block; transition: var(--transition); }
         .auth-toggle:hover { color: var(--text-title); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        /* ЭКРАН ВЕРИФИКАЦИИ EMAIL */
         #verify-view { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 20px; }
         .verify-card { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 50px; border-radius: var(--radius-lg); max-width: 450px; text-align: center; }
 
         /* ДАШБОРД */
         #app-view { display: none; min-height: 100vh; }
-        
-        .sidebar {
-            width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
-            background: var(--bg-surface); border-right: 1px solid var(--border-light);
-            padding: 40px 20px; display: flex; flex-direction: column; z-index: 100;
-        }
+        .sidebar { width: 280px; height: 100vh; position: fixed; left: 0; top: 0; background: var(--bg-surface); border-right: 1px solid var(--border-light); padding: 40px 20px; display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease; }
         .sidebar-brand { font-size: 28px; font-weight: 800; color: var(--text-title); padding: 0 15px 40px; display: flex; align-items: center; gap: 12px; letter-spacing: -1px; }
         .sidebar-brand span { color: var(--brand-primary); }
         
-        .nav-link {
-            display: flex; align-items: center; gap: 15px; padding: 16px 20px;
-            color: var(--text-secondary); font-weight: 600; font-size: 15px;
-            border-radius: var(--radius-md); transition: var(--transition); margin-bottom: 8px; width: 100%; text-align: left;
-        }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 16px 20px; color: var(--text-secondary); font-weight: 600; font-size: 15px; border-radius: var(--radius-md); transition: var(--transition); margin-bottom: 8px; width: 100%; text-align: left; }
         .nav-link i { font-size: 18px; width: 20px; text-align: center; }
         .nav-link:hover { background: var(--bg-glass-hover); color: var(--text-title); }
-        .nav-link.active {
-            background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%);
-            color: var(--brand-primary); position: relative;
-        }
+        .nav-link.active { background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%); color: var(--brand-primary); position: relative; }
         .nav-link.active::before { content: ''; position: absolute; left: 0; top: 15%; height: 70%; width: 4px; background: var(--brand-primary); border-radius: 0 4px 4px 0; }
 
         .main-wrapper { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; gap: 15px; flex-wrap: wrap; }
         .header-title { font-size: 32px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; }
         
         .user-menu { display: flex; align-items: center; gap: 20px; background: var(--bg-surface); padding: 10px 24px 10px 10px; border-radius: 50px; border: 1px solid var(--border-light); }
@@ -161,28 +145,17 @@
         .section { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .section.active { display: block; }
 
-        .glass-card {
-            background: var(--bg-surface); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 35px; margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;
-        }
+        .glass-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 35px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
         .card-heading { font-size: 20px; font-weight: 700; color: var(--text-title); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
         .card-heading i { color: var(--brand-primary); background: rgba(255,42,95,0.1); padding: 10px; border-radius: 10px; }
 
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
         .input-box { display: flex; flex-direction: column; gap: 10px; }
         .input-box label { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
-        .styled-input {
-            background: rgba(0,0,0,0.2); border: 1px solid var(--border-light); color: var(--text-title);
-            padding: 16px; border-radius: var(--radius-sm); font-size: 15px; transition: var(--transition); width: 100%;
-        }
+        .styled-input { background: rgba(0,0,0,0.2); border: 1px solid var(--border-light); color: var(--text-title); padding: 16px; border-radius: var(--radius-sm); font-size: 15px; transition: var(--transition); width: 100%; }
         .styled-input:focus { border-color: var(--brand-primary); background: rgba(255,42,95,0.02); box-shadow: inset 0 0 0 1px var(--brand-primary); }
         
-        select.styled-input {
-            appearance: none; cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
-        }
+        select.styled-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; }
         select.styled-input option { background: var(--bg-surface); color: var(--text-title); }
 
         .dsp-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
@@ -190,44 +163,25 @@
         .dsp-toolbar button:hover { color: #fff; text-shadow: 0 0 10px var(--brand-primary); }
         
         .dsp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-        .dsp-label {
-            display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2);
-            padding: 16px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-light);
-            cursor: pointer; transition: var(--transition); user-select: none; font-weight: 600; color: var(--text-primary);
-        }
+        .dsp-label { display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); padding: 16px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-light); cursor: pointer; transition: var(--transition); user-select: none; font-weight: 600; color: var(--text-primary); }
         .dsp-label:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
         .dsp-label input { display: none; }
-        
-        .checkbox-box {
-            width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text-secondary);
-            display: flex; align-items: center; justify-content: center; transition: var(--transition);
-        }
+        .checkbox-box { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; transition: var(--transition); }
         .checkbox-box i { color: #fff; font-size: 12px; opacity: 0; transform: scale(0.5); transition: var(--transition); }
-        
         .dsp-label input:checked + .checkbox-box { background: var(--brand-primary); border-color: var(--brand-primary); box-shadow: 0 0 15px rgba(255,42,95,0.4); }
         .dsp-label input:checked + .checkbox-box i { opacity: 1; transform: scale(1); }
         .dsp-label:has(input:checked) { border-color: var(--brand-primary); background: rgba(255,42,95,0.05); }
 
         /* СЕТКА ТАРИФОВ */
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 20px; }
-        .price-card {
-            background: var(--bg-surface); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 40px 30px; display: flex; flex-direction: column; gap: 25px;
-            position: relative; transition: var(--transition);
-        }
+        .price-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px 30px; display: flex; flex-direction: column; gap: 20px; position: relative; transition: var(--transition); }
         .price-card.popular { border-color: var(--brand-primary); background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%); }
-        .price-card.popular::before {
-            content: 'ПОПУЛЯРНЫЙ'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff;
-            font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 50px; letter-spacing: 1px;
-        }
+        .price-card.popular::before { content: 'ПОПУЛЯРНЫЙ'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 50px; letter-spacing: 1px; }
         .price-card:hover { transform: translateY(-8px); border-color: var(--brand-primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        
         .price-header h3 { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; }
         .price-header p { color: var(--text-secondary); font-size: 14px; }
         .price-cost { font-size: 38px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; margin: 10px 0; }
         .price-cost span { font-size: 16px; color: var(--text-secondary); font-weight: 600; }
-        
         .price-features { display: flex; flex-direction: column; gap: 14px; list-style: none; flex: 1; margin-bottom: 20px; }
         .price-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 13.5px; color: var(--text-primary); line-height: 1.4; }
         .price-features li i { color: var(--success); font-size: 16px; margin-top: 2px; }
@@ -235,47 +189,69 @@
         .price-features li.disabled i { color: var(--text-secondary); }
 
         .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
-        .track-card {
-            background: var(--bg-surface); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 30px; transition: var(--transition);
-            display: flex; flex-direction: column; gap: 20px; position: relative;
-        }
+        .track-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 30px; transition: var(--transition); display: flex; flex-direction: column; gap: 20px; position: relative; }
         .track-card:hover { transform: translateY(-8px); border-color: var(--brand-primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,42,95,0.1); }
-        
-        .track-status {
-            align-self: flex-start; padding: 6px 16px; border-radius: 50px; font-size: 12px;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;
-        }
+        .track-status { align-self: flex-start; padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
         .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-        
         .track-title { font-size: 24px; font-weight: 800; color: var(--text-title); margin-bottom: 5px; line-height: 1.2; }
         .track-artist { color: var(--text-primary); font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
         .track-meta { color: var(--text-secondary); font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        
         .track-codes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: 10px; font-size: 13px; font-family: monospace; display: flex; flex-direction: column; gap: 4px; }
         .track-codes-box b { color: #A78BFA; }
-
         .reject-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; }
-
         .track-footer { margin-top: auto; padding-top: 20px; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
 
-        .empty-dashboard {
-            grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 100px 20px; text-align: center; background: rgba(255,255,255,0.02);
-            border-radius: var(--radius-lg); border: 1px dashed var(--border-light);
-        }
+        .empty-dashboard { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px; text-align: center; background: rgba(255,255,255,0.02); border-radius: var(--radius-lg); border: 1px dashed var(--border-light); }
         .empty-dashboard i { font-size: 64px; margin-bottom: 25px; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .empty-dashboard h3 { font-size: 28px; color: var(--text-title); margin-bottom: 10px; font-weight: 800; }
-
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
         .btn-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+
+        @media(max-width: 1024px) {
+            .sidebar { width: 80px; padding: 30px 10px; align-items: center; }
+            .sidebar-brand span, .nav-link span { display: none; }
+            .sidebar-brand { padding: 0 0 20px; font-size: 20px; justify-content: center; }
+            .nav-link { justify-content: center; padding: 14px; }
+            .main-wrapper { margin-left: 80px; padding: 30px 20px; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+        @media(max-width: 600px) {
+            .sidebar { width: 100vw; height: 65px; top: auto; bottom: 0; flex-direction: row; justify-content: space-around; padding: 8px; border-right: none; border-top: 1px solid var(--border-light); }
+            .sidebar-brand, #go-to-admin-btn { display: none; }
+            .nav-link { margin-bottom: 0; padding: 10px; border-radius: 50px; }
+            .nav-link.active::before { display: none; }
+            .main-wrapper { margin-left: 0; margin-bottom: 80px; padding: 20px 15px; }
+            .header-title { font-size: 24px; }
+            .auth-card { padding: 35px 20px; }
+            .releases-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
+
+    <!-- ЧАТ ПОДДЕРЖКИ (ВИДЖЕТ) -->
+    <div id="chat-widget-btn" style="display:none;">
+        <i class="fa-solid fa-headset"></i>
+        <span id="chat-badge"></span>
+    </div>
+
+    <div id="chat-window">
+        <div class="chat-header">
+            <div><i class="fa-solid fa-headset"></i> Поддержка 685 Music</div>
+            <button id="close-chat-btn" style="color:white; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div style="text-align:center; color:var(--text-secondary); font-size:12px; margin-top:20px;">Напишите ваш вопрос или предложение. Менеджер ответит в ближайшее время.</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Введите сообщение...">
+            <button id="chat-send-btn" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
 
     <!-- 1. ЭКРАН АВТОРИЗАЦИИ -->
     <div id="auth-view">
@@ -297,7 +273,6 @@
                 <input type="password" id="auth-password" placeholder="Пароль (от 6 символов)" autocomplete="current-password">
             </div>
 
-            <!-- Восстановление пароля -->
             <div id="forgot-btn-wrap" style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
                 <button id="forgot-password-btn" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; background: none; border: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Забыли пароль?</button>
             </div>
@@ -467,7 +442,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (ОБНОВЛЕННЫЕ) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
@@ -475,7 +450,6 @@
                 </div>
 
                 <div class="pricing-grid">
-                    <!-- Тариф 1 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Базовый</h3>
@@ -495,7 +469,6 @@
                         <button class="btn-glow dummy-buy-btn" data-plan="Базовый">Выбрать тариф</button>
                     </div>
 
-                    <!-- Тариф 2 -->
                     <div class="price-card popular">
                         <div class="price-header">
                             <h3>Расширенный</h3>
@@ -515,7 +488,6 @@
                         <button class="btn-glow dummy-buy-btn" data-plan="Расширенный">Подключить</button>
                     </div>
 
-                    <!-- Тариф 3 -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Профессиональный</h3>
@@ -528,7 +500,7 @@
                             <li><i class="fa-solid fa-check"></i> Экспресс-модерация 1-3 рабочих дня</li>
                             <li><i class="fa-solid fa-check"></i> Выплата роялти 90% (вывод от 500 ₽)</li>
                             <li><i class="fa-solid fa-check"></i> Загрузка клипов на платформы</li>
-                            <li><i class="fa-solid fa-check"></i> Возможность указывать свой лейбл (копирайт)</li>
+                            <li><i class="fa-solid fa-check"></i> Возможность указывать свой лейбл</li>
                             <li><i class="fa-solid fa-check"></i> Весь функционал расширенного тарифа</li>
                         </ul>
                         <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
@@ -550,7 +522,6 @@
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
                     </div>
                     
-                    <!-- Добавлено поле смены пароля -->
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>Смена пароля</label>
                         <input type="password" class="styled-input" id="setting-new-password" placeholder="Новый пароль (оставьте пустым, если не меняете)">
@@ -566,7 +537,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -605,6 +576,79 @@
             });
         });
 
+        // --- ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE) ---
+        const chatBtn = document.getElementById('chat-widget-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const chatBadge = document.getElementById('chat-badge');
+        let currentChatUnsub = null;
+
+        chatBtn.addEventListener('click', () => {
+            chatWindow.classList.add('open');
+            chatBtn.style.transform = 'scale(0)';
+            if(auth.currentUser) {
+                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { hasUnreadUser: false }).catch(()=>{});
+            }
+        });
+
+        document.getElementById('close-chat-btn').addEventListener('click', () => {
+            chatWindow.classList.remove('open');
+            chatBtn.style.transform = 'scale(1)';
+        });
+
+        document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') sendChatMessage();
+        });
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if(!val || !auth.currentUser) return;
+            
+            input.value = '';
+            const uid = auth.currentUser.uid;
+            const ref = doc(db, "support_chats", uid);
+            const msgObj = { sender: 'user', text: val, time: Date.now() };
+
+            try {
+                const snap = await getDoc(ref);
+                if(snap.exists()) {
+                    await updateDoc(ref, { 
+                        messages: arrayUnion(msgObj), 
+                        lastUpdated: serverTimestamp(), 
+                        hasUnreadAdmin: true 
+                    });
+                } else {
+                    const uDoc = await getDoc(doc(db, "users", uid));
+                    await setDoc(ref, {
+                        userId: uid,
+                        userEmail: auth.currentUser.email,
+                        userNickname: uDoc.data()?.nickname || 'Артист',
+                        messages: [msgObj],
+                        lastUpdated: serverTimestamp(),
+                        hasUnreadAdmin: true,
+                        hasUnreadUser: false
+                    });
+                }
+            } catch(e) { console.error("Ошибка чата:", e); }
+        }
+
+        function renderChatMessages(msgs) {
+            const body = document.getElementById('chat-body');
+            body.innerHTML = '';
+            if(msgs.length === 0) {
+                body.innerHTML = '<div style="text-align:center; color:var(--text-secondary); font-size:12px; margin-top:20px;">Напишите ваш вопрос или предложение. Менеджер ответит в ближайшее время.</div>';
+                return;
+            }
+            msgs.forEach(m => {
+                const isUser = m.sender === 'user';
+                body.innerHTML += `<div class="chat-msg ${isUser ? 'user' : 'admin'}">${m.text}</div>`;
+            });
+            body.scrollTop = body.scrollHeight;
+        }
+
+        // ----------------------------------------
+
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -628,18 +672,13 @@
             }
         });
 
-        // СБРОС ПАРОЛЯ ЧЕРЕЗ EMAIL
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
-            if (!email) {
-                return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
-            }
+            if (!email) return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
             try {
                 await sendPasswordResetEmail(auth, email);
                 notify("Письмо со ссылкой для сброса пароля отправлено на ваш E-mail!", "success");
-            } catch (err) {
-                notify("Ошибка: Пользователь не найден или email введен неверно.", "error");
-            }
+            } catch (err) { notify("Ошибка: Пользователь не найден или email введен неверно.", "error"); }
         });
 
         authBtn.addEventListener('click', async () => {
@@ -700,7 +739,6 @@
             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
         }
 
-        // СОХРАНЕНИЕ НАСТРОЕК (И СМЕНА ПАРОЛЯ)
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
             const newPassword = document.getElementById('setting-new-password').value;
@@ -712,12 +750,10 @@
                 btn.innerHTML = '<div class="btn-spinner"></div>';
                 btn.disabled = true;
 
-                // Обновляем никнейм в базе
                 await setDoc(doc(db, "users", auth.currentUser.uid), { nickname: newNick }, { merge: true });
                 document.getElementById('display-nickname').innerText = newNick;
                 document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
 
-                // Обновляем пароль, если поле не пустое
                 if (newPassword) {
                     if (newPassword.length < 6) {
                         notify("Новый пароль должен быть не менее 6 символов", "error");
@@ -754,33 +790,50 @@
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
                     document.getElementById('app-view').style.display = 'none';
+                    chatBtn.style.display = 'none';
                     return;
                 }
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
+                chatBtn.style.display = 'flex';
                 
                 await loadUserProfile(user);
 
-                const adminBtn = document.getElementById('go-to-admin-btn');
-                const userRoleText = document.getElementById('user-role-text');
-                
                 if (user.uid === ADMIN_UID) {
-                    adminBtn.style.display = 'flex';
-                    userRoleText.innerText = 'Label Administrator';
-                    userRoleText.style.color = '#a78bfa';
+                    document.getElementById('go-to-admin-btn').style.display = 'flex';
+                    document.getElementById('user-role-text').innerText = 'Label Administrator';
+                    document.getElementById('user-role-text').style.color = '#a78bfa';
                 } else {
-                    adminBtn.style.display = 'none';
-                    userRoleText.innerText = 'Verified Artist';
-                    userRoleText.style.color = 'var(--success)';
+                    document.getElementById('admin-display-email').style.display = 'none';
                 }
                 fetchReleases(user.uid);
+
+                // Слушатель чата пользователя
+                if(currentChatUnsub) currentChatUnsub();
+                currentChatUnsub = onSnapshot(doc(db, "support_chats", user.uid), (docSnap) => {
+                    if(docSnap.exists()) {
+                        const d = docSnap.data();
+                        if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
+                            chatBadge.style.display = 'block';
+                        } else {
+                            chatBadge.style.display = 'none';
+                        }
+                        renderChatMessages(d.messages || []);
+                        if(chatWindow.classList.contains('open') && d.hasUnreadUser) {
+                            updateDoc(doc(db, "support_chats", user.uid), { hasUnreadUser: false }).catch(()=>{});
+                        }
+                    }
+                });
+
             } else {
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
+                chatBtn.style.display = 'none';
                 authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span>' : '<span>Создать аккаунт</span>';
                 authBtn.disabled = false;
+                if(currentChatUnsub) { currentChatUnsub(); currentChatUnsub = null; }
             }
         });
 
@@ -834,7 +887,6 @@
             btn.disabled = true;
 
             try {
-                // Проверка лимитов по тарифу (согласно новой политике)
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
