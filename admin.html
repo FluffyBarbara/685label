@@ -99,13 +99,26 @@
         .btn-save { background: var(--success); color: white; padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
         .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
 
-        .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
+        /* СПИСОК ЮЗЕРОВ СТИЛИ */
         .users-list-wrapper { max-height: 500px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 12px; }
         .users-list-wrapper::-webkit-scrollbar { width: 4px; }
         .users-list-wrapper::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
         .users-list-wrapper::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 4px; }
+
+        /* СТИЛИ ЧАТА АДМИНА */
+        .support-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; height: 600px; }
+        .chat-list-panel { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow-y: auto; padding: 15px; }
+        .chat-view-panel { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); display: flex; flex-direction: column; overflow: hidden; }
+        .chat-item { padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .chat-item:hover { background: var(--bg-input); }
+        .chat-item.active { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.3); }
+        .chat-unread-dot { width: 10px; height: 10px; background: var(--success); border-radius: 50%; }
+        .chat-msg { padding: 10px 14px; border-radius: 12px; font-size: 13px; max-width: 75%; line-height: 1.4; width: fit-content; word-break: break-word; }
+        .chat-msg.admin { background: var(--brand-primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-msg.user { background: var(--bg-input); color: white; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-light); }
+
+        .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
+        @media(max-width: 1400px) { .admin-card { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -136,6 +149,7 @@
         <div class="admin-nav">
             <button class="admin-tab-btn active" data-tab="tab-releases"><i class="fa-solid fa-compact-disc"></i> Модерация релизов</button>
             <button class="admin-tab-btn" data-tab="tab-users"><i class="fa-solid fa-users"></i> Пользователи & E-mail</button>
+            <button class="admin-tab-btn" data-tab="tab-support"><i class="fa-solid fa-headset"></i> Поддержка (Чат)</button>
             <button class="admin-tab-btn" data-tab="tab-pitching"><i class="fa-solid fa-bullhorn"></i> Питчинг в плейлисты</button>
             <button class="admin-tab-btn" data-tab="tab-finance"><i class="fa-solid fa-wallet"></i> Распределение роялти</button>
             <button class="admin-tab-btn" data-tab="tab-calendar"><i class="fa-solid fa-calendar-days"></i> Календарь релизов</button>
@@ -187,8 +201,6 @@
         <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И EMAIL -->
         <div class="admin-section" id="tab-users">
             <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
-                
-                <!-- Список пользователей -->
                 <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                     <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-users-gear" style="color:var(--brand-primary)"></i> Управление аккаунтами</h3>
                     <div style="margin-bottom: 20px; position: relative;">
@@ -200,7 +212,6 @@
                     </div>
                 </div>
 
-                <!-- Почтовый клиент -->
                 <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md); height: fit-content;">
                     <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-envelope-open-text" style="color:#3B82F6"></i> E-mail Рассылка</h3>
                     <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Отправка официальных системных уведомлений пользователям.</p>
@@ -219,6 +230,27 @@
                     </div>
                     
                     <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:14px; border-radius:8px; font-weight:700; border:none; cursor: pointer; transition: 0.2s;">Отправить письмо</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 3: ПОДДЕРЖКА (ЧАТ) -->
+        <div class="admin-section" id="tab-support">
+            <div class="support-grid">
+                <div class="chat-list-panel" id="admin-chat-list">
+                    <div class="spinner"></div>
+                </div>
+                <div class="chat-view-panel">
+                    <div id="admin-chat-header" style="padding:15px; border-bottom:1px solid var(--border-light); font-weight:800; color:white; display:flex; align-items:center; gap:10px;">
+                        <i class="fa-solid fa-headset" style="color:var(--brand-primary)"></i> Чат поддержки
+                    </div>
+                    <div id="admin-chat-body" style="flex:1; padding:15px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; background:var(--bg-base);">
+                        <div style="margin:auto; color:var(--text-secondary); font-size:13px;">Выберите пользователя из списка слева</div>
+                    </div>
+                    <div style="padding:15px; border-top:1px solid var(--border-light); display:flex; gap:10px; background:var(--bg-surface);">
+                        <input type="text" id="admin-chat-input" disabled style="flex:1; background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px 15px; border-radius:50px; font-size:13px; outline:none;" placeholder="Выберите чат для ответа...">
+                        <button id="admin-chat-send" disabled style="width:45px; height:45px; border-radius:50%; background:var(--brand-primary); color:white; border:none; cursor:pointer; flex-shrink:0; transition:0.2s;"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,7 +291,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, orderBy, query, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -278,6 +310,11 @@
         
         let allSubmissions = [];
         let allUsers = [];
+        
+        // Переменные для чата админа
+        let allSupportChats = [];
+        let selectedChatUid = null;
+        let adminChatUnsub = null;
 
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -314,12 +351,105 @@
                 document.getElementById('app-view').style.display = 'block';
                 document.getElementById('admin-display-email').innerText = user.email;
                 loadReleases();
+                initAdminChat();
             } else {
                 signOut(auth);
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
+                if(adminChatUnsub) adminChatUnsub();
             }
         });
+
+        // ------------------ ЧАТ ПОДДЕРЖКИ (АДМИН) ------------------
+        function initAdminChat() {
+            adminChatUnsub = onSnapshot(query(collection(db, "support_chats"), orderBy("lastUpdated", "desc")), (snap) => {
+                allSupportChats = [];
+                snap.forEach(doc => allSupportChats.push({ id: doc.id, ...doc.data() }));
+                renderAdminChatList();
+                if(selectedChatUid) renderAdminChatWindow(selectedChatUid);
+            });
+        }
+
+        function renderAdminChatList() {
+            const list = document.getElementById('admin-chat-list');
+            list.innerHTML = '';
+            if(allSupportChats.length === 0) {
+                list.innerHTML = '<div style="color:var(--text-secondary); text-align:center; font-size:13px; margin-top:20px;">Чатов нет</div>';
+                return;
+            }
+            allSupportChats.forEach(chat => {
+                const isActive = selectedChatUid === chat.id ? 'active' : '';
+                const unreadDot = chat.hasUnreadAdmin ? '<div class="chat-unread-dot"></div>' : '';
+                
+                list.innerHTML += `
+                    <div class="chat-item ${isActive}" onclick="selectSupportChat('${chat.id}')">
+                        <div style="overflow:hidden;">
+                            <div style="font-weight:700; color:white; font-size:13px; margin-bottom:2px; white-space:nowrap; text-overflow:ellipsis;">${chat.userNickname || 'Артист'}</div>
+                            <div style="font-size:11px; color:var(--text-secondary); white-space:nowrap; text-overflow:ellipsis;">${chat.userEmail}</div>
+                        </div>
+                        ${unreadDot}
+                    </div>
+                `;
+            });
+        }
+
+        window.selectSupportChat = async (uid) => {
+            selectedChatUid = uid;
+            renderAdminChatList();
+            renderAdminChatWindow(uid);
+            
+            const chatInput = document.getElementById('admin-chat-input');
+            const chatSendBtn = document.getElementById('admin-chat-send');
+            chatInput.disabled = false;
+            chatSendBtn.disabled = false;
+            chatInput.placeholder = 'Написать сообщение...';
+            
+            try {
+                await updateDoc(doc(db, "support_chats", uid), { hasUnreadAdmin: false });
+            } catch(e) {}
+        };
+
+        function renderAdminChatWindow(uid) {
+            const chat = allSupportChats.find(c => c.id === uid);
+            const body = document.getElementById('admin-chat-body');
+            const header = document.getElementById('admin-chat-header');
+            
+            if(!chat) return;
+            
+            header.innerHTML = `<i class="fa-solid fa-headset" style="color:var(--brand-primary)"></i> Диалог: ${chat.userNickname}`;
+            body.innerHTML = '';
+            
+            const msgs = chat.messages || [];
+            msgs.forEach(m => {
+                const isAdmin = m.sender === 'admin';
+                body.innerHTML += `<div class="chat-msg ${isAdmin ? 'admin' : 'user'}">${m.text}</div>`;
+            });
+            body.scrollTop = body.scrollHeight;
+        }
+
+        document.getElementById('admin-chat-send').addEventListener('click', sendAdminChatMessage);
+        document.getElementById('admin-chat-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') sendAdminChatMessage();
+        });
+
+        async function sendAdminChatMessage() {
+            if(!selectedChatUid) return;
+            const input = document.getElementById('admin-chat-input');
+            const val = input.value.trim();
+            if(!val) return;
+            
+            input.value = '';
+            const msgObj = { sender: 'admin', text: val, time: Date.now() };
+            
+            try {
+                await updateDoc(doc(db, "support_chats", selectedChatUid), {
+                    messages: arrayUnion(msgObj),
+                    lastUpdated: serverTimestamp(),
+                    hasUnreadUser: true,
+                    hasUnreadAdmin: false
+                });
+            } catch(e) { notify("Ошибка отправки", "error"); }
+        }
 
         // ------------------ УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ ------------------
         async function loadUsers() {
@@ -380,10 +510,8 @@
         }
 
         window.setUserStatus = async (uid, status) => {
-            if (uid === ADMIN_UID) {
-                return notify("Критическая ошибка: Нельзя изменить статус владельца сайта!", "error");
-            }
-
+            if (uid === ADMIN_UID) return notify("Критическая ошибка: Нельзя изменить статус владельца сайта!", "error");
+            
             const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
             if(!confirm(`Подтвердите действие: ${statusNames[status]}`)) return;
             
@@ -418,7 +546,6 @@
                 await addDoc(collection(db, "mail_logs"), {
                     to, subject, body, sentAt: serverTimestamp()
                 });
-                
                 setTimeout(() => {
                     notify("Письмо успешно отправлено адресату!", "success");
                     document.getElementById('mail-subject').value = '';
@@ -537,7 +664,6 @@
                     </div>`;
             });
 
-            // Сохранение изменений
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -562,7 +688,6 @@
                 });
             });
 
-            // Удаление релиза администратором
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
