@@ -15,13 +15,16 @@
             
             --bg-base: #050505;
             --bg-surface: #0a0a0a;
-            --bg-glass: rgba(15, 15, 15, 0.8);
+            --bg-glass: rgba(15, 15, 15, 0.6);
+            --bg-glass-hover: rgba(255, 255, 255, 0.03);
             
             --text-title: #FFFFFF;
             --text-primary: #E2E8F0;
             --text-secondary: #94A3B8;
             
             --border-light: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(255, 42, 95, 0.5);
+            
             --success: #10B981;
             --warning: #F59E0B;
             --danger: #EF4444;
@@ -29,6 +32,7 @@
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
+            
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -124,7 +128,6 @@
             width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
             background: var(--bg-surface); border-right: 1px solid var(--border-light);
             padding: 40px 20px; display: flex; flex-direction: column; z-index: 100;
-            transition: transform 0.3s ease;
         }
         .sidebar-brand { font-size: 28px; font-weight: 800; color: var(--text-title); padding: 0 15px 40px; display: flex; align-items: center; gap: 12px; letter-spacing: -1px; }
         .sidebar-brand span { color: var(--brand-primary); }
@@ -144,7 +147,7 @@
 
         .main-wrapper { margin-left: 280px; padding: 40px 60px; min-height: 100vh; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; gap: 15px; flex-wrap: wrap; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
         .header-title { font-size: 32px; font-weight: 800; color: var(--text-title); letter-spacing: -1px; }
         
         .user-menu { display: flex; align-items: center; gap: 20px; background: var(--bg-surface); padding: 10px 24px 10px 10px; border-radius: 50px; border: 1px solid var(--border-light); }
@@ -209,7 +212,7 @@
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 20px; }
         .price-card {
             background: var(--bg-surface); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 40px 30px; display: flex; flex-direction: column; gap: 20px;
+            border-radius: var(--radius-lg); padding: 40px 30px; display: flex; flex-direction: column; gap: 25px;
             position: relative; transition: var(--transition);
         }
         .price-card.popular { border-color: var(--brand-primary); background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%); }
@@ -268,26 +271,6 @@
 
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
         .btn-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
-
-        /* МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ПК И ТЕЛЕФОНОВ */
-        @media(max-width: 1024px) {
-            .sidebar { width: 80px; padding: 30px 10px; align-items: center; }
-            .sidebar-brand span, .nav-link span { display: none; }
-            .sidebar-brand { padding: 0 0 20px; font-size: 20px; justify-content: center; }
-            .nav-link { justify-content: center; padding: 14px; }
-            .main-wrapper { margin-left: 80px; padding: 30px 20px; }
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-        @media(max-width: 600px) {
-            .sidebar { width: 100vw; height: 65px; top: auto; bottom: 0; flex-direction: row; justify-content: space-around; padding: 8px; border-right: none; border-top: 1px solid var(--border-light); }
-            .sidebar-brand, #go-to-admin-btn { display: none; }
-            .nav-link { margin-bottom: 0; padding: 10px; border-radius: 50px; }
-            .nav-link.active::before { display: none; }
-            .main-wrapper { margin-left: 0; margin-bottom: 80px; padding: 20px 15px; }
-            .header-title { font-size: 24px; }
-            .auth-card { padding: 35px 20px; }
-            .releases-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
@@ -312,6 +295,11 @@
             <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" id="auth-password" placeholder="Пароль (от 6 символов)" autocomplete="current-password">
+            </div>
+
+            <!-- Восстановление пароля -->
+            <div id="forgot-btn-wrap" style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
+                <button id="forgot-password-btn" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; background: none; border: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Забыли пароль?</button>
             </div>
             
             <button class="btn-glow" id="auth-btn">
@@ -479,11 +467,11 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (ОБНОВЛЕНО) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ (ОБНОВЛЕННЫЕ) -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
-                    <p style="color: var(--text-secondary);">Выберите подходящие условия для поддержки и модерации вашей музыки.</p>
+                    <p style="color: var(--text-secondary);">Выберите подходящие условия поддержки и модерации для вашей музыки.</p>
                 </div>
 
                 <div class="pricing-grid">
@@ -552,6 +540,7 @@
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
                     <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Настройки профиля</div>
+                    
                     <div class="input-box" style="margin-bottom: 20px;">
                         <label>Никнейм музыканта</label>
                         <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
@@ -560,6 +549,13 @@
                         <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
                     </div>
+                    
+                    <!-- Добавлено поле смены пароля -->
+                    <div class="input-box" style="margin-bottom: 25px;">
+                        <label>Смена пароля</label>
+                        <input type="password" class="styled-input" id="setting-new-password" placeholder="Новый пароль (оставьте пустым, если не меняете)">
+                    </div>
+
                     <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">Сохранить изменения</button>
                 </div>
             </section>
@@ -569,7 +565,7 @@
     <!-- СКРИПТЫ И ЛОГИКА -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -613,19 +609,36 @@
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
         const nickBox = document.getElementById('nickname-box');
+        const forgotBtnWrap = document.getElementById('forgot-btn-wrap');
         
         toggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
             if (isLoginMode) {
                 nickBox.style.display = 'none';
+                forgotBtnWrap.style.display = 'block';
                 document.getElementById('auth-subtitle').innerText = "Экосистема для независимых артистов";
                 authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
                 toggleBtn.innerText = "Создать новый аккаунт";
             } else {
                 nickBox.style.display = 'block';
+                forgotBtnWrap.style.display = 'none';
                 document.getElementById('auth-subtitle').innerText = "Регистрация нового артиста";
                 authBtn.innerHTML = '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
                 toggleBtn.innerText = "Уже есть аккаунт? Войти";
+            }
+        });
+
+        // СБРОС ПАРОЛЯ ЧЕРЕЗ EMAIL
+        document.getElementById('forgot-password-btn').addEventListener('click', async () => {
+            const email = document.getElementById('auth-email').value.trim();
+            if (!email) {
+                return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                notify("Письмо со ссылкой для сброса пароля отправлено на ваш E-mail!", "success");
+            } catch (err) {
+                notify("Ошибка: Пользователь не найден или email введен неверно.", "error");
             }
         });
 
@@ -687,15 +700,51 @@
             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
         }
 
+        // СОХРАНЕНИЕ НАСТРОЕК (И СМЕНА ПАРОЛЯ)
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
+            const newPassword = document.getElementById('setting-new-password').value;
+            const btn = document.getElementById('save-settings-btn');
+
             if (!newNick) return notify("Никнейм не может быть пустым", "error");
+
             try {
+                btn.innerHTML = '<div class="btn-spinner"></div>';
+                btn.disabled = true;
+
+                // Обновляем никнейм в базе
                 await setDoc(doc(db, "users", auth.currentUser.uid), { nickname: newNick }, { merge: true });
                 document.getElementById('display-nickname').innerText = newNick;
                 document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
-                notify("Никнейм успешно обновлен!");
-            } catch { notify("Ошибка сохранения никнейма", "error"); }
+
+                // Обновляем пароль, если поле не пустое
+                if (newPassword) {
+                    if (newPassword.length < 6) {
+                        notify("Новый пароль должен быть не менее 6 символов", "error");
+                        btn.innerHTML = 'Сохранить изменения';
+                        btn.disabled = false;
+                        return;
+                    }
+                    try {
+                        await updatePassword(auth.currentUser, newPassword);
+                        document.getElementById('setting-new-password').value = '';
+                        notify("Никнейм и пароль успешно обновлены!");
+                    } catch (pwErr) {
+                        if (pwErr.code === 'auth/requires-recent-login') {
+                            notify("В целях безопасности перезайдите в аккаунт для смены пароля", "error");
+                        } else {
+                            notify("Ошибка смены пароля: " + pwErr.message, "error");
+                        }
+                    }
+                } else {
+                    notify("Никнейм успешно обновлен!");
+                }
+            } catch (err) { 
+                notify("Ошибка сохранения данных", "error"); 
+            } finally {
+                btn.innerHTML = 'Сохранить изменения';
+                btn.disabled = false;
+            }
         });
 
         onAuthStateChanged(auth, async (user) => {
