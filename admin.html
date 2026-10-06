@@ -102,7 +102,6 @@
         .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* СКРОЛЛ ДЛЯ СПИСКА ЮЗЕРОВ */
         .users-list-wrapper { max-height: 500px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 12px; }
         .users-list-wrapper::-webkit-scrollbar { width: 4px; }
         .users-list-wrapper::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
@@ -351,6 +350,18 @@
                 if(status === 'banned') statusBadge = `<span style="color:var(--danger); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(239,68,68,0.1); border-radius:6px; text-transform:uppercase;">Заблокирован</span>`;
                 if(status === 'frozen') statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
 
+                let actionButtons = '';
+                if (u.id === ADMIN_UID) {
+                    actionButtons = `<div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:8px 12px; background:rgba(124,58,237,0.1); border-radius:6px; border:1px solid rgba(124,58,237,0.2);"><i class="fa-solid fa-crown"></i> Владелец</div>`;
+                } else {
+                    actionButtons = `
+                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Забанить</button>` : ''}
+                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Заморозить</button>` : ''}
+                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Разблокировать</button>` : ''}
+                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Написать</button>
+                    `;
+                }
+
                 container.innerHTML += `
                     <div style="background:var(--bg-input); padding:16px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light);">
                         <div>
@@ -358,13 +369,10 @@
                                 ${u.nickname || 'Безымянный'} ${statusBadge}
                             </div>
                             <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;"><i class="fa-solid fa-envelope"></i> ${u.email}</div>
-                            <div style="font-size:11px; color:#A78BFA;"><i class="fa-solid fa-crown"></i> Тариф: ${u.subscription || 'Базовый'}</div>
+                            <div style="font-size:11px; color:#A78BFA;"><i class="fa-solid fa-compact-disc"></i> Тариф: ${u.subscription || 'Базовый'}</div>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:6px;">
-                            ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Забанить</button>` : ''}
-                            ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Заморозить</button>` : ''}
-                            ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Разблокировать</button>` : ''}
-                            <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Написать</button>
+                            ${actionButtons}
                         </div>
                     </div>
                 `;
@@ -372,8 +380,13 @@
         }
 
         window.setUserStatus = async (uid, status) => {
+            if (uid === ADMIN_UID) {
+                return notify("Критическая ошибка: Нельзя изменить статус владельца сайта!", "error");
+            }
+
             const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
             if(!confirm(`Подтвердите действие: ${statusNames[status]}`)) return;
+            
             try {
                 await updateDoc(doc(db, "users", uid), { accountStatus: status });
                 notify(`Статус аккаунта изменен: ${statusNames[status]}`, "success");
@@ -402,7 +415,6 @@
             btn.disabled = true;
 
             try {
-                // Имитация отправки E-mail и запись лога в базу Firebase (Коллекция mail_logs)
                 await addDoc(collection(db, "mail_logs"), {
                     to, subject, body, sentAt: serverTimestamp()
                 });
@@ -525,6 +537,7 @@
                     </div>`;
             });
 
+            // Сохранение изменений
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -549,6 +562,7 @@
                 });
             });
 
+            // Удаление релиза администратором
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
