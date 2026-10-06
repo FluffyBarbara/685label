@@ -64,10 +64,6 @@
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 18px; }
         .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .stat-icon.total { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
-        .stat-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-icon.finance { background: rgba(124, 58, 237, 0.1); color: #A78BFA; }
         .stat-info h4 { font-size: 13px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
         .stat-info span { font-size: 24px; font-weight: 800; color: var(--text-title); }
 
@@ -93,8 +89,6 @@
         .rel-files { display: flex; flex-direction: column; gap: 8px; }
         .file-link { display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 12px; font-weight: 600; color: var(--text-primary); }
         .file-link:hover { border-color: var(--brand-primary); text-decoration: none; }
-        .file-link.audio i { color: #3B82F6; }
-        .file-link.cover i { color: #F59E0B; }
 
         .rel-codes { display: flex; flex-direction: column; gap: 10px; background: var(--bg-input); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
         .code-input-group label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 3px; }
@@ -108,7 +102,11 @@
         .spinner { width: 35px; height: 35px; border: 3px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        @media(max-width: 1400px) { .admin-card { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        /* СКРОЛЛ ДЛЯ СПИСКА ЮЗЕРОВ */
+        .users-list-wrapper { max-height: 500px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 12px; }
+        .users-list-wrapper::-webkit-scrollbar { width: 4px; }
+        .users-list-wrapper::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
+        .users-list-wrapper::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -138,6 +136,7 @@
 
         <div class="admin-nav">
             <button class="admin-tab-btn active" data-tab="tab-releases"><i class="fa-solid fa-compact-disc"></i> Модерация релизов</button>
+            <button class="admin-tab-btn" data-tab="tab-users"><i class="fa-solid fa-users"></i> Пользователи & E-mail</button>
             <button class="admin-tab-btn" data-tab="tab-pitching"><i class="fa-solid fa-bullhorn"></i> Питчинг в плейлисты</button>
             <button class="admin-tab-btn" data-tab="tab-finance"><i class="fa-solid fa-wallet"></i> Распределение роялти</button>
             <button class="admin-tab-btn" data-tab="tab-calendar"><i class="fa-solid fa-calendar-days"></i> Календарь релизов</button>
@@ -146,23 +145,24 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div>
+                <div class="stat-icon total" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;"><i class="fa-solid fa-compact-disc"></i></div>
                 <div class="stat-info"><h4>Всего релизов</h4><span id="stat-total">0</span></div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-icon pending" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);"><i class="fa-solid fa-clock"></i></div>
                 <div class="stat-info"><h4>На модерации</h4><span id="stat-pending">0</span></div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon approved"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="stat-icon approved" style="background: rgba(16, 185, 129, 0.1); color: var(--success);"><i class="fa-solid fa-check-circle"></i></div>
                 <div class="stat-info"><h4>Одобрено</h4><span id="stat-approved">0</span></div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon finance"><i class="fa-solid fa-ruble-sign"></i></div>
+                <div class="stat-icon finance" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);"><i class="fa-solid fa-trash"></i></div>
                 <div class="stat-info"><h4>Запросов на удаление</h4><span id="stat-delete">0</span></div>
             </div>
         </div>
 
+        <!-- ВКЛАДКА 1: РЕЛИЗЫ -->
         <div class="admin-section active" id="tab-releases">
             <div class="toolbar">
                 <div class="search-box">
@@ -177,7 +177,7 @@
                         <option value="Отклонено">Отклоненные</option>
                         <option value="Запрос на удаление с площадок">Запросы на удаление</option>
                     </select>
-                    <button class="btn-action" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)</button>
+                    <button class="btn-action btn-success-action" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)</button>
                 </div>
             </div>
             <div class="admin-releases-grid" id="admin-container">
@@ -185,38 +185,73 @@
             </div>
         </div>
 
+        <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И EMAIL -->
+        <div class="admin-section" id="tab-users">
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
+                
+                <!-- Список пользователей -->
+                <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                    <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-users-gear" style="color:var(--brand-primary)"></i> Управление аккаунтами</h3>
+                    <div style="margin-bottom: 20px; position: relative;">
+                        <i class="fa-solid fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="text" id="user-search-input" placeholder="Поиск артиста по E-mail или никнейму..." style="width: 100%; background: var(--bg-input); padding: 14px 14px 14px 40px; border-radius: var(--radius-sm); color: white; border: 1px solid var(--border-light); outline: none;">
+                    </div>
+                    <div id="users-list-container" class="users-list-wrapper">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+
+                <!-- Почтовый клиент -->
+                <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md); height: fit-content;">
+                    <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-envelope-open-text" style="color:#3B82F6"></i> E-mail Рассылка</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Отправка официальных системных уведомлений пользователям.</p>
+                    
+                    <div style="margin-bottom:15px;">
+                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Кому (E-mail)</label>
+                        <input type="email" id="mail-to" placeholder="artist@mail.com" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%; outline:none;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Тема письма</label>
+                        <input type="text" id="mail-subject" placeholder="Уведомление от 685 Music" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%; outline:none;">
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Сообщение</label>
+                        <textarea id="mail-body" rows="6" placeholder="Здравствуйте! Ваш релиз..." style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%; font-family:inherit; outline:none; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:14px; border-radius:8px; font-weight:700; border:none; cursor: pointer; transition: 0.2s;">Отправить письмо</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ОСТАЛЬНЫЕ ВКЛАДКИ -->
         <div class="admin-section" id="tab-pitching">
-            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков редакциях площадок</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Здесь вы можете формировать синопсис одобренных треков для отправки музыкальным редакторам Яндекс Музыки, VK Музыки и Spotify.</p>
+            <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков</h3>
                 <div id="pitching-list" style="display:grid; gap:15px;"></div>
             </div>
         </div>
 
         <div class="admin-section" id="tab-finance">
-            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов и отчетов</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Загрузите квартальный финансовый отчет от стриминговых сервисов для автоматического начисления роялти артистам.</p>
-                <div class="input-box" style="max-width:400px; margin-bottom:20px;">
-                    <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block;">Сумма общего дохода (₽)</label>
-                    <input type="number" id="finance-pool" class="styled-input" placeholder="Например: 50000" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+            <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов</h3>
+                <div style="max-width:400px; margin-bottom:20px;">
+                    <input type="number" id="finance-pool" placeholder="Сумма общего дохода (₽)" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
                 </div>
-                <button class="btn-action" style="background:var(--success); color:white;" onclick="alert('Расчет роялти запущен по условиям тарифов!')">Рассчитать роялти артистам</button>
+                <button style="background:var(--success); color:white; border:none; padding:14px 24px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="alert('Расчет роялти запущен по условиям тарифов!')">Рассчитать роялти</button>
             </div>
         </div>
 
         <div class="admin-section" id="tab-calendar">
-            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> График выхода релизов</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Расписание запланированных премьер лейбла на ближайшие дни.</p>
+            <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> Календарь релизов</h3>
                 <div id="calendar-list" style="display:grid; gap:12px;"></div>
             </div>
         </div>
 
         <div class="admin-section" id="tab-smartlinks">
-            <div class="glass-card" style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-link" style="color:#3B82F6"></i> Генератор Smart-ссылок</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Единые промо-страницы для каждого одобренного релиза.</p>
+            <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-link" style="color:#3B82F6"></i> Смарт-ссылки</h3>
                 <div id="smartlinks-list" style="display:grid; gap:12px;"></div>
             </div>
         </div>
@@ -225,7 +260,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
@@ -241,7 +276,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
+        
         let allSubmissions = [];
+        let allUsers = [];
 
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -258,7 +295,10 @@
                 document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
                 e.target.classList.add('active');
-                document.getElementById(e.target.getAttribute('data-tab')).classList.add('active');
+                const targetTab = e.target.getAttribute('data-tab');
+                document.getElementById(targetTab).classList.add('active');
+
+                if (targetTab === 'tab-users') loadUsers();
             });
         });
 
@@ -282,6 +322,107 @@
             }
         });
 
+        // ------------------ УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ ------------------
+        async function loadUsers() {
+            const container = document.getElementById('users-list-container');
+            container.innerHTML = '<div class="spinner"></div>';
+            try {
+                const snap = await getDocs(collection(db, "users"));
+                allUsers = [];
+                snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+                renderUsersList(allUsers);
+            } catch (e) {
+                container.innerHTML = '<div style="color:var(--danger); text-align:center; padding:20px;">Ошибка загрузки базы пользователей</div>';
+            }
+        }
+
+        function renderUsersList(users) {
+            const container = document.getElementById('users-list-container');
+            container.innerHTML = '';
+            
+            if(users.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-secondary);">Пользователи не найдены</div>';
+                return;
+            }
+
+            users.forEach(u => {
+                const status = u.accountStatus || 'Активен';
+                let statusBadge = `<span style="color:var(--success); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(16,185,129,0.1); border-radius:6px; text-transform:uppercase;">Активен</span>`;
+                if(status === 'banned') statusBadge = `<span style="color:var(--danger); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(239,68,68,0.1); border-radius:6px; text-transform:uppercase;">Заблокирован</span>`;
+                if(status === 'frozen') statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
+
+                container.innerHTML += `
+                    <div style="background:var(--bg-input); padding:16px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light);">
+                        <div>
+                            <div style="font-weight:800; color:white; font-size:15px; margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                                ${u.nickname || 'Безымянный'} ${statusBadge}
+                            </div>
+                            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;"><i class="fa-solid fa-envelope"></i> ${u.email}</div>
+                            <div style="font-size:11px; color:#A78BFA;"><i class="fa-solid fa-crown"></i> Тариф: ${u.subscription || 'Базовый'}</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Забанить</button>` : ''}
+                            ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Заморозить</button>` : ''}
+                            ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Разблокировать</button>` : ''}
+                            <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;">Написать</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.setUserStatus = async (uid, status) => {
+            const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
+            if(!confirm(`Подтвердите действие: ${statusNames[status]}`)) return;
+            try {
+                await updateDoc(doc(db, "users", uid), { accountStatus: status });
+                notify(`Статус аккаунта изменен: ${statusNames[status]}`, "success");
+                loadUsers();
+            } catch(e) { notify("Ошибка при изменении статуса", "error"); }
+        }
+
+        document.getElementById('user-search-input').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            renderUsersList(allUsers.filter(u => 
+                (u.email && u.email.toLowerCase().includes(val)) || 
+                (u.nickname && u.nickname.toLowerCase().includes(val))
+            ));
+        });
+
+        // ------------------ ПОЧТОВЫЙ КЛИЕНТ ------------------
+        document.getElementById('send-mail-btn').addEventListener('click', async () => {
+            const to = document.getElementById('mail-to').value.trim();
+            const subject = document.getElementById('mail-subject').value.trim();
+            const body = document.getElementById('mail-body').value.trim();
+
+            if(!to || !subject || !body) return notify("Заполните все поля письма", "error");
+            
+            const btn = document.getElementById('send-mail-btn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Отправка...';
+            btn.disabled = true;
+
+            try {
+                // Имитация отправки E-mail и запись лога в базу Firebase (Коллекция mail_logs)
+                await addDoc(collection(db, "mail_logs"), {
+                    to, subject, body, sentAt: serverTimestamp()
+                });
+                
+                setTimeout(() => {
+                    notify("Письмо успешно отправлено адресату!", "success");
+                    document.getElementById('mail-subject').value = '';
+                    document.getElementById('mail-body').value = '';
+                    btn.innerHTML = 'Отправить письмо';
+                    btn.disabled = false;
+                }, 1000);
+            } catch(e) {
+                notify("Сбой при отправке сообщения", "error");
+                btn.innerHTML = 'Отправить письмо';
+                btn.disabled = false;
+            }
+        });
+
+
+        // ------------------ УПРАВЛЕНИЕ РЕЛИЗАМИ ------------------
         async function loadReleases() {
             const container = document.getElementById('admin-container');
             container.innerHTML = '<div class="spinner"></div>';
@@ -384,7 +525,6 @@
                     </div>`;
             });
 
-            // Сохранение изменений
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -409,7 +549,6 @@
                 });
             });
 
-            // Удаление релиза администратором
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
