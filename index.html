@@ -97,20 +97,12 @@
         }
 
         @keyframes fadeUp { 
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            } 
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            } 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
         @keyframes spin { 
-            100% { 
-                transform: rotate(360deg); 
-            } 
+            100% { transform: rotate(360deg); } 
         }
 
         /* ==========================================
@@ -288,7 +280,7 @@
             display: none; 
             min-height: 100vh; 
         }
-
+        
         .sidebar { 
             width: 280px; 
             height: 100vh; 
@@ -619,7 +611,7 @@
         .dsp-label input { 
             display: none; 
         }
-
+        
         .checkbox-box { 
             width: 22px; 
             height: 22px; 
@@ -845,7 +837,7 @@
             align-items: center; 
             gap: 8px; 
         }
-
+        
         .track-codes-box { 
             background: rgba(0,0,0,0.3); 
             border: 1px solid var(--border-light); 
@@ -1226,6 +1218,7 @@
             width: 100%; 
             background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)) !important; 
             color: white !important; 
+            -webkit-text-fill-color: white !important; /* Принудительно окрашиваем текст */
             font-family: 'Plus Jakarta Sans', sans-serif !important; 
             font-weight: 800 !important; 
             border-radius: 12px !important; 
@@ -1233,6 +1226,8 @@
             font-size: 16px !important; 
             transition: transform 0.2s !important; 
             box-shadow: 0 10px 20px rgba(255,42,95,0.3) !important; 
+            border: none !important;
+            cursor: pointer !important;
         }
 
         .yoomoney-payment-form .ym-btn-pay:hover { 
@@ -1286,35 +1281,42 @@
             .bottom-nav { 
                 display: flex; 
             } 
-            .main-wrapper { 
-                margin-left: 0; 
+            
+            .main-wrapper {
+                margin-left: 0;
                 margin-bottom: 80px; 
-                padding: 20px 15px; 
+                padding: 20px 15px;
             }
+            
             .header-title { 
                 font-size: 26px; 
             }
+            
             .auth-card { 
                 padding: 35px 20px; 
             }
+            
             .glass-card { 
                 padding: 25px 20px; 
             }
+            
             .releases-grid { 
                 grid-template-columns: 1fr; 
             }
+            
             #chat-widget-btn { 
                 bottom: 90px; 
                 right: 20px; 
                 width: 55px; 
                 height: 55px; 
             }
-            #chat-window { 
-                width: calc(100% - 30px); 
-                right: 15px; 
-                left: 15px; 
-                bottom: 90px; 
-                height: 70vh; 
+            
+            #chat-window {
+                width: calc(100% - 30px);
+                right: 15px;
+                left: 15px;
+                bottom: 90px;
+                height: 70vh;
             }
         }
     </style>
@@ -1355,10 +1357,13 @@
                 </div>
             </div>
 
-            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA -->
+            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA ОТ ВЛАДЕЛЬЦА -->
+            <!-- Изменен тег кнопки, чтобы избежать затирания текста -->
             <form class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
+                
                 <div class="ym-products ym-display-none">
                     <div class="ym-product">
+                        <!-- Эти поля обновляются через JS при выборе тарифа/периода -->
                         <input disabled type="hidden" name="text" id="ym-text" value="Оплата тарифа">
                         <input disabled type="hidden" name="price" id="ym-price" value="0.0">
                         <input disabled type="hidden" name="quantity" value="1">
@@ -1371,10 +1376,12 @@
                 <input value="" type="hidden" name="ym_merchant_receipt">
                 
                 <div class="ym-customer-info">
+                    <!-- Email передается автоматически из аккаунта -->
                     <input name="cps_email" id="ym-email" class="ym-input ym-display-none" placeholder="Email" type="text" value="">
                 </div>
                 
                 <div class="ym-hidden-inputs">
+                    <!-- Редиректы после оплаты -->
                     <input name="shopSuccessURL" id="ym-success" type="hidden" value="https://fluffybarbara.github.io/685label/">
                     <input name="shopFailURL" id="ym-fail" type="hidden" value="https://fluffybarbara.github.io/685label/">
                 </div>
@@ -1383,13 +1390,20 @@
                 
                 <div class="ym-payment-btn-block ym-align-space-between">
                     <div class="ym-input-icon-rub">
+                        <!-- Сумма передается автоматически через JS -->
                         <input name="sum" id="ym-sum" class="ym-input ym-sum-input ym-required-input" type="number" step="any">
                     </div>
-                    <button data-text="Перейти к оплате" class="ym-btn-pay ym-result-price"><span class="ym-text-crop">Перейти к оплате</span></button>
+                    
+                    <!-- Изолированная от скриптов ЮKassa кнопка оплаты -->
+                    <button type="submit" class="ym-btn-pay">Перейти к оплате</button>
+                    
                     <img src="https://yookassa.ru/integration/simplepay/img/iokassa-gray.svg?v=1.35.0" class="ym-logo" width="114" height="27" alt="ЮKassa">
                 </div>
                 
+                <!-- Ваш ID магазина в ЮKassa -->
                 <input name="shopId" type="hidden" value="1485135">
+                
+                <!-- Кастомное поле для передачи UID пользователя в биллинг ЮKassa для webhook -->
                 <input name="customerNumber" id="ym-customer-id" type="hidden" value="">
             </form>
             <script src="https://yookassa.ru/integration/simplepay/js/yookassa_construct_form.js?v=1.35.0"></script>
@@ -1640,7 +1654,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (С ЮKASSA) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
@@ -1665,7 +1679,7 @@
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг и смарт-ссылки</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Приоритетная поддержка</li>
                         </ul>
-                        <button class="btn-glow yk-buy-btn" data-plan="Базовый" data-p1="299" data-p3="897" data-p12="1973">Оформить подписку</button>
+                        <button class="btn-glow yk-buy-btn" data-plan="Базовый" data-p1="299" data-p3="897" data-p12="1973">Выбрать тариф</button>
                     </div>
 
                     <!-- Тариф 2: Расширенный -->
@@ -1718,7 +1732,6 @@
                         <label>Никнейм музыканта</label>
                         <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
                     </div>
-                    
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
