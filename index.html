@@ -1048,6 +1048,15 @@
             align-items: flex-start;
         }
 
+        /* Имя отправителя в чате */
+        .chat-sender-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            padding: 0 4px;
+        }
+
         .chat-msg {
             padding: 12px 16px;
             border-radius: 16px;
@@ -1211,7 +1220,7 @@
             font-weight: 800; 
         }
         
-        /* Скрываем нативный UI ЮKassa, используем их скрытые поля и логику */
+        /* Скрываем нативный UI ЮKassa */
         .yoomoney-payment-form .ym-products, 
         .yoomoney-payment-form .ym-customer-info, 
         .yoomoney-payment-form .ym-input-icon-rub { 
@@ -1226,6 +1235,7 @@
             width: 100% !important; 
         }
 
+        /* Полностью переопределяем кнопку оплаты ЮKassa, чтобы текст не пропадал */
         .yoomoney-payment-form .ym-btn-pay { 
             width: 100% !important; 
             height: 56px !important;
@@ -1247,7 +1257,7 @@
             white-space: nowrap !important;
         }
 
-        /* Жестко сбрасываем стили спанов от Юкассы */
+        /* Запрещаем скриптам Юкассы ломать верстку внутри кнопки */
         .yoomoney-payment-form .ym-btn-pay .ym-text-crop {
             position: static !important;
             transform: none !important;
@@ -1256,6 +1266,7 @@
             line-height: normal !important;
             text-align: center !important;
             width: auto !important;
+            color: white !important;
         }
 
         .yoomoney-payment-form .ym-btn-pay:hover { 
@@ -1280,6 +1291,9 @@
                 width: 80px; 
                 padding: 30px 10px; 
                 align-items: center; 
+            }
+            .sidebar-brand span, .nav-link span { 
+                display: none; 
             }
             .sidebar-brand { 
                 padding: 0 0 20px; 
@@ -1383,7 +1397,7 @@
             </div>
 
             <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA ОТ ВЛАДЕЛЬЦА -->
-            <form class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
+            <form id="main-payment-form" class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
                 
                 <div class="ym-products ym-display-none">
                     <div class="ym-product">
@@ -1399,10 +1413,12 @@
                 <input value="" type="hidden" name="ym_merchant_receipt">
                 
                 <div class="ym-customer-info">
+                    <!-- Email передается автоматически из аккаунта -->
                     <input name="cps_email" id="ym-email" class="ym-input ym-display-none" placeholder="Email" type="text" value="">
                 </div>
                 
                 <div class="ym-hidden-inputs">
+                    <!-- Редиректы после оплаты -->
                     <input name="shopSuccessURL" id="ym-success" type="hidden" value="https://fluffybarbara.github.io/685label/">
                     <input name="shopFailURL" id="ym-fail" type="hidden" value="https://fluffybarbara.github.io/685label/">
                 </div>
@@ -1414,8 +1430,9 @@
                         <input name="sum" id="ym-sum" class="ym-input ym-sum-input ym-required-input" type="number" step="any">
                     </div>
                     
-                    <!-- Изолированная от скриптов ЮKassa кнопка оплаты -->
-                    <button type="submit" class="ym-btn-pay"><span class="ym-text-crop">Перейти к оплате</span></button>
+                    <button type="submit" class="ym-btn-pay">
+                        <span class="ym-text-crop">Перейти к оплате</span>
+                    </button>
                     
                     <img src="https://yookassa.ru/integration/simplepay/img/iokassa-gray.svg?v=1.35.0" class="ym-logo" width="114" height="27" alt="ЮKassa">
                 </div>
@@ -1506,7 +1523,7 @@
         <!-- БОКОВАЯ НАВИГАЦИЯ (ДЕСКТОП) -->
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <i class="fa-solid fa-compact-disc"></i> 685<span>music</span>
+                <i class="fa-solid fa-compact-disc"></i> <span>685 music</span>
             </div>
             
             <nav style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
@@ -1671,18 +1688,18 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ -->
+            <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
-                    <p style="color: var(--text-secondary);">Выберите подходящие условия поддержки и модерации для вашей музыки.</p>
+                    <p style="color: var(--text-secondary);">Для отгрузки релизов необходимо приобрести любой из платных тарифов.</p>
                 </div>
 
                 <div class="pricing-grid">
-                    <!-- Тариф 1: Базовый -->
+                    <!-- Тариф 1: Стартовый -->
                     <div class="price-card">
                         <div class="price-header">
-                            <h3>Базовый</h3>
+                            <h3>Стартовый</h3>
                             <p>1 973 ₽ / год</p>
                         </div>
                         <div class="price-cost">299 ₽ <span>/ мес</span></div>
@@ -1696,7 +1713,7 @@
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг и смарт-ссылки</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Приоритетная поддержка</li>
                         </ul>
-                        <button class="btn-glow yk-buy-btn" data-plan="Базовый" data-p1="299" data-p3="897" data-p12="1973">Выбрать тариф</button>
+                        <button class="btn-glow yk-buy-btn" data-plan="Стартовый" data-p1="299" data-p3="897" data-p12="1973">Выбрать тариф</button>
                     </div>
 
                     <!-- Тариф 2: Расширенный -->
@@ -1740,7 +1757,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НАСТРОЙКИ -->
+            <!-- СЕКЦИЯ: НАСТРОЙКИ (СМЕНА ПАРОЛЯ) -->
             <section class="section" id="settings">
                 <div class="glass-card" style="max-width: 600px;">
                     <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Настройки профиля</div>
@@ -1849,6 +1866,7 @@
         // ==========================================
         let selectedPlanPrices = { p1: 0, p3: 0, p12: 0 };
         let currentSelectedPlan = '';
+        let currentSelectedMonths = 1;
 
         document.querySelectorAll('.yk-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -1870,8 +1888,10 @@
                 document.getElementById('ym-email').value = auth.currentUser.email;
                 document.getElementById('ym-customer-id').value = auth.currentUser.uid;
                 
-                document.getElementById('ym-success').value = window.location.href;
-                document.getElementById('ym-fail').value = window.location.href;
+                // Чтобы отследить успешную оплату на клиенте, мы добавляем параметр ?payment=success
+                const successUrl = window.location.origin + window.location.pathname + "?payment=success";
+                document.getElementById('ym-success').value = successUrl;
+                document.getElementById('ym-fail').value = window.location.origin + window.location.pathname;
 
                 document.getElementById('payment-duration').value = "1";
                 updateYookassaPrice(1);
@@ -1881,8 +1901,8 @@
         });
 
         document.getElementById('payment-duration').addEventListener('change', (e) => {
-            const months = parseInt(e.target.value);
-            updateYookassaPrice(months);
+            currentSelectedMonths = parseInt(e.target.value);
+            updateYookassaPrice(currentSelectedMonths);
         });
 
         function updateYookassaPrice(months) {
@@ -1907,6 +1927,12 @@
             document.getElementById('ym-price').value = price;
             document.getElementById('ym-text').value = `Оплата тарифа «${currentSelectedPlan}» на ${durationText}`;
         }
+
+        // Перехватываем отправку формы ЮKassa для сохранения выбранного тарифа
+        document.getElementById('main-payment-form').addEventListener('submit', () => {
+            localStorage.setItem('pendingPaymentPlan', currentSelectedPlan);
+            localStorage.setItem('pendingPaymentMonths', currentSelectedMonths);
+        });
 
         // ==========================================
         // ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE)
@@ -2040,7 +2066,7 @@
             }
         }
 
-        // Отрисовка сообщений
+        // Отрисовка сообщений с именами отправителей
         function renderChatMessages(msgs) {
             const body = document.getElementById('chat-body');
             body.innerHTML = '';
@@ -2052,8 +2078,11 @@
             
             msgs.forEach(m => {
                 const isUser = m.sender === 'user';
+                const senderName = isUser ? 'Вы' : 'Администратор';
+                
                 body.innerHTML += `
                     <div class="chat-msg-container ${isUser ? 'user' : 'admin'}">
+                        <div class="chat-sender-name">${senderName}</div>
                         <div class="chat-msg">${m.text}</div>
                         <div class="chat-time">${formatChatTime(m.time)}</div>
                     </div>`;
@@ -2124,12 +2153,15 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    
+                    // По умолчанию выдаем бесплатный тариф "Базовый"
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname, 
                         email: email, 
                         subscription: "Базовый", 
                         createdAt: serverTimestamp()
                     });
+                    
                     await sendEmailVerification(cred.user);
                     notify("Аккаунт создан! Письмо отправлено на вашу почту.");
                 }
@@ -2167,13 +2199,24 @@
             }
         });
 
+        // Загрузка и проверка профиля
         async function loadUserProfile(user) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
             let nickname = user.email.split('@')[0];
             
-            if (userSnap.exists() && userSnap.data().nickname) {
-                nickname = userSnap.data().nickname;
+            if (userSnap.exists()) {
+                const d = userSnap.data();
+                if (d.nickname) nickname = d.nickname;
+                
+                // Проверяем истечение срока подписки
+                if (d.subscriptionExpiresAt && Date.now() > d.subscriptionExpiresAt) {
+                    await setDoc(userRef, { 
+                        subscription: "Базовый", 
+                        subscriptionExpiresAt: null 
+                    }, { merge: true });
+                    notify("Ваша подписка истекла. Тариф изменен на «Базовый».", "warning");
+                }
             } else {
                 await setDoc(userRef, { 
                     nickname: nickname, 
@@ -2258,6 +2301,31 @@
                 chatBtn.style.display = 'flex';
                 
                 await loadUserProfile(user);
+
+                // ЛОГИКА ВЫДАЧИ ТАРИФА ПОСЛЕ ВОЗВРАТА С ЮKASSA
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('payment') === 'success') {
+                    const pendingPlan = localStorage.getItem('pendingPaymentPlan');
+                    const pendingMonths = parseInt(localStorage.getItem('pendingPaymentMonths'));
+                    
+                    if (pendingPlan && pendingMonths) {
+                        const expDate = new Date();
+                        expDate.setMonth(expDate.getMonth() + pendingMonths);
+                        
+                        await setDoc(doc(db, "users", user.uid), {
+                            subscription: pendingPlan,
+                            subscriptionExpiresAt: expDate.getTime()
+                        }, { merge: true });
+                        
+                        localStorage.removeItem('pendingPaymentPlan');
+                        localStorage.removeItem('pendingPaymentMonths');
+                        
+                        notify(`Оплата успешно завершена! Тариф «${pendingPlan}» активирован.`, "success");
+                        
+                        // Убираем параметр из URL, чтобы не сработало повторно
+                        window.history.replaceState(null, null, window.location.pathname);
+                    }
+                }
 
                 const adminBtn = document.getElementById('go-to-admin-btn');
                 const userRoleText = document.getElementById('user-role-text');
@@ -2389,7 +2457,7 @@
             }
         };
 
-        // ОТПРАВКА НОВОГО РЕЛИЗА
+        // ОТПРАВКА НОВОГО РЕЛИЗА С ЗАЩИТОЙ ПО ТАРИФАМ
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -2412,21 +2480,27 @@
             btn.disabled = true;
 
             try {
-                // Проверка лимитов по тарифу
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
                 const currentPlan = userData.subscription || "Базовый";
                 const currentNick = userData.nickname || auth.currentUser.email;
 
+                // Блокировка отправки для бесплатного тарифа "Базовый"
+                if (currentPlan === "Базовый") {
+                    btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
+                    btn.disabled = false;
+                    return notify("Для отгрузки релизов необходимо приобрести любой тарифный план в разделе «Тарифы»!", "error");
+                }
+
                 const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
                 const snapReleases = await getDocs(qReleases);
 
-                if (currentPlan === "Базовый") {
+                if (currentPlan === "Стартовый") {
                     if (snapReleases.size >= 5) {
                         btn.innerHTML = '<span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>';
                         btn.disabled = false;
-                        return notify("Лимит исчерпан. На Базовом тарифе доступно 5 релизов. Подключите тариф Расширенный или Про!", "error");
+                        return notify("Лимит исчерпан. На Стартовом тарифе доступно 5 релизов. Подключите тариф Расширенный или Про!", "error");
                     }
                 } else if (currentPlan === "Расширенный") {
                     if (snapReleases.size >= 10) {
