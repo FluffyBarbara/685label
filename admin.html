@@ -33,6 +33,7 @@
             
             --radius-md: 16px;
             --radius-sm: 10px;
+            
             --transition: all 0.3s ease;
         }
 
@@ -72,23 +73,35 @@
         ::-webkit-scrollbar { 
             width: 8px; 
         }
+
         ::-webkit-scrollbar-track { 
             background: var(--bg-base); 
         }
+
         ::-webkit-scrollbar-thumb { 
             background: #1f2937; 
             border-radius: 10px; 
         }
+
         ::-webkit-scrollbar-thumb:hover { 
             background: var(--brand-primary); 
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
+
         @keyframes spin { 
-            100% { transform: rotate(360deg); } 
+            100% { 
+                transform: rotate(360deg); 
+            } 
         }
 
         /* ==========================================
@@ -121,9 +134,21 @@
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         
-        .toast.show { transform: translateX(0); }
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
+        .toast.show { 
+            transform: translateX(0); 
+        }
+
+        .toast.success { 
+            border-left-color: var(--success); 
+        }
+
+        .toast.error { 
+            border-left-color: var(--danger); 
+        }
+
+        .toast.warning { 
+            border-left-color: var(--warning); 
+        }
 
         /* ==========================================
            ЭКРАН АВТОРИЗАЦИИ
@@ -261,6 +286,23 @@
             display: block; 
         }
 
+        .styled-input { 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-title); 
+            padding: 12px; 
+            border-radius: var(--radius-sm); 
+            font-size: 13px; 
+            transition: var(--transition); 
+            width: 100%; 
+            outline: none;
+        }
+
+        .styled-input:focus { 
+            border-color: var(--brand-primary); 
+            box-shadow: inset 0 0 0 1px var(--brand-primary); 
+        }
+
         /* ==========================================
            СТАТИСТИКА (МЕТРИКИ)
         ========================================== */
@@ -296,8 +338,18 @@
         .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .stat-icon.finance { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
         
-        .stat-info h4 { font-size: 13px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
-        .stat-info span { font-size: 24px; font-weight: 800; color: var(--text-title); }
+        .stat-info h4 { 
+            font-size: 13px; 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+        }
+        
+        .stat-info span { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: var(--text-title); 
+        }
 
         /* ==========================================
            ИНСТРУМЕНТЫ (ПОИСК, ФИЛЬТРЫ)
@@ -398,8 +450,21 @@
             border-color: rgba(124, 58, 237, 0.4); 
         }
 
-        .rel-details h3 { font-size: 20px; color: var(--text-title); margin-bottom: 6px; font-weight: 800; }
-        .rel-details p { color: var(--text-primary); font-size: 13px; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+        .rel-details h3 { 
+            font-size: 20px; 
+            color: var(--text-title); 
+            margin-bottom: 6px; 
+            font-weight: 800; 
+        }
+
+        .rel-details p { 
+            color: var(--text-primary); 
+            font-size: 13px; 
+            margin-bottom: 3px; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
         
         .artist-badge { 
             display: inline-block; 
@@ -412,7 +477,12 @@
             font-weight: 600; 
         }
         
-        .dsp-tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .dsp-tags { 
+            margin-top: 8px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 4px; 
+        }
         
         .dsp-tag { 
             background: rgba(124,58,237,0.1); 
@@ -423,7 +493,11 @@
             font-weight: 700; 
         }
 
-        .rel-files { display: flex; flex-direction: column; gap: 8px; }
+        .rel-files { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
         
         .file-link {
             display: flex;
@@ -453,7 +527,14 @@
             border: 1px solid var(--border-light); 
         }
         
-        .code-input-group label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .code-input-group label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 3px; 
+        }
         
         .code-input-group input, .code-input-group textarea { 
             width: 100%; 
@@ -466,7 +547,11 @@
             font-family: monospace; 
         }
 
-        .rel-actions { display: flex; flex-direction: column; gap: 10px; }
+        .rel-actions { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        }
         
         .rel-actions select { 
             width: 100%; 
@@ -489,7 +574,9 @@
             text-align: center; 
         }
         
-        .btn-save:hover { background: #059669; }
+        .btn-save:hover { 
+            background: #059669; 
+        }
         
         .btn-delete { 
             background: rgba(239, 68, 68, 0.15); 
@@ -502,7 +589,9 @@
             text-align: center; 
         }
         
-        .btn-delete:hover { background: rgba(239, 68, 68, 0.25); }
+        .btn-delete:hover { 
+            background: rgba(239, 68, 68, 0.25); 
+        }
 
         /* ==========================================
            СПИСОК ПОЛЬЗОВАТЕЛЕЙ И ПРОМОКОДОВ
@@ -516,9 +605,17 @@
             gap: 12px; 
         }
         
-        .users-list-wrapper::-webkit-scrollbar { width: 6px; }
-        .users-list-wrapper::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
-        .users-list-wrapper::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 4px; }
+        .users-list-wrapper::-webkit-scrollbar { 
+            width: 6px; 
+        }
+        .users-list-wrapper::-webkit-scrollbar-track { 
+            background: var(--bg-input); 
+            border-radius: 4px; 
+        }
+        .users-list-wrapper::-webkit-scrollbar-thumb { 
+            background: var(--brand-primary); 
+            border-radius: 4px; 
+        }
 
         .promo-list-item {
             background: var(--bg-input);
@@ -583,13 +680,38 @@
             background: rgba(255,255,255,0.02);
         }
         
-        .chat-item:hover { background: var(--bg-input); }
-        .chat-item.active { background: rgba(124,58,237,0.15); border-color: rgba(124,58,237,0.3); }
-        .chat-unread-dot { width: 12px; height: 12px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px rgba(16,185,129,0.5); }
+        .chat-item:hover { 
+            background: var(--bg-input); 
+        }
         
-        .chat-msg-container { display: flex; flex-direction: column; max-width: 75%; }
-        .chat-msg-container.admin { align-self: flex-end; align-items: flex-end; }
-        .chat-msg-container.user { align-self: flex-start; align-items: flex-start; }
+        .chat-item.active { 
+            background: rgba(124,58,237,0.15); 
+            border-color: rgba(124,58,237,0.3); 
+        }
+        
+        .chat-unread-dot { 
+            width: 12px; 
+            height: 12px; 
+            background: var(--success); 
+            border-radius: 50%; 
+            box-shadow: 0 0 10px rgba(16,185,129,0.5); 
+        }
+        
+        .chat-msg-container { 
+            display: flex; 
+            flex-direction: column; 
+            max-width: 75%; 
+        }
+        
+        .chat-msg-container.admin { 
+            align-self: flex-end; 
+            align-items: flex-end; 
+        }
+        
+        .chat-msg-container.user { 
+            align-self: flex-start; 
+            align-items: flex-start; 
+        }
         
         .chat-sender-name {
             font-size: 11px;
@@ -599,7 +721,13 @@
             padding: 0 4px;
         }
 
-        .chat-msg { padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.4; word-break: break-word; }
+        .chat-msg { 
+            padding: 12px 16px; 
+            border-radius: 16px; 
+            font-size: 14px; 
+            line-height: 1.4; 
+            word-break: break-word; 
+        }
         
         .chat-msg-container.admin .chat-msg { 
             background: var(--brand-primary); 
@@ -614,7 +742,12 @@
             border: 1px solid var(--border-light); 
         }
         
-        .chat-time { font-size: 11px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
+        .chat-time { 
+            font-size: 11px; 
+            color: var(--text-secondary); 
+            margin-top: 4px; 
+            font-weight: 600; 
+        }
 
         #user-typing-indicator { 
             font-size: 13px; 
@@ -798,26 +931,29 @@
                         <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Создание кодов на скидку в ЮKassa или на бесплатную выдачу тарифа.</p>
                         
                         <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
-                            <input type="text" id="promo-code-name" placeholder="Промокод (например: SUMMER50)" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                            <input type="text" id="promo-code-name" placeholder="Промокод (например: SUMMER50)" class="styled-input">
                             
-                            <select id="promo-type" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                            <select id="promo-type" class="styled-input">
                                 <option value="discount">Скидка в % (Для ЮKassa)</option>
                                 <option value="gift">Подарочный (Бесплатный тариф)</option>
                             </select>
 
-                            <input type="number" id="promo-val" placeholder="Значение (Процент скидки / Кол-во месяцев)" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                            <input type="number" id="promo-val" placeholder="Значение (Процент скидки / Кол-во месяцев)" class="styled-input">
                             
-                            <select id="promo-plan" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%; display:none;">
+                            <select id="promo-plan" class="styled-input" style="display:none;">
                                 <option value="Стартовый">Тариф: Стартовый</option>
                                 <option value="Расширенный">Тариф: Расширенный</option>
                                 <option value="Профессиональный">Тариф: Профессиональный</option>
                             </select>
+
+                            <label style="font-size:12px; color:var(--text-secondary); font-weight:700;">Действует до (оставьте пустым для бессрочного):</label>
+                            <input type="date" id="promo-expire" class="styled-input">
                         </div>
                         
                         <button id="create-promo-btn" style="background:var(--warning); color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; margin-bottom: 20px;">Создать промокод</button>
                         
                         <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:10px;">Активные промокоды:</h4>
-                        <div id="promo-list" style="max-height: 200px; overflow-y: auto;">
+                        <div id="promo-list" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
                             <div class="spinner" style="width: 20px; height: 20px; border-width: 2px;"></div>
                         </div>
                     </div>
@@ -913,7 +1049,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // UID ГЛАВНОГО ВЛАДЕЛЬЦА (ЗАЩИТА)
+        // UID ГЛАВНОГО ВЛАДЕЛЬЦА
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
         
         // Глобальные массивы данных
@@ -927,6 +1063,40 @@
         let isAdminTyping = false;
         let adminTypingTimer;
 
+        // --- ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЙ ---
+        function playNotificationSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
+                
+                // Двойной звуковой сигнал
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(880, ctx.currentTime);
+                gain1.gain.setValueAtTime(0.1, ctx.currentTime);
+                osc1.start(ctx.currentTime);
+                gain1.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5);
+                osc1.stop(ctx.currentTime + 0.5);
+                
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.connect(gain2);
+                gain2.connect(ctx.destination);
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.15);
+                gain2.gain.setValueAtTime(0, ctx.currentTime + 0.15);
+                gain2.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.16);
+                osc2.start(ctx.currentTime + 0.15);
+                gain2.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.65);
+                osc2.stop(ctx.currentTime + 0.65);
+            } catch(e) { 
+                console.log("Audio API not supported"); 
+            }
+        }
+
         // --- УВЕДОМЛЕНИЯ ---
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -937,6 +1107,19 @@
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 50);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
+        }
+
+        // Длинное уведомление (6 сек)
+        function notifyLong(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 6000);
         }
 
         // --- УМНОЕ ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ---
@@ -1011,11 +1194,26 @@
         // ==========================================
         const adminChatInput = document.getElementById('admin-chat-input');
         const userTypingIndicator = document.getElementById('user-typing-indicator');
+        let prevUnreadCount = 0;
 
         function initAdminChat() {
             adminChatUnsub = onSnapshot(query(collection(db, "support_chats"), orderBy("lastUpdated", "desc")), (snap) => {
                 allSupportChats = [];
-                snap.forEach(doc => allSupportChats.push({ id: doc.id, ...doc.data() }));
+                let currentUnreadCount = 0;
+                
+                snap.forEach(doc => {
+                    const data = { id: doc.id, ...doc.data() };
+                    allSupportChats.push(data);
+                    if (data.hasUnreadAdmin) currentUnreadCount++;
+                });
+
+                // Воспроизводим звук, если появились новые непрочитанные сообщения
+                if (currentUnreadCount > prevUnreadCount) {
+                    playNotificationSound();
+                    notifyLong("Новое сообщение от пользователя в Поддержку!", "success");
+                }
+                prevUnreadCount = currentUnreadCount;
+
                 renderAdminChatList();
                 if(selectedChatUid) renderAdminChatWindow(selectedChatUid);
             });
@@ -1171,31 +1369,34 @@
                 if(status === 'frozen') statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
 
                 let actionButtons = '';
+                
+                // ЗАЩИТА ВЛАДЕЛЬЦА: скрываем кнопки блокировки и кнопку "Письмо"
                 if (u.id === ADMIN_UID) {
-                    actionButtons = `<div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:10px; background:rgba(124,58,237,0.1); border-radius:8px; border:1px solid rgba(124,58,237,0.2);"><i class="fa-solid fa-crown"></i> Владелец</div>`;
+                    actionButtons = `<div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:10px; background:rgba(124,58,237,0.1); border-radius:8px; border:1px solid rgba(124,58,237,0.2); width:100%;"><i class="fa-solid fa-crown"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
-                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Забанить</button>` : ''}
-                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Заморозить</button>` : ''}
-                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Разблокировать</button>` : ''}
+                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Забанить</button>` : ''}
+                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Заморозить</button>` : ''}
+                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Разблокировать</button>` : ''}
+                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;"><i class="fa-solid fa-envelope"></i> Письмо</button>
                     `;
                 }
 
-                // Блок выдачи тарифов администратором
-                const tariffHtml = `
+                // Блок выдачи тарифов администратором (скрыт для владельца)
+                const tariffHtml = u.id !== ADMIN_UID ? `
                     <div style="display:flex; gap:5px; margin-top:10px;">
-                        <select id="tariff-select-${u.id}" style="flex:1; background:rgba(255,255,255,0.05); color:white; border:1px solid var(--border-light); border-radius:6px; font-size:11px; padding:6px; outline:none;">
+                        <select id="tariff-select-${u.id}" class="styled-input" style="padding:6px; font-size:12px;">
                             <option value="Стартовый">Стартовый (1 мес)</option>
                             <option value="Расширенный">Расширенный (1 мес)</option>
                             <option value="Профессиональный">Профессиональный (1 мес)</option>
                             <option value="Базовый">Сброс до Базового</option>
                         </select>
-                        <button onclick="issueTariff('${u.id}')" style="background:var(--brand-primary); color:white; border-radius:6px; padding:6px 10px; font-size:11px; font-weight:700;">Выдать</button>
+                        <button onclick="issueTariff('${u.id}')" style="background:var(--brand-primary); color:white; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:700;">Выдать</button>
                     </div>
-                `;
+                ` : '';
 
                 container.innerHTML += `
-                    <div style="background:var(--bg-input); padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light);">
+                    <div style="background:var(--bg-input); padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light); margin-bottom:12px;">
                         <div style="flex:1; padding-right:15px;">
                             <div style="font-weight:800; color:white; font-size:16px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
                                 ${u.nickname || 'Безымянный'} ${statusBadge}
@@ -1204,11 +1405,10 @@
                             <div style="font-size:12px; color:#A78BFA; font-weight:600;"><i class="fa-solid fa-compact-disc"></i> Текущий тариф: ${u.subscription || 'Базовый'}</div>
                             
                             <!-- Выдача тарифа -->
-                            ${u.id !== ADMIN_UID ? tariffHtml : ''}
+                            ${tariffHtml}
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:6px; width: 110px;">
+                        <div style="display:flex; flex-direction:column; width: 110px;">
                             ${actionButtons}
-                            <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;"><i class="fa-solid fa-envelope"></i> Письмо</button>
                         </div>
                     </div>
                 `;
@@ -1292,7 +1492,7 @@
             }
         });
 
-        // ------------------ МОДУЛЬ ПРОМОКОДОВ ------------------
+        // ------------------ МОДУЛЬ ПРОМОКОДОВ С ОГРАНИЧЕНИЕМ ВРЕМЕНИ ------------------
         document.getElementById('promo-type').addEventListener('change', (e) => {
             const val = e.target.value;
             const planSelect = document.getElementById('promo-plan');
@@ -1312,21 +1512,32 @@
             const type = document.getElementById('promo-type').value;
             const val = parseInt(document.getElementById('promo-val').value.trim());
             const plan = document.getElementById('promo-plan').value;
+            const expireDateStr = document.getElementById('promo-expire').value;
 
             if (!code || isNaN(val)) return notify("Укажите сам код и его значение (число)!", "error");
             
+            let expTimestamp = null;
+            if (expireDateStr) {
+                // Устанавливаем время конца дня
+                const dateObj = new Date(expireDateStr);
+                dateObj.setHours(23, 59, 59);
+                expTimestamp = dateObj.getTime();
+            }
+
             try {
                 await setDoc(doc(db, "promo_codes", code), {
                     type: type,
                     value: val,
                     plan: type === 'gift' ? plan : null,
                     isActive: true,
+                    expiresAt: expTimestamp,
                     createdAt: serverTimestamp()
                 });
                 
                 notify(`Промокод ${code} успешно создан!`, "success");
                 document.getElementById('promo-code-name').value = '';
                 document.getElementById('promo-val').value = '';
+                document.getElementById('promo-expire').value = '';
                 loadPromos();
             } catch(e) {
                 notify("Ошибка создания промокода", "error");
@@ -1350,11 +1561,23 @@
                     const data = d.data();
                     let desc = data.type === 'discount' ? `Скидка: ${data.value}%` : `Подарок: Тариф «${data.plan}» на ${data.value} мес.`;
                     
+                    let expText = "Бессрочный";
+                    if (data.expiresAt) {
+                        const dateObj = new Date(data.expiresAt);
+                        expText = `До: ${dateObj.toLocaleDateString('ru-RU')}`;
+                        
+                        // Если код уже истек, помечаем красным
+                        if (Date.now() > data.expiresAt) {
+                            expText = `<span style="color:var(--danger)">Истек (${dateObj.toLocaleDateString('ru-RU')})</span>`;
+                        }
+                    }
+
                     list.innerHTML += `
                         <div class="promo-list-item">
                             <div>
                                 <h4>${d.id}</h4>
                                 <p>${desc}</p>
+                                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">${expText}</div>
                             </div>
                             <button onclick="deletePromo('${d.id}')" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700;"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -1500,6 +1723,7 @@
                     </div>`;
             });
 
+            // Обработчик сохранения данных релиза
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1531,6 +1755,7 @@
                 });
             });
 
+            // Обработчик полного удаления релиза
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1539,7 +1764,7 @@
                     try {
                         await deleteDoc(doc(db, "track_submissions", id));
                         notify("Релиз успешно удален из базы!", "success");
-                        loadReleases();
+                        loadReleases(); // Перезагружаем список
                     } catch(err) { 
                         notify("Критическая ошибка удаления", "error"); 
                     }
@@ -1547,6 +1772,7 @@
             });
         }
 
+        // Логика блокировки полей UPC/ISRC при отклонении
         window.handleStatusChange = (id) => {
             const status = document.getElementById(`status-${id}`).value;
             const upcInp = document.getElementById(`upc-${id}`);
@@ -1561,6 +1787,7 @@
             }
         };
 
+        // Быстрый поиск по релизам
         document.getElementById('search-input').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             renderList(allSubmissions.filter(i => 
@@ -1570,11 +1797,13 @@
             ));
         });
 
+        // Фильтрация релизов по статусам
         document.getElementById('status-filter').addEventListener('change', (e) => {
             const val = e.target.value;
             renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
         });
 
+        // Экспорт базы релизов в CSV-файл
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) return notify("В базе нет данных для экспорта", "error");
             
