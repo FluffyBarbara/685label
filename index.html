@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>685 Music | Premium Artist Portal</title>
     
+    <!-- Подключение шрифтов, иконок и стилей ЮKassa -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://yookassa.ru/integration/simplepay/css/yookassa_construct_form.css?v=1.35.0">
     
     <style>
+        /* ==========================================
+           БАЗОВЫЕ ПЕРЕМЕННЫЕ
+        ========================================== */
         :root {
             --brand-primary: #FF2A5F;
             --brand-secondary: #FF7043;
@@ -38,6 +43,9 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* ==========================================
+           ГЛОБАЛЬНЫЕ СТИЛИ
+        ========================================== */
         * { 
             margin: 0; 
             padding: 0; 
@@ -57,10 +65,22 @@
             background-attachment: fixed; 
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+        ::-webkit-scrollbar { 
+            width: 8px; 
+        }
+
+        ::-webkit-scrollbar-track { 
+            background: var(--bg-base); 
+        }
+
+        ::-webkit-scrollbar-thumb { 
+            background: #2A2A2A; 
+            border-radius: 10px; 
+        }
+
+        ::-webkit-scrollbar-thumb:hover { 
+            background: var(--brand-primary); 
+        }
 
         button { 
             cursor: pointer; 
@@ -77,14 +97,25 @@
         }
 
         @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            } 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
         }
 
         @keyframes spin { 
-            100% { transform: rotate(360deg); } 
+            100% { 
+                transform: rotate(360deg); 
+            } 
         }
 
+        /* ==========================================
+           УВЕДОМЛЕНИЯ (TOASTS)
+        ========================================== */
         #toast-container { 
             position: fixed; 
             top: 20px; 
@@ -113,10 +144,21 @@
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
         }
 
-        .toast.show { transform: translateX(0); }
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
+        .toast.show { 
+            transform: translateX(0); 
+        }
 
+        .toast.success { 
+            border-left-color: var(--success); 
+        }
+
+        .toast.error { 
+            border-left-color: var(--danger); 
+        }
+
+        /* ==========================================
+           ЭКРАНЫ АВТОРИЗАЦИИ
+        ========================================== */
         .auth-view-container { 
             min-height: 100vh; 
             display: flex; 
@@ -239,11 +281,14 @@
             color: var(--text-title); 
         }
 
+        /* ==========================================
+           БОКОВАЯ И НИЖНЯЯ НАВИГАЦИЯ
+        ========================================== */
         #app-view { 
             display: none; 
             min-height: 100vh; 
         }
-        
+
         .sidebar { 
             width: 280px; 
             height: 100vh; 
@@ -353,6 +398,9 @@
             color: var(--brand-primary); 
         }
 
+        /* ==========================================
+           ОСНОВНОЙ КОНТЕНТ И ШАПКА
+        ========================================== */
         .main-wrapper { 
             margin-left: 280px; 
             padding: 40px 60px; 
@@ -438,6 +486,9 @@
             display: block; 
         }
 
+        /* ==========================================
+           КАРТОЧКИ, ФОРМЫ И ИНПУТЫ
+        ========================================== */
         .glass-card { 
             background: var(--bg-surface); 
             border: 1px solid var(--border-light); 
@@ -515,6 +566,9 @@
             color: var(--text-title); 
         }
 
+        /* ==========================================
+           ПЛОЩАДКИ (DSPs)
+        ========================================== */
         .dsp-toolbar { 
             display: flex; 
             justify-content: space-between; 
@@ -565,7 +619,7 @@
         .dsp-label input { 
             display: none; 
         }
-        
+
         .checkbox-box { 
             width: 22px; 
             height: 22px; 
@@ -601,6 +655,9 @@
             background: rgba(255,42,95,0.05); 
         }
 
+        /* ==========================================
+           СЕТКА ТАРИФОВ
+        ========================================== */
         .pricing-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -705,6 +762,9 @@
             color: var(--text-secondary); 
         }
 
+        /* ==========================================
+           КАТАЛОГ РЕЛИЗОВ
+        ========================================== */
         .releases-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
@@ -742,10 +802,24 @@
             gap: 8px; 
         }
 
-        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
-        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
-        .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-        
+        .status-pending { 
+            background: rgba(245, 158, 11, 0.1); 
+            color: var(--warning); 
+            border: 1px solid rgba(245, 158, 11, 0.2); 
+        }
+
+        .status-approved { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success); 
+            border: 1px solid rgba(16, 185, 129, 0.2); 
+        }
+
+        .status-rejected { 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--danger); 
+            border: 1px solid rgba(239, 68, 68, 0.2); 
+        }
+
         .track-title { 
             font-size: 22px; 
             font-weight: 800; 
@@ -771,7 +845,7 @@
             align-items: center; 
             gap: 8px; 
         }
-        
+
         .track-codes-box { 
             background: rgba(0,0,0,0.3); 
             border: 1px solid var(--border-light); 
@@ -874,7 +948,9 @@
             animation: spin 1s linear infinite; 
         }
 
-        /* === ЧАТ ПОДДЕРЖКИ (ВИДЖЕТ) === */
+        /* ==========================================
+           ЧАТ ПОДДЕРЖКИ (ВИДЖЕТ)
+        ========================================== */
         #chat-widget-btn {
             position: fixed;
             bottom: 40px;
@@ -1051,7 +1127,131 @@
             transform: scale(1.1); 
         }
 
-        /* === АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ И МОБИЛЬНЫХ === */
+        /* ==========================================
+           ЮKASSA МОДАЛЬНОЕ ОКНО
+        ========================================== */
+        #payment-modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(10px); 
+            z-index: 100000; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+
+        .payment-card { 
+            background: var(--bg-surface); 
+            width: 100%; 
+            max-width: 450px; 
+            border-radius: var(--radius-lg); 
+            padding: 40px 30px; 
+            position: relative; 
+            border: 1px solid var(--border-light); 
+            animation: fadeUp 0.4s ease; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+        }
+
+        .payment-close { 
+            position: absolute; 
+            top: 20px; 
+            right: 25px; 
+            font-size: 24px; 
+            color: var(--text-secondary); 
+            cursor: pointer; 
+            transition: 0.2s; 
+        }
+
+        .payment-close:hover { 
+            color: white; 
+        }
+
+        .payment-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: white; 
+            margin-bottom: 10px; 
+        }
+
+        .payment-subtitle { 
+            font-size: 14px; 
+            color: var(--text-secondary); 
+            margin-bottom: 25px; 
+        }
+        
+        .payment-summary { 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            padding: 20px; 
+            margin-bottom: 25px; 
+        }
+
+        .payment-summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: var(--text-primary); 
+        }
+
+        .payment-summary-row:last-child { 
+            margin-bottom: 0; 
+            padding-top: 15px; 
+            border-top: 1px dashed var(--border-light); 
+            font-size: 18px; 
+            color: white; 
+            font-weight: 800; 
+        }
+        
+        /* Скрываем нативный UI ЮKassa, используем их скрытые поля и логику */
+        .yoomoney-payment-form .ym-products, 
+        .yoomoney-payment-form .ym-customer-info, 
+        .yoomoney-payment-form .ym-input-icon-rub { 
+            display: none !important; 
+        }
+
+        .yoomoney-payment-form .ym-payment-btn-block { 
+            justify-content: center; 
+        }
+
+        .yoomoney-payment-form .ym-btn-pay { 
+            width: 100%; 
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)) !important; 
+            color: white !important; 
+            font-family: 'Plus Jakarta Sans', sans-serif !important; 
+            font-weight: 800 !important; 
+            border-radius: 12px !important; 
+            padding: 18px !important; 
+            font-size: 16px !important; 
+            transition: transform 0.2s !important; 
+            box-shadow: 0 10px 20px rgba(255,42,95,0.3) !important; 
+        }
+
+        .yoomoney-payment-form .ym-btn-pay:hover { 
+            transform: translateY(-3px) !important; 
+            box-shadow: 0 15px 30px rgba(255,42,95,0.4) !important; 
+        }
+
+        .yoomoney-payment-form .ym-logo { 
+            filter: brightness(0) invert(1); 
+            opacity: 0.6; 
+            margin-top: 15px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            display: block; 
+        }
+
+        /* ==========================================
+           АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ И МОБИЛЬНЫХ
+        ========================================== */
         @media(max-width: 1024px) {
             .sidebar { 
                 width: 80px; 
@@ -1086,42 +1286,35 @@
             .bottom-nav { 
                 display: flex; 
             } 
-            
-            .main-wrapper {
-                margin-left: 0;
+            .main-wrapper { 
+                margin-left: 0; 
                 margin-bottom: 80px; 
-                padding: 20px 15px;
+                padding: 20px 15px; 
             }
-            
             .header-title { 
                 font-size: 26px; 
             }
-            
             .auth-card { 
                 padding: 35px 20px; 
             }
-            
             .glass-card { 
                 padding: 25px 20px; 
             }
-            
             .releases-grid { 
                 grid-template-columns: 1fr; 
             }
-            
             #chat-widget-btn { 
                 bottom: 90px; 
                 right: 20px; 
                 width: 55px; 
                 height: 55px; 
             }
-            
-            #chat-window {
-                width: calc(100% - 30px);
-                right: 15px;
-                left: 15px;
-                bottom: 90px;
-                height: 70vh;
+            #chat-window { 
+                width: calc(100% - 30px); 
+                right: 15px; 
+                left: 15px; 
+                bottom: 90px; 
+                height: 70vh; 
             }
         }
     </style>
@@ -1130,6 +1323,78 @@
 
     <!-- Уведомления -->
     <div id="toast-container"></div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ ЮKASSA -->
+    <div id="payment-modal">
+        <div class="payment-card">
+            <i class="fa-solid fa-xmark payment-close" onclick="document.getElementById('payment-modal').style.display='none'"></i>
+            <div class="payment-title">Оформление подписки</div>
+            <div class="payment-subtitle">Тариф «<span id="display-plan-name"></span>»</div>
+
+            <div class="input-box" style="margin-bottom: 20px;">
+                <label>Период оплаты</label>
+                <select id="payment-duration" class="styled-input" style="background: var(--bg-input);">
+                    <option value="1">1 Месяц</option>
+                    <option value="3">3 Месяца</option>
+                    <option value="12">1 Год (Выгодно)</option>
+                </select>
+            </div>
+
+            <div class="payment-summary">
+                <div class="payment-summary-row">
+                    <span>Тарифный план</span>
+                    <span id="summary-plan" style="color: white;"></span>
+                </div>
+                <div class="payment-summary-row">
+                    <span>Длительность</span>
+                    <span id="summary-duration" style="color: white;">1 Месяц</span>
+                </div>
+                <div class="payment-summary-row">
+                    <span>Итого к оплате</span>
+                    <span id="summary-total" style="color: var(--brand-primary);"></span>
+                </div>
+            </div>
+
+            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA -->
+            <form class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
+                <div class="ym-products ym-display-none">
+                    <div class="ym-product">
+                        <input disabled type="hidden" name="text" id="ym-text" value="Оплата тарифа">
+                        <input disabled type="hidden" name="price" id="ym-price" value="0.0">
+                        <input disabled type="hidden" name="quantity" value="1">
+                        <input disabled type="hidden" name="paymentSubjectType" value="service">
+                        <input disabled type="hidden" name="paymentMethodType" value="full_payment">
+                        <input disabled type="hidden" name="tax" value="1">
+                    </div>
+                </div>
+                
+                <input value="" type="hidden" name="ym_merchant_receipt">
+                
+                <div class="ym-customer-info">
+                    <input name="cps_email" id="ym-email" class="ym-input ym-display-none" placeholder="Email" type="text" value="">
+                </div>
+                
+                <div class="ym-hidden-inputs">
+                    <input name="shopSuccessURL" id="ym-success" type="hidden" value="https://fluffybarbara.github.io/685label/">
+                    <input name="shopFailURL" id="ym-fail" type="hidden" value="https://fluffybarbara.github.io/685label/">
+                </div>
+                
+                <input name="sumEqualPrice" type="hidden" value="true">
+                
+                <div class="ym-payment-btn-block ym-align-space-between">
+                    <div class="ym-input-icon-rub">
+                        <input name="sum" id="ym-sum" class="ym-input ym-sum-input ym-required-input" type="number" step="any">
+                    </div>
+                    <button data-text="Перейти к оплате" class="ym-btn-pay ym-result-price"><span class="ym-text-crop">Перейти к оплате</span></button>
+                    <img src="https://yookassa.ru/integration/simplepay/img/iokassa-gray.svg?v=1.35.0" class="ym-logo" width="114" height="27" alt="ЮKassa">
+                </div>
+                
+                <input name="shopId" type="hidden" value="1485135">
+                <input name="customerNumber" id="ym-customer-id" type="hidden" value="">
+            </form>
+            <script src="https://yookassa.ru/integration/simplepay/js/yookassa_construct_form.js?v=1.35.0"></script>
+        </div>
+    </div>
 
     <!-- ЧАТ ПОДДЕРЖКИ (ВИДЖЕТ) -->
     <div id="chat-widget-btn" style="display:none;">
@@ -1142,17 +1407,20 @@
             <div><i class="fa-solid fa-headset"></i> Поддержка 685 Music</div>
             <button id="close-chat-btn" style="color:white; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        
         <div class="chat-body" id="chat-body">
             <!-- Сообщения будут генерироваться здесь -->
         </div>
+        
         <div id="typing-indicator">Менеджер печатает...</div>
+        
         <div class="chat-footer">
             <input type="text" id="chat-input" class="chat-input" placeholder="Введите сообщение...">
             <button id="chat-send-btn" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <!-- 1. ЭКРАН АВТОРИЗАЦИИ -->
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
     <div id="auth-view" class="auth-view-container">
         <div class="auth-card">
             <div class="auth-logo"><i class="fa-solid fa-compact-disc"></i> 685<span>music</span></div>
@@ -1185,7 +1453,7 @@
         </div>
     </div>
 
-    <!-- 2. ЭКРАН ВЕРИФИКАЦИИ ПОЧТЫ -->
+    <!-- ЭКРАН ВЕРИФИКАЦИИ ПОЧТЫ -->
     <div id="verify-view" class="auth-view-container" style="display: none;">
         <div class="auth-card" style="background:var(--bg-surface);">
             <i class="fa-solid fa-paper-plane" style="font-size: 48px; color: var(--brand-primary); margin-bottom: 20px;"></i>
@@ -1201,7 +1469,7 @@
         </div>
     </div>
 
-    <!-- 3. ДАШБОРД ПРИЛОЖЕНИЯ -->
+    <!-- ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
         
         <!-- БОКОВАЯ НАВИГАЦИЯ (ДЕСКТОП) -->
@@ -1372,7 +1640,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ (С ЮKASSA) -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 30px;">
                     <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
@@ -1397,7 +1665,7 @@
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг и смарт-ссылки</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Приоритетная поддержка</li>
                         </ul>
-                        <button class="btn-glow dummy-buy-btn" data-plan="Базовый">Выбрать тариф</button>
+                        <button class="btn-glow yk-buy-btn" data-plan="Базовый" data-p1="299" data-p3="897" data-p12="1973">Оформить подписку</button>
                     </div>
 
                     <!-- Тариф 2: Расширенный -->
@@ -1417,7 +1685,7 @@
                             <li><i class="fa-solid fa-check"></i> Видеошоты (Яндекс) и караоке-текст</li>
                             <li><i class="fa-solid fa-check"></i> Приоритетная поддержка (ответ до 48ч)</li>
                         </ul>
-                        <button class="btn-glow dummy-buy-btn" data-plan="Расширенный">Подключить</button>
+                        <button class="btn-glow yk-buy-btn" data-plan="Расширенный" data-p1="699" data-p3="2097" data-p12="4613">Подключить</button>
                     </div>
 
                     <!-- Тариф 3: Профессиональный -->
@@ -1436,7 +1704,7 @@
                             <li><i class="fa-solid fa-check"></i> Возможность указывать свой лейбл (копирайт)</li>
                             <li><i class="fa-solid fa-check"></i> Весь функционал расширенного тарифа</li>
                         </ul>
-                        <button class="btn-glow dummy-buy-btn" data-plan="Профессиональный">Подключить Про</button>
+                        <button class="btn-glow yk-buy-btn" data-plan="Профессиональный" data-p1="999" data-p3="2997" data-p12="6593">Подключить Про</button>
                     </div>
                 </div>
             </section>
@@ -1450,6 +1718,7 @@
                         <label>Никнейм музыканта</label>
                         <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
                     </div>
+                    
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input" id="setting-email" disabled style="opacity: 0.6;">
@@ -1460,7 +1729,9 @@
                         <input type="password" class="styled-input" id="setting-new-password" placeholder="Новый пароль (оставьте пустым, если не меняете)">
                     </div>
 
-                    <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">Сохранить изменения</button>
+                    <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">
+                        Сохранить изменения
+                    </button>
                 </div>
             </section>
         </main>
@@ -1514,54 +1785,128 @@
         // UID Владельца
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
-        window.selectAll = (state) => document.querySelectorAll('.dsp-cb').forEach(cb => cb.checked = state);
+        // Функция "Выбрать все площадки"
+        window.selectAll = (state) => {
+            document.querySelectorAll('.dsp-cb').forEach(cb => {
+                cb.checked = state;
+            });
+        };
 
         // === ФУНКЦИЯ УВЕДОМЛЕНИЙ ===
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
+            
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+            
             container.appendChild(toast);
             
-            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 50);
+            
             setTimeout(() => { 
                 toast.classList.remove('show'); 
                 setTimeout(() => toast.remove(), 400); 
             }, 4000);
         }
 
-        // Заглушка для оплаты тарифов
-        document.querySelectorAll('.dummy-buy-btn').forEach(btn => {
+        // ==========================================
+        // ЛОГИКА ЮKASSA И МОДАЛЬНОГО ОКНА ОПЛАТЫ
+        // ==========================================
+        let selectedPlanPrices = { p1: 0, p3: 0, p12: 0 };
+        let currentSelectedPlan = '';
+
+        document.querySelectorAll('.yk-buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                if (!auth.currentUser) {
+                    return notify("Войдите в аккаунт для оформления подписки!", "error");
+                }
+                
                 const planName = e.target.getAttribute('data-plan');
-                notify(`Интеграция с платежным шлюзом для тарифа "${planName}" находится в разработке.`, "error");
+                currentSelectedPlan = planName;
+                
+                selectedPlanPrices.p1 = parseFloat(e.target.getAttribute('data-p1'));
+                selectedPlanPrices.p3 = parseFloat(e.target.getAttribute('data-p3'));
+                selectedPlanPrices.p12 = parseFloat(e.target.getAttribute('data-p12'));
+
+                document.getElementById('display-plan-name').innerText = planName;
+                document.getElementById('summary-plan').innerText = planName;
+                
+                // Передача данных в ЮKassa
+                document.getElementById('ym-email').value = auth.currentUser.email;
+                document.getElementById('ym-customer-id').value = auth.currentUser.uid;
+                
+                document.getElementById('ym-success').value = window.location.href;
+                document.getElementById('ym-fail').value = window.location.href;
+
+                document.getElementById('payment-duration').value = "1";
+                updateYookassaPrice(1);
+                
+                document.getElementById('payment-modal').style.display = 'flex';
             });
         });
 
-        // === УМНОЕ ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ===
+        document.getElementById('payment-duration').addEventListener('change', (e) => {
+            const months = parseInt(e.target.value);
+            updateYookassaPrice(months);
+        });
+
+        function updateYookassaPrice(months) {
+            let price = 0;
+            let durationText = "1 Месяц";
+            
+            if (months === 1) { 
+                price = selectedPlanPrices.p1; 
+                durationText = "1 Месяц"; 
+            } else if (months === 3) { 
+                price = selectedPlanPrices.p3; 
+                durationText = "3 Месяца"; 
+            } else if (months === 12) { 
+                price = selectedPlanPrices.p12; 
+                durationText = "1 Год"; 
+            }
+
+            document.getElementById('summary-duration').innerText = durationText;
+            document.getElementById('summary-total').innerText = price + " ₽";
+
+            document.getElementById('ym-sum').value = price;
+            document.getElementById('ym-price').value = price;
+            document.getElementById('ym-text').value = `Оплата тарифа «${currentSelectedPlan}» на ${durationText}`;
+        }
+
+        // ==========================================
+        // ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE)
+        // ==========================================
         function formatChatTime(ts) {
             if (!ts) return '';
+            
             const date = new Date(ts);
             const today = new Date();
+            
             const yesterday = new Date(today);
             yesterday.setDate(yesterday.getDate() - 1);
 
             const isToday = date.toDateString() === today.toDateString();
             const isYesterday = date.toDateString() === yesterday.toDateString();
-
+            
             const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
-            if (isToday) return `Сегодня, ${timeStr}`;
-            if (isYesterday) return `Вчера, ${timeStr}`;
+            if (isToday) {
+                return `Сегодня, ${timeStr}`;
+            }
+            if (isYesterday) {
+                return `Вчера, ${timeStr}`;
+            }
             
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
+            
             return `${day}.${month}.${date.getFullYear()}, ${timeStr}`;
         }
 
-        // === ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE) ===
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
         const chatBadge = document.getElementById('chat-badge');
@@ -1576,8 +1921,11 @@
         chatBtn.addEventListener('click', () => {
             chatWindow.classList.add('open');
             chatBtn.style.transform = 'scale(0)';
+            
             if(auth.currentUser) {
-                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { hasUnreadUser: false }).catch(()=>{});
+                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { 
+                    hasUnreadUser: false 
+                }).catch(()=>{});
             }
         });
 
@@ -1590,21 +1938,29 @@
         // Индикатор набора текста "Пользователь печатает..."
         chatInput.addEventListener('input', () => {
             if (!auth.currentUser) return;
+            
             if (!isTyping) {
                 isTyping = true;
-                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { userTyping: true }).catch(()=>{});
+                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { 
+                    userTyping: true 
+                }).catch(()=>{});
             }
+            
             clearTimeout(typingTimer);
             typingTimer = setTimeout(() => {
                 isTyping = false;
-                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { userTyping: false }).catch(()=>{});
+                updateDoc(doc(db, "support_chats", auth.currentUser.uid), { 
+                    userTyping: false 
+                }).catch(()=>{});
             }, 1500);
         });
 
         // Отправка сообщения
         document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
         chatInput.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') sendChatMessage();
+            if(e.key === 'Enter') {
+                sendChatMessage();
+            }
         });
 
         async function sendChatMessage() {
@@ -1619,7 +1975,11 @@
 
             const uid = auth.currentUser.uid;
             const ref = doc(db, "support_chats", uid);
-            const msgObj = { sender: 'user', text: val, time: Date.now() };
+            const msgObj = { 
+                sender: 'user', 
+                text: val, 
+                time: Date.now() 
+            };
 
             try {
                 const snap = await getDoc(ref);
@@ -1644,7 +2004,9 @@
                         adminTyping: false
                     });
                 }
-            } catch(e) { console.error("Ошибка чата:", e); }
+            } catch(e) { 
+                console.error("Ошибка чата:", e); 
+            }
         }
 
         // Отрисовка сообщений
@@ -1669,7 +2031,9 @@
         }
 
 
-        // === ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ ===
+        // ==========================================
+        // ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ
+        // ==========================================
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
         const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -1696,7 +2060,9 @@
         // Сброс пароля
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
-            if (!email) return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
+            if (!email) {
+                return notify("Введите ваш E-mail адрес в поле логина для сброса пароля", "error");
+            }
             try {
                 await sendPasswordResetEmail(auth, email);
                 notify("Письмо со ссылкой для сброса пароля отправлено на ваш E-mail!", "success");
@@ -1711,8 +2077,13 @@
             const pass = document.getElementById('auth-password').value;
             const nickname = document.getElementById('auth-nickname').value.trim();
 
-            if(!email || !pass) return notify("Заполните почту и пароль", "error");
-            if(!isLoginMode && !nickname) return notify("Введите ваш никнейм", "error");
+            if(!email || !pass) {
+                return notify("Заполните почту и пароль", "error");
+            }
+            
+            if(!isLoginMode && !nickname) {
+                return notify("Введите ваш никнейм", "error");
+            }
             
             authBtn.innerHTML = '<div class="btn-spinner"></div>';
             authBtn.disabled = true;
@@ -1723,7 +2094,10 @@
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     await setDoc(doc(db, "users", cred.user.uid), {
-                        nickname: nickname, email: email, subscription: "Базовый", createdAt: serverTimestamp()
+                        nickname: nickname, 
+                        email: email, 
+                        subscription: "Базовый", 
+                        createdAt: serverTimestamp()
                     });
                     await sendEmailVerification(cred.user);
                     notify("Аккаунт создан! Письмо отправлено на вашу почту.");
@@ -1735,8 +2109,13 @@
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
-        document.getElementById('verify-logout').addEventListener('click', () => signOut(auth));
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth);
+        });
+        
+        document.getElementById('verify-logout').addEventListener('click', () => {
+            signOut(auth);
+        });
 
         document.getElementById('resend-email-btn').addEventListener('click', async () => {
             try { 
@@ -1765,7 +2144,11 @@
             if (userSnap.exists() && userSnap.data().nickname) {
                 nickname = userSnap.data().nickname;
             } else {
-                await setDoc(userRef, { nickname: nickname, email: user.email, subscription: "Базовый" }, { merge: true });
+                await setDoc(userRef, { 
+                    nickname: nickname, 
+                    email: user.email, 
+                    subscription: "Базовый" 
+                }, { merge: true });
             }
             
             document.getElementById('display-nickname').innerText = nickname;
@@ -1780,13 +2163,18 @@
             const newPassword = document.getElementById('setting-new-password').value;
             const btn = document.getElementById('save-settings-btn');
 
-            if (!newNick) return notify("Никнейм не может быть пустым", "error");
+            if (!newNick) {
+                return notify("Никнейм не может быть пустым", "error");
+            }
 
             try {
                 btn.innerHTML = '<div class="btn-spinner"></div>';
                 btn.disabled = true;
 
-                await setDoc(doc(db, "users", auth.currentUser.uid), { nickname: newNick }, { merge: true });
+                await setDoc(doc(db, "users", auth.currentUser.uid), { 
+                    nickname: newNick 
+                }, { merge: true });
+                
                 document.getElementById('display-nickname').innerText = newNick;
                 document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
 
@@ -1857,7 +2245,10 @@
                 fetchReleases(user.uid);
 
                 // Слушатель чата пользователя в реальном времени
-                if(currentChatUnsub) currentChatUnsub();
+                if(currentChatUnsub) {
+                    currentChatUnsub();
+                }
+                
                 currentChatUnsub = onSnapshot(doc(db, "support_chats", user.uid), (docSnap) => {
                     if(docSnap.exists()) {
                         const d = docSnap.data();
@@ -1869,7 +2260,7 @@
                             typingIndicator.style.display = 'none';
                         }
 
-                        // Уведомление на иконке (красная/зеленая точка)
+                        // Уведомление на иконке (зеленая точка)
                         if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
                             chatBadge.style.display = 'block';
                         } else {
@@ -1879,7 +2270,9 @@
                         renderChatMessages(d.messages || []);
                         
                         if(chatWindow.classList.contains('open') && d.hasUnreadUser) {
-                            updateDoc(doc(db, "support_chats", user.uid), { hasUnreadUser: false }).catch(()=>{});
+                            updateDoc(doc(db, "support_chats", user.uid), { 
+                                hasUnreadUser: false 
+                            }).catch(()=>{});
                         }
                     }
                 });
@@ -1890,14 +2283,26 @@
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
                 chatBtn.style.display = 'none';
-                authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>' : '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
+                
+                if (isLoginMode) {
+                    authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                } else {
+                    authBtn.innerHTML = '<span>Создать аккаунт</span> <i class="fa-solid fa-user-plus"></i>';
+                }
+                
                 authBtn.disabled = false;
-                if(currentChatUnsub) { currentChatUnsub(); currentChatUnsub = null; }
+                
+                if(currentChatUnsub) { 
+                    currentChatUnsub(); 
+                    currentChatUnsub = null; 
+                }
             }
         });
 
         // Навигация
-        document.getElementById('go-to-admin-btn').addEventListener('click', () => window.location.href = 'admin.html');
+        document.getElementById('go-to-admin-btn').addEventListener('click', () => {
+            window.location.href = 'admin.html';
+        });
 
         document.querySelectorAll('.nav-link[data-target], .nav-item[data-target]').forEach(link => {
             link.addEventListener('click', () => {
@@ -1912,10 +2317,18 @@
                 
                 document.getElementById(target).classList.add('active');
                 
-                const titles = { 'dashboard': 'Каталог релизов', 'new-release': 'Новая дистрибуция', 'pricing': 'Тарифные планы', 'settings': 'Настройки' };
+                const titles = { 
+                    'dashboard': 'Каталог релизов', 
+                    'new-release': 'Новая дистрибуция', 
+                    'pricing': 'Тарифные планы', 
+                    'settings': 'Настройки' 
+                };
+                
                 document.getElementById('page-title').innerText = titles[target] || '685 Music';
                 
-                if(target === 'dashboard' && auth.currentUser) fetchReleases(auth.currentUser.uid);
+                if(target === 'dashboard' && auth.currentUser) {
+                    fetchReleases(auth.currentUser.uid);
+                }
                 window.scrollTo(0,0);
             });
         });
@@ -1925,17 +2338,23 @@
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
                 try {
-                    await updateDoc(doc(db, "track_submissions", id), { status: "Запрос на удаление с площадок" });
+                    await updateDoc(doc(db, "track_submissions", id), { 
+                        status: "Запрос на удаление с площадок" 
+                    });
                     notify("Запрос на удаление отправлен модератору.");
                     if(auth.currentUser) fetchReleases(auth.currentUser.uid);
-                } catch { notify("Ошибка отправки запроса", "error"); }
+                } catch { 
+                    notify("Ошибка отправки запроса", "error"); 
+                }
             } else {
                 if (!confirm("Вы уверены, что хотите удалить этот релиз?")) return;
                 try {
                     await deleteDoc(doc(db, "track_submissions", id));
                     notify("Релиз успешно удален.");
                     if(auth.currentUser) fetchReleases(auth.currentUser.uid);
-                } catch { notify("Ошибка удаления", "error"); }
+                } catch { 
+                    notify("Ошибка удаления", "error"); 
+                }
             }
         };
 
@@ -1947,10 +2366,15 @@
             const type = document.getElementById('r-type').value;
             const cover = document.getElementById('r-cover').value.trim();
             const audio = document.getElementById('r-audio').value.trim();
+            
             const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
-            if (!title || !artist || !cover || !audio) return notify("Заполните все данные и ссылки!", "error");
-            if (platforms.length === 0) return notify("Выберите хотя бы 1 площадку", "error");
+            if (!title || !artist || !cover || !audio) {
+                return notify("Заполните все данные и ссылки!", "error");
+            }
+            if (platforms.length === 0) {
+                return notify("Выберите хотя бы 1 площадку", "error");
+            }
 
             const btn = document.getElementById('submit-btn');
             btn.innerHTML = '<div class="btn-spinner"></div>';
