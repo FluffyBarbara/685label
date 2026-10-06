@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* === БАЗОВЫЕ ПЕРЕМЕННЫЕ === */
+        /* ==========================================
+           БАЗОВЫЕ ПЕРЕМЕННЫЕ
+        ========================================== */
         :root {
             --brand-primary: #7C3AED;
             --brand-secondary: #4F46E5;
@@ -34,7 +36,9 @@
             --transition: all 0.3s ease;
         }
 
-        /* === ГЛОБАЛЬНЫЕ СТИЛИ === */
+        /* ==========================================
+           ГЛОБАЛЬНЫЕ СТИЛИ
+        ========================================== */
         * {
             margin: 0;
             padding: 0;
@@ -50,21 +54,46 @@
             line-height: 1.5;
         }
 
-        button { cursor: pointer; border: none; background: none; color: inherit; outline: none; transition: var(--transition); }
-        input, select, textarea { font-family: inherit; outline: none; border: none; }
+        button { 
+            cursor: pointer; 
+            border: none; 
+            background: none; 
+            color: inherit; 
+            outline: none; 
+            transition: var(--transition); 
+        }
+        
+        input, select, textarea { 
+            font-family: inherit; 
+            outline: none; 
+            border: none; 
+        }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+        ::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: var(--bg-base); 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: #1f2937; 
+            border-radius: 10px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: var(--brand-primary); 
+        }
 
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin { 
+            100% { transform: rotate(360deg); } 
+        }
 
-        /* === УВЕДОМЛЕНИЯ (TOASTS) === */
+        /* ==========================================
+           УВЕДОМЛЕНИЯ (TOASTS)
+        ========================================== */
         #toast-container {
             position: fixed;
             top: 25px;
@@ -74,6 +103,7 @@
             flex-direction: column;
             gap: 12px;
         }
+        
         .toast {
             background: rgba(11, 15, 25, 0.95);
             backdrop-filter: blur(15px);
@@ -90,11 +120,14 @@
             transform: translateX(120%);
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
+        
         .toast.show { transform: translateX(0); }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
 
-        /* === ЭКРАН АВТОРИЗАЦИИ === */
+        /* ==========================================
+           ЭКРАН АВТОРИЗАЦИИ
+        ========================================== */
         #auth-view {
             min-height: 100vh;
             display: flex;
@@ -103,6 +136,7 @@
             background: radial-gradient(circle at center, #111827 0%, #030712 100%);
             padding: 20px;
         }
+        
         .auth-card {
             background: var(--bg-surface);
             padding: 45px;
@@ -114,6 +148,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             animation: fadeUp 0.5s ease;
         }
+        
         .auth-input {
             width: 100%;
             background: var(--bg-input);
@@ -125,7 +160,11 @@
             font-size: 15px;
             transition: var(--transition);
         }
-        .auth-input:focus { border-color: var(--brand-primary); }
+        
+        .auth-input:focus { 
+            border-color: var(--brand-primary); 
+        }
+        
         .btn-main {
             width: 100%;
             background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
@@ -136,10 +175,21 @@
             font-size: 15px;
             box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
         }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(124, 58, 237, 0.3); }
+        
+        .btn-main:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 15px 25px rgba(124, 58, 237, 0.3); 
+        }
 
-        /* === ИНТЕРФЕЙС АДМИНКИ === */
-        #app-view { display: none; padding: 40px 50px; max-width: 1700px; margin: 0 auto; }
+        /* ==========================================
+           ИНТЕРФЕЙС АДМИНКИ
+        ========================================== */
+        #app-view { 
+            display: none; 
+            padding: 40px 50px; 
+            max-width: 1700px; 
+            margin: 0 auto; 
+        }
         
         .header {
             display: flex;
@@ -151,6 +201,7 @@
             gap: 15px;
             flex-wrap: wrap;
         }
+        
         .header-title {
             font-size: 26px;
             font-weight: 800;
@@ -159,6 +210,7 @@
             align-items: center;
             gap: 12px;
         }
+        
         .badge-root {
             background: rgba(124,58,237,0.15);
             color: #A78BFA;
@@ -177,7 +229,11 @@
             padding-bottom: 15px;
             overflow-x: auto;
         }
-        .admin-nav::-webkit-scrollbar { display: none; }
+        
+        .admin-nav::-webkit-scrollbar { 
+            display: none; 
+        }
+        
         .admin-tab-btn {
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
@@ -189,22 +245,32 @@
             white-space: nowrap;
             transition: 0.2s;
         }
+        
         .admin-tab-btn.active, .admin-tab-btn:hover {
             background: var(--brand-primary);
             color: white;
             border-color: var(--brand-primary);
         }
 
-        .admin-section { display: none; animation: fadeUp 0.4s ease; }
-        .admin-section.active { display: block; }
+        .admin-section { 
+            display: none; 
+            animation: fadeUp 0.4s ease; 
+        }
+        
+        .admin-section.active { 
+            display: block; 
+        }
 
-        /* === СТАТИСТИКА (МЕТРИКИ) === */
+        /* ==========================================
+           СТАТИСТИКА (МЕТРИКИ)
+        ========================================== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
+        
         .stat-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
@@ -214,6 +280,7 @@
             align-items: center;
             gap: 18px;
         }
+        
         .stat-icon {
             width: 46px;
             height: 46px;
@@ -223,14 +290,18 @@
             justify-content: center;
             font-size: 18px;
         }
+        
         .stat-icon.total { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
         .stat-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
         .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .stat-icon.finance { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        
         .stat-info h4 { font-size: 13px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
         .stat-info span { font-size: 24px; font-weight: 800; color: var(--text-title); }
 
-        /* === ИНСТРУМЕНТЫ (ПОИСК, ФИЛЬТРЫ) === */
+        /* ==========================================
+           ИНСТРУМЕНТЫ (ПОИСК, ФИЛЬТРЫ)
+        ========================================== */
         .toolbar {
             display: flex;
             justify-content: space-between;
@@ -239,8 +310,21 @@
             gap: 15px;
             flex-wrap: wrap;
         }
-        .search-box { position: relative; flex: 1; max-width: 350px; }
-        .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+        
+        .search-box { 
+            position: relative; 
+            flex: 1; 
+            max-width: 350px; 
+        }
+        
+        .search-box i { 
+            position: absolute; 
+            left: 16px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--text-secondary); 
+        }
+        
         .search-box input {
             width: 100%;
             background: var(--bg-surface);
@@ -251,7 +335,13 @@
             font-size: 14px;
         }
         
-        .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .filters-group { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+        
         .filter-select {
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
@@ -262,6 +352,7 @@
             font-size: 13px;
             cursor: pointer;
         }
+        
         .btn-action {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-light);
@@ -272,11 +363,25 @@
             color: var(--text-primary);
             transition: 0.2s;
         }
-        .btn-action:hover { background: rgba(255,255,255,0.1); }
-        .btn-success-action { background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: rgba(16, 185, 129, 0.2); }
+        
+        .btn-action:hover { 
+            background: rgba(255,255,255,0.1); 
+        }
+        
+        .btn-success-action { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success); 
+            border-color: rgba(16, 185, 129, 0.2); 
+        }
 
-        /* === КАРТОЧКИ РЕЛИЗОВ === */
-        .admin-releases-grid { display: grid; gap: 20px; }
+        /* ==========================================
+           КАРТОЧКИ РЕЛИЗОВ
+        ========================================== */
+        .admin-releases-grid { 
+            display: grid; 
+            gap: 20px; 
+        }
+        
         .admin-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
@@ -288,16 +393,38 @@
             align-items: start;
             transition: var(--transition);
         }
-        .admin-card:hover { border-color: rgba(124, 58, 237, 0.4); }
+        
+        .admin-card:hover { 
+            border-color: rgba(124, 58, 237, 0.4); 
+        }
 
         .rel-details h3 { font-size: 20px; color: var(--text-title); margin-bottom: 6px; font-weight: 800; }
         .rel-details p { color: var(--text-primary); font-size: 13px; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
-        .artist-badge { display: inline-block; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; font-size: 12px; color: var(--text-secondary); margin-top: 6px; font-weight: 600; }
+        
+        .artist-badge { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.05); 
+            padding: 4px 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            margin-top: 6px; 
+            font-weight: 600; 
+        }
         
         .dsp-tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
-        .dsp-tag { background: rgba(124,58,237,0.1); color: #A78BFA; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+        
+        .dsp-tag { 
+            background: rgba(124,58,237,0.1); 
+            color: #A78BFA; 
+            font-size: 10px; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-weight: 700; 
+        }
 
         .rel-files { display: flex; flex-direction: column; gap: 8px; }
+        
         .file-link {
             display: flex;
             align-items: center;
@@ -311,26 +438,113 @@
             color: var(--text-primary);
             text-decoration: none;
         }
-        .file-link:hover { border-color: var(--brand-primary); }
+        
+        .file-link:hover { 
+            border-color: var(--brand-primary); 
+        }
 
-        .rel-codes { display: flex; flex-direction: column; gap: 10px; background: var(--bg-input); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
+        .rel-codes { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            background: var(--bg-input); 
+            padding: 16px; 
+            border-radius: var(--radius-sm); 
+            border: 1px solid var(--border-light); 
+        }
+        
         .code-input-group label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 3px; }
-        .code-input-group input, .code-input-group textarea { width: 100%; background: var(--bg-base); border: 1px solid var(--border-light); color: white; padding: 8px 10px; border-radius: 6px; font-size: 12px; font-family: monospace; }
+        
+        .code-input-group input, .code-input-group textarea { 
+            width: 100%; 
+            background: var(--bg-base); 
+            border: 1px solid var(--border-light); 
+            color: white; 
+            padding: 8px 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-family: monospace; 
+        }
 
         .rel-actions { display: flex; flex-direction: column; gap: 10px; }
-        .rel-actions select { width: 100%; background: var(--bg-input); color: white; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 12px; }
-        .btn-save { background: var(--success); color: white; padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
+        
+        .rel-actions select { 
+            width: 100%; 
+            background: var(--bg-input); 
+            color: white; 
+            border: 1px solid var(--border-light); 
+            padding: 10px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 700; 
+            font-size: 12px; 
+        }
+        
+        .btn-save { 
+            background: var(--success); 
+            color: white; 
+            padding: 10px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 700; 
+            font-size: 13px; 
+            text-align: center; 
+        }
+        
         .btn-save:hover { background: #059669; }
-        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; text-align: center; }
+        
+        .btn-delete { 
+            background: rgba(239, 68, 68, 0.15); 
+            color: var(--danger); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+            padding: 10px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 700; 
+            font-size: 13px; 
+            text-align: center; 
+        }
+        
         .btn-delete:hover { background: rgba(239, 68, 68, 0.25); }
 
-        /* === СПИСОК ПОЛЬЗОВАТЕЛЕЙ === */
-        .users-list-wrapper { max-height: 550px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 12px; }
+        /* ==========================================
+           СПИСОК ПОЛЬЗОВАТЕЛЕЙ И ПРОМОКОДОВ
+        ========================================== */
+        .users-list-wrapper { 
+            max-height: 550px; 
+            overflow-y: auto; 
+            padding-right: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        
         .users-list-wrapper::-webkit-scrollbar { width: 6px; }
         .users-list-wrapper::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
         .users-list-wrapper::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 4px; }
 
-        /* === ЧАТ АДМИНА === */
+        .promo-list-item {
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .promo-list-item h4 {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .promo-list-item p {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* ==========================================
+           ЧАТ АДМИНА
+        ========================================== */
         .support-grid {
             display: grid;
             grid-template-columns: 350px 1fr;
@@ -338,8 +552,23 @@
             height: 65vh;
             min-height: 500px;
         }
-        .chat-list-panel { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow-y: auto; padding: 15px; }
-        .chat-view-panel { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); display: flex; flex-direction: column; overflow: hidden; }
+        
+        .chat-list-panel { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            overflow-y: auto; 
+            padding: 15px; 
+        }
+        
+        .chat-view-panel { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
         
         .chat-item {
             padding: 12px 15px;
@@ -353,26 +582,71 @@
             margin-bottom: 8px;
             background: rgba(255,255,255,0.02);
         }
+        
         .chat-item:hover { background: var(--bg-input); }
-        .chat-item.active { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.3); }
+        .chat-item.active { background: rgba(124,58,237,0.15); border-color: rgba(124,58,237,0.3); }
         .chat-unread-dot { width: 12px; height: 12px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px rgba(16,185,129,0.5); }
         
         .chat-msg-container { display: flex; flex-direction: column; max-width: 75%; }
         .chat-msg-container.admin { align-self: flex-end; align-items: flex-end; }
         .chat-msg-container.user { align-self: flex-start; align-items: flex-start; }
         
+        .chat-sender-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            padding: 0 4px;
+        }
+
         .chat-msg { padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.4; word-break: break-word; }
-        .chat-msg-container.admin .chat-msg { background: var(--brand-primary); color: white; border-bottom-right-radius: 4px; }
-        .chat-msg-container.user .chat-msg { background: var(--bg-input); color: white; border-bottom-left-radius: 4px; border: 1px solid var(--border-light); }
+        
+        .chat-msg-container.admin .chat-msg { 
+            background: var(--brand-primary); 
+            color: white; 
+            border-bottom-right-radius: 4px; 
+        }
+        
+        .chat-msg-container.user .chat-msg { 
+            background: var(--bg-input); 
+            color: white; 
+            border-bottom-left-radius: 4px; 
+            border: 1px solid var(--border-light); 
+        }
+        
         .chat-time { font-size: 11px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
 
-        #user-typing-indicator { font-size: 13px; color: var(--brand-primary); padding: 5px 20px 15px; font-style: italic; display: none; font-weight: 600; }
+        #user-typing-indicator { 
+            font-size: 13px; 
+            color: var(--brand-primary); 
+            padding: 5px 20px 15px; 
+            font-style: italic; 
+            display: none; 
+            font-weight: 600; 
+        }
 
         /* Прочие стили модулей */
-        .module-card { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 30px; border-radius: var(--radius-md); margin-bottom: 20px; }
-        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
+        .module-card { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-light); 
+            padding: 30px; 
+            border-radius: var(--radius-md); 
+            margin-bottom: 20px; 
+        }
+        
+        .spinner { 
+            width: 40px; 
+            height: 40px; 
+            border: 4px solid var(--border-light); 
+            border-top-color: var(--brand-primary); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin: 60px auto; 
+        }
 
-        /* === АДАПТАЦИЯ (МЕДИАЗАПРОСЫ) === */
+        /* ==========================================
+           АДАПТАЦИЯ (МЕДИАЗАПРОСЫ)
+        ========================================== */
         @media(max-width: 1400px) {
             .admin-card { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -399,8 +673,10 @@
                 <i class="fa-solid fa-shield-halved"></i> 685 <span>ADMIN</span>
             </div>
             <p style="color:var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Безопасный вход для руководства</p>
+            
             <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
             <input type="password" id="auth-password" class="auth-input" placeholder="Пароль">
+            
             <button class="btn-main" id="auth-btn">Войти в панель</button>
         </div>
     </div>
@@ -472,41 +748,80 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И E-MAIL РАССЫЛКА -->
+        <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ, E-MAIL И ПРОМОКОДЫ -->
         <div class="admin-section" id="tab-users">
             <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
                 
-                <!-- Список пользователей -->
+                <!-- Список пользователей и выдача тарифов -->
                 <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
                     <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-users-gear" style="color:var(--brand-primary)"></i> Управление аккаунтами</h3>
+                    
                     <div style="margin-bottom: 20px; position: relative;">
                         <i class="fa-solid fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
                         <input type="text" id="user-search-input" placeholder="Поиск артиста по E-mail или никнейму..." style="width: 100%; background: var(--bg-input); padding: 14px 14px 14px 45px; border-radius: var(--radius-sm); color: white; border: 1px solid var(--border-light); outline: none;">
                     </div>
+                    
                     <div id="users-list-container" class="users-list-wrapper">
                         <div class="spinner"></div>
                     </div>
                 </div>
 
-                <!-- Почтовый клиент -->
-                <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md); height: fit-content;">
-                    <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-envelope-open-text" style="color:#3B82F6"></i> E-mail Рассылка</h3>
-                    <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Отправка официальных системных уведомлений пользователям на их почту.</p>
+                <!-- Правая колонка: E-mail и Промокоды -->
+                <div style="display: flex; flex-direction: column; gap: 30px;">
                     
-                    <div style="margin-bottom:15px;">
-                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Кому (E-mail)</label>
-                        <input type="email" id="mail-to" placeholder="artist@mail.com" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
+                    <!-- Почтовый клиент -->
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-envelope-open-text" style="color:#3B82F6"></i> E-mail Рассылка</h3>
+                        <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Отправка официальных системных уведомлений пользователям на их почту.</p>
+                        
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Кому (E-mail)</label>
+                            <input type="email" id="mail-to" placeholder="artist@mail.com" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
+                        </div>
+                        
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Тема письма</label>
+                            <input type="text" id="mail-subject" placeholder="Уведомление от 685 Music" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
+                        </div>
+                        
+                        <div style="margin-bottom:25px;">
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Сообщение</label>
+                            <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; font-family:inherit; outline:none; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; transition: 0.2s;">Отправить письмо</button>
                     </div>
-                    <div style="margin-bottom:15px;">
-                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Тема письма</label>
-                        <input type="text" id="mail-subject" placeholder="Уведомление от 685 Music" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
-                    </div>
-                    <div style="margin-bottom:25px;">
-                        <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Сообщение</label>
-                        <textarea id="mail-body" rows="6" placeholder="Здравствуйте! Ваш релиз..." style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; font-family:inherit; outline:none; resize: vertical;"></textarea>
+
+                    <!-- Модуль Промокодов -->
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
+                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-ticket" style="color:var(--warning)"></i> Генератор промокодов</h3>
+                        <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Создание кодов на скидку в ЮKassa или на бесплатную выдачу тарифа.</p>
+                        
+                        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+                            <input type="text" id="promo-code-name" placeholder="Промокод (например: SUMMER50)" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                            
+                            <select id="promo-type" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                                <option value="discount">Скидка в % (Для ЮKassa)</option>
+                                <option value="gift">Подарочный (Бесплатный тариф)</option>
+                            </select>
+
+                            <input type="number" id="promo-val" placeholder="Значение (Процент скидки / Кол-во месяцев)" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%;">
+                            
+                            <select id="promo-plan" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:12px; border-radius:6px; width:100%; display:none;">
+                                <option value="Стартовый">Тариф: Стартовый</option>
+                                <option value="Расширенный">Тариф: Расширенный</option>
+                                <option value="Профессиональный">Тариф: Профессиональный</option>
+                            </select>
+                        </div>
+                        
+                        <button id="create-promo-btn" style="background:var(--warning); color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; margin-bottom: 20px;">Создать промокод</button>
+                        
+                        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:10px;">Активные промокоды:</h4>
+                        <div id="promo-list" style="max-height: 200px; overflow-y: auto;">
+                            <div class="spinner" style="width: 20px; height: 20px; border-width: 2px;"></div>
+                        </div>
                     </div>
                     
-                    <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:16px; border-radius:8px; font-weight:800; border:none; cursor: pointer; transition: 0.2s;">Отправить письмо</button>
                 </div>
             </div>
         </div>
@@ -581,7 +896,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, orderBy, query, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, setDoc, serverTimestamp, orderBy, query, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
         const firebaseConfig = {
@@ -654,8 +969,10 @@
                 const targetTab = e.target.getAttribute('data-tab');
                 document.getElementById(targetTab).classList.add('active');
 
-                // Подгружаем пользователей только при открытии вкладки
-                if (targetTab === 'tab-users') loadUsers();
+                if (targetTab === 'tab-users') {
+                    loadUsers();
+                    loadPromos();
+                }
             });
         });
 
@@ -679,14 +996,13 @@
                 document.getElementById('app-view').style.display = 'block';
                 document.getElementById('admin-display-email').innerText = user.email;
                 
-                // Загружаем данные админки
                 loadReleases();
                 initAdminChat();
             } else {
                 signOut(auth); // Если вошел не админ, выкидываем
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
-                if(adminChatUnsub) adminChatUnsub(); // Отключаем слушатель чата
+                if(adminChatUnsub) adminChatUnsub(); 
             }
         });
 
@@ -697,7 +1013,6 @@
         const userTypingIndicator = document.getElementById('user-typing-indicator');
 
         function initAdminChat() {
-            // Подключаем слушатель к коллекции чатов в реальном времени
             adminChatUnsub = onSnapshot(query(collection(db, "support_chats"), orderBy("lastUpdated", "desc")), (snap) => {
                 allSupportChats = [];
                 snap.forEach(doc => allSupportChats.push({ id: doc.id, ...doc.data() }));
@@ -735,18 +1050,15 @@
             });
         }
 
-        // Выбор конкретного чата из списка
         window.selectSupportChat = async (uid) => {
             selectedChatUid = uid;
             renderAdminChatList();
             renderAdminChatWindow(uid);
             
-            // Активируем поле ввода
             adminChatInput.disabled = false;
             document.getElementById('admin-chat-send').disabled = false;
             adminChatInput.placeholder = 'Написать ответ пользователю...';
             
-            // Сбрасываем метку непрочитанного для админа
             try { await updateDoc(doc(db, "support_chats", uid), { hasUnreadAdmin: false }); } catch(e) {}
         };
 
@@ -760,7 +1072,6 @@
             header.innerHTML = `<i class="fa-solid fa-headset" style="color:var(--brand-primary)"></i> Диалог: ${chat.userNickname}`;
             body.innerHTML = '';
             
-            // Показываем индикатор печати пользователя, если он активен
             if (chat.userTyping) {
                 userTypingIndicator.style.display = 'block';
             } else {
@@ -775,8 +1086,11 @@
 
             msgs.forEach(m => {
                 const isAdmin = m.sender === 'admin';
+                const senderName = isAdmin ? 'Вы' : (chat.userNickname || 'Пользователь');
+                
                 body.innerHTML += `
                     <div class="chat-msg-container ${isAdmin ? 'admin' : 'user'}">
+                        <div class="chat-sender-name">${senderName}</div>
                         <div class="chat-msg">${m.text}</div>
                         <div class="chat-time">${formatChatTime(m.time)}</div>
                     </div>`;
@@ -784,15 +1098,12 @@
             body.scrollTop = body.scrollHeight;
         }
 
-        // Отслеживание набора текста администратором
         adminChatInput.addEventListener('input', () => {
             if (!selectedChatUid) return;
-            
             if (!isAdminTyping) {
                 isAdminTyping = true;
                 updateDoc(doc(db, "support_chats", selectedChatUid), { adminTyping: true }).catch(()=>{});
             }
-            
             clearTimeout(adminTypingTimer);
             adminTypingTimer = setTimeout(() => {
                 isAdminTyping = false;
@@ -800,7 +1111,6 @@
             }, 1500);
         });
 
-        // Отправка сообщения
         document.getElementById('admin-chat-send').addEventListener('click', sendAdminChatMessage);
         adminChatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') sendAdminChatMessage();
@@ -812,8 +1122,6 @@
             if(!val) return;
             
             adminChatInput.value = '';
-            
-            // Сбрасываем статус "печатает"
             clearTimeout(adminTypingTimer);
             isAdminTyping = false;
 
@@ -823,7 +1131,7 @@
                 await updateDoc(doc(db, "support_chats", selectedChatUid), {
                     messages: arrayUnion(msgObj),
                     lastUpdated: serverTimestamp(),
-                    hasUnreadUser: true, // Уведомляем пользователя
+                    hasUnreadUser: true,
                     hasUnreadAdmin: false,
                     adminTyping: false
                 });
@@ -862,30 +1170,45 @@
                 if(status === 'banned') statusBadge = `<span style="color:var(--danger); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(239,68,68,0.1); border-radius:6px; text-transform:uppercase;">Заблокирован</span>`;
                 if(status === 'frozen') statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
 
-                // ЗАЩИТА ВЛАДЕЛЬЦА: скрываем кнопки блокировки
                 let actionButtons = '';
                 if (u.id === ADMIN_UID) {
                     actionButtons = `<div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:10px; background:rgba(124,58,237,0.1); border-radius:8px; border:1px solid rgba(124,58,237,0.2);"><i class="fa-solid fa-crown"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
-                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Забанить</button>` : ''}
-                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Заморозить</button>` : ''}
-                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Разблокировать</button>` : ''}
-                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Письмо</button>
+                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Забанить</button>` : ''}
+                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Заморозить</button>` : ''}
+                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">Разблокировать</button>` : ''}
                     `;
                 }
 
+                // Блок выдачи тарифов администратором
+                const tariffHtml = `
+                    <div style="display:flex; gap:5px; margin-top:10px;">
+                        <select id="tariff-select-${u.id}" style="flex:1; background:rgba(255,255,255,0.05); color:white; border:1px solid var(--border-light); border-radius:6px; font-size:11px; padding:6px; outline:none;">
+                            <option value="Стартовый">Стартовый (1 мес)</option>
+                            <option value="Расширенный">Расширенный (1 мес)</option>
+                            <option value="Профессиональный">Профессиональный (1 мес)</option>
+                            <option value="Базовый">Сброс до Базового</option>
+                        </select>
+                        <button onclick="issueTariff('${u.id}')" style="background:var(--brand-primary); color:white; border-radius:6px; padding:6px 10px; font-size:11px; font-weight:700;">Выдать</button>
+                    </div>
+                `;
+
                 container.innerHTML += `
                     <div style="background:var(--bg-input); padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light);">
-                        <div>
+                        <div style="flex:1; padding-right:15px;">
                             <div style="font-weight:800; color:white; font-size:16px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
                                 ${u.nickname || 'Безымянный'} ${statusBadge}
                             </div>
                             <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-envelope"></i> ${u.email}</div>
-                            <div style="font-size:12px; color:#A78BFA; font-weight:600;"><i class="fa-solid fa-compact-disc"></i> Тариф: ${u.subscription || 'Базовый'}</div>
+                            <div style="font-size:12px; color:#A78BFA; font-weight:600;"><i class="fa-solid fa-compact-disc"></i> Текущий тариф: ${u.subscription || 'Базовый'}</div>
+                            
+                            <!-- Выдача тарифа -->
+                            ${u.id !== ADMIN_UID ? tariffHtml : ''}
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:8px; width: 120px;">
+                        <div style="display:flex; flex-direction:column; gap:6px; width: 110px;">
                             ${actionButtons}
+                            <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;"><i class="fa-solid fa-envelope"></i> Письмо</button>
                         </div>
                     </div>
                 `;
@@ -893,11 +1216,8 @@
         }
 
         window.setUserStatus = async (uid, status) => {
-            // Двойная защита от блокировки Владельца
-            if (uid === ADMIN_UID) {
-                return notify("Критическая ошибка: Нельзя заблокировать владельца лейбла!", "error");
-            }
-
+            if (uid === ADMIN_UID) return notify("Критическая ошибка: Нельзя заблокировать владельца лейбла!", "error");
+            
             const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
             if(!confirm(`Вы уверены? Действие: ${statusNames[status]}`)) return;
             
@@ -908,7 +1228,31 @@
             } catch(e) { notify("Ошибка при изменении статуса. Проверьте права.", "error"); }
         }
 
-        // Поиск пользователей
+        // Ручная выдача тарифа
+        window.issueTariff = async (uid) => {
+            const plan = document.getElementById(`tariff-select-${uid}`).value;
+            if(!confirm(`Вы уверены, что хотите выдать тариф «${plan}» этому пользователю?`)) return;
+
+            try {
+                let expDate = null;
+                if (plan !== "Базовый") {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + 1); // По умолчанию выдаем на 1 месяц
+                    expDate = date.getTime();
+                }
+
+                await updateDoc(doc(db, "users", uid), {
+                    subscription: plan,
+                    subscriptionExpiresAt: expDate
+                });
+                
+                notify(`Тариф «${plan}» успешно выдан пользователю!`, "success");
+                loadUsers();
+            } catch(e) {
+                notify("Ошибка выдачи тарифа. Проверьте права Firestore.", "error");
+            }
+        };
+
         document.getElementById('user-search-input').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             renderUsersList(allUsers.filter(u => 
@@ -930,7 +1274,6 @@
             btn.disabled = true;
 
             try {
-                // Добавляем документ в коллекцию логов (триггерит отправку email через сервер)
                 await addDoc(collection(db, "mail_logs"), {
                     to, subject, body, sentAt: serverTimestamp()
                 });
@@ -949,9 +1292,91 @@
             }
         });
 
+        // ------------------ МОДУЛЬ ПРОМОКОДОВ ------------------
+        document.getElementById('promo-type').addEventListener('change', (e) => {
+            const val = e.target.value;
+            const planSelect = document.getElementById('promo-plan');
+            const valInput = document.getElementById('promo-val');
+
+            if (val === 'gift') {
+                planSelect.style.display = 'block';
+                valInput.placeholder = 'На сколько месяцев выдать?';
+            } else {
+                planSelect.style.display = 'none';
+                valInput.placeholder = 'Процент скидки (Например: 50)';
+            }
+        });
+
+        document.getElementById('create-promo-btn').addEventListener('click', async () => {
+            const code = document.getElementById('promo-code-name').value.trim().toUpperCase();
+            const type = document.getElementById('promo-type').value;
+            const val = parseInt(document.getElementById('promo-val').value.trim());
+            const plan = document.getElementById('promo-plan').value;
+
+            if (!code || isNaN(val)) return notify("Укажите сам код и его значение (число)!", "error");
+            
+            try {
+                await setDoc(doc(db, "promo_codes", code), {
+                    type: type,
+                    value: val,
+                    plan: type === 'gift' ? plan : null,
+                    isActive: true,
+                    createdAt: serverTimestamp()
+                });
+                
+                notify(`Промокод ${code} успешно создан!`, "success");
+                document.getElementById('promo-code-name').value = '';
+                document.getElementById('promo-val').value = '';
+                loadPromos();
+            } catch(e) {
+                notify("Ошибка создания промокода", "error");
+            }
+        });
+
+        async function loadPromos() {
+            const list = document.getElementById('promo-list');
+            list.innerHTML = '<div class="spinner" style="width: 20px; height: 20px; border-width: 2px;"></div>';
+            
+            try {
+                const snap = await getDocs(collection(db, "promo_codes"));
+                list.innerHTML = '';
+                
+                if (snap.empty) {
+                    list.innerHTML = '<div style="color:var(--text-secondary); font-size:12px;">Активных промокодов нет.</div>';
+                    return;
+                }
+                
+                snap.forEach(d => {
+                    const data = d.data();
+                    let desc = data.type === 'discount' ? `Скидка: ${data.value}%` : `Подарок: Тариф «${data.plan}» на ${data.value} мес.`;
+                    
+                    list.innerHTML += `
+                        <div class="promo-list-item">
+                            <div>
+                                <h4>${d.id}</h4>
+                                <p>${desc}</p>
+                            </div>
+                            <button onclick="deletePromo('${d.id}')" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            } catch(e) {
+                list.innerHTML = '<div style="color:var(--danger); font-size:12px;">Ошибка загрузки промокодов.</div>';
+            }
+        }
+
+        window.deletePromo = async (code) => {
+            if(!confirm(`Удалить промокод ${code}? Пользователи больше не смогут его активировать.`)) return;
+            try {
+                await deleteDoc(doc(db, "promo_codes", code));
+                notify("Промокод удален", "success");
+                loadPromos();
+            } catch(e) { notify("Ошибка удаления", "error"); }
+        }
+
 
         // ==========================================
-        // МОДУЛЬ 3: УПРАВЛЕНИЕ РЕЛИЗАМИ И ТАРИФАМИ
+        // МОДУЛЬ 3: УПРАВЛЕНИЕ РЕЛИЗАМИ
         // ==========================================
         async function loadReleases() {
             const container = document.getElementById('admin-container');
@@ -969,14 +1394,11 @@
                     const data = { id: docSnap.id, ...docSnap.data() };
                     allSubmissions.push(data);
                     
-                    // Подсчет статистики
                     if (data.status === 'Ожидает модерации') pendingCount++;
                     if (data.status === 'Запрос на удаление с площадок') deletesCount++;
                     
-                    // Заполнение модулей
                     if (data.status === 'Одобрено') {
                         approvedCount++;
-                        
                         pitchingHTML += `
                             <div style="background:var(--bg-input); padding:16px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                                 <div><b>${data.title}</b> — ${data.artist} <br><span style="color:var(--text-secondary); font-size:12px;">Жанр: ${data.genre}</span></div>
@@ -1078,7 +1500,6 @@
                     </div>`;
             });
 
-            // Обработчик сохранения данных релиза
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1110,7 +1531,6 @@
                 });
             });
 
-            // Обработчик полного удаления релиза
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1119,7 +1539,7 @@
                     try {
                         await deleteDoc(doc(db, "track_submissions", id));
                         notify("Релиз успешно удален из базы!", "success");
-                        loadReleases(); // Перезагружаем список
+                        loadReleases();
                     } catch(err) { 
                         notify("Критическая ошибка удаления", "error"); 
                     }
@@ -1127,7 +1547,6 @@
             });
         }
 
-        // Логика блокировки полей UPC/ISRC при отклонении
         window.handleStatusChange = (id) => {
             const status = document.getElementById(`status-${id}`).value;
             const upcInp = document.getElementById(`upc-${id}`);
@@ -1142,7 +1561,6 @@
             }
         };
 
-        // Быстрый поиск по релизам
         document.getElementById('search-input').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             renderList(allSubmissions.filter(i => 
@@ -1152,13 +1570,11 @@
             ));
         });
 
-        // Фильтрация релизов по статусам
         document.getElementById('status-filter').addEventListener('change', (e) => {
             const val = e.target.value;
             renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
         });
 
-        // Экспорт базы релизов в CSV-файл
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) return notify("В базе нет данных для экспорта", "error");
             
