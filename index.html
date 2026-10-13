@@ -162,7 +162,7 @@
         }
 
         /* ==========================================
-           ЭКРАНЫ АВТОРИЗАЦИИ
+           ЭКРАНЫ АВТОРИЗАЦИИ / ЗАМОРОЗКИ
         ========================================== */
         .auth-view-container { 
             min-height: 100vh; 
@@ -1663,6 +1663,19 @@
         </div>
     </div>
 
+    <!-- ЭКРАН ЗАМОРОЖЕННОГО АККАУНТА -->
+    <div id="frozen-view" class="auth-view-container" style="display: none;">
+        <div class="auth-card" style="border-color: var(--warning);">
+            <i class="fa-solid fa-snowflake" style="font-size: 48px; color: var(--warning); margin-bottom: 20px;"></i>
+            <h2 style="color: white; margin-bottom: 15px;">Аккаунт заморожен</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
+                Ваш аккаунт временно заморожен.<br><br>
+                Если вам выдали наказание необоснованно, вы можете написать сообщение поддержке с помощью кнопки в правом нижнем углу экрана.
+            </p>
+            <button id="frozen-logout" style="color: var(--danger); font-size: 14px; font-weight: 600; background: none; border: none; cursor: pointer;">Выйти из аккаунта</button>
+        </div>
+    </div>
+
     <!-- ДАШБОРД ПРИЛОЖЕНИЯ -->
     <div id="app-view">
         
@@ -2058,6 +2071,7 @@
                     
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
+                        <!-- Размытый email -->
                         <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы показать e-mail">
                     </div>
                     
@@ -2224,7 +2238,7 @@
             }, 6000);
         }
 
-        // === ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЯ ===
+        // === ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЯ (Без файлов, работает всегда) ===
         function playNotificationSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2283,18 +2297,21 @@
                 document.getElementById('display-plan-name').innerText = planName;
                 document.getElementById('summary-plan').innerText = planName;
                 
+                // Передача данных в форму ЮKassa
                 document.getElementById('ym-email').value = auth.currentUser.email;
                 document.getElementById('ym-customer-id').value = auth.currentUser.uid;
                 
+                // Чтобы отследить успешную оплату на клиенте, мы добавляем параметр ?payment=success
                 const successUrl = window.location.origin + window.location.pathname + "?payment=success";
                 document.getElementById('ym-success').value = successUrl;
                 document.getElementById('ym-fail').value = window.location.origin + window.location.pathname;
 
+                // Сброс промокода при открытии
                 currentDiscountPercent = 0;
                 document.getElementById('payment-promo-input').value = '';
                 document.getElementById('discount-row').style.display = 'none';
                 document.getElementById('summary-old-price').style.display = 'none';
-                document.getElementById('payment-agree-cb').checked = false;
+                document.getElementById('payment-agree-cb').checked = false; // Сброс чекбокса
 
                 document.getElementById('payment-duration').value = "1";
                 currentSelectedMonths = 1;
@@ -2326,9 +2343,10 @@
 
             let finalPrice = basePrice;
             
+            // Если применен промокод на скидку
             if (currentDiscountPercent > 0) {
                 finalPrice = basePrice - (basePrice * (currentDiscountPercent / 100));
-                finalPrice = Math.round(finalPrice);
+                finalPrice = Math.round(finalPrice); // Округляем до целых
                 
                 document.getElementById('discount-row').style.display = 'flex';
                 document.getElementById('summary-discount').innerText = `-${currentDiscountPercent}%`;
@@ -2348,6 +2366,7 @@
             document.getElementById('ym-text').value = `Оплата тарифа «${currentSelectedPlan}» на ${durationText}`;
         }
 
+        // Применение промокода на скидку в модалке оплаты
         document.getElementById('payment-promo-btn').addEventListener('click', async () => {
             const codeInput = document.getElementById('payment-promo-input');
             const code = codeInput.value.trim().toUpperCase();
@@ -2361,6 +2380,7 @@
                 if(snap.exists()) {
                     const data = snap.data();
                     
+                    // Проверка истечения времени промокода
                     if(data.expiresAt && Date.now() > data.expiresAt) {
                         return notify("Срок действия промокода истек", "error");
                     }
@@ -2380,6 +2400,7 @@
             }
         });
 
+        // Перехватываем отправку формы ЮKassa
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             if(!document.getElementById('payment-agree-cb').checked) {
                 e.preventDefault();
@@ -2425,6 +2446,7 @@
                         document.getElementById('settings-promo-input').value = '';
                         notify(`Промокод активирован! Вы получили тариф «${newPlan}» на ${months} мес. Пожалуйста, обновите страницу.`, "success");
                         
+                        // Обновляем визуал сразу
                         document.getElementById('setting-current-plan').innerText = newPlan;
                         document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
                         
@@ -2476,11 +2498,11 @@
         const chatInput = document.getElementById('chat-input');
         const typingIndicator = document.getElementById('typing-indicator');
         
-        let currentChatUnsub = null;
         let isTyping = false;
         let typingTimer;
-        let wasUnreadAdminMsg = false;
+        let wasUnreadAdminMsg = false; // Для контроля звука
 
+        // Открытие чата
         chatBtn.addEventListener('click', () => {
             chatWindow.classList.add('open');
             chatBtn.style.transform = 'scale(0)';
@@ -2492,11 +2514,13 @@
             }
         });
 
+        // Закрытие чата
         document.getElementById('close-chat-btn').addEventListener('click', () => {
             chatWindow.classList.remove('open');
             chatBtn.style.transform = 'scale(1)';
         });
 
+        // Индикатор набора текста "Пользователь печатает..."
         chatInput.addEventListener('input', () => {
             if (!auth.currentUser) return;
             
@@ -2516,6 +2540,7 @@
             }, 1500);
         });
 
+        // Отправка сообщения
         document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
         chatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
@@ -2529,6 +2554,7 @@
             
             chatInput.value = '';
             
+            // Сбрасываем статус печати
             clearTimeout(typingTimer);
             isTyping = false;
 
@@ -2568,6 +2594,7 @@
             }
         }
 
+        // Отрисовка сообщений с ИМЕНАМИ отправителей ("Вы" / "Администратор")
         function renderChatMessages(msgs) {
             const body = document.getElementById('chat-body');
             body.innerHTML = '';
@@ -2593,7 +2620,7 @@
 
 
         // ==========================================
-        // ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ
+        // ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ (REAL-TIME SNAPSHOT)
         // ==========================================
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
@@ -2602,6 +2629,8 @@
         const forgotBtnWrap = document.getElementById('forgot-btn-wrap');
         const authTerms = document.getElementById('auth-terms');
         
+        let userProfileUnsub = null;
+
         toggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
             if (isLoginMode) {
@@ -2621,6 +2650,7 @@
             }
         });
 
+        // Сброс пароля
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             if (!email) {
@@ -2634,6 +2664,7 @@
             }
         });
 
+        // Авторизация / Регистрация
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -2661,11 +2692,13 @@
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     
+                    // По умолчанию выдаем бесплатный тариф "Базовый" бессрочно
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname, 
                         email: email, 
                         subscription: "Базовый", 
                         subscriptionExpiresAt: null, 
+                        accountStatus: "Активен",
                         createdAt: serverTimestamp()
                     });
                     
@@ -2684,6 +2717,10 @@
         });
         
         document.getElementById('verify-logout').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        document.getElementById('frozen-logout').addEventListener('click', () => {
             signOut(auth);
         });
 
@@ -2706,119 +2743,23 @@
             }
         });
 
-        async function loadUserProfile(user) {
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-            let nickname = user.email.split('@')[0];
-            let planName = "Базовый";
-            let expDateMs = null;
-            
-            if (userSnap.exists()) {
-                const d = userSnap.data();
-                if (d.nickname) nickname = d.nickname;
-                if (d.subscription) planName = d.subscription;
-                expDateMs = d.subscriptionExpiresAt;
-                
-                if (expDateMs && Date.now() > expDateMs) {
-                    await setDoc(userRef, { 
-                        subscription: "Базовый", 
-                        subscriptionExpiresAt: null 
-                    }, { merge: true });
-                    notify("Срок действия вашего платного тарифа истек. Подписка изменена на «Базовый».", "warning");
-                    planName = "Базовый";
-                    expDateMs = null;
-                }
-            } else {
-                await setDoc(userRef, { 
-                    nickname: nickname, 
-                    email: user.email, 
-                    subscription: "Базовый" 
-                }, { merge: true });
-            }
-            
-            document.getElementById('setting-current-plan').innerText = planName;
-            
-            let expText = "Бессрочно";
-            if(expDateMs) {
-                const dDate = new Date(expDateMs);
-                expText = "До " + dDate.toLocaleDateString('ru-RU');
-            }
-            document.getElementById('setting-plan-expire').innerText = expText;
 
-            document.getElementById('display-nickname').innerText = nickname;
-            document.getElementById('setting-nickname').value = nickname;
-            document.getElementById('setting-email').value = user.email;
-            document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
-        }
-
-        document.getElementById('save-settings-btn').addEventListener('click', async () => {
-            const newNick = document.getElementById('setting-nickname').value.trim();
-            const newPassword = document.getElementById('setting-new-password').value;
-            const btn = document.getElementById('save-settings-btn');
-
-            if (!newNick) {
-                return notify("Никнейм не может быть пустым", "error");
-            }
-
-            try {
-                btn.innerHTML = '<div class="btn-spinner"></div>';
-                btn.disabled = true;
-
-                await setDoc(doc(db, "users", auth.currentUser.uid), { 
-                    nickname: newNick 
-                }, { merge: true });
-                
-                document.getElementById('display-nickname').innerText = newNick;
-                document.getElementById('user-avatar').innerText = newNick.charAt(0).toUpperCase();
-
-                if (newPassword) {
-                    if (newPassword.length < 6) {
-                        notify("Новый пароль должен быть не менее 6 символов", "error");
-                        btn.innerHTML = '<span>Сохранить изменения</span>';
-                        btn.disabled = false;
-                        return;
-                    }
-                    try {
-                        await updatePassword(auth.currentUser, newPassword);
-                        document.getElementById('setting-new-password').value = '';
-                        notify("Никнейм и пароль успешно обновлены!");
-                    } catch (pwErr) {
-                        if (pwErr.code === 'auth/requires-recent-login') {
-                            notify("В целях безопасности перезайдите в аккаунт для смены пароля", "error");
-                        } else {
-                            notify("Ошибка смены пароля: " + pwErr.message, "error");
-                        }
-                    }
-                } else {
-                    notify("Никнейм успешно обновлен!");
-                }
-            } catch (err) { 
-                notify("Ошибка сохранения данных", "error"); 
-            } finally {
-                btn.innerHTML = '<span>Сохранить изменения</span>';
-                btn.disabled = false;
-            }
-        });
-
+        // Отслеживание состояния сессии И ПРОФИЛЯ В РЕАЛЬНОМ ВРЕМЕНИ
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 await user.reload();
                 
+                // Проверка верификации почты
                 if (!user.emailVerified) {
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
                     document.getElementById('app-view').style.display = 'none';
+                    document.getElementById('frozen-view').style.display = 'none';
                     chatBtn.style.display = 'none';
                     return;
                 }
                 
-                document.getElementById('auth-view').style.display = 'none';
-                document.getElementById('verify-view').style.display = 'none';
-                document.getElementById('app-view').style.display = 'block';
-                chatBtn.style.display = 'flex';
-                
-                await loadUserProfile(user);
-
+                // ЛОГИКА ВЫДАЧИ ТАРИФА ПОСЛЕ ВОЗВРАТА С ЮKASSA
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('payment') === 'success') {
                     const pendingPlan = localStorage.getItem('pendingPaymentPlan');
@@ -2826,7 +2767,7 @@
                     
                     if (pendingPlan && pendingMonths) {
                         const expDate = new Date();
-                        expDate.setMonth(expDate.getMonth() + pendingMonths);
+                        expDate.setMonth(expDate.getMonth() + pendingMonths); 
                         
                         await setDoc(doc(db, "users", user.uid), {
                             subscription: pendingPlan,
@@ -2838,69 +2779,109 @@
                         
                         notify(`Оплата успешно завершена! Тариф «${pendingPlan}» активирован на ${pendingMonths} мес.`, "success");
                         
-                        document.getElementById('setting-current-plan').innerText = pendingPlan;
-                        document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
-
+                        // Очистка URL
                         window.history.replaceState(null, null, window.location.pathname);
                     }
                 }
 
-                const adminBtn = document.getElementById('go-to-admin-btn');
-                const userRoleText = document.getElementById('user-role-text');
+                // ПОДКЛЮЧАЕМ REAL-TIME ОТСЛЕЖИВАНИЕ ПРОФИЛЯ (ДЛЯ ЗАМОРОЗКИ И БАНА)
+                if (userProfileUnsub) userProfileUnsub();
                 
-                if (user.uid === ADMIN_UID) {
-                    adminBtn.style.display = 'flex';
-                    userRoleText.innerText = 'Label Administrator';
-                    userRoleText.style.color = '#a78bfa';
-                } else {
-                    adminBtn.style.display = 'none';
-                    userRoleText.innerText = 'Verified Artist';
-                    userRoleText.style.color = 'var(--success)';
-                }
-                
-                fetchReleases(user.uid);
-
-                if(currentChatUnsub) {
-                    currentChatUnsub();
-                }
-                
-                currentChatUnsub = onSnapshot(doc(db, "support_chats", user.uid), (docSnap) => {
-                    if(docSnap.exists()) {
+                userProfileUnsub = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
+                    if (docSnap.exists()) {
                         const d = docSnap.data();
-                        
-                        if (d.adminTyping) {
-                            typingIndicator.style.display = 'block';
-                        } else {
-                            typingIndicator.style.display = 'none';
+
+                        // 1. ПРОВЕРКА НА БАН
+                        if (d.accountStatus === 'banned') {
+                            notify("Ваш аккаунт был навсегда заблокирован администратором.", "error");
+                            signOut(auth);
+                            return;
                         }
 
-                        if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
-                            chatBadge.style.display = 'block';
+                        // 2. ПРОВЕРКА НА ЗАМОРОЗКУ
+                        if (d.accountStatus === 'frozen') {
+                            document.getElementById('auth-view').style.display = 'none';
+                            document.getElementById('verify-view').style.display = 'none';
+                            document.getElementById('app-view').style.display = 'none';
                             
-                            if (!wasUnreadAdminMsg) {
-                                playNotificationSound();
-                                notifyLong("Новое сообщение от Поддержки!", "success");
-                                wasUnreadAdminMsg = true;
-                            }
+                            document.getElementById('frozen-view').style.display = 'flex';
+                            chatBtn.style.display = 'flex'; // Оставляем кнопку чата
+                            
+                            // Подключаем чат для замороженного аккаунта
+                            initUserChat(user.uid);
+                            return;
+                        }
+
+                        // 3. АККАУНТ АКТИВЕН - ПОКАЗЫВАЕМ ИНТЕРФЕЙС
+                        document.getElementById('frozen-view').style.display = 'none';
+                        document.getElementById('auth-view').style.display = 'none';
+                        document.getElementById('verify-view').style.display = 'none';
+                        document.getElementById('app-view').style.display = 'block';
+                        chatBtn.style.display = 'flex';
+
+                        // 4. ПРОВЕРКА ТАРИФОВ И ИСТЕЧЕНИЯ ВРЕМЕНИ
+                        let nickname = d.nickname || user.email.split('@')[0];
+                        let planName = d.subscription || "Базовый";
+                        let expDateMs = d.subscriptionExpiresAt;
+                        
+                        if (expDateMs && Date.now() > expDateMs) {
+                            await setDoc(doc(db, "users", user.uid), { 
+                                subscription: "Базовый", 
+                                subscriptionExpiresAt: null 
+                            }, { merge: true });
+                            notify("Срок действия вашего платного тарифа истек. Подписка изменена на «Базовый».", "warning");
+                            planName = "Базовый";
+                            expDateMs = null;
+                        }
+
+                        // Обновляем визуал в настройках
+                        document.getElementById('setting-current-plan').innerText = planName;
+                        let expText = "Бессрочно";
+                        if(expDateMs) {
+                            const dDate = new Date(expDateMs);
+                            expText = "До " + dDate.toLocaleDateString('ru-RU');
+                        }
+                        document.getElementById('setting-plan-expire').innerText = expText;
+                        document.getElementById('display-nickname').innerText = nickname;
+                        document.getElementById('setting-nickname').value = nickname;
+                        document.getElementById('setting-email').value = user.email;
+                        document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
+
+                        // Инициализируем данные приложения
+                        fetchReleases(user.uid);
+                        initUserChat(user.uid);
+
+                        const adminBtn = document.getElementById('go-to-admin-btn');
+                        const userRoleText = document.getElementById('user-role-text');
+                        
+                        // Если пользователь = Админ
+                        if (user.uid === ADMIN_UID) {
+                            adminBtn.style.display = 'flex';
+                            userRoleText.innerText = 'Label Administrator';
+                            userRoleText.style.color = '#a78bfa';
                         } else {
-                            chatBadge.style.display = 'none';
-                            wasUnreadAdminMsg = false;
+                            adminBtn.style.display = 'none';
+                            userRoleText.innerText = 'Verified Artist';
+                            userRoleText.style.color = 'var(--success)';
                         }
-                        
-                        renderChatMessages(d.messages || []);
-                        
-                        if(chatWindow.classList.contains('open') && d.hasUnreadUser) {
-                            updateDoc(doc(db, "support_chats", user.uid), { 
-                                hasUnreadUser: false 
-                            }).catch(()=>{});
-                        }
+
+                    } else {
+                        // Если профиля нет, создаем базовый
+                        await setDoc(doc(db, "users", user.uid), { 
+                            nickname: user.email.split('@')[0], 
+                            email: user.email, 
+                            subscription: "Базовый",
+                            accountStatus: "Активен"
+                        }, { merge: true });
                     }
                 });
 
             } else {
+                // Если не авторизован
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
+                document.getElementById('frozen-view').style.display = 'none';
                 chatBtn.style.display = 'none';
                 
                 if (isLoginMode) {
@@ -2911,6 +2892,11 @@
                 
                 authBtn.disabled = false;
                 
+                if(userProfileUnsub) {
+                    userProfileUnsub();
+                    userProfileUnsub = null;
+                }
+
                 if(currentChatUnsub) { 
                     currentChatUnsub(); 
                     currentChatUnsub = null; 
@@ -2918,6 +2904,46 @@
             }
         });
 
+        // Функция инициализации чата для пользователя (вынесена отдельно для использования и в frozen_state)
+        let currentChatUnsubListener = null;
+        function initUserChat(uid) {
+            if (currentChatUnsubListener) currentChatUnsubListener();
+            
+            currentChatUnsubListener = onSnapshot(doc(db, "support_chats", uid), (docSnap) => {
+                if(docSnap.exists()) {
+                    const d = docSnap.data();
+                    
+                    if (d.adminTyping) {
+                        typingIndicator.style.display = 'block';
+                    } else {
+                        typingIndicator.style.display = 'none';
+                    }
+
+                    if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
+                        chatBadge.style.display = 'block';
+                        
+                        if (!wasUnreadAdminMsg) {
+                            playNotificationSound();
+                            notifyLong("Новое сообщение от Поддержки!", "success");
+                            wasUnreadAdminMsg = true;
+                        }
+                    } else {
+                        chatBadge.style.display = 'none';
+                        wasUnreadAdminMsg = false;
+                    }
+                    
+                    renderChatMessages(d.messages || []);
+                    
+                    if(chatWindow.classList.contains('open') && d.hasUnreadUser) {
+                        updateDoc(doc(db, "support_chats", uid), { 
+                            hasUnreadUser: false 
+                        }).catch(()=>{});
+                    }
+                }
+            });
+        }
+
+        // Навигация
         document.getElementById('go-to-admin-btn').addEventListener('click', () => {
             window.location.href = 'admin.html';
         });
@@ -2950,6 +2976,7 @@
             });
         });
 
+        // Запрос на удаление релиза
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
@@ -2974,6 +3001,7 @@
             }
         };
 
+        // ОТПРАВКА НОВОГО РЕЛИЗА С ЗАЩИТОЙ ПО ТАРИФАМ
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
