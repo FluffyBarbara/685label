@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>685 Music | Premium Artist Portal</title>
     
+    <!-- Подключение шрифтов, иконок и стилей ЮKassa -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Скрипты и стили ЮKassa -->
     <link rel="stylesheet" href="https://yookassa.ru/integration/simplepay/css/yookassa_construct_form.css?v=1.35.0">
     
     <style>
@@ -492,7 +492,7 @@
         }
 
         /* ==========================================
-           КАРТОЧКИ, ФОРМЫ И ИНПУТЫ
+           КАРТОЧКИ, ФОРМЫ, АККОРДЕОНЫ
         ========================================== */
         .glass-card { 
             background: var(--bg-surface); 
@@ -518,6 +518,67 @@
             background: rgba(255,42,95,0.1); 
             padding: 10px; 
             border-radius: 10px; 
+        }
+
+        /* Аккордеоны для Правил */
+        .accordion-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .accordion {
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .accordion-header {
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-title);
+            background: rgba(255,255,255,0.02);
+            user-select: none;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+            color: var(--brand-primary);
+        }
+
+        .accordion.open .accordion-header i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .accordion.open .accordion-body {
+            padding: 15px 25px 25px;
+            max-height: 2000px;
+        }
+
+        .accordion-body ul, .accordion-body ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .accordion-body strong {
+            color: var(--text-primary);
         }
 
         .grid-2 { 
@@ -1672,8 +1733,118 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (РАСШИРЕННАЯ) -->
             <section class="section" id="new-release">
+
+                <!-- ПРАВИЛА И РЕКОМЕНДАЦИИ -->
+                <div class="glass-card" style="border-color: rgba(255, 42, 95, 0.3);">
+                    <div class="card-heading"><i class="fa-solid fa-book-open"></i> Правила дистрибуции</div>
+                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:20px;">Перед загрузкой релиза обязательно ознакомьтесь с техническими требованиями площадок.</p>
+                    
+                    <div class="accordion-wrapper">
+                        <!-- Аккордеон: Обложки -->
+                        <div class="accordion">
+                            <div class="accordion-header">
+                                Правила и рекомендации к обложкам <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>Стриминговые сервисы требуют высококачественные изображения для обложек, чтобы ваш релиз выглядел профессионально и максимально привлекательно. Если ваша обложка не соответствует этим требованиям, это может привести к задержке публикации релиза.</p>
+                                <br>
+                                <p><strong>Ваша обложка должна быть:</strong></p>
+                                <ul>
+                                    <li><strong>Формат:</strong> JPG или PNG.</li>
+                                    <li><strong>Размер:</strong> меньше 10 MB.</li>
+                                    <li><strong>Форма:</strong> квадратная, минимум 1400 x 1400 пикселей, но не более 3000 x 3000 пикселей. (iTunes рекомендует 3000 x 3000).</li>
+                                    <li><strong>Цветовая модель:</strong> RGB.</li>
+                                    <li>На изображении должен быть только текст с именем исполнителя и названием релиза (в точности как вы указали в названии при загрузке), либо изображение без текста вообще.</li>
+                                    <li><strong>Изображение должно быть вашим</strong> - вы должны иметь права на его распространение.</li>
+                                </ul>
+                                <p><strong>Запрещено к использованию в обложке:</strong></p>
+                                <ul>
+                                    <li>Дополнительный текст, кроме названия релиза и имени исполнителя.</li>
+                                    <li>Несоответствующие текст и название на обложке.</li>
+                                    <li>Электронные адреса, QR-коды, URL-адреса, контактная информация и информация о ценах.</li>
+                                    <li>Стикеры или другие элементы (если сканируете с физического CD).</li>
+                                    <li>Слова, подразумевающие формат (например: "CD", "DVD", "Digital Exclusive").</li>
+                                    <li>Обрезанные или размытые изображения.</li>
+                                    <li>Изображения, сжатые в одном углу с белым пространством вокруг.</li>
+                                    <li>Любые упоминания о "Spotify" или других стриминговых сервисах.</li>
+                                    <li>Изображения, защищенные авторским правом. Ваше изображение должно быть уникальным.</li>
+                                </ul>
+                                <p>Резюмируя: обложка должна быть высокого качества, соответствовать техническим требованиям и не содержать того, чего нет в метаданных релиза.</p>
+                            </div>
+                        </div>
+
+                        <!-- Аккордеон: Аудио -->
+                        <div class="accordion">
+                            <div class="accordion-header">
+                                Требования к аудио файлам <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>При загрузке аудио файла необходимо соблюдать следующие требования:</p>
+                                <ul>
+                                    <li><strong>Стерео формат:</strong> Моно файлы не принимаются. Файлы, содержащие только левый или правый канал, также не будут приняты. Только стерео!</li>
+                                    <li><strong>Качество:</strong> Файл не должен иметь проблем с качеством (например, перегрузки сигнала выше 0 dBFS).</li>
+                                    <li><strong>Полнота файла:</strong> Аудио файл должен быть полным и не обрываться на середине песни.</li>
+                                    <li><strong>Тишина в начале и конце:</strong> Допустимая граница тишины — не более 5 секунд.</li>
+                                </ul>
+                                <p><strong>Рекомендуемые параметры:</strong></p>
+                                <ul>
+                                    <li><strong>Частота дискретизации:</strong> 44.1 kHz</li>
+                                    <li><strong>Глубина бит:</strong> 16 бит</li>
+                                    <li><strong>Кодеки:</strong> flac, wav</li>
+                                </ul>
+                                <p><strong>Доступные параметры:</strong></p>
+                                <ul>
+                                    <li><strong>Частота дискретизации:</strong> 44.1 kHz, 48 kHz, 88.2 kHz, 96 kHz</li>
+                                    <li><strong>Глубина бит:</strong> 16 бит, 24 бит</li>
+                                </ul>
+                                <p>Пожалуйста, убедитесь, что ваш файл соответствует этим требованиям для успешной загрузки.</p>
+                            </div>
+                        </div>
+
+                        <!-- Аккордеон: Названия -->
+                        <div class="accordion">
+                            <div class="accordion-header">
+                                Правила форматирования названий <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>Эти требования созданы для того, чтобы ваши релизы отображались аккуратно и привлекательно.</p>
+                                <br>
+                                <p><strong>Английский:</strong></p>
+                                <ul>
+                                    <li>Все слова пишутся с заглавной буквы.</li>
+                                    <li>Первое и последнее слово всегда пишутся с заглавной буквы (даже в скобках).</li>
+                                    <li>Слова перед символами (-), (/) всегда пишутся с заглавной буквы.</li>
+                                    <li>Слова, которые пишутся строчными буквами (если не первые/последние): a, an, and, as, but, for, from, nor, of, or, so, the, to, yet, at, by, in, into, off, on, onto, out, over, up, with.</li>
+                                    <li>Сокращения также со строчной: for — fo, and — n, with — wit.</li>
+                                </ul>
+                                <p><strong>Испанский / Португальский:</strong></p>
+                                <ul>
+                                    <li>Вы можете сами выбрать регистр, но обязаны соблюдать его на всём релизе.</li>
+                                    <li>Слова перед символами (-), (/) пишутся с заглавной буквы.</li>
+                                    <li>Артикли и предлоги (a, e, las, por, dos, para и др.) всегда пишутся со строчной буквы.</li>
+                                </ul>
+                                <p><strong>Французский, Шведский, Финский, Норвежский, Датский:</strong></p>
+                                <ul>
+                                    <li>Первое слово с заглавной, остальные — со строчной (маленькой).</li>
+                                </ul>
+                                <p><strong>Немецкий:</strong></p>
+                                <ul>
+                                    <li>Первое слово и <strong>все существительные</strong> всегда пишутся с заглавной буквы.</li>
+                                    <li>Остальные — со строчной.</li>
+                                </ul>
+                                <p><strong>Русский, Украинский, Беларусский, Болгарский, Сербский:</strong></p>
+                                <ul>
+                                    <li>Первое слово всегда пишется с заглавной буквы.</li>
+                                    <li>Остальные слова пишутся с маленькой буквы (кроме имен собственных).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ОСНОВНЫЕ ДАННЫЕ -->
                 <div class="glass-card">
                     <div class="card-heading"><i class="fa-solid fa-circle-info"></i> Основные метаданные</div>
                     <div class="grid-2">
@@ -1715,17 +1886,32 @@
                     </div>
                 </div>
 
+                <!-- ИСХОДНЫЕ МАТЕРИАЛЫ С НОВЫМИ ПРАВИЛАМИ -->
                 <div class="glass-card">
                     <div class="card-heading"><i class="fa-solid fa-folder-open"></i> Исходные материалы (Ссылки)</div>
                     <div class="grid-2">
                         <div class="input-box">
-                            <label>Обложка (От 3000x3000px, RGB) *</label>
+                            <label>Обложка (1400x1400 - 3000x3000px, JPG/PNG, <10MB) *</label>
                             <input type="url" id="r-cover" class="styled-input" placeholder="Ссылка на Google Drive, Яндекс.Диск">
                         </div>
                         <div class="input-box">
-                            <label>WAV Мастер-файл (16/24 bit) *</label>
+                            <label>WAV/FLAC Мастер-файл (16/24 bit, Стерео) *</label>
                             <input type="url" id="r-audio" class="styled-input" placeholder="Открытая ссылка на скачивание трека">
                         </div>
+                    </div>
+                </div>
+
+                <!-- AI ПИТЧИНГ ПРОМО -->
+                <div class="glass-card">
+                    <div class="card-heading"><i class="fa-solid fa-wand-magic-sparkles" style="color: #A78BFA; background: rgba(124,58,237,0.1);"></i> AI Промо (Питчинг)</div>
+                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:15px;">Сгенерируйте профессиональное описание для редакторов стриминговых площадок с помощью ИИ.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <textarea id="r-promo-text" class="styled-input" rows="4" placeholder="Здесь появится готовый текст для питчинга... Вы также можете написать его вручную." style="resize: vertical;"></textarea>
+                        
+                        <button type="button" id="ai-generate-btn" style="background: linear-gradient(135deg, #7C3AED, #4F46E5); color: white; padding: 14px 20px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 250px;">
+                            <i class="fa-solid fa-robot"></i> Сгенерировать ИИ
+                        </button>
                     </div>
                 </div>
 
@@ -1872,7 +2058,6 @@
                     
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
-                        <!-- Размытый email -->
                         <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы показать e-mail">
                     </div>
                     
@@ -1963,6 +2148,44 @@
             this.classList.add('visible');
         });
 
+        // Управление Аккордеонами (Правила Дистрибуции)
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const accordion = header.parentElement;
+                accordion.classList.toggle('open');
+            });
+        });
+
+        // AI Генерация промо
+        document.getElementById('ai-generate-btn').addEventListener('click', () => {
+            const title = document.getElementById('r-title').value.trim() || '[Название Релиза]';
+            const artist = document.getElementById('r-artist').value.trim() || '[Имя Артиста]';
+            const genre = document.getElementById('r-genre').value || '[Жанр]';
+            
+            const btn = document.getElementById('ai-generate-btn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Анализ данных...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const promoTemplates = [
+                    `Новый релиз "${title}" от яркого представителя жанра ${genre} — ${artist}. Это свежее звучание, которое захватывает с первых секунд. Трек отличается глубокой атмосферой и запоминающимся мотивом, идеально подходящим для редакторских плейлистов. Мы уверены, что аудитория высоко оценит эту работу.`,
+                    `${artist} представляет мощную новинку "${title}". Этот ${genre}-трек сочетает в себе трендовый саунд и уникальную подачу исполнителя. Идеальный кандидат для попадания в чарты и кураторские подборки.`,
+                    `Премьера от ${artist}! Трек "${title}" — это стильный ${genre} с отличным потенциалом для вирусности. Динамичный бит и качественное сведение делают этот релиз обязательным для прослушивания.`
+                ];
+                
+                const randomPromo = promoTemplates[Math.floor(Math.random() * promoTemplates.length)];
+                
+                document.getElementById('r-promo-text').value = randomPromo;
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                notify("AI успешно сгенерировал промо-текст!", "success");
+            }, 1500);
+        });
+
         // === ФУНКЦИЯ УВЕДОМЛЕНИЙ ===
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -2001,7 +2224,7 @@
             }, 6000);
         }
 
-        // === ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЯ (Без файлов, работает всегда) ===
+        // === ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЯ ===
         function playNotificationSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2060,21 +2283,18 @@
                 document.getElementById('display-plan-name').innerText = planName;
                 document.getElementById('summary-plan').innerText = planName;
                 
-                // Передача данных в форму ЮKassa
                 document.getElementById('ym-email').value = auth.currentUser.email;
                 document.getElementById('ym-customer-id').value = auth.currentUser.uid;
                 
-                // Чтобы отследить успешную оплату на клиенте, мы добавляем параметр ?payment=success
                 const successUrl = window.location.origin + window.location.pathname + "?payment=success";
                 document.getElementById('ym-success').value = successUrl;
                 document.getElementById('ym-fail').value = window.location.origin + window.location.pathname;
 
-                // Сброс промокода при открытии
                 currentDiscountPercent = 0;
                 document.getElementById('payment-promo-input').value = '';
                 document.getElementById('discount-row').style.display = 'none';
                 document.getElementById('summary-old-price').style.display = 'none';
-                document.getElementById('payment-agree-cb').checked = false; // Сброс чекбокса
+                document.getElementById('payment-agree-cb').checked = false;
 
                 document.getElementById('payment-duration').value = "1";
                 currentSelectedMonths = 1;
@@ -2106,10 +2326,9 @@
 
             let finalPrice = basePrice;
             
-            // Если применен промокод на скидку
             if (currentDiscountPercent > 0) {
                 finalPrice = basePrice - (basePrice * (currentDiscountPercent / 100));
-                finalPrice = Math.round(finalPrice); // Округляем до целых
+                finalPrice = Math.round(finalPrice);
                 
                 document.getElementById('discount-row').style.display = 'flex';
                 document.getElementById('summary-discount').innerText = `-${currentDiscountPercent}%`;
@@ -2129,7 +2348,6 @@
             document.getElementById('ym-text').value = `Оплата тарифа «${currentSelectedPlan}» на ${durationText}`;
         }
 
-        // Применение промокода на скидку в модалке оплаты
         document.getElementById('payment-promo-btn').addEventListener('click', async () => {
             const codeInput = document.getElementById('payment-promo-input');
             const code = codeInput.value.trim().toUpperCase();
@@ -2143,7 +2361,6 @@
                 if(snap.exists()) {
                     const data = snap.data();
                     
-                    // Проверка истечения времени промокода
                     if(data.expiresAt && Date.now() > data.expiresAt) {
                         return notify("Срок действия промокода истек", "error");
                     }
@@ -2163,7 +2380,6 @@
             }
         });
 
-        // Перехватываем отправку формы ЮKassa
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             if(!document.getElementById('payment-agree-cb').checked) {
                 e.preventDefault();
@@ -2207,9 +2423,8 @@
                         });
 
                         document.getElementById('settings-promo-input').value = '';
-                        notify(`Промокод активирован! Вы получили тариф «${newPlan}» на ${months} мес. Обновите страницу.`, "success");
+                        notify(`Промокод активирован! Вы получили тариф «${newPlan}» на ${months} мес. Пожалуйста, обновите страницу.`, "success");
                         
-                        // Обновляем визуал сразу
                         document.getElementById('setting-current-plan').innerText = newPlan;
                         document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
                         
@@ -2264,9 +2479,8 @@
         let currentChatUnsub = null;
         let isTyping = false;
         let typingTimer;
-        let wasUnreadAdminMsg = false; // Для контроля звука
+        let wasUnreadAdminMsg = false;
 
-        // Открытие чата
         chatBtn.addEventListener('click', () => {
             chatWindow.classList.add('open');
             chatBtn.style.transform = 'scale(0)';
@@ -2278,13 +2492,11 @@
             }
         });
 
-        // Закрытие чата
         document.getElementById('close-chat-btn').addEventListener('click', () => {
             chatWindow.classList.remove('open');
             chatBtn.style.transform = 'scale(1)';
         });
 
-        // Индикатор набора текста "Пользователь печатает..."
         chatInput.addEventListener('input', () => {
             if (!auth.currentUser) return;
             
@@ -2304,7 +2516,6 @@
             }, 1500);
         });
 
-        // Отправка сообщения
         document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
         chatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
@@ -2318,7 +2529,6 @@
             
             chatInput.value = '';
             
-            // Сбрасываем статус печати
             clearTimeout(typingTimer);
             isTyping = false;
 
@@ -2358,7 +2568,6 @@
             }
         }
 
-        // Отрисовка сообщений с ИМЕНАМИ отправителей ("Вы" / "Администратор")
         function renderChatMessages(msgs) {
             const body = document.getElementById('chat-body');
             body.innerHTML = '';
@@ -2412,7 +2621,6 @@
             }
         });
 
-        // Сброс пароля
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             if (!email) {
@@ -2426,7 +2634,6 @@
             }
         });
 
-        // Авторизация / Регистрация
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -2454,7 +2661,6 @@
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     
-                    // По умолчанию выдаем бесплатный тариф "Базовый" бессрочно
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname, 
                         email: email, 
@@ -2500,7 +2706,6 @@
             }
         });
 
-        // Загрузка и проверка профиля (ПРОВЕРКА ИСТЕЧЕНИЯ ТАРИФА И ОТОБРАЖЕНИЕ В НАСТРОЙКАХ)
         async function loadUserProfile(user) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
@@ -2514,7 +2719,6 @@
                 if (d.subscription) planName = d.subscription;
                 expDateMs = d.subscriptionExpiresAt;
                 
-                // Автоматический сброс тарифа на "Базовый", если время подписки вышло
                 if (expDateMs && Date.now() > expDateMs) {
                     await setDoc(userRef, { 
                         subscription: "Базовый", 
@@ -2532,7 +2736,6 @@
                 }, { merge: true });
             }
             
-            // Заполнение карточки тарифа в настройках
             document.getElementById('setting-current-plan').innerText = planName;
             
             let expText = "Бессрочно";
@@ -2542,14 +2745,12 @@
             }
             document.getElementById('setting-plan-expire').innerText = expText;
 
-            // Заполнение профиля
             document.getElementById('display-nickname').innerText = nickname;
             document.getElementById('setting-nickname').value = nickname;
             document.getElementById('setting-email').value = user.email;
             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
         }
 
-        // Сохранение настроек и смена пароля
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const newNick = document.getElementById('setting-nickname').value.trim();
             const newPassword = document.getElementById('setting-new-password').value;
@@ -2599,12 +2800,10 @@
             }
         });
 
-        // Отслеживание состояния сессии
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 await user.reload();
                 
-                // Проверка верификации почты
                 if (!user.emailVerified) {
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
@@ -2620,7 +2819,6 @@
                 
                 await loadUserProfile(user);
 
-                // ЛОГИКА ВЫДАЧИ ТАРИФА ПОСЛЕ ВОЗВРАТА С ЮKASSA
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('payment') === 'success') {
                     const pendingPlan = localStorage.getItem('pendingPaymentPlan');
@@ -2628,7 +2826,7 @@
                     
                     if (pendingPlan && pendingMonths) {
                         const expDate = new Date();
-                        expDate.setMonth(expDate.getMonth() + pendingMonths); // Выдаем на кол-во месяцев
+                        expDate.setMonth(expDate.getMonth() + pendingMonths);
                         
                         await setDoc(doc(db, "users", user.uid), {
                             subscription: pendingPlan,
@@ -2640,11 +2838,9 @@
                         
                         notify(`Оплата успешно завершена! Тариф «${pendingPlan}» активирован на ${pendingMonths} мес.`, "success");
                         
-                        // Обновляем визуал карточки в настройках
                         document.getElementById('setting-current-plan').innerText = pendingPlan;
                         document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
 
-                        // Очистка URL
                         window.history.replaceState(null, null, window.location.pathname);
                     }
                 }
@@ -2652,7 +2848,6 @@
                 const adminBtn = document.getElementById('go-to-admin-btn');
                 const userRoleText = document.getElementById('user-role-text');
                 
-                // Если пользователь = Админ
                 if (user.uid === ADMIN_UID) {
                     adminBtn.style.display = 'flex';
                     userRoleText.innerText = 'Label Administrator';
@@ -2665,7 +2860,6 @@
                 
                 fetchReleases(user.uid);
 
-                // Слушатель чата пользователя в реальном времени с логикой звуковых уведомлений
                 if(currentChatUnsub) {
                     currentChatUnsub();
                 }
@@ -2674,18 +2868,15 @@
                     if(docSnap.exists()) {
                         const d = docSnap.data();
                         
-                        // Показываем индикатор печати админа
                         if (d.adminTyping) {
                             typingIndicator.style.display = 'block';
                         } else {
                             typingIndicator.style.display = 'none';
                         }
 
-                        // Уведомление на иконке (зеленая точка) и ЗВУК
                         if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
                             chatBadge.style.display = 'block';
                             
-                            // Если это новое сообщение, играем звук и показываем тост на 6 секунд
                             if (!wasUnreadAdminMsg) {
                                 playNotificationSound();
                                 notifyLong("Новое сообщение от Поддержки!", "success");
@@ -2707,7 +2898,6 @@
                 });
 
             } else {
-                // Если не авторизован
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
@@ -2728,7 +2918,6 @@
             }
         });
 
-        // Навигация
         document.getElementById('go-to-admin-btn').addEventListener('click', () => {
             window.location.href = 'admin.html';
         });
@@ -2740,7 +2929,6 @@
                 
                 link.classList.add('active');
                 
-                // Для мобильной навигации дублируем активный класс
                 const target = link.getAttribute('data-target');
                 document.querySelectorAll(`[data-target="${target}"]`).forEach(n => n.classList.add('active'));
                 
@@ -2762,7 +2950,6 @@
             });
         });
 
-        // Запрос на удаление релиза
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
@@ -2787,7 +2974,6 @@
             }
         };
 
-        // ОТПРАВКА НОВОГО РЕЛИЗА С ЗАЩИТОЙ ПО ТАРИФАМ
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -2795,6 +2981,7 @@
             const type = document.getElementById('r-type').value;
             const cover = document.getElementById('r-cover').value.trim();
             const audio = document.getElementById('r-audio').value.trim();
+            const promo = document.getElementById('r-promo-text').value.trim();
             
             const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
@@ -2810,7 +2997,6 @@
             btn.disabled = true;
 
             try {
-                // Блокировка бесплатного тарифа
                 const userRef = doc(db, "users", auth.currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
@@ -2823,7 +3009,6 @@
                     return notify("Для отгрузки релизов необходимо приобрести любой из платных тарифов!", "error");
                 }
 
-                // Проверка лимитов для платных тарифов
                 const qReleases = query(collection(db, "track_submissions"), where("userId", "==", auth.currentUser.uid));
                 const snapReleases = await getDocs(qReleases);
 
@@ -2841,7 +3026,6 @@
                     }
                 }
 
-                // Запись релиза в базу
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid, 
                     userEmail: auth.currentUser.email, 
@@ -2853,6 +3037,7 @@
                     platforms, 
                     coverUrl: cover, 
                     audioUrl: audio,
+                    promoPitch: promo,
                     status: "Ожидает модерации", 
                     upc: "", 
                     isrc: "", 
@@ -2862,10 +3047,8 @@
 
                 notify("Трек успешно отправлен на модерацию!");
                 
-                // Очистка формы
-                ['r-title', 'r-artist', 'r-cover', 'r-audio'].forEach(id => document.getElementById(id).value = '');
+                ['r-title', 'r-artist', 'r-cover', 'r-audio', 'r-promo-text'].forEach(id => document.getElementById(id).value = '');
                 
-                // Возврат в каталог
                 document.querySelector('.nav-item[data-target="dashboard"]').click();
             } catch { 
                 notify("Ошибка подключения к базе.", "error"); 
@@ -2875,7 +3058,6 @@
             }
         });
 
-        // ЗАГРУЗКА РЕЛИЗОВ ПОЛЬЗОВАТЕЛЯ
         async function fetchReleases(uid) {
             const wrap = document.getElementById('data-container');
             wrap.innerHTML = '<div style="grid-column: 1/-1; padding: 100px 0;"><div class="spinner"></div></div>';
@@ -2929,7 +3111,7 @@
                     } else if (d.status === "Запрос на удаление с площадок") {
                         deleteActionHtml = `
                             <div style="color: var(--warning); font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center;">
-                                <i class="fa-solid fa-clock"></i> Ожидает снятия с площадок администратором
+                                <i class="fa-solid fa-clock"></i> Ожидает снятия с площадок
                             </div>`;
                     } else {
                         deleteActionHtml = `
