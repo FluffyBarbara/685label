@@ -333,10 +333,25 @@
             font-size: 18px;
         }
         
-        .stat-icon.total { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
-        .stat-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-icon.approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-icon.finance { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .stat-icon.total { 
+            background: rgba(59, 130, 246, 0.1); 
+            color: #3B82F6; 
+        }
+        
+        .stat-icon.pending { 
+            background: rgba(245, 158, 11, 0.1); 
+            color: var(--warning); 
+        }
+        
+        .stat-icon.approved { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success); 
+        }
+        
+        .stat-icon.finance { 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--danger); 
+        }
         
         .stat-info h4 { 
             font-size: 13px; 
@@ -608,10 +623,12 @@
         .users-list-wrapper::-webkit-scrollbar { 
             width: 6px; 
         }
+        
         .users-list-wrapper::-webkit-scrollbar-track { 
             background: var(--bg-input); 
             border-radius: 4px; 
         }
+        
         .users-list-wrapper::-webkit-scrollbar-thumb { 
             background: var(--brand-primary); 
             border-radius: 4px; 
@@ -758,7 +775,7 @@
             font-weight: 600; 
         }
 
-        /* Прочие стили модулей */
+        /* ПРОЧИЕ СТИЛИ */
         .module-card { 
             background: var(--bg-surface); 
             border: 1px solid var(--border-light); 
@@ -781,22 +798,42 @@
            АДАПТАЦИЯ (МЕДИАЗАПРОСЫ)
         ========================================== */
         @media(max-width: 1400px) {
-            .admin-card { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            #tab-users > div { grid-template-columns: 1fr !important; }
+            .admin-card { 
+                grid-template-columns: 1fr; 
+            }
+            .stats-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            #tab-users > div { 
+                grid-template-columns: 1fr !important; 
+            }
         }
+
         @media(max-width: 900px) {
-            #app-view { padding: 20px; }
-            .support-grid { grid-template-columns: 1fr; height: auto; display: flex; flex-direction: column; }
-            .chat-list-panel { max-height: 250px; }
-            .chat-view-panel { height: 500px; }
-            .admin-nav { padding-bottom: 5px; }
+            #app-view { 
+                padding: 20px; 
+            }
+            .support-grid { 
+                grid-template-columns: 1fr; 
+                height: auto; 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .chat-list-panel { 
+                max-height: 250px; 
+            }
+            .chat-view-panel { 
+                height: 500px; 
+            }
+            .admin-nav { 
+                padding-bottom: 5px; 
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Уведомления -->
+    <!-- УВЕДОМЛЕНИЯ -->
     <div id="toast-container"></div>
 
     <!-- ЭКРАН ВХОДА ДЛЯ АДМИНА -->
@@ -842,19 +879,34 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon total"><i class="fa-solid fa-compact-disc"></i></div>
-                <div class="stat-info"><h4>Всего релизов</h4><span id="stat-total">0</span></div>
+                <div class="stat-info">
+                    <h4>Всего релизов</h4>
+                    <span id="stat-total">0</span>
+                </div>
             </div>
+            
             <div class="stat-card">
                 <div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div>
-                <div class="stat-info"><h4>На модерации</h4><span id="stat-pending">0</span></div>
+                <div class="stat-info">
+                    <h4>На модерации</h4>
+                    <span id="stat-pending">0</span>
+                </div>
             </div>
+            
             <div class="stat-card">
                 <div class="stat-icon approved"><i class="fa-solid fa-check-circle"></i></div>
-                <div class="stat-info"><h4>Одобрено</h4><span id="stat-approved">0</span></div>
+                <div class="stat-info">
+                    <h4>Одобрено</h4>
+                    <span id="stat-approved">0</span>
+                </div>
             </div>
+            
             <div class="stat-card">
                 <div class="stat-icon finance"><i class="fa-solid fa-trash"></i></div>
-                <div class="stat-info"><h4>Запросов на удаление</h4><span id="stat-delete">0</span></div>
+                <div class="stat-info">
+                    <h4>Запросов на удаление</h4>
+                    <span id="stat-delete">0</span>
+                </div>
             </div>
         </div>
 
@@ -881,7 +933,7 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ, E-MAIL И ПРОМОКОДЫ -->
+        <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И ПРОМОКОДЫ -->
         <div class="admin-section" id="tab-users">
             <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
                 
@@ -969,6 +1021,7 @@
                 <div class="chat-list-panel" id="admin-chat-list">
                     <div class="spinner"></div>
                 </div>
+                
                 <!-- Окно переписки -->
                 <div class="chat-view-panel">
                     <div id="admin-chat-header" style="padding:18px 20px; border-bottom:1px solid var(--border-light); font-weight:800; color:white; display:flex; align-items:center; gap:10px; background: rgba(124,58,237,0.1);">
@@ -995,7 +1048,7 @@
         <div class="admin-section" id="tab-pitching">
             <div class="module-card">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Генерация заявок на добавление одобренных треков в редакторские плейлисты (Яндекс, VK, Spotify).</p>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Генерация заявок на добавление одобренных треков в редакторские плейлисты.</p>
                 <div id="pitching-list" style="display:grid; gap:15px;"></div>
             </div>
         </div>
@@ -1004,9 +1057,11 @@
             <div class="module-card">
                 <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов (Роялти)</h3>
                 <p style="color:var(--text-secondary); margin-bottom:20px;">Укажите общую сумму дохода от дистрибьютора для автоматического зачисления на баланс артистов.</p>
+                
                 <div style="max-width:400px; margin-bottom:20px;">
                     <input type="number" id="finance-pool" placeholder="Сумма общего дохода (₽)" style="width:100%; background:var(--bg-input); padding:16px; border-radius:8px; color:white; border:1px solid var(--border-light); font-size:15px;">
                 </div>
+                
                 <button style="background:var(--success); color:white; border:none; padding:16px 30px; border-radius:8px; font-weight:800; cursor:pointer;" onclick="alert('Модуль роялти активирован! Средства распределены по тарифам.')">Рассчитать роялти артистам</button>
             </div>
         </div>
@@ -1049,7 +1104,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // UID ГЛАВНОГО ВЛАДЕЛЬЦА (ЗАЩИТА)
+        // UID ГЛАВНОГО ВЛАДЕЛЬЦА
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
         
         // Глобальные массивы данных
@@ -1057,12 +1112,12 @@
         let allUsers = [];
         let allSupportChats = [];
         
-        // Переменные для чата поддержки
+        // Переменные для чата
         let selectedChatUid = null;
         let adminChatUnsub = null;
         let isAdminTyping = false;
         let adminTypingTimer;
-        let prevUnreadCount = 0; // Для отслеживания новых сообщений и звука
+        let prevUnreadCount = 0; 
 
         // --- ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЙ ---
         function playNotificationSound() {
@@ -1070,7 +1125,6 @@
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 if (ctx.state === 'suspended') ctx.resume();
                 
-                // Двойной звуковой сигнал
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.connect(gain1);
@@ -1098,7 +1152,6 @@
             }
         }
 
-        // --- УВЕДОМЛЕНИЯ ---
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1106,8 +1159,13 @@
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             container.appendChild(toast);
+            
             setTimeout(() => toast.classList.add('show'), 50);
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
+            
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.remove(), 400); 
+            }, 3500);
         }
 
         // Длинное уведомление (6 сек)
@@ -1120,10 +1178,13 @@
             container.appendChild(toast);
             
             setTimeout(() => toast.classList.add('show'), 50);
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 6000);
+            
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.remove(), 400); 
+            }, 6000);
         }
 
-        // --- УМНОЕ ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ---
         function formatChatTime(ts) {
             if (!ts) return '';
             const date = new Date(ts);
@@ -1144,12 +1205,13 @@
             return `${day}.${month}.${date.getFullYear()}, ${timeStr}`;
         }
 
-        // --- НАВИГАЦИЯ ---
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                
                 e.target.classList.add('active');
+                
                 const targetTab = e.target.getAttribute('data-tab');
                 document.getElementById(targetTab).classList.add('active');
 
@@ -1160,7 +1222,6 @@
             });
         });
 
-        // --- АВТОРИЗАЦИЯ АДМИНА ---
         document.getElementById('auth-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -1171,9 +1232,10 @@
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth);
+        });
 
-        // --- СЛУШАТЕЛЬ СЕССИИ ---
         onAuthStateChanged(auth, (user) => {
             if (user && user.uid === ADMIN_UID) {
                 document.getElementById('auth-view').style.display = 'none';
@@ -1183,10 +1245,13 @@
                 loadReleases();
                 initAdminChat();
             } else {
-                signOut(auth); // Если вошел не админ, выкидываем
+                signOut(auth); 
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
-                if(adminChatUnsub) adminChatUnsub(); 
+                
+                if(adminChatUnsub) {
+                    adminChatUnsub(); 
+                }
             }
         });
 
@@ -1204,18 +1269,24 @@
                 snap.forEach(doc => {
                     const data = { id: doc.id, ...doc.data() };
                     allSupportChats.push(data);
-                    if (data.hasUnreadAdmin) currentUnreadCount++;
+                    
+                    if (data.hasUnreadAdmin) {
+                        currentUnreadCount++;
+                    }
                 });
 
-                // Воспроизводим звук и долгий тост, если появились новые сообщения
                 if (currentUnreadCount > prevUnreadCount) {
                     playNotificationSound();
                     notifyLong("Новое сообщение от пользователя в Поддержку!", "success");
                 }
+                
                 prevUnreadCount = currentUnreadCount;
 
                 renderAdminChatList();
-                if(selectedChatUid) renderAdminChatWindow(selectedChatUid);
+                
+                if(selectedChatUid) {
+                    renderAdminChatWindow(selectedChatUid);
+                }
             });
         }
 
@@ -1257,7 +1328,11 @@
             document.getElementById('admin-chat-send').disabled = false;
             adminChatInput.placeholder = 'Написать ответ пользователю...';
             
-            try { await updateDoc(doc(db, "support_chats", uid), { hasUnreadAdmin: false }); } catch(e) {}
+            try { 
+                await setDoc(doc(db, "support_chats", uid), { 
+                    hasUnreadAdmin: false 
+                }, { merge: true }); 
+            } catch(e) {}
         };
 
         function renderAdminChatWindow(uid) {
@@ -1277,6 +1352,7 @@
             }
             
             const msgs = chat.messages || [];
+            
             if(msgs.length === 0) {
                 body.innerHTML = '<div style="margin:auto; color:var(--text-secondary); font-size:14px; text-align:center;">Сообщений пока нет</div>';
                 return;
@@ -1293,47 +1369,64 @@
                         <div class="chat-time">${formatChatTime(m.time)}</div>
                     </div>`;
             });
+            
             body.scrollTop = body.scrollHeight;
         }
 
         adminChatInput.addEventListener('input', () => {
             if (!selectedChatUid) return;
+            
             if (!isAdminTyping) {
                 isAdminTyping = true;
-                updateDoc(doc(db, "support_chats", selectedChatUid), { adminTyping: true }).catch(()=>{});
+                setDoc(doc(db, "support_chats", selectedChatUid), { 
+                    adminTyping: true 
+                }, { merge: true }).catch(()=>{});
             }
+            
             clearTimeout(adminTypingTimer);
+            
             adminTypingTimer = setTimeout(() => {
                 isAdminTyping = false;
-                updateDoc(doc(db, "support_chats", selectedChatUid), { adminTyping: false }).catch(()=>{});
+                setDoc(doc(db, "support_chats", selectedChatUid), { 
+                    adminTyping: false 
+                }, { merge: true }).catch(()=>{});
             }, 1500);
         });
 
         document.getElementById('admin-chat-send').addEventListener('click', sendAdminChatMessage);
+        
         adminChatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') sendAdminChatMessage();
         });
 
         async function sendAdminChatMessage() {
             if(!selectedChatUid) return;
+            
             const val = adminChatInput.value.trim();
             if(!val) return;
             
             adminChatInput.value = '';
+            
             clearTimeout(adminTypingTimer);
             isAdminTyping = false;
 
-            const msgObj = { sender: 'admin', text: val, time: Date.now() };
+            const msgObj = { 
+                sender: 'admin', 
+                text: val, 
+                time: Date.now() 
+            };
             
             try {
-                await updateDoc(doc(db, "support_chats", selectedChatUid), {
+                await setDoc(doc(db, "support_chats", selectedChatUid), {
                     messages: arrayUnion(msgObj),
                     lastUpdated: serverTimestamp(),
                     hasUnreadUser: true,
                     hasUnreadAdmin: false,
                     adminTyping: false
-                });
-            } catch(e) { notify("Ошибка отправки сообщения", "error"); }
+                }, { merge: true });
+            } catch(e) { 
+                notify("Ошибка отправки сообщения", "error"); 
+            }
         }
 
         // ==========================================
@@ -1365,24 +1458,35 @@
             users.forEach(u => {
                 const status = u.accountStatus || 'Активен';
                 let statusBadge = `<span style="color:var(--success); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(16,185,129,0.1); border-radius:6px; text-transform:uppercase;">Активен</span>`;
-                if(status === 'banned') statusBadge = `<span style="color:var(--danger); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(239,68,68,0.1); border-radius:6px; text-transform:uppercase;">Заблокирован</span>`;
-                if(status === 'frozen') statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
+                
+                if(status === 'banned') {
+                    statusBadge = `<span style="color:var(--danger); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(239,68,68,0.1); border-radius:6px; text-transform:uppercase;">Заблокирован</span>`;
+                }
+                
+                if(status === 'frozen') {
+                    statusBadge = `<span style="color:var(--warning); font-weight:800; font-size:10px; padding:4px 8px; background:rgba(245,158,11,0.1); border-radius:6px; text-transform:uppercase;">Заморожен</span>`;
+                }
 
                 let actionButtons = '';
                 
                 // ЗАЩИТА ВЛАДЕЛЬЦА: скрываем кнопки блокировки и кнопку "Письмо"
                 if (u.id === ADMIN_UID) {
-                    actionButtons = `<div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:10px; background:rgba(124,58,237,0.1); border-radius:8px; border:1px solid rgba(124,58,237,0.2); width:100%;"><i class="fa-solid fa-crown"></i> Владелец</div>`;
+                    actionButtons = `
+                        <div style="color:#A78BFA; font-size:12px; font-weight:800; text-align:center; padding:10px; background:rgba(124,58,237,0.1); border-radius:8px; border:1px solid rgba(124,58,237,0.2); width:100%;">
+                            <i class="fa-solid fa-crown"></i> Владелец
+                        </div>
+                    `;
                 } else {
                     actionButtons = `
                         ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Забанить</button>` : ''}
                         ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Заморозить</button>` : ''}
                         ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Разблокировать</button>` : ''}
-                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;"><i class="fa-solid fa-envelope"></i> Письмо</button>
+                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">
+                            <i class="fa-solid fa-envelope"></i> Письмо
+                        </button>
                     `;
                 }
 
-                // Блок выдачи тарифов администратором (скрыт для владельца)
                 const tariffHtml = u.id !== ADMIN_UID ? `
                     <div style="display:flex; gap:5px; margin-top:10px;">
                         <select id="tariff-select-${u.id}" class="styled-input" style="padding:6px; font-size:12px;">
@@ -1416,35 +1520,42 @@
         }
 
         window.setUserStatus = async (uid, status) => {
-            if (uid === ADMIN_UID) return notify("Критическая ошибка: Нельзя заблокировать владельца лейбла!", "error");
+            if (uid === ADMIN_UID) {
+                return notify("Критическая ошибка: Нельзя заблокировать владельца лейбла!", "error");
+            }
             
             const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
             if(!confirm(`Вы уверены? Действие: ${statusNames[status]}`)) return;
             
             try {
-                await updateDoc(doc(db, "users", uid), { accountStatus: status });
+                // Используем setDoc с merge, чтобы не удалять другие поля пользователя
+                await setDoc(doc(db, "users", uid), { accountStatus: status }, { merge: true });
                 notify(`Статус аккаунта изменен: ${statusNames[status]}`, "success");
                 loadUsers();
-            } catch(e) { notify("Ошибка при изменении статуса. Проверьте права.", "error"); }
+            } catch(e) { 
+                notify("Ошибка при изменении статуса. Проверьте права.", "error"); 
+            }
         }
 
         // Ручная выдача тарифа на 1 месяц
         window.issueTariff = async (uid) => {
             const plan = document.getElementById(`tariff-select-${uid}`).value;
+            
             if(!confirm(`Вы уверены, что хотите выдать тариф «${plan}» этому пользователю?`)) return;
 
             try {
                 let expDate = null;
+                
                 if (plan !== "Базовый") {
                     const date = new Date();
                     date.setMonth(date.getMonth() + 1); // По умолчанию выдаем на 1 месяц
                     expDate = date.getTime();
                 }
 
-                await updateDoc(doc(db, "users", uid), {
+                await setDoc(doc(db, "users", uid), {
                     subscription: plan,
                     subscriptionExpiresAt: expDate
-                });
+                }, { merge: true });
                 
                 notify(`Тариф «${plan}» успешно выдан пользователю!`, "success");
                 loadUsers();
@@ -1475,7 +1586,10 @@
 
             try {
                 await addDoc(collection(db, "mail_logs"), {
-                    to, subject, body, sentAt: serverTimestamp()
+                    to, 
+                    subject, 
+                    body, 
+                    sentAt: serverTimestamp()
                 });
                 
                 setTimeout(() => {
@@ -1492,7 +1606,7 @@
             }
         });
 
-        // ------------------ МОДУЛЬ ПРОМОКОДОВ С ОГРАНИЧЕНИЕМ ВРЕМЕНИ ------------------
+        // ------------------ МОДУЛЬ ПРОМОКОДОВ ------------------
         document.getElementById('promo-type').addEventListener('change', (e) => {
             const val = e.target.value;
             const planSelect = document.getElementById('promo-plan');
@@ -1514,11 +1628,13 @@
             const plan = document.getElementById('promo-plan').value;
             const expireDateStr = document.getElementById('promo-expire').value;
 
-            if (!code || isNaN(val)) return notify("Укажите сам код и его значение (число)!", "error");
+            if (!code || isNaN(val)) {
+                return notify("Укажите сам код и его значение (число)!", "error");
+            }
             
             let expTimestamp = null;
             if (expireDateStr) {
-                // Устанавливаем время конца дня выбранной даты
+                // Устанавливаем время конца дня
                 const dateObj = new Date(expireDateStr);
                 dateObj.setHours(23, 59, 59);
                 expTimestamp = dateObj.getTime();
@@ -1723,7 +1839,6 @@
                     </div>`;
             });
 
-            // Обработчик сохранения данных релиза
             document.querySelectorAll('.btn-save').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1740,12 +1855,12 @@
                         const originalBtnContent = e.target.innerHTML;
                         e.target.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Сохранение...';
                         
-                        await updateDoc(doc(db, "track_submissions", id), {
+                        await setDoc(doc(db, "track_submissions", id), {
                             status, 
                             upc: status === 'Отклонено' ? '' : upc, 
                             isrc: status === 'Отклонено' ? '' : isrc, 
                             rejectReason: status === 'Отклонено' ? rejectReason : ''
-                        });
+                        }, { merge: true });
                         
                         notify("Данные релиза успешно сохранены!", "success");
                         e.target.innerHTML = originalBtnContent;
@@ -1755,7 +1870,6 @@
                 });
             });
 
-            // Обработчик полного удаления релиза
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -1764,7 +1878,7 @@
                     try {
                         await deleteDoc(doc(db, "track_submissions", id));
                         notify("Релиз успешно удален из базы!", "success");
-                        loadReleases(); // Перезагружаем список
+                        loadReleases(); 
                     } catch(err) { 
                         notify("Критическая ошибка удаления", "error"); 
                     }
@@ -1772,7 +1886,6 @@
             });
         }
 
-        // Логика блокировки полей UPC/ISRC при отклонении
         window.handleStatusChange = (id) => {
             const status = document.getElementById(`status-${id}`).value;
             const upcInp = document.getElementById(`upc-${id}`);
@@ -1787,7 +1900,6 @@
             }
         };
 
-        // Быстрый поиск по релизам
         document.getElementById('search-input').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             renderList(allSubmissions.filter(i => 
@@ -1797,13 +1909,11 @@
             ));
         });
 
-        // Фильтрация релизов по статусам
         document.getElementById('status-filter').addEventListener('change', (e) => {
             const val = e.target.value;
             renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
         });
 
-        // Экспорт базы релизов в CSV-файл
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) return notify("В базе нет данных для экспорта", "error");
             
