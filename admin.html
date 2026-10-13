@@ -1049,7 +1049,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // UID ГЛАВНОГО ВЛАДЕЛЬЦА
+        // UID ГЛАВНОГО ВЛАДЕЛЬЦА (ЗАЩИТА)
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
         
         // Глобальные массивы данных
@@ -1062,6 +1062,7 @@
         let adminChatUnsub = null;
         let isAdminTyping = false;
         let adminTypingTimer;
+        let prevUnreadCount = 0; // Для отслеживания новых сообщений и звука
 
         // --- ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЙ ---
         function playNotificationSound() {
@@ -1194,7 +1195,6 @@
         // ==========================================
         const adminChatInput = document.getElementById('admin-chat-input');
         const userTypingIndicator = document.getElementById('user-typing-indicator');
-        let prevUnreadCount = 0;
 
         function initAdminChat() {
             adminChatUnsub = onSnapshot(query(collection(db, "support_chats"), orderBy("lastUpdated", "desc")), (snap) => {
@@ -1207,7 +1207,7 @@
                     if (data.hasUnreadAdmin) currentUnreadCount++;
                 });
 
-                // Воспроизводим звук, если появились новые непрочитанные сообщения
+                // Воспроизводим звук и долгий тост, если появились новые сообщения
                 if (currentUnreadCount > prevUnreadCount) {
                     playNotificationSound();
                     notifyLong("Новое сообщение от пользователя в Поддержку!", "success");
@@ -1428,7 +1428,7 @@
             } catch(e) { notify("Ошибка при изменении статуса. Проверьте права.", "error"); }
         }
 
-        // Ручная выдача тарифа
+        // Ручная выдача тарифа на 1 месяц
         window.issueTariff = async (uid) => {
             const plan = document.getElementById(`tariff-select-${uid}`).value;
             if(!confirm(`Вы уверены, что хотите выдать тариф «${plan}» этому пользователю?`)) return;
@@ -1518,7 +1518,7 @@
             
             let expTimestamp = null;
             if (expireDateStr) {
-                // Устанавливаем время конца дня
+                // Устанавливаем время конца дня выбранной даты
                 const dateObj = new Date(expireDateStr);
                 dateObj.setHours(23, 59, 59);
                 expTimestamp = dateObj.getTime();
