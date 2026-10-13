@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>685 Music | Advanced Admin Dashboard</title>
+    
+    <!-- Название вкладки и Иконка (Favicon) -->
+    <title>685 music label | Панель Управления</title>
+    <link rel="icon" type="image/x-icon" href="favicon_2.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     
     <!-- Подключение шрифтов и иконок -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,7 +15,7 @@
     
     <style>
         /* ==========================================
-           БАЗОВЫЕ ПЕРЕМЕННЫЕ
+           БАЗОВЫЕ ПЕРЕМЕННЫЕ ДИЗАЙНА
         ========================================== */
         :root {
             --brand-primary: #7C3AED;
@@ -34,7 +38,7 @@
             --radius-md: 16px;
             --radius-sm: 10px;
             
-            --transition: all 0.3s ease;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ==========================================
@@ -53,6 +57,7 @@
             color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
         button { 
@@ -151,7 +156,7 @@
         }
 
         /* ==========================================
-           ЭКРАН АВТОРИЗАЦИИ
+           ЭКРАН АВТОРИЗАЦИИ АДМИНА
         ========================================== */
         #auth-view {
             min-height: 100vh;
@@ -173,6 +178,18 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             animation: fadeUp 0.5s ease;
         }
+
+        .auth-logo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .auth-logo span {
+            color: var(--brand-primary);
+        }
         
         .auth-input {
             width: 100%;
@@ -188,6 +205,7 @@
         
         .auth-input:focus { 
             border-color: var(--brand-primary); 
+            box-shadow: inset 0 0 0 1px var(--brand-primary);
         }
         
         .btn-main {
@@ -199,15 +217,16 @@
             font-weight: 700;
             font-size: 15px;
             box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+            transition: var(--transition);
         }
         
         .btn-main:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 25px rgba(124, 58, 237, 0.3); 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4); 
         }
 
         /* ==========================================
-           ИНТЕРФЕЙС АДМИНКИ
+           ГЛАВНЫЙ ИНТЕРФЕЙС АДМИНКИ
         ========================================== */
         #app-view { 
             display: none; 
@@ -234,6 +253,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            letter-spacing: -0.5px;
         }
         
         .badge-root {
@@ -244,6 +264,7 @@
             font-size: 12px;
             font-weight: 800;
             border: 1px solid rgba(124,58,237,0.3);
+            text-transform: uppercase;
         }
 
         .admin-nav {
@@ -262,19 +283,20 @@
         .admin-tab-btn {
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
-            padding: 12px 20px;
+            padding: 14px 22px;
             border-radius: var(--radius-sm);
             font-weight: 700;
             font-size: 14px;
             color: var(--text-secondary);
             white-space: nowrap;
-            transition: 0.2s;
+            transition: var(--transition);
         }
         
         .admin-tab-btn.active, .admin-tab-btn:hover {
             background: var(--brand-primary);
             color: white;
             border-color: var(--brand-primary);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
         }
 
         .admin-section { 
@@ -290,7 +312,7 @@
             background: var(--bg-input); 
             border: 1px solid var(--border-light); 
             color: var(--text-title); 
-            padding: 12px; 
+            padding: 14px; 
             border-radius: var(--radius-sm); 
             font-size: 13px; 
             transition: var(--transition); 
@@ -317,20 +339,27 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-md);
-            padding: 20px;
+            padding: 24px;
             display: flex;
             align-items: center;
             gap: 18px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(124, 58, 237, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         
         .stat-icon {
-            width: 46px;
-            height: 46px;
+            width: 50px;
+            height: 50px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
         }
         
         .stat-icon.total { 
@@ -356,12 +385,13 @@
         .stat-info h4 { 
             font-size: 13px; 
             color: var(--text-secondary); 
-            font-weight: 600; 
+            font-weight: 700; 
             text-transform: uppercase; 
+            letter-spacing: 0.5px;
         }
         
         .stat-info span { 
-            font-size: 24px; 
+            font-size: 26px; 
             font-weight: 800; 
             color: var(--text-title); 
         }
@@ -381,12 +411,12 @@
         .search-box { 
             position: relative; 
             flex: 1; 
-            max-width: 350px; 
+            max-width: 380px; 
         }
         
         .search-box i { 
             position: absolute; 
-            left: 16px; 
+            left: 18px; 
             top: 50%; 
             transform: translateY(-50%); 
             color: var(--text-secondary); 
@@ -397,14 +427,20 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
             color: white;
-            padding: 12px 12px 12px 45px;
+            padding: 14px 14px 14px 45px;
             border-radius: var(--radius-sm);
             font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--brand-primary);
         }
         
         .filters-group { 
             display: flex; 
-            gap: 10px; 
+            gap: 12px; 
             align-items: center; 
             flex-wrap: wrap; 
         }
@@ -413,22 +449,23 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
             color: white;
-            padding: 12px 16px;
+            padding: 14px 20px;
             border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
+            outline: none;
         }
         
         .btn-action {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-light);
-            padding: 12px 16px;
+            padding: 14px 20px;
             border-radius: var(--radius-sm);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
             color: var(--text-primary);
-            transition: 0.2s;
+            transition: var(--transition);
         }
         
         .btn-action:hover { 
@@ -439,6 +476,10 @@
             background: rgba(16, 185, 129, 0.1); 
             color: var(--success); 
             border-color: rgba(16, 185, 129, 0.2); 
+        }
+
+        .btn-success-action:hover {
+            background: rgba(16, 185, 129, 0.2); 
         }
 
         /* ==========================================
@@ -453,91 +494,95 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-md);
-            padding: 25px;
+            padding: 25px 30px;
             display: grid;
             grid-template-columns: 2fr 1.5fr 2fr 1.5fr;
-            gap: 20px;
+            gap: 25px;
             align-items: start;
             transition: var(--transition);
         }
         
         .admin-card:hover { 
             border-color: rgba(124, 58, 237, 0.4); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .rel-details h3 { 
             font-size: 20px; 
             color: var(--text-title); 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             font-weight: 800; 
         }
 
         .rel-details p { 
             color: var(--text-primary); 
             font-size: 13px; 
-            margin-bottom: 3px; 
+            margin-bottom: 5px; 
             display: flex; 
             align-items: center; 
-            gap: 6px; 
+            gap: 8px; 
         }
         
         .artist-badge { 
             display: inline-block; 
             background: rgba(255,255,255,0.05); 
-            padding: 4px 10px; 
-            border-radius: 6px; 
+            padding: 6px 12px; 
+            border-radius: 8px; 
             font-size: 12px; 
             color: var(--text-secondary); 
-            margin-top: 6px; 
+            margin-top: 8px; 
             font-weight: 600; 
         }
         
         .dsp-tags { 
-            margin-top: 8px; 
+            margin-top: 10px; 
             display: flex; 
             flex-wrap: wrap; 
-            gap: 4px; 
+            gap: 6px; 
         }
         
         .dsp-tag { 
             background: rgba(124,58,237,0.1); 
             color: #A78BFA; 
             font-size: 10px; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
+            padding: 4px 8px; 
+            border-radius: 6px; 
             font-weight: 700; 
         }
 
         .rel-files { 
             display: flex; 
             flex-direction: column; 
-            gap: 8px; 
+            gap: 10px; 
         }
         
         .file-link {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             background: var(--bg-input);
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-light);
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             color: var(--text-primary);
             text-decoration: none;
+            transition: var(--transition);
         }
         
         .file-link:hover { 
             border-color: var(--brand-primary); 
+            color: white;
+            background: rgba(124, 58, 237, 0.05);
         }
 
         .rel-codes { 
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
+            gap: 12px; 
             background: var(--bg-input); 
-            padding: 16px; 
+            padding: 20px; 
             border-radius: var(--radius-sm); 
             border: 1px solid var(--border-light); 
         }
@@ -548,7 +593,7 @@
             color: var(--text-secondary); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 3px; 
+            margin-bottom: 5px; 
         }
         
         .code-input-group input, .code-input-group textarea { 
@@ -556,16 +601,22 @@
             background: var(--bg-base); 
             border: 1px solid var(--border-light); 
             color: white; 
-            padding: 8px 10px; 
-            border-radius: 6px; 
-            font-size: 12px; 
+            padding: 10px 12px; 
+            border-radius: 8px; 
+            font-size: 13px; 
             font-family: monospace; 
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .code-input-group input:focus, .code-input-group textarea:focus {
+            border-color: var(--brand-primary);
         }
 
         .rel-actions { 
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
+            gap: 12px; 
         }
         
         .rel-actions select { 
@@ -573,16 +624,18 @@
             background: var(--bg-input); 
             color: white; 
             border: 1px solid var(--border-light); 
-            padding: 10px; 
+            padding: 12px; 
             border-radius: var(--radius-sm); 
             font-weight: 700; 
-            font-size: 12px; 
+            font-size: 13px; 
+            outline: none;
+            cursor: pointer;
         }
         
         .btn-save { 
             background: var(--success); 
             color: white; 
-            padding: 10px; 
+            padding: 12px; 
             border-radius: var(--radius-sm); 
             font-weight: 700; 
             font-size: 13px; 
@@ -591,13 +644,14 @@
         
         .btn-save:hover { 
             background: #059669; 
+            transform: translateY(-2px);
         }
         
         .btn-delete { 
             background: rgba(239, 68, 68, 0.15); 
             color: var(--danger); 
             border: 1px solid rgba(239, 68, 68, 0.3); 
-            padding: 10px; 
+            padding: 12px; 
             border-radius: var(--radius-sm); 
             font-weight: 700; 
             font-size: 13px; 
@@ -606,6 +660,7 @@
         
         .btn-delete:hover { 
             background: rgba(239, 68, 68, 0.25); 
+            transform: translateY(-2px);
         }
 
         /* ==========================================
@@ -614,10 +669,10 @@
         .users-list-wrapper { 
             max-height: 550px; 
             overflow-y: auto; 
-            padding-right: 10px; 
+            padding-right: 15px; 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 15px; 
         }
         
         .users-list-wrapper::-webkit-scrollbar { 
@@ -637,23 +692,29 @@
         .promo-list-item {
             background: var(--bg-input);
             border: 1px solid var(--border-light);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: var(--radius-sm);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .promo-list-item:hover {
+            border-color: rgba(255,255,255,0.2);
         }
 
         .promo-list-item h4 {
             color: white;
-            font-size: 14px;
+            font-size: 15px;
             margin-bottom: 4px;
+            font-weight: 800;
         }
 
         .promo-list-item p {
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 13px;
         }
 
         /* ==========================================
@@ -661,10 +722,10 @@
         ========================================== */
         .support-grid {
             display: grid;
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 25px;
-            height: 65vh;
-            min-height: 500px;
+            height: 70vh;
+            min-height: 550px;
         }
         
         .chat-list-panel { 
@@ -672,7 +733,7 @@
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-md); 
             overflow-y: auto; 
-            padding: 15px; 
+            padding: 20px; 
         }
         
         .chat-view-panel { 
@@ -685,20 +746,21 @@
         }
         
         .chat-item {
-            padding: 12px 15px;
-            border-radius: 10px;
+            padding: 15px 18px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
             border: 1px solid transparent;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             background: rgba(255,255,255,0.02);
         }
         
         .chat-item:hover { 
             background: var(--bg-input); 
+            border-color: rgba(255,255,255,0.05);
         }
         
         .chat-item.active { 
@@ -711,7 +773,7 @@
             height: 12px; 
             background: var(--success); 
             border-radius: 50%; 
-            box-shadow: 0 0 10px rgba(16,185,129,0.5); 
+            box-shadow: 0 0 12px rgba(16,185,129,0.6); 
         }
         
         .chat-msg-container { 
@@ -731,45 +793,46 @@
         }
         
         .chat-sender-name {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--text-secondary);
-            margin-bottom: 4px;
-            padding: 0 4px;
+            margin-bottom: 6px;
+            padding: 0 5px;
         }
 
         .chat-msg { 
-            padding: 12px 16px; 
-            border-radius: 16px; 
+            padding: 14px 18px; 
+            border-radius: 18px; 
             font-size: 14px; 
-            line-height: 1.4; 
+            line-height: 1.5; 
             word-break: break-word; 
         }
         
         .chat-msg-container.admin .chat-msg { 
             background: var(--brand-primary); 
             color: white; 
-            border-bottom-right-radius: 4px; 
+            border-bottom-right-radius: 6px; 
+            box-shadow: 0 4px 15px rgba(124,58,237,0.2);
         }
         
         .chat-msg-container.user .chat-msg { 
             background: var(--bg-input); 
             color: white; 
-            border-bottom-left-radius: 4px; 
+            border-bottom-left-radius: 6px; 
             border: 1px solid var(--border-light); 
         }
         
         .chat-time { 
             font-size: 11px; 
             color: var(--text-secondary); 
-            margin-top: 4px; 
+            margin-top: 6px; 
             font-weight: 600; 
         }
 
         #user-typing-indicator { 
             font-size: 13px; 
             color: var(--brand-primary); 
-            padding: 5px 20px 15px; 
+            padding: 5px 25px 15px; 
             font-style: italic; 
             display: none; 
             font-weight: 600; 
@@ -779,14 +842,14 @@
         .module-card { 
             background: var(--bg-surface); 
             border: 1px solid var(--border-light); 
-            padding: 30px; 
+            padding: 35px; 
             border-radius: var(--radius-md); 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
         }
         
         .spinner { 
-            width: 40px; 
-            height: 40px; 
+            width: 45px; 
+            height: 45px; 
             border: 4px solid var(--border-light); 
             border-top-color: var(--brand-primary); 
             border-radius: 50%; 
@@ -820,13 +883,22 @@
                 flex-direction: column; 
             }
             .chat-list-panel { 
-                max-height: 250px; 
+                max-height: 300px; 
             }
             .chat-view-panel { 
-                height: 500px; 
+                height: 550px; 
             }
             .admin-nav { 
                 padding-bottom: 5px; 
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media(max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -839,10 +911,10 @@
     <!-- ЭКРАН ВХОДА ДЛЯ АДМИНА -->
     <div id="auth-view">
         <div class="auth-card">
-            <div style="font-size:28px; font-weight:800; margin-bottom:15px; color:white;">
-                <i class="fa-solid fa-shield-halved"></i> 685 <span>ADMIN</span>
+            <div style="font-size:32px; font-weight:800; margin-bottom:15px; color:white; letter-spacing: -1px;">
+                <i class="fa-solid fa-shield-halved" style="color: var(--brand-primary);"></i> 685 <span>ADMIN</span>
             </div>
-            <p style="color:var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Безопасный вход для руководства</p>
+            <p style="color:var(--text-secondary); margin-bottom: 30px; font-size: 14px;">Безопасный вход для руководства</p>
             
             <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
             <input type="password" id="auth-password" class="auth-input" placeholder="Пароль">
@@ -855,12 +927,15 @@
     <div id="app-view">
         <header class="header">
             <div class="header-title">
-                <i class="fa-solid fa-server"></i> Центр управления 685 Music
+                <i class="fa-solid fa-server" style="color: var(--brand-primary);"></i> 
+                Центр управления 685 Music
                 <span class="badge-root">ROOT SECURE</span>
             </div>
             <div style="display: flex; align-items: center; gap: 20px;">
                 <span id="admin-display-email" style="font-weight: 600; font-size: 14px; color: var(--text-secondary);"></span>
-                <button id="logout-btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 10px 20px; border-radius: 8px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2);">Выйти</button>
+                <button id="logout-btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 12px 24px; border-radius: 8px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); transition: 0.2s;">
+                    Выйти <i class="fa-solid fa-right-from-bracket" style="margin-left: 5px;"></i>
+                </button>
             </div>
         </header>
 
@@ -915,17 +990,19 @@
             <div class="toolbar">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" placeholder="Поиск по треку, артисту, email...">
+                    <input type="text" id="search-input" placeholder="Поиск по названию трека, артисту или email...">
                 </div>
                 <div class="filters-group">
                     <select id="status-filter" class="filter-select">
                         <option value="all">Все статусы</option>
-                        <option value="Ожидает модерации">Ожидают</option>
-                        <option value="Одобрено">Одобренные</option>
-                        <option value="Отклонено">Отклоненные</option>
+                        <option value="Ожидает модерации">Ожидают проверки</option>
+                        <option value="Одобрено">Одобренные (На DSP)</option>
+                        <option value="Отклонено">Отклоненные (Ошибки)</option>
                         <option value="Запрос на удаление с площадок">Запросы на удаление</option>
                     </select>
-                    <button class="btn-action btn-success-action" id="export-csv-btn"><i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)</button>
+                    <button class="btn-action btn-success-action" id="export-csv-btn">
+                        <i class="fa-solid fa-file-arrow-down"></i> Экспорт базы (CSV)
+                    </button>
                 </div>
             </div>
             <div class="admin-releases-grid" id="admin-container">
@@ -938,12 +1015,14 @@
             <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
                 
                 <!-- Список пользователей и выдача тарифов -->
-                <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                    <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-users-gear" style="color:var(--brand-primary)"></i> Управление аккаунтами</h3>
+                <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
+                    <h3 style="font-size:20px; color:var(--text-title); margin-bottom:20px; font-weight:800;">
+                        <i class="fa-solid fa-users-gear" style="color:var(--brand-primary); margin-right:8px;"></i> Управление аккаунтами
+                    </h3>
                     
-                    <div style="margin-bottom: 20px; position: relative;">
-                        <i class="fa-solid fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
-                        <input type="text" id="user-search-input" placeholder="Поиск артиста по E-mail или никнейму..." style="width: 100%; background: var(--bg-input); padding: 14px 14px 14px 45px; border-radius: var(--radius-sm); color: white; border: 1px solid var(--border-light); outline: none;">
+                    <div style="margin-bottom: 25px; position: relative;">
+                        <i class="fa-solid fa-search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="text" id="user-search-input" placeholder="Поиск артиста по E-mail или никнейму..." class="styled-input" style="padding-left: 45px;">
                     </div>
                     
                     <div id="users-list-container" class="users-list-wrapper">
@@ -955,57 +1034,76 @@
                 <div style="display: flex; flex-direction: column; gap: 30px;">
                     
                     <!-- Почтовый клиент -->
-                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-envelope-open-text" style="color:#3B82F6"></i> E-mail Рассылка</h3>
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
+                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px; font-weight:800;">
+                            <i class="fa-solid fa-envelope-open-text" style="color:#3B82F6; margin-right:8px;"></i> E-mail Рассылка
+                        </h3>
                         <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Отправка официальных системных уведомлений пользователям на их почту.</p>
                         
                         <div style="margin-bottom:15px;">
-                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Кому (E-mail)</label>
-                            <input type="email" id="mail-to" placeholder="artist@mail.com" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; display:block; font-weight: 700; text-transform: uppercase;">Кому (E-mail)</label>
+                            <input type="email" id="mail-to" placeholder="artist@mail.com" class="styled-input">
                         </div>
                         
                         <div style="margin-bottom:15px;">
-                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Тема письма</label>
-                            <input type="text" id="mail-subject" placeholder="Уведомление от 685 Music" style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; outline:none;">
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; display:block; font-weight: 700; text-transform: uppercase;">Тема письма</label>
+                            <input type="text" id="mail-subject" placeholder="Уведомление от 685 Music" class="styled-input">
                         </div>
                         
                         <div style="margin-bottom:25px;">
-                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:5px; display:block; font-weight: 700; text-transform: uppercase;">Сообщение</label>
-                            <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." style="background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px; border-radius:8px; width:100%; font-family:inherit; outline:none; resize: vertical;"></textarea>
+                            <label style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; display:block; font-weight: 700; text-transform: uppercase;">Сообщение</label>
+                            <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." class="styled-input" style="resize: vertical; font-family:inherit;"></textarea>
                         </div>
                         
-                        <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; transition: 0.2s;">Отправить письмо</button>
+                        <button id="send-mail-btn" style="background:#3B82F6; color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; transition: 0.2s;">
+                            Отправить письмо <i class="fa-solid fa-paper-plane" style="margin-left:5px;"></i>
+                        </button>
                     </div>
 
                     <!-- Модуль Промокодов -->
-                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:30px; border-radius:var(--radius-md);">
-                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-ticket" style="color:var(--warning)"></i> Генератор промокодов</h3>
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
+                        <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px; font-weight:800;">
+                            <i class="fa-solid fa-ticket" style="color:var(--warning); margin-right:8px;"></i> Генератор промокодов
+                        </h3>
                         <p style="color:var(--text-secondary); margin-bottom:20px; font-size: 13px;">Создание кодов на скидку в ЮKassa или на бесплатную выдачу тарифа.</p>
                         
-                        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
-                            <input type="text" id="promo-code-name" placeholder="Промокод (например: SUMMER50)" class="styled-input">
+                        <div style="display:flex; flex-direction:column; gap:15px; margin-bottom:25px;">
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:5px; display:block;">Код</label>
+                                <input type="text" id="promo-code-name" placeholder="Например: SUMMER50" class="styled-input">
+                            </div>
                             
-                            <select id="promo-type" class="styled-input">
-                                <option value="discount">Скидка в % (Для ЮKassa)</option>
-                                <option value="gift">Подарочный (Бесплатный тариф)</option>
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:5px; display:block;">Тип промокода</label>
+                                <select id="promo-type" class="styled-input" style="cursor:pointer;">
+                                    <option value="discount">Скидка в % (Для ЮKassa)</option>
+                                    <option value="gift">Подарочный (Бесплатный тариф)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:5px; display:block;">Значение</label>
+                                <input type="number" id="promo-val" placeholder="Процент скидки / Кол-во месяцев" class="styled-input">
+                            </div>
+                            
+                            <select id="promo-plan" class="styled-input" style="display:none; cursor:pointer;">
+                                <option value="Стартовый">Выдать тариф: Стартовый</option>
+                                <option value="Расширенный">Выдать тариф: Расширенный</option>
+                                <option value="Профессиональный">Выдать тариф: Профессиональный</option>
                             </select>
 
-                            <input type="number" id="promo-val" placeholder="Значение (Процент скидки / Кол-во месяцев)" class="styled-input">
-                            
-                            <select id="promo-plan" class="styled-input" style="display:none;">
-                                <option value="Стартовый">Тариф: Стартовый</option>
-                                <option value="Расширенный">Тариф: Расширенный</option>
-                                <option value="Профессиональный">Тариф: Профессиональный</option>
-                            </select>
-
-                            <label style="font-size:12px; color:var(--text-secondary); font-weight:700;">Действует до (оставьте пустым для бессрочного):</label>
-                            <input type="date" id="promo-expire" class="styled-input">
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:5px; display:block;">Действует до (пусто = навсегда)</label>
+                                <input type="date" id="promo-expire" class="styled-input">
+                            </div>
                         </div>
                         
-                        <button id="create-promo-btn" style="background:var(--warning); color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; margin-bottom: 20px;">Создать промокод</button>
+                        <button id="create-promo-btn" style="background:var(--warning); color:white; width:100%; padding:14px; border-radius:8px; font-weight:800; border:none; cursor: pointer; margin-bottom: 25px; transition:0.2s;">
+                            Создать промокод
+                        </button>
                         
-                        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:10px;">Активные промокоды:</h4>
-                        <div id="promo-list" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
+                        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:12px; font-weight:700;">Активные промокоды:</h4>
+                        <div id="promo-list" style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
                             <div class="spinner" style="width: 20px; height: 20px; border-width: 2px;"></div>
                         </div>
                     </div>
@@ -1024,19 +1122,22 @@
                 
                 <!-- Окно переписки -->
                 <div class="chat-view-panel">
-                    <div id="admin-chat-header" style="padding:18px 20px; border-bottom:1px solid var(--border-light); font-weight:800; color:white; display:flex; align-items:center; gap:10px; background: rgba(124,58,237,0.1);">
-                        <i class="fa-solid fa-headset" style="color:var(--brand-primary)"></i> Чат поддержки
+                    <div id="admin-chat-header" style="padding:20px; border-bottom:1px solid var(--border-light); font-weight:800; color:white; display:flex; align-items:center; gap:12px; background: rgba(124,58,237,0.1);">
+                        <i class="fa-solid fa-headset" style="color:var(--brand-primary); font-size:18px;"></i> <span style="font-size:16px;">Чат поддержки</span>
                     </div>
                     
-                    <div id="admin-chat-body" style="flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:15px; background:var(--bg-base);">
-                        <div style="margin:auto; color:var(--text-secondary); font-size:14px; text-align:center;">Выберите пользователя из списка слева для начала переписки</div>
+                    <div id="admin-chat-body" style="flex:1; padding:25px; overflow-y:auto; display:flex; flex-direction:column; gap:18px; background:var(--bg-base);">
+                        <div style="margin:auto; color:var(--text-secondary); font-size:14px; text-align:center; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px dashed var(--border-light);">
+                            <i class="fa-regular fa-comments" style="font-size: 32px; color: var(--text-secondary); margin-bottom: 10px; display:block;"></i>
+                            Выберите пользователя из списка слева для начала переписки
+                        </div>
                     </div>
                     
                     <div id="user-typing-indicator">Пользователь печатает...</div>
                     
-                    <div style="padding:15px 20px; border-top:1px solid var(--border-light); display:flex; gap:12px; background:var(--bg-surface); align-items: center;">
-                        <input type="text" id="admin-chat-input" disabled style="flex:1; background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:14px 20px; border-radius:50px; font-size:14px; outline:none;" placeholder="Выберите чат для ответа...">
-                        <button id="admin-chat-send" disabled style="width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color:white; border:none; cursor:pointer; flex-shrink:0; transition: transform 0.2s; font-size: 16px;">
+                    <div style="padding:20px; border-top:1px solid var(--border-light); display:flex; gap:15px; background:var(--bg-surface); align-items: center;">
+                        <input type="text" id="admin-chat-input" disabled style="flex:1; background:var(--bg-input); border:1px solid var(--border-light); color:white; padding:16px 25px; border-radius:50px; font-size:15px; outline:none; transition:0.3s;" placeholder="Выберите чат для ответа...">
+                        <button id="admin-chat-send" disabled style="width:55px; height:55px; border-radius:50%; background:linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color:white; border:none; cursor:pointer; flex-shrink:0; transition: transform 0.2s; font-size: 18px; box-shadow: 0 4px 15px rgba(124,58,237,0.3);">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -1047,38 +1148,48 @@
         <!-- ОСТАЛЬНЫЕ ВКЛАДКИ (СИСТЕМЫ) -->
         <div class="admin-section" id="tab-pitching">
             <div class="module-card">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-bullhorn" style="color:var(--brand-primary)"></i> Модуль питчинга треков</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Генерация заявок на добавление одобренных треков в редакторские плейлисты.</p>
+                <h3 style="font-size:22px; font-weight:800; color:var(--text-title); margin-bottom:15px;">
+                    <i class="fa-solid fa-bullhorn" style="color:var(--brand-primary); margin-right:8px;"></i> Модуль питчинга треков
+                </h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Генерация заявок на добавление одобренных треков в редакторские плейлисты (ВК, Яндекс, Звук, Сбер).</p>
                 <div id="pitching-list" style="display:grid; gap:15px;"></div>
             </div>
         </div>
 
         <div class="admin-section" id="tab-finance">
             <div class="module-card">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-wallet" style="color:var(--success)"></i> Распределение доходов (Роялти)</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Укажите общую сумму дохода от дистрибьютора для автоматического зачисления на баланс артистов.</p>
+                <h3 style="font-size:22px; font-weight:800; color:var(--text-title); margin-bottom:15px;">
+                    <i class="fa-solid fa-wallet" style="color:var(--success); margin-right:8px;"></i> Распределение доходов (Роялти)
+                </h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Укажите общую сумму дохода от дистрибьютора для автоматического зачисления на баланс артистов в соответствии с их тарифами (80% / 85% / 90%).</p>
                 
-                <div style="max-width:400px; margin-bottom:20px;">
-                    <input type="number" id="finance-pool" placeholder="Сумма общего дохода (₽)" style="width:100%; background:var(--bg-input); padding:16px; border-radius:8px; color:white; border:1px solid var(--border-light); font-size:15px;">
+                <div style="max-width:400px; margin-bottom:25px;">
+                    <input type="number" id="finance-pool" placeholder="Общая сумма (₽)" class="styled-input" style="font-size:16px; padding:16px;">
                 </div>
                 
-                <button style="background:var(--success); color:white; border:none; padding:16px 30px; border-radius:8px; font-weight:800; cursor:pointer;" onclick="alert('Модуль роялти активирован! Средства распределены по тарифам.')">Рассчитать роялти артистам</button>
+                <button style="background:var(--success); color:white; border:none; padding:16px 30px; border-radius:8px; font-weight:800; cursor:pointer; font-size:15px; transition:0.2s;" onclick="alert('Модуль роялти активирован! Средства успешно распределены по балансам артистов.')">
+                    Рассчитать и начислить роялти
+                </button>
             </div>
         </div>
 
         <div class="admin-section" id="tab-calendar">
             <div class="module-card">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> График выхода релизов</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Календарь запланированных премьер лейбла.</p>
-                <div id="calendar-list" style="display:grid; gap:12px;"></div>
+                <h3 style="font-size:22px; font-weight:800; color:var(--text-title); margin-bottom:15px;">
+                    <i class="fa-solid fa-calendar-days" style="color:var(--warning); margin-right:8px;"></i> График выхода релизов
+                </h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Общий календарь запланированных премьер лейбла.</p>
+                <div id="calendar-list" style="display:grid; gap:15px;"></div>
             </div>
         </div>
 
         <div class="admin-section" id="tab-smartlinks">
             <div class="module-card">
-                <h3 style="font-size:20px; color:var(--text-title); margin-bottom:15px;"><i class="fa-solid fa-link" style="color:#3B82F6"></i> Генератор Smart-ссылок</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Управление промо-страницами для каждого одобренного релиза.</p>
-                <div id="smartlinks-list" style="display:grid; gap:12px;"></div>
+                <h3 style="font-size:22px; font-weight:800; color:var(--text-title); margin-bottom:15px;">
+                    <i class="fa-solid fa-link" style="color:#3B82F6; margin-right:8px;"></i> Генератор Smart-ссылок
+                </h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Управление едиными промо-страницами (BandLink/SmartLink) для каждого одобренного релиза.</p>
+                <div id="smartlinks-list" style="display:grid; gap:15px;"></div>
             </div>
         </div>
     </div>
@@ -1089,7 +1200,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, setDoc, serverTimestamp, orderBy, query, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
+        // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCv98EY58S0QR9TTh87u8xgX_x4QuEcZAU",
             authDomain: "music-label-e2581.firebaseapp.com",
@@ -1152,6 +1263,7 @@
             }
         }
 
+        // --- УВЕДОМЛЕНИЯ (Короткое) ---
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1159,16 +1271,11 @@
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             container.appendChild(toast);
-            
             setTimeout(() => toast.classList.add('show'), 50);
-            
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-                setTimeout(() => toast.remove(), 400); 
-            }, 3500);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
         }
 
-        // Длинное уведомление (6 сек)
+        // --- УВЕДОМЛЕНИЯ (Длинное 6 сек) ---
         function notifyLong(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1178,13 +1285,10 @@
             container.appendChild(toast);
             
             setTimeout(() => toast.classList.add('show'), 50);
-            
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-                setTimeout(() => toast.remove(), 400); 
-            }, 6000);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 6000);
         }
 
+        // --- ФОРМАТИРОВАНИЕ ВРЕМЕНИ ДЛЯ ЧАТА ---
         function formatChatTime(ts) {
             if (!ts) return '';
             const date = new Date(ts);
@@ -1205,6 +1309,7 @@
             return `${day}.${month}.${date.getFullYear()}, ${timeStr}`;
         }
 
+        // --- НАВИГАЦИЯ ---
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1222,6 +1327,7 @@
             });
         });
 
+        // --- АВТОРИЗАЦИЯ И СЕССИЯ ---
         document.getElementById('auth-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -1245,7 +1351,7 @@
                 loadReleases();
                 initAdminChat();
             } else {
-                signOut(auth); 
+                if(user) signOut(auth); // Выкидываем, если вошел не Владелец
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
                 
@@ -1275,6 +1381,7 @@
                     }
                 });
 
+                // Звук при новом сообщении
                 if (currentUnreadCount > prevUnreadCount) {
                     playNotificationSound();
                     notifyLong("Новое сообщение от пользователя в Поддержку!", "success");
@@ -1342,7 +1449,7 @@
             
             if(!chat) return;
             
-            header.innerHTML = `<i class="fa-solid fa-headset" style="color:var(--brand-primary)"></i> Диалог: ${chat.userNickname}`;
+            header.innerHTML = `<i class="fa-solid fa-headset" style="color:var(--brand-primary); font-size:18px;"></i> <span style="font-size:16px;">Диалог: ${chat.userNickname}</span>`;
             body.innerHTML = '';
             
             if (chat.userTyping) {
@@ -1360,7 +1467,7 @@
 
             msgs.forEach(m => {
                 const isAdmin = m.sender === 'admin';
-                const senderName = isAdmin ? 'Вы' : (chat.userNickname || 'Пользователь');
+                const senderName = isAdmin ? 'Вы (Модератор)' : (chat.userNickname || 'Пользователь');
                 
                 body.innerHTML += `
                     <div class="chat-msg-container ${isAdmin ? 'admin' : 'user'}">
@@ -1478,29 +1585,29 @@
                     `;
                 } else {
                     actionButtons = `
-                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Забанить</button>` : ''}
-                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Заморозить</button>` : ''}
-                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px;">Разблокировать</button>` : ''}
-                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%;">
+                        ${status !== 'banned' ? `<button onclick="setUserStatus('${u.id}', 'banned')" style="background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px; transition:0.2s;">Забанить</button>` : ''}
+                        ${status !== 'frozen' ? `<button onclick="setUserStatus('${u.id}', 'frozen')" style="background:rgba(245,158,11,0.1); color:var(--warning); border:1px solid rgba(245,158,11,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px; transition:0.2s;">Заморозить</button>` : ''}
+                        ${status !== 'Активен' ? `<button onclick="setUserStatus('${u.id}', 'Активен')" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; margin-bottom:6px; transition:0.2s;">Разблокировать</button>` : ''}
+                        <button onclick="document.getElementById('mail-to').value = '${u.email}'; document.getElementById('mail-subject').focus();" style="background:rgba(59,130,246,0.1); color:#3B82F6; border:1px solid rgba(59,130,246,0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; width:100%; transition:0.2s;">
                             <i class="fa-solid fa-envelope"></i> Письмо
                         </button>
                     `;
                 }
 
                 const tariffHtml = u.id !== ADMIN_UID ? `
-                    <div style="display:flex; gap:5px; margin-top:10px;">
-                        <select id="tariff-select-${u.id}" class="styled-input" style="padding:6px; font-size:12px;">
+                    <div style="display:flex; gap:6px; margin-top:10px;">
+                        <select id="tariff-select-${u.id}" class="styled-input" style="padding:6px 10px; font-size:12px; margin-bottom:0; cursor:pointer;">
                             <option value="Стартовый">Стартовый (1 мес)</option>
                             <option value="Расширенный">Расширенный (1 мес)</option>
                             <option value="Профессиональный">Профессиональный (1 мес)</option>
                             <option value="Базовый">Сброс до Базового</option>
                         </select>
-                        <button onclick="issueTariff('${u.id}')" style="background:var(--brand-primary); color:white; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:700;">Выдать</button>
+                        <button onclick="issueTariff('${u.id}')" style="background:var(--brand-primary); color:white; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; transition:0.2s;">Выдать</button>
                     </div>
                 ` : '';
 
                 container.innerHTML += `
-                    <div style="background:var(--bg-input); padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light); margin-bottom:12px;">
+                    <div style="background:var(--bg-input); padding:22px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-light); margin-bottom:12px;">
                         <div style="flex:1; padding-right:15px;">
                             <div style="font-weight:800; color:white; font-size:16px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
                                 ${u.nickname || 'Безымянный'} ${statusBadge}
@@ -1528,7 +1635,6 @@
             if(!confirm(`Вы уверены? Действие: ${statusNames[status]}`)) return;
             
             try {
-                // Используем setDoc с merge, чтобы не удалять другие поля пользователя
                 await setDoc(doc(db, "users", uid), { accountStatus: status }, { merge: true });
                 notify(`Статус аккаунта изменен: ${statusNames[status]}`, "success");
                 loadUsers();
@@ -1596,7 +1702,7 @@
                     notify("Письмо успешно отправлено адресату!", "success");
                     document.getElementById('mail-subject').value = '';
                     document.getElementById('mail-body').value = '';
-                    btn.innerHTML = 'Отправить письмо';
+                    btn.innerHTML = 'Отправить письмо <i class="fa-solid fa-paper-plane" style="margin-left:5px;"></i>';
                     btn.disabled = false;
                 }, 1000);
             } catch(e) {
@@ -1606,7 +1712,7 @@
             }
         });
 
-        // ------------------ МОДУЛЬ ПРОМОКОДОВ ------------------
+        // ------------------ МОДУЛЬ ПРОМОКОДОВ С ОГРАНИЧЕНИЕМ ВРЕМЕНИ ------------------
         document.getElementById('promo-type').addEventListener('change', (e) => {
             const val = e.target.value;
             const planSelect = document.getElementById('promo-plan');
@@ -1634,7 +1740,6 @@
             
             let expTimestamp = null;
             if (expireDateStr) {
-                // Устанавливаем время конца дня
                 const dateObj = new Date(expireDateStr);
                 dateObj.setHours(23, 59, 59);
                 expTimestamp = dateObj.getTime();
@@ -1682,7 +1787,6 @@
                         const dateObj = new Date(data.expiresAt);
                         expText = `До: ${dateObj.toLocaleDateString('ru-RU')}`;
                         
-                        // Если код уже истек, помечаем красным
                         if (Date.now() > data.expiresAt) {
                             expText = `<span style="color:var(--danger)">Истек (${dateObj.toLocaleDateString('ru-RU')})</span>`;
                         }
@@ -1695,7 +1799,7 @@
                                 <p>${desc}</p>
                                 <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">${expText}</div>
                             </div>
-                            <button onclick="deletePromo('${d.id}')" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700;"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deletePromo('${d.id}')" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:8px 12px; border-radius:8px; font-size:12px; font-weight:700; transition:0.2s;"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     `;
                 });
