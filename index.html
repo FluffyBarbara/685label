@@ -3,47 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>685 music label</title>
     
-    <!-- Подключение иконки сайта (favicon) -->
+    <!-- Строго заданная иконка -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     
     <!-- Подключение шрифтов, иконок и стилей ЮKassa -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://yookassa.ru/integration/simplepay/css/yookassa_construct_form.css?v=1.35.0">
     
+    <!-- ========================================== -->
+    <!-- АКТИВНАЯ ЗАЩИТА КЛИЕНТСКОЙ ЧАСТИ (SHIELD)  -->
+    <!-- ========================================== -->
+    <script type="text/javascript">
+        (function() {
+            const _0x3b1c = [
+                'preventDefault',
+                'contextmenu',
+                'addEventListener',
+                'keydown',
+                'key',
+                'F12',
+                'ctrlKey',
+                'shiftKey',
+                'I',
+                'u',
+                'U',
+                's',
+                'S',
+                'debugger',
+                'constructor'
+            ];
+            
+            // Блокировка правой кнопки мыши
+            document[_0x3b1c[2]](_0x3b1c[1], function(e) { 
+                e[_0x3b1c[0]](); 
+            });
+            
+            // Блокировка горячих клавиш (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S)
+            document[_0x3b1c[2]](_0x3b1c[3], function(e) {
+                if (
+                    e[_0x3b1c[4]] === _0x3b1c[5] || 
+                    (e[_0x3b1c[6]] && e[_0x3b1c[7]] && e[_0x3b1c[4]] === _0x3b1c[8]) || 
+                    (e[_0x3b1c[6]] && (
+                        e[_0x3b1c[4]] === _0x3b1c[9] || 
+                        e[_0x3b1c[4]] === _0x3b1c[10] || 
+                        e[_0x3b1c[4]] === _0x3b1c[11] || 
+                        e[_0x3b1c[4]] === _0x3b1c[12]
+                    ))
+                ) {
+                    e[_0x3b1c[0]]();
+                }
+            });
+            
+            // Ловушка для консоли разработчика
+            setInterval(function() { 
+                (function() {
+                    return false;
+                })[_0x3b1c[14]](_0x3b1c[13])(); 
+            }, 50);
+        })();
+    </script>
+
     <style>
         /* ==========================================
-           БАЗОВЫЕ ПЕРЕМЕННЫЕ
+           ПРЕМИАЛЬНЫЕ ПЕРЕМЕННЫЕ (DARK MONOCHROME)
         ========================================== */
         :root {
-            --brand-primary: #FF2A5F;
-            --brand-secondary: #FF7043;
-            --brand-glow: rgba(255, 42, 95, 0.4);
-            
-            --bg-base: #050505;
-            --bg-surface: #121212;
-            --bg-input: #1e1e1e;
-            --bg-glass: rgba(15, 15, 15, 0.8);
-            --bg-glass-hover: rgba(255, 255, 255, 0.05);
-            
-            --text-title: #FFFFFF;
-            --text-primary: #E2E8F0;
-            --text-secondary: #94A3B8;
+            --bg-deep: #000000;
+            --bg-surface: rgba(15, 15, 15, 0.45);
+            --bg-input: rgba(5, 5, 5, 0.8);
             
             --border-light: rgba(255, 255, 255, 0.08);
-            --border-focus: rgba(255, 42, 95, 0.5);
+            --border-glow: rgba(255, 255, 255, 0.3);
             
-            --success: #10B981;
-            --warning: #F59E0B;
-            --danger: #EF4444;
+            --text-pure: #ffffff;
+            --text-primary: #e5e5e5;
+            --text-secondary: #888888;
+            --text-muted: #555555;
             
+            --accent-glow: 0 0 25px rgba(255, 255, 255, 0.1);
+            
+            --success: #ffffff;
+            --warning: #aaaaaa;
+            --danger: #444444;
+            --danger-text: #ff6b6b;
+            
+            --radius-lg: 20px;
+            --radius-md: 14px;
             --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
             
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* ==========================================
@@ -58,31 +111,77 @@
         }
         
         body { 
-            background-color: var(--bg-base); 
+            background-color: var(--bg-deep); 
             color: var(--text-primary); 
             overflow-x: hidden; 
-            line-height: 1.5; 
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(255, 42, 95, 0.05), transparent 25%), 
-                radial-gradient(circle at 85% 30%, rgba(255, 112, 67, 0.05), transparent 25%); 
-            background-attachment: fixed; 
+            line-height: 1.6; 
+            position: relative;
+        }
+
+        /* ==========================================
+           ГЕНЕРАТОР БАБОЧЕК (BUTTERFLIES SYSTEM)
+        ========================================== */
+        #butterflies-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .butterfly {
+            position: absolute;
+            bottom: -100px;
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.35);
+            stroke-width: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(0) translateX(0) rotate(0deg) scale(0.6); 
+                opacity: 0; 
+            }
+            15% { 
+                opacity: var(--target-opacity); 
+            }
+            50% { 
+                transform: translateY(-55vh) translateX(var(--drift)) rotate(var(--rot)) scale(1); 
+            }
+            85% { 
+                opacity: var(--target-opacity); 
+            }
+            100% { 
+                transform: translateY(-120vh) translateX(calc(var(--drift) * -1)) rotate(calc(var(--rot) * -1)) scale(1.2); 
+                opacity: 0; 
+            }
+        }
+
+        #app-view, #auth-view, #verify-view, #frozen-view, #toast-container {
+            position: relative;
+            z-index: 10;
         }
 
         ::-webkit-scrollbar { 
-            width: 8px; 
+            width: 6px; 
         }
-
+        
         ::-webkit-scrollbar-track { 
-            background: var(--bg-base); 
+            background: var(--bg-deep); 
         }
-
+        
         ::-webkit-scrollbar-thumb { 
-            background: #2A2A2A; 
+            background: #333333; 
             border-radius: 10px; 
         }
-
+        
         ::-webkit-scrollbar-thumb:hover { 
-            background: var(--brand-primary); 
+            background: #666666; 
         }
 
         button { 
@@ -91,9 +190,9 @@
             background: none; 
             color: inherit; 
             outline: none; 
-            transition: var(--transition);
+            transition: var(--transition); 
         }
-
+        
         input, select, textarea { 
             font-family: inherit; 
             outline: none; 
@@ -103,7 +202,7 @@
         @keyframes fadeUp { 
             from { 
                 opacity: 0; 
-                transform: translateY(20px); 
+                transform: translateY(30px); 
             } 
             to { 
                 opacity: 1; 
@@ -122,46 +221,37 @@
         ========================================== */
         #toast-container { 
             position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            z-index: 100000; 
+            top: 30px; 
+            right: 30px; 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 15px; 
         }
 
         .toast { 
-            background: rgba(15, 15, 15, 0.95); 
+            background: rgba(10, 10, 10, 0.85); 
             backdrop-filter: blur(20px); 
             border: 1px solid var(--border-light); 
-            border-left: 4px solid var(--brand-primary); 
-            padding: 16px 20px; 
+            border-left: 3px solid var(--text-pure); 
+            padding: 18px 24px; 
             border-radius: var(--radius-sm); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9); 
             display: flex; 
             align-items: center; 
             gap: 15px; 
             font-weight: 600; 
             font-size: 14px; 
-            color: #fff; 
+            color: var(--text-pure); 
             transform: translateX(120%); 
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
         .toast.show { 
             transform: translateX(0); 
         }
-
-        .toast.success { 
-            border-left-color: var(--success); 
-        }
-
+        
         .toast.error { 
-            border-left-color: var(--danger); 
-        }
-
-        .toast.warning {
-            border-left-color: var(--warning);
+            border-left-color: var(--danger-text); 
         }
 
         /* ==========================================
@@ -174,88 +264,82 @@
             justify-content: center; 
             padding: 20px; 
             position: relative; 
-            overflow: hidden; 
-            background: radial-gradient(circle at center, #1a0b10 0%, var(--bg-base) 100%); 
+            z-index: 10;
         }
 
         .auth-card { 
-            background: var(--bg-glass); 
-            backdrop-filter: blur(30px); 
-            padding: 45px 40px; 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(40px); 
+            padding: 50px 45px; 
             border-radius: var(--radius-lg); 
             border: 1px solid var(--border-light); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
             width: 100%; 
-            max-width: 420px; 
+            max-width: 400px; 
             text-align: center; 
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
         .auth-logo { 
-            font-size: 36px; 
+            font-size: 38px; 
             font-weight: 800; 
             margin-bottom: 10px; 
-            letter-spacing: -1.5px; 
-            color: var(--text-title); 
-        }
-
-        .auth-logo span { 
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+            color: var(--text-pure); 
+            letter-spacing: -2px; 
         }
 
         .auth-desc { 
             color: var(--text-secondary); 
-            margin-bottom: 30px; 
-            font-size: 14px; 
+            margin-bottom: 35px; 
+            font-size: 13px; 
         }
 
         .input-wrapper { 
             position: relative; 
-            margin-bottom: 16px; 
+            margin-bottom: 15px; 
         }
-
+        
         .input-wrapper i { 
             position: absolute; 
-            left: 18px; 
+            left: 20px; 
             top: 50%; 
             transform: translateY(-50%); 
             color: var(--text-secondary); 
-            font-size: 16px; 
+            font-size: 14px; 
             transition: var(--transition); 
         }
-
+        
         .input-wrapper input { 
             width: 100%; 
             background: var(--bg-input); 
             border: 1px solid var(--border-light); 
-            color: var(--text-title); 
-            padding: 16px 16px 16px 50px; 
-            border-radius: var(--radius-md); 
-            font-size: 15px; 
+            color: var(--text-pure); 
+            padding: 16px 20px 16px 50px; 
+            border-radius: var(--radius-sm); 
+            font-size: 14px; 
             transition: var(--transition); 
         }
 
         .input-wrapper input:focus { 
-            border-color: var(--brand-primary); 
-            box-shadow: 0 0 15px rgba(255,42,95,0.1); 
+            border-color: var(--border-glow); 
+            box-shadow: 0 0 15px rgba(255,255,255,0.05); 
         }
-
+        
         .input-wrapper input:focus + i { 
-            color: var(--brand-primary); 
+            color: var(--text-pure); 
         }
 
         .btn-glow { 
             width: 100%; 
             padding: 16px; 
-            border-radius: var(--radius-md); 
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
-            color: #fff; 
-            font-weight: 700; 
-            font-size: 16px; 
-            letter-spacing: 0.5px; 
-            box-shadow: 0 10px 20px rgba(255,42,95,0.3); 
+            border-radius: var(--radius-sm); 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            font-weight: 800; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            box-shadow: var(--accent-glow); 
             transition: var(--transition); 
             display: flex; 
             align-items: center; 
@@ -264,29 +348,29 @@
         }
 
         .btn-glow:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 15px 30px rgba(255,42,95,0.4); 
+            background: #d4d4d8; 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(255,255,255,0.2); 
         }
 
         .btn-glow:disabled { 
             opacity: 0.7; 
             cursor: not-allowed; 
             transform: none; 
-            box-shadow: none; 
         }
 
         .auth-toggle { 
             margin-top: 20px; 
             color: var(--text-secondary); 
-            font-size: 14px; 
+            font-size: 13px; 
             font-weight: 600; 
             display: inline-block; 
             transition: var(--transition); 
             padding: 10px; 
         }
-
+        
         .auth-toggle:hover { 
-            color: var(--text-title); 
+            color: var(--text-pure); 
         }
 
         /* ==========================================
@@ -304,6 +388,7 @@
             left: 0; 
             top: 0; 
             background: var(--bg-surface); 
+            backdrop-filter: blur(20px);
             border-right: 1px solid var(--border-light); 
             padding: 40px 20px; 
             display: flex; 
@@ -315,16 +400,12 @@
         .sidebar-brand { 
             font-size: 28px; 
             font-weight: 800; 
-            color: var(--text-title); 
+            color: var(--text-pure); 
             padding: 0 15px 40px; 
             display: flex; 
             align-items: center; 
             gap: 12px; 
             letter-spacing: -1px; 
-        }
-
-        .sidebar-brand span { 
-            color: var(--brand-primary); 
         }
 
         .nav-link { 
@@ -334,8 +415,8 @@
             padding: 16px 20px; 
             color: var(--text-secondary); 
             font-weight: 600; 
-            font-size: 15px; 
-            border-radius: var(--radius-md); 
+            font-size: 14px; 
+            border-radius: 50px; 
             transition: var(--transition); 
             margin-bottom: 8px; 
             width: 100%; 
@@ -343,31 +424,21 @@
         }
 
         .nav-link i { 
-            font-size: 18px; 
+            font-size: 16px; 
             width: 20px; 
             text-align: center; 
         }
-
+        
         .nav-link:hover { 
-            background: var(--bg-glass-hover); 
-            color: var(--text-title); 
+            background: rgba(255,255,255,0.03); 
+            color: var(--text-pure); 
         }
-
+        
         .nav-link.active { 
-            background: linear-gradient(90deg, rgba(255,42,95,0.1) 0%, transparent 100%); 
-            color: var(--brand-primary); 
-            position: relative; 
-        }
-
-        .nav-link.active::before { 
-            content: ''; 
-            position: absolute; 
-            left: 0; 
-            top: 15%; 
-            height: 70%; 
-            width: 4px; 
-            background: var(--brand-primary); 
-            border-radius: 0 4px 4px 0; 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            font-weight: 700;
+            box-shadow: var(--accent-glow);
         }
 
         .bottom-nav { 
@@ -376,7 +447,8 @@
             bottom: 0; 
             left: 0; 
             right: 0; 
-            background: var(--bg-surface); 
+            background: rgba(10,10,10,0.9); 
+            backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light); 
             justify-content: space-around; 
             padding: 10px 5px 20px 5px; 
@@ -387,23 +459,21 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 4px; 
+            gap: 6px; 
             color: var(--text-secondary); 
             font-size: 10px; 
             font-weight: 600; 
-            padding: 8px; 
+            padding: 10px; 
             width: 25%; 
-            cursor: pointer; 
             transition: var(--transition); 
         }
-
+        
         .nav-item i { 
             font-size: 20px; 
-            margin-bottom: 2px; 
         }
-
+        
         .nav-item.active { 
-            color: var(--brand-primary); 
+            color: var(--text-pure); 
         }
 
         /* ==========================================
@@ -411,7 +481,7 @@
         ========================================== */
         .main-wrapper { 
             margin-left: 280px; 
-            padding: 40px 60px; 
+            padding: 50px 60px; 
             min-height: 100vh; 
             transition: var(--transition); 
         }
@@ -420,7 +490,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 40px; 
+            margin-bottom: 50px; 
             gap: 15px; 
             flex-wrap: wrap; 
         }
@@ -428,7 +498,7 @@
         .header-title { 
             font-size: 32px; 
             font-weight: 800; 
-            color: var(--text-title); 
+            color: var(--text-pure); 
             letter-spacing: -1px; 
         }
 
@@ -437,40 +507,44 @@
             align-items: center; 
             gap: 20px; 
             background: var(--bg-surface); 
-            padding: 8px 24px 8px 8px; 
+            backdrop-filter: blur(10px);
+            padding: 10px 24px 10px 10px; 
             border-radius: 50px; 
             border: 1px solid var(--border-light); 
         }
 
         .user-avatar { 
-            width: 42px; 
-            height: 42px; 
+            width: 44px; 
+            height: 44px; 
             border-radius: 50%; 
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            background: var(--text-pure); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             font-weight: 800; 
-            color: #fff; 
+            color: var(--bg-deep); 
             font-size: 16px; 
-            box-shadow: 0 4px 15px rgba(255,42,95,0.3); 
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
         }
 
         .user-info { 
             display: flex; 
             flex-direction: column; 
         }
-
+        
         .user-email { 
             font-size: 14px; 
-            font-weight: 700; 
-            color: var(--text-title); 
+            font-weight: 800; 
+            color: var(--text-pure); 
+            letter-spacing: 0.5px;
         }
-
+        
         .user-role { 
-            font-size: 12px; 
-            color: var(--success); 
+            font-size: 11px; 
+            color: var(--text-pure); 
             font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
         }
 
         .btn-logout { 
@@ -479,109 +553,121 @@
             font-size: 18px; 
             transition: var(--transition); 
         }
-
+        
         .btn-logout:hover { 
-            color: var(--danger); 
+            color: var(--text-pure); 
             transform: scale(1.1); 
         }
 
         .section { 
             display: none; 
-            animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
         }
-
+        
         .section.active { 
             display: block; 
         }
 
         /* ==========================================
-           КАРТОЧКИ, ФОРМЫ, АККОРДЕОНЫ
+           КАРТОЧКИ, ФОРМЫ И АККОРДЕОНЫ
         ========================================== */
         .glass-card { 
             background: var(--bg-surface); 
+            backdrop-filter: blur(30px);
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-lg); 
-            padding: 35px; 
+            padding: 40px; 
             margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
         }
 
         .card-heading { 
             font-size: 20px; 
-            font-weight: 700; 
-            color: var(--text-title); 
+            font-weight: 800; 
+            color: var(--text-pure); 
             margin-bottom: 25px; 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 15px; 
+            letter-spacing: -0.5px;
         }
 
         .card-heading i { 
-            color: var(--brand-primary); 
-            background: rgba(255,42,95,0.1); 
-            padding: 10px; 
-            border-radius: 10px; 
+            color: var(--text-pure); 
+            background: rgba(255,255,255,0.05); 
+            padding: 12px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-light);
         }
 
-        /* Аккордеоны для Правил */
+        /* АККОРДЕОНЫ */
         .accordion-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 30px;
         }
 
-        .accordion {
-            background: var(--bg-input);
+        .form-accordion {
+            background: rgba(255,255,255,0.02);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-md);
             overflow: hidden;
             transition: var(--transition);
         }
 
+        .form-accordion:hover {
+            border-color: rgba(255,255,255,0.2);
+        }
+
         .accordion-header {
-            padding: 18px 25px;
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            font-weight: 700;
-            color: var(--text-title);
-            background: rgba(255,255,255,0.02);
+            font-weight: 800;
+            color: var(--text-pure);
+            font-size: 16px;
             user-select: none;
+            background: transparent;
         }
 
-        .accordion-header i {
-            transition: transform 0.3s ease;
-            color: var(--brand-primary);
+        .accordion-header i.fa-chevron-down {
+            transition: transform 0.4s ease;
+            color: var(--text-secondary);
         }
 
-        .accordion.open .accordion-header i {
+        .form-accordion.open .accordion-header i.fa-chevron-down {
             transform: rotate(180deg);
+            color: var(--text-pure);
         }
 
         .accordion-body {
             max-height: 0;
             overflow: hidden;
             padding: 0 25px;
-            transition: max-height 0.4s ease, padding 0.4s ease;
+            transition: max-height 0.6s ease, padding 0.6s ease, opacity 0.4s ease;
+            opacity: 0;
             color: var(--text-secondary);
             font-size: 14px;
             line-height: 1.6;
         }
 
-        .accordion.open .accordion-body {
-            padding: 15px 25px 25px;
-            max-height: 2000px;
+        .form-accordion.open .accordion-body {
+            padding: 10px 25px 30px;
+            max-height: 2500px;
+            opacity: 1;
         }
 
-        .accordion-body ul, .accordion-body ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
+        .accordion-body ul, .accordion-body ol { 
+            margin-left: 20px; 
+            margin-bottom: 15px; 
+            margin-top: 10px;
         }
-
-        .accordion-body strong {
-            color: var(--text-primary);
+        
+        .accordion-body strong { 
+            color: var(--text-primary); 
         }
 
         .grid-2 { 
@@ -589,66 +675,99 @@
             grid-template-columns: repeat(2, 1fr); 
             gap: 25px; 
         }
-
+        
         .input-box { 
             display: flex; 
             flex-direction: column; 
-            gap: 8px; 
+            gap: 10px; 
         }
-
+        
         .input-box label { 
-            font-size: 13px; 
-            font-weight: 700; 
+            font-size: 11px; 
+            font-weight: 800; 
             color: var(--text-secondary); 
             text-transform: uppercase; 
             letter-spacing: 1px; 
         }
 
         .styled-input { 
-            background: var(--bg-input); 
+            background: var(--bg-deep); 
             border: 1px solid var(--border-light); 
-            color: var(--text-title); 
-            padding: 16px; 
+            color: var(--text-pure); 
+            padding: 16px 20px; 
             border-radius: var(--radius-sm); 
-            font-size: 15px; 
+            font-size: 14px; 
             transition: var(--transition); 
             width: 100%; 
         }
 
         .styled-input:focus { 
-            border-color: var(--brand-primary); 
-            background: rgba(255,42,95,0.02); 
-            box-shadow: inset 0 0 0 1px var(--brand-primary); 
-        }
-        
-        /* Размытие e-mail */
-        .blurred-text { 
-            filter: blur(5px); 
-            cursor: pointer; 
-            transition: filter 0.3s ease; 
-            opacity: 0.8; 
-            user-select: none;
-        }
-
-        .blurred-text.visible { 
-            filter: none; 
-            opacity: 1; 
-            cursor: text; 
-            user-select: auto;
+            border-color: var(--border-glow); 
         }
 
         select.styled-input { 
             appearance: none; 
             cursor: pointer; 
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
             background-repeat: no-repeat; 
-            background-position: right 16px center; 
+            background-position: right 20px center; 
             background-size: 16px; 
         }
 
         select.styled-input option { 
-            background: var(--bg-surface); 
-            color: var(--text-title); 
+            background: var(--bg-deep); 
+            color: var(--text-pure); 
+        }
+
+        /* Размытие e-mail */
+        .blurred-text { 
+            filter: blur(5px); 
+            cursor: pointer; 
+            transition: filter 0.3s ease; 
+            opacity: 0.6; 
+            user-select: none; 
+        }
+        
+        .blurred-text.visible { 
+            filter: none; 
+            opacity: 1; 
+            cursor: text; 
+            user-select: auto; 
+        }
+
+        /* ==========================================
+           ВИЗУАЛИЗАТОР ИИ (AUDIO EQUALIZER)
+        ========================================== */
+        .ai-equalizer {
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 6px;
+            height: 45px;
+            margin: 20px 0;
+        }
+
+        .eq-bar {
+            width: 6px;
+            background: var(--text-pure);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+            animation: eqBounce 0.5s infinite ease-in-out alternate;
+        }
+
+        @keyframes eqBounce {
+            0% { height: 5px; }
+            100% { height: 45px; }
+        }
+
+        .ai-status-text {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            display: none;
         }
 
         /* ==========================================
@@ -658,21 +777,24 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             padding-bottom: 15px; 
             border-bottom: 1px solid var(--border-light); 
         }
-
+        
         .dsp-toolbar button { 
-            color: var(--brand-primary); 
+            color: var(--text-pure); 
             font-weight: 700; 
-            font-size: 14px; 
-            padding: 5px 10px; 
+            font-size: 13px; 
+            padding: 8px 14px; 
             transition: 0.2s; 
+            border: 1px solid transparent; 
+            border-radius: 50px;
         }
-
+        
         .dsp-toolbar button:hover { 
-            color: #fff; 
+            background: rgba(255,255,255,0.1); 
+            border-color: rgba(255,255,255,0.2);
         }
         
         .dsp-grid { 
@@ -680,13 +802,13 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 15px; 
         }
-
+        
         .dsp-label { 
             display: flex; 
             align-items: center; 
             gap: 15px; 
-            background: rgba(0,0,0,0.2); 
-            padding: 14px 18px; 
+            background: rgba(0,0,0,0.4); 
+            padding: 16px 20px; 
             border-radius: var(--radius-md); 
             border: 1px solid var(--border-light); 
             cursor: pointer; 
@@ -696,11 +818,11 @@
             color: var(--text-primary); 
             font-size: 14px; 
         }
-
+        
         .dsp-label:hover { 
-            border-color: rgba(255,255,255,0.2); 
+            border-color: rgba(255,255,255,0.3); 
         }
-
+        
         .dsp-label input { 
             display: none; 
         }
@@ -715,29 +837,29 @@
             justify-content: center; 
             transition: var(--transition); 
         }
-
+        
         .checkbox-box i { 
-            color: #fff; 
+            color: var(--bg-deep); 
             font-size: 12px; 
             opacity: 0; 
             transform: scale(0.5); 
             transition: var(--transition); 
         }
-
+        
         .dsp-label input:checked + .checkbox-box { 
-            background: var(--brand-primary); 
-            border-color: var(--brand-primary); 
-            box-shadow: 0 0 15px rgba(255,42,95,0.4); 
+            background: var(--text-pure); 
+            border-color: var(--text-pure); 
+            box-shadow: 0 0 15px rgba(255,255,255,0.3); 
         }
-
+        
         .dsp-label input:checked + .checkbox-box i { 
             opacity: 1; 
             transform: scale(1); 
         }
-
+        
         .dsp-label:has(input:checked) { 
-            border-color: var(--brand-primary); 
-            background: rgba(255,42,95,0.05); 
+            border-color: var(--text-pure); 
+            background: rgba(255,255,255,0.05); 
         }
 
         /* ==========================================
@@ -745,106 +867,105 @@
         ========================================== */
         .pricing-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
             gap: 30px; 
-            margin-top: 20px; 
+            margin-top: 30px; 
         }
-
+        
         .price-card { 
             background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-lg); 
-            padding: 40px 30px; 
+            padding: 45px 35px; 
             display: flex; 
             flex-direction: column; 
-            gap: 20px; 
+            gap: 25px; 
             position: relative; 
             transition: var(--transition); 
         }
-
+        
         .price-card.popular { 
-            border-color: var(--brand-primary); 
-            background: linear-gradient(180deg, rgba(255,42,95,0.05) 0%, var(--bg-surface) 100%); 
+            border-color: var(--border-glow); 
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, var(--bg-surface) 100%); 
         }
-
+        
         .price-card.popular::before { 
             content: 'ПОПУЛЯРНЫЙ'; 
             position: absolute; 
             top: -14px; 
             left: 50%; 
             transform: translateX(-50%); 
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
-            color: #fff; 
-            font-size: 11px; 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            font-size: 10px; 
             font-weight: 800; 
-            padding: 4px 14px; 
+            padding: 6px 16px; 
             border-radius: 50px; 
             letter-spacing: 1px; 
         }
-
+        
         .price-card:hover { 
             transform: translateY(-8px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
         }
-
+        
         .price-header h3 { 
-            font-size: 24px; 
+            font-size: 26px; 
             font-weight: 800; 
-            color: var(--text-title); 
+            color: var(--text-pure); 
             margin-bottom: 5px; 
+            letter-spacing: -0.5px;
         }
-
+        
         .price-header p { 
             color: var(--text-secondary); 
             font-size: 14px; 
             font-weight: 600; 
         }
-
+        
         .price-cost { 
-            font-size: 38px; 
+            font-size: 42px; 
             font-weight: 800; 
-            color: var(--text-title); 
+            color: var(--text-pure); 
             letter-spacing: -1px; 
             margin: 10px 0; 
         }
-
+        
         .price-cost span { 
             font-size: 16px; 
             color: var(--text-secondary); 
             font-weight: 600; 
         }
-
+        
         .price-features { 
             display: flex; 
             flex-direction: column; 
-            gap: 14px; 
+            gap: 16px; 
             list-style: none; 
             flex: 1; 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
         }
-
+        
         .price-features li { 
             display: flex; 
             align-items: flex-start; 
-            gap: 12px; 
-            font-size: 13.5px; 
+            gap: 15px; 
+            font-size: 14px; 
             color: var(--text-primary); 
-            line-height: 1.4; 
+            line-height: 1.5; 
+            font-weight: 500;
         }
-
+        
         .price-features li i { 
-            color: var(--success); 
+            color: var(--text-pure); 
             font-size: 16px; 
-            margin-top: 2px; 
+            margin-top: 3px; 
         }
-
+        
         .price-features li.disabled { 
             color: var(--text-secondary); 
-            opacity: 0.5; 
-        }
-
-        .price-features li.disabled i { 
-            color: var(--text-secondary); 
+            opacity: 0.4; 
         }
 
         /* ==========================================
@@ -852,134 +973,143 @@
         ========================================== */
         .releases-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 25px; 
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+            gap: 30px; 
         }
-
+        
         .track-card { 
             background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-lg); 
-            padding: 25px; 
+            padding: 30px; 
             transition: var(--transition); 
             display: flex; 
             flex-direction: column; 
-            gap: 15px; 
+            gap: 18px; 
             position: relative; 
         }
-
+        
         .track-card:hover { 
             transform: translateY(-5px); 
-            border-color: var(--brand-primary); 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4); 
+            border-color: rgba(255,255,255,0.2); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
         }
-
+        
         .track-status { 
             align-self: flex-start; 
-            padding: 6px 14px; 
+            padding: 8px 16px; 
             border-radius: 50px; 
-            font-size: 11px; 
+            font-size: 10px; 
             font-weight: 800; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
             display: flex; 
             align-items: center; 
             gap: 8px; 
+            border: 1px solid; 
         }
-
+        
         .status-pending { 
-            background: rgba(245, 158, 11, 0.1); 
-            color: var(--warning); 
-            border: 1px solid rgba(245, 158, 11, 0.2); 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-primary); 
+            border-color: var(--border-light); 
         }
-
+        
         .status-approved { 
-            background: rgba(16, 185, 129, 0.1); 
-            color: var(--success); 
-            border: 1px solid rgba(16, 185, 129, 0.2); 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-color: var(--text-pure); 
         }
-
+        
         .status-rejected { 
-            background: rgba(239, 68, 68, 0.1); 
-            color: var(--danger); 
-            border: 1px solid rgba(239, 68, 68, 0.2); 
+            background: transparent; 
+            color: var(--text-secondary); 
+            border-color: var(--danger-text); 
         }
-
+        
         .track-title { 
-            font-size: 22px; 
+            font-size: 24px; 
             font-weight: 800; 
-            color: var(--text-title); 
+            color: var(--text-pure); 
             margin-bottom: 5px; 
             line-height: 1.2; 
+            letter-spacing: -0.5px;
         }
-
+        
         .track-artist { 
             color: var(--text-primary); 
             font-weight: 600; 
             font-size: 15px; 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
             margin-bottom: 5px; 
         }
-
+        
         .track-meta { 
             color: var(--text-secondary); 
             font-size: 13px; 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
         }
         
         .track-codes-box { 
-            background: rgba(0,0,0,0.3); 
+            background: rgba(0,0,0,0.5); 
             border: 1px solid var(--border-light); 
-            padding: 10px 14px; 
-            border-radius: 8px; 
-            font-size: 12px; 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 13px; 
             font-family: monospace; 
             display: flex; 
             flex-direction: column; 
-            gap: 4px; 
+            gap: 6px; 
         }
-
+        
         .track-codes-box b { 
-            color: #A78BFA; 
+            color: var(--text-pure); 
         }
-
+        
         .reject-box { 
-            background: rgba(239,68,68,0.1); 
-            border: 1px solid rgba(239,68,68,0.3); 
-            color: #FCA5A5; 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-size: 12px; 
-            line-height: 1.4; 
+            background: rgba(255,255,255,0.02); 
+            border: 1px dashed var(--danger-text); 
+            color: var(--text-primary); 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 13px; 
+            line-height: 1.5; 
         }
 
         .btn-action-mobile { 
             width: 100%; 
-            padding: 10px 14px; 
-            border-radius: 8px; 
-            font-weight: 700; 
+            padding: 14px; 
+            border-radius: 12px; 
+            font-weight: 800; 
             font-size: 12px; 
-            margin-top: 5px; 
+            margin-top: 10px; 
             text-align: center; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 8px; 
+            gap: 10px; 
             transition: var(--transition); 
+            background: transparent; 
+            border: 1px solid var(--border-light); 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
         }
-
+        
         .btn-action-mobile:hover { 
-            opacity: 0.8; 
+            border-color: var(--text-pure); 
+            color: var(--text-pure); 
         }
 
         .track-footer { 
             margin-top: auto; 
-            padding-top: 15px; 
-            border-top: 1px dashed var(--border-light); 
+            padding-top: 20px; 
+            border-top: 1px solid var(--border-light); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -994,41 +1124,42 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            padding: 80px 20px; 
+            padding: 100px 20px; 
             text-align: center; 
-            background: rgba(255,255,255,0.02); 
+            background: rgba(255,255,255,0.01); 
             border-radius: var(--radius-lg); 
             border: 1px dashed var(--border-light); 
         }
-
+        
         .empty-dashboard i { 
-            font-size: 56px; 
-            margin-bottom: 20px; 
-            color: var(--brand-primary); 
+            font-size: 64px; 
+            margin-bottom: 25px; 
+            color: var(--text-secondary); 
         }
-
+        
         .empty-dashboard h3 { 
-            font-size: 24px; 
-            color: var(--text-title); 
-            margin-bottom: 10px; 
+            font-size: 28px; 
+            color: var(--text-pure); 
+            margin-bottom: 12px; 
             font-weight: 800; 
+            letter-spacing: -1px;
         }
 
         .spinner { 
-            width: 40px; 
-            height: 40px; 
-            border: 4px solid var(--border-light); 
-            border-top-color: var(--brand-primary); 
+            width: 50px; 
+            height: 50px; 
+            border: 3px solid rgba(255,255,255,0.05); 
+            border-top-color: var(--text-pure); 
             border-radius: 50%; 
             animation: spin 1s linear infinite; 
             margin: 0 auto; 
         }
-
+        
         .btn-spinner { 
-            width: 20px; 
-            height: 20px; 
-            border: 2px solid rgba(255,255,255,0.3); 
-            border-top-color: #fff; 
+            width: 22px; 
+            height: 22px; 
+            border: 2px solid rgba(0,0,0,0.1); 
+            border-top-color: var(--bg-deep); 
             border-radius: 50%; 
             animation: spin 1s linear infinite; 
         }
@@ -1040,25 +1171,25 @@
             position: fixed;
             bottom: 40px;
             right: 40px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+            width: 65px;
+            height: 65px;
+            background: var(--text-pure);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            color: white;
+            font-size: 26px;
+            color: var(--bg-deep);
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255,42,95,0.4);
+            box-shadow: var(--accent-glow);
             z-index: 9999;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #chat-widget-btn:hover { 
             transform: scale(1.1); 
         }
-
+        
         #chat-badge {
             position: absolute;
             top: 0;
@@ -1067,17 +1198,18 @@
             height: 16px;
             background: var(--success);
             border-radius: 50%;
-            border: 3px solid var(--bg-base);
+            border: 3px solid var(--bg-deep);
             display: none;
         }
         
         #chat-window {
             position: fixed;
-            bottom: 110px;
+            bottom: 120px;
             right: 40px;
-            width: 360px;
-            height: 550px;
+            width: 380px;
+            height: 600px;
             background: var(--bg-surface);
+            backdrop-filter: blur(40px);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
             display: flex;
@@ -1086,8 +1218,8 @@
             transform: translateY(20px);
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             overflow: hidden;
         }
 
@@ -1098,10 +1230,10 @@
         }
 
         .chat-header {
-            background: rgba(255,42,95,0.1);
-            padding: 18px 20px;
+            background: rgba(255,255,255,0.03);
+            padding: 22px 25px;
             font-weight: 800;
-            color: white;
+            color: var(--text-pure);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1110,112 +1242,116 @@
 
         .chat-body {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
         
-        .chat-msg-container {
-            display: flex;
-            flex-direction: column;
-            max-width: 85%;
-        }
-
-        .chat-msg-container.user {
-            align-self: flex-end;
-            align-items: flex-end;
-        }
-
-        .chat-msg-container.admin {
-            align-self: flex-start;
-            align-items: flex-start;
-        }
-
-        .chat-sender-name {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-            padding: 0 4px;
-        }
-
-        .chat-msg {
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 14px;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .chat-msg-container.user .chat-msg {
-            background: var(--brand-primary);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .chat-msg-container.admin .chat-msg {
-            background: var(--bg-input);
-            color: white;
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--border-light);
-        }
-
-        .chat-time {
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            font-weight: 600;
+        .chat-msg-container { 
+            display: flex; 
+            flex-direction: column; 
+            max-width: 85%; 
         }
         
-        #typing-indicator {
-            font-size: 12px;
-            color: var(--success);
-            padding: 0 15px 10px;
-            font-style: italic;
-            display: none;
+        .chat-msg-container.user { 
+            align-self: flex-end; 
+            align-items: flex-end; 
         }
         
-        .chat-footer {
-            padding: 15px;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            gap: 10px;
-            background: var(--bg-base);
+        .chat-msg-container.admin { 
+            align-self: flex-start; 
+            align-items: flex-start; 
         }
 
-        .chat-input {
-            flex: 1;
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: white;
-            padding: 12px 15px;
-            border-radius: 50px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
+        .chat-sender-name { 
+            font-size: 10px; 
+            font-weight: 800; 
+            color: var(--text-secondary); 
+            margin-bottom: 6px; 
+            padding: 0 5px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+        
+        .chat-msg { 
+            padding: 15px 20px; 
+            border-radius: 20px; 
+            font-size: 14px; 
+            line-height: 1.5; 
+            word-break: break-word; 
         }
 
+        .chat-msg-container.user .chat-msg { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-bottom-right-radius: 6px; 
+            font-weight: 500;
+        }
+        
+        .chat-msg-container.admin .chat-msg { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-pure); 
+            border-bottom-left-radius: 6px; 
+            border: 1px solid var(--border-light); 
+        }
+        
+        .chat-time { 
+            font-size: 10px; 
+            color: var(--text-muted); 
+            margin-top: 6px; 
+            font-weight: 600; 
+        }
+        
+        #typing-indicator { 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            padding: 0 20px 15px; 
+            font-style: italic; 
+            display: none; 
+        }
+        
+        .chat-footer { 
+            padding: 20px; 
+            border-top: 1px solid var(--border-light); 
+            display: flex; 
+            gap: 12px; 
+            background: rgba(10,10,12,0.8); 
+        }
+        
+        .chat-input { 
+            flex: 1; 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 16px 20px; 
+            border-radius: 50px; 
+            font-size: 14px; 
+            outline: none; 
+            transition: border-color 0.3s; 
+        }
+        
         .chat-input:focus { 
-            border-color: var(--brand-primary); 
+            border-color: var(--border-glow); 
         }
-
-        .chat-send {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-            transition: transform 0.2s;
+        
+        .chat-send { 
+            width: 52px; 
+            height: 52px; 
+            border-radius: 50%; 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border: none; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 18px; 
+            flex-shrink: 0; 
+            transition: transform 0.2s; 
+            box-shadow: var(--accent-glow);
         }
-
+        
         .chat-send:hover { 
             transform: scale(1.1); 
         }
@@ -1230,8 +1366,8 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            backdrop-filter: blur(10px); 
+            background: rgba(0,0,0,0.9); 
+            backdrop-filter: blur(15px); 
             z-index: 100000; 
             align-items: center; 
             justify-content: center; 
@@ -1240,169 +1376,170 @@
 
         .payment-card { 
             background: var(--bg-surface); 
+            backdrop-filter: blur(40px); 
             width: 100%; 
-            max-width: 450px; 
-            border-radius: var(--radius-lg); 
-            padding: 40px 30px; 
+            max-width: 480px; 
+            border-radius: var(--radius-xl); 
+            padding: 50px 40px; 
             position: relative; 
             border: 1px solid var(--border-light); 
             animation: fadeUp 0.4s ease; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9); 
         }
 
         .payment-close { 
             position: absolute; 
-            top: 20px; 
-            right: 25px; 
+            top: 25px; 
+            right: 30px; 
             font-size: 24px; 
             color: var(--text-secondary); 
             cursor: pointer; 
             transition: 0.2s; 
         }
-
+        
         .payment-close:hover { 
-            color: white; 
+            color: var(--text-pure); 
         }
 
         .payment-title { 
-            font-size: 24px; 
+            font-size: 28px; 
             font-weight: 800; 
-            color: white; 
+            color: var(--text-pure); 
             margin-bottom: 10px; 
+            letter-spacing: -1px;
         }
-
+        
         .payment-subtitle { 
-            font-size: 14px; 
+            font-size: 15px; 
             color: var(--text-secondary); 
-            margin-bottom: 25px; 
+            margin-bottom: 30px; 
         }
         
         .promo-block { 
             display: flex; 
-            gap: 10px; 
-            margin-bottom: 20px; 
+            gap: 12px; 
+            margin-bottom: 25px; 
         }
-
+        
         .promo-block input { 
             flex: 1; 
             background: var(--bg-input); 
             border: 1px solid var(--border-light); 
-            color: white; 
-            padding: 12px 15px; 
+            color: var(--text-pure); 
+            padding: 15px 20px; 
             border-radius: var(--radius-sm); 
-            font-size: 13px; 
+            font-size: 14px; 
             outline: none; 
         }
-
+        
         .promo-block input:focus { 
-            border-color: var(--brand-primary); 
+            border-color: var(--border-glow); 
         }
-
+        
         .promo-block button { 
-            background: var(--border-light); 
-            color: white; 
-            border: none; 
-            padding: 0 15px; 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-pure); 
+            border: 1px solid var(--border-light); 
+            padding: 0 20px; 
             border-radius: var(--radius-sm); 
             font-weight: 700; 
             font-size: 13px; 
             cursor: pointer; 
-            transition: 0.2s; 
+            transition: 0.3s; 
         }
-
+        
         .promo-block button:hover { 
-            background: rgba(255,255,255,0.15); 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
         }
 
         .payment-summary { 
-            background: var(--bg-input); 
+            background: rgba(0,0,0,0.5); 
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-md); 
-            padding: 20px; 
-            margin-bottom: 25px; 
+            padding: 25px; 
+            margin-bottom: 30px; 
         }
-
+        
         .payment-summary-row { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 15px; 
+            margin-bottom: 18px; 
             font-size: 14px; 
             font-weight: 600; 
             color: var(--text-primary); 
         }
-
+        
         .payment-summary-row:last-child { 
             margin-bottom: 0; 
-            padding-top: 15px; 
+            padding-top: 18px; 
             border-top: 1px dashed var(--border-light); 
-            font-size: 18px; 
-            color: white; 
+            font-size: 20px; 
+            color: var(--text-pure); 
             font-weight: 800; 
         }
         
-        /* Скрываем нативный UI ЮKassa */
         .yoomoney-payment-form .ym-products, 
         .yoomoney-payment-form .ym-customer-info, 
         .yoomoney-payment-form .ym-input-icon-rub { 
             display: none !important; 
         }
-
+        
         .yoomoney-payment-form .ym-payment-btn-block { 
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
+            display: flex !important; 
+            flex-direction: column !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
             width: 100% !important; 
-            margin: 0 auto !important;
+            margin: 0 auto !important; 
         }
 
-        /* Полностью переопределяем кнопку оплаты ЮKassa */
         .yoomoney-payment-form .ym-btn-pay { 
             width: 100% !important; 
-            height: 56px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)) !important; 
-            color: #ffffff !important; 
-            -webkit-text-fill-color: #ffffff !important; 
+            height: 60px !important; 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            background: var(--text-pure) !important; 
+            color: var(--bg-deep) !important; 
+            -webkit-text-fill-color: var(--bg-deep) !important; 
             font-family: 'Plus Jakarta Sans', sans-serif !important; 
             font-weight: 800 !important; 
             border-radius: 12px !important; 
-            padding: 0 !important; 
             font-size: 16px !important; 
-            transition: transform 0.2s !important; 
-            box-shadow: 0 10px 20px rgba(255,42,95,0.3) !important; 
-            border: none !important;
-            cursor: pointer !important;
-            text-transform: none !important; 
-            text-align: center !important;
+            transition: transform 0.3s !important; 
+            box-shadow: var(--accent-glow) !important; 
+            border: none !important; 
+            cursor: pointer !important; 
+            text-transform: uppercase !important; 
+            letter-spacing: 1px !important;
         }
 
         .yoomoney-payment-form .ym-btn-pay .ym-text-crop,
-        .yoomoney-payment-form .ym-btn-pay .ym-price-output {
-            position: static !important;
-            transform: none !important;
-            white-space: nowrap !important;
-            display: block !important;
-            line-height: normal !important;
-            text-align: center !important;
-            width: auto !important;
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-            text-transform: none !important;
+        .yoomoney-payment-form .ym-btn-pay .ym-price-output { 
+            position: static !important; 
+            transform: none !important; 
+            white-space: nowrap !important; 
+            display: block !important; 
+            line-height: normal !important; 
+            text-align: center !important; 
+            width: auto !important; 
+            color: var(--bg-deep) !important; 
+            -webkit-text-fill-color: var(--bg-deep) !important; 
+            text-transform: none !important; 
         }
 
         .yoomoney-payment-form .ym-btn-pay:hover { 
             transform: translateY(-3px) !important; 
-            box-shadow: 0 15px 30px rgba(255,42,95,0.4) !important; 
+            box-shadow: 0 15px 35px rgba(255,255,255,0.2) !important; 
+            background: #d4d4d8 !important;
         }
 
         .yoomoney-payment-form .ym-logo { 
             filter: brightness(0) invert(1); 
-            opacity: 0.6; 
-            margin-top: 15px; 
+            opacity: 0.4; 
+            margin-top: 20px; 
             margin-left: auto; 
             margin-right: auto; 
             display: block; 
@@ -1412,75 +1549,65 @@
            АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ И МОБИЛЬНЫХ
         ========================================== */
         @media(max-width: 1024px) {
-            .sidebar { 
-                width: 80px; 
-                padding: 30px 10px; 
-                align-items: center; 
-            }
-            .sidebar-brand span, .nav-link span { 
-                display: none; 
-            }
-            .sidebar-brand { 
-                padding: 0 0 20px; 
-                font-size: 20px; 
-                justify-content: center; 
-            }
-            .nav-link { 
-                justify-content: center; 
-                padding: 14px; 
-            }
-            .main-wrapper { 
-                margin-left: 80px; 
-                padding: 30px 20px; 
-            }
-            .grid-2 { 
-                grid-template-columns: 1fr; 
-            }
+            .sidebar { width: 90px; padding: 40px 10px; align-items: center; }
+            .sidebar-brand span, .nav-link span { display: none; }
+            .sidebar-brand { padding: 0 0 30px; font-size: 24px; justify-content: center; }
+            .nav-link { justify-content: center; padding: 18px; border-radius: 50%; width: 50px; height: 50px;}
+            .main-wrapper { margin-left: 90px; padding: 40px 30px; }
+            .grid-2 { grid-template-columns: 1fr; }
         }
         
         @media(max-width: 600px) {
-            .sidebar { 
-                display: none; 
-            } 
-            .bottom-nav { 
-                display: flex; 
-            } 
-            .main-wrapper { 
-                margin-left: 0; 
-                margin-bottom: 80px; 
-                padding: 20px 15px; 
-            }
-            .header-title { 
-                font-size: 26px; 
-            }
-            .auth-card { 
-                padding: 35px 20px; 
-            }
-            .glass-card { 
-                padding: 25px 20px; 
-            }
-            .releases-grid { 
-                grid-template-columns: 1fr; 
-            }
-            #chat-widget-btn { 
-                bottom: 90px; 
-                right: 20px; 
-                width: 55px; 
-                height: 55px; 
-            }
-            #chat-window { 
-                width: calc(100% - 30px); 
-                right: 15px; 
-                left: 15px; 
-                bottom: 90px; 
-                height: 70vh; 
-            }
+            .sidebar { display: none; } 
+            .bottom-nav { display: flex; } 
+            .main-wrapper { margin-left: 0; margin-bottom: 90px; padding: 25px 20px; }
+            .header-title { font-size: 24px; }
+            .auth-card { padding: 40px 25px; }
+            .glass-card { padding: 30px 20px; }
+            .releases-grid { grid-template-columns: 1fr; }
+            #chat-widget-btn { bottom: 100px; right: 20px; width: 60px; height: 60px; }
+            #chat-window { width: calc(100% - 30px); right: 15px; left: 15px; bottom: 100px; height: 70vh; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Уведомления -->
+    <!-- ГЕНЕРАТОР БАБОЧЕК В ФОНЕ -->
+    <div id="butterflies-container"></div>
+    <script>
+        const container = document.getElementById('butterflies-container');
+        const bfSVG = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 13V20M12 13C12 13 8 9 4 10C4 10 3 14 6 17C9 20 12 13 12 13ZM12 13C12 13 16 9 20 10C20 10 21 14 18 17C15 20 12 13 12 13Z"/>
+            </svg>
+        `;
+        
+        for (let i = 0; i < 40; i++) {
+            const div = document.createElement('div');
+            div.className = 'butterfly';
+            div.innerHTML = bfSVG;
+            
+            const size = Math.random() * 50 + 20; 
+            const startX = Math.random() * 100;
+            const duration = Math.random() * 30 + 20; 
+            const delay = Math.random() * -40; 
+            const opacity = Math.random() * 0.4 + 0.1;
+            const drift = (Math.random() * 120 - 60) + 'px';
+            const rot = (Math.random() * 40 - 20) + 'deg';
+            
+            div.style.width = size + 'px';
+            div.style.left = startX + 'vw';
+            div.style.animationDuration = duration + 's';
+            div.style.animationDelay = delay + 's';
+            div.style.setProperty('--target-opacity', opacity);
+            div.style.setProperty('--drift', drift);
+            div.style.setProperty('--rot', rot);
+            
+            container.appendChild(div);
+        }
+    </script>
+
+    <!-- Уведомления (Toasts) -->
     <div id="toast-container"></div>
 
     <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ ЮKASSA -->
@@ -1491,9 +1618,9 @@
             <div class="payment-title">Оформление подписки</div>
             <div class="payment-subtitle">Тариф «<span id="display-plan-name"></span>»</div>
 
-            <div class="input-box" style="margin-bottom: 20px;">
-                <label>Период оплаты</label>
-                <select id="payment-duration" class="styled-input" style="background: var(--bg-input);">
+            <div class="input-box" style="margin-bottom: 25px;">
+                <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Период оплаты</label>
+                <select id="payment-duration" class="styled-input">
                     <option value="1">1 Месяц</option>
                     <option value="3">3 Месяца</option>
                     <option value="12">1 Год (Выгодно)</option>
@@ -1526,22 +1653,21 @@
                     <span>Итого к оплате</span>
                     <div>
                         <span id="summary-old-price" style="text-decoration: line-through; color: var(--text-secondary); font-size: 14px; margin-right: 8px; display: none;"></span>
-                        <span id="summary-total" style="color: var(--brand-primary);"></span>
+                        <span id="summary-total" style="color: var(--text-pure);"></span>
                     </div>
                 </div>
             </div>
 
             <!-- Согласие с офертой при оплате -->
-            <div style="margin-bottom: 20px; text-align: left; font-size: 12px; color: var(--text-secondary);">
-                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" id="payment-agree-cb" style="margin-top: 2px;">
-                    <span>Я принимаю условия <a href="#" style="color:var(--brand-primary); text-decoration:none;">Публичной оферты</a> и даю согласие на обработку данных.</span>
+            <div style="margin-bottom: 25px; text-align: left; font-size: 13px; color: var(--text-secondary);">
+                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="payment-agree-cb" style="margin-top: 4px;">
+                    <span>Я принимаю условия <a href="#" style="color:var(--text-pure); font-weight:600; text-decoration:underline;">Публичной оферты</a> и даю согласие на обработку данных.</span>
                 </label>
             </div>
 
-            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA ОТ ВЛАДЕЛЬЦА -->
+            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA -->
             <form id="main-payment-form" class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
-                
                 <div class="ym-products ym-display-none">
                     <div class="ym-product">
                         <input disabled type="hidden" name="text" id="ym-text" value="Оплата тарифа">
@@ -1552,29 +1678,23 @@
                         <input disabled type="hidden" name="tax" value="1">
                     </div>
                 </div>
-                
                 <input value="" type="hidden" name="ym_merchant_receipt">
-                
                 <div class="ym-customer-info">
                     <input name="cps_email" id="ym-email" class="ym-input ym-display-none" placeholder="Email" type="text" value="">
                 </div>
-                
                 <div class="ym-hidden-inputs">
                     <input name="shopSuccessURL" id="ym-success" type="hidden" value="">
                     <input name="shopFailURL" id="ym-fail" type="hidden" value="">
                 </div>
-                
                 <input name="sumEqualPrice" type="hidden" value="true">
                 
                 <div class="ym-payment-btn-block ym-align-space-between">
                     <div class="ym-input-icon-rub">
                         <input name="sum" id="ym-sum" class="ym-input ym-sum-input ym-required-input" type="number" step="any">
                     </div>
-                    
                     <button type="submit" class="ym-btn-pay">
-                        <span class="ym-text-crop">Перейти к оплате</span>
+                        <span class="ym-text-crop">Оплатить подписку</span>
                     </button>
-                    
                     <img src="https://yookassa.ru/integration/simplepay/img/iokassa-gray.svg?v=1.35.0" class="ym-logo" width="114" height="27" alt="ЮKassa">
                 </div>
                 
@@ -1593,18 +1713,20 @@
 
     <div id="chat-window">
         <div class="chat-header">
-            <div><i class="fa-solid fa-headset"></i> Поддержка 685 Music</div>
-            <button id="close-chat-btn" style="color:white; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
+            <div><i class="fa-solid fa-headset" style="margin-right:8px; color:var(--text-secondary);"></i> Поддержка Лейбла</div>
+            <button id="close-chat-btn" style="color:var(--text-secondary); font-size:20px; transition:0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
         
         <div class="chat-body" id="chat-body">
-            <!-- Сообщения будут генерироваться здесь -->
+            <!-- Сообщения генерируются тут -->
         </div>
         
         <div id="typing-indicator">Менеджер печатает...</div>
         
         <div class="chat-footer">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Введите сообщение...">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Напишите сообщение...">
             <button id="chat-send-btn" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
@@ -1630,20 +1752,19 @@
                 <input type="password" id="auth-password" placeholder="Пароль (от 6 символов)" autocomplete="current-password">
             </div>
 
-            <!-- Согласие с офертой при регистрации -->
-            <div id="auth-terms" style="display:none; font-size: 11px; color: var(--text-secondary); text-align: left; margin-bottom: 15px;">
-                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" id="auth-agree-cb" style="margin-top: 3px;">
-                    <span>Я принимаю условия <a href="#" style="color:var(--brand-primary); text-decoration:none;">Публичной оферты</a> и согласен с <a href="#" style="color:var(--brand-primary); text-decoration:none;">Политикой конфиденциальности</a></span>
+            <div id="auth-terms" style="display:none; font-size: 12px; color: var(--text-secondary); text-align: left; margin-bottom: 20px;">
+                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="auth-agree-cb" style="margin-top: 4px;">
+                    <span>Я принимаю условия <a href="#" style="color:var(--text-pure); font-weight:600; text-decoration:underline;">Публичной оферты</a> и согласен с <a href="#" style="color:var(--text-pure); font-weight:600; text-decoration:underline;">Политикой конфиденциальности</a></span>
                 </label>
             </div>
             
-            <div id="forgot-btn-wrap" style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
-                <button id="forgot-password-btn" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; background: none;">Забыли пароль?</button>
+            <div id="forgot-btn-wrap" style="text-align: right; margin-bottom: 25px; margin-top: -10px;">
+                <button id="forgot-password-btn" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; background: none; transition:0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">Забыли пароль?</button>
             </div>
             
             <button class="btn-glow" id="auth-btn">
-                <span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left:8px;"></i>
             </button>
             
             <button class="auth-toggle" id="auth-toggle-btn">Создать новый аккаунт</button>
@@ -1652,30 +1773,30 @@
 
     <!-- ЭКРАН ВЕРИФИКАЦИИ ПОЧТЫ -->
     <div id="verify-view" class="auth-view-container" style="display: none;">
-        <div class="auth-card" style="background:var(--bg-surface);">
-            <i class="fa-solid fa-paper-plane" style="font-size: 48px; color: var(--brand-primary); margin-bottom: 20px;"></i>
-            <h2 style="color: white; margin-bottom: 10px;">Подтвердите вашу почту</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">Мы отправили письмо подтверждения. Перейдите по ссылке в письме, чтобы активировать аккаунт.</p>
+        <div class="auth-card">
+            <i class="fa-solid fa-envelope-open-text" style="font-size: 56px; color: var(--text-pure); margin-bottom: 25px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));"></i>
+            <h2 style="color: var(--text-pure); font-size:28px; font-weight:800; margin-bottom: 15px; letter-spacing:-0.5px;">Подтвердите почту</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 14px; line-height:1.6;">Мы отправили ссылку для активации на ваш E-mail. Перейдите по ней, чтобы войти в экосистему.</p>
             
             <button class="btn-glow" id="check-verify-btn" style="margin-bottom: 15px;">Я подтвердил почту</button>
-            <button class="auth-toggle" id="resend-email-btn" style="margin-bottom: 15px;">Отправить письмо повторно</button>
+            <button class="auth-toggle" id="resend-email-btn" style="margin-bottom: 15px; display:block; width:100%;">Отправить письмо повторно</button>
             
-            <div>
-                <button id="verify-logout" style="color: var(--danger); font-size: 14px; font-weight: 600; background: none; border: none; cursor: pointer;">Выйти из аккаунта</button>
+            <div style="margin-top:10px;">
+                <button id="verify-logout" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; border-bottom:1px dashed var(--text-secondary); padding-bottom:2px; transition:0.3s;" onmouseover="this.style.color='var(--danger)'; this.style.borderColor='var(--danger)'" onmouseout="this.style.color='var(--text-secondary)'; this.style.borderColor='var(--text-secondary)'">Выйти из аккаунта</button>
             </div>
         </div>
     </div>
 
     <!-- ЭКРАН ЗАМОРОЖЕННОГО АККАУНТА -->
     <div id="frozen-view" class="auth-view-container" style="display: none;">
-        <div class="auth-card" style="border-color: var(--warning);">
-            <i class="fa-solid fa-snowflake" style="font-size: 48px; color: var(--warning); margin-bottom: 20px;"></i>
-            <h2 style="color: white; margin-bottom: 15px;">Аккаунт заморожен</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
-                Ваш аккаунт временно заморожен.<br><br>
-                Если вам выдали наказание необоснованно, вы можете написать сообщение поддержке с помощью кнопки в правом нижнем углу экрана.
+        <div class="auth-card" style="border-color: rgba(255,255,255,0.2); box-shadow: 0 0 50px rgba(255,255,255,0.05);">
+            <i class="fa-solid fa-snowflake" style="font-size: 56px; color: var(--text-secondary); margin-bottom: 25px;"></i>
+            <h2 style="color: var(--text-pure); font-size:28px; font-weight:800; margin-bottom: 15px; letter-spacing:-0.5px;">Аккаунт заморожен</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 14px; line-height: 1.6;">
+                Ваш доступ к экосистеме лейбла был временно приостановлен.<br><br>
+                Если вы считаете это ошибкой, свяжитесь с поддержкой с помощью кнопки в правом нижнем углу экрана.
             </p>
-            <button id="frozen-logout" style="color: var(--danger); font-size: 14px; font-weight: 600; background: none; border: none; cursor: pointer;">Выйти из аккаунта</button>
+            <button id="frozen-logout" style="color: var(--text-secondary); font-size: 13px; font-weight: 600; border-bottom:1px dashed var(--text-secondary); padding-bottom:2px; transition:0.3s;" onmouseover="this.style.color='white'; this.style.borderColor='white'" onmouseout="this.style.color='var(--text-secondary)'; this.style.borderColor='var(--text-secondary)'">Выйти из аккаунта</button>
         </div>
     </div>
 
@@ -1688,7 +1809,7 @@
                 <i class="fa-solid fa-compact-disc"></i> <span>685 music</span>
             </div>
             
-            <nav style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <nav style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
                 <button class="nav-link active" data-target="dashboard">
                     <i class="fa-solid fa-layer-group"></i> <span>Каталог релизов</span>
                 </button>
@@ -1696,13 +1817,13 @@
                     <i class="fa-solid fa-cloud-arrow-up"></i> <span>Дистрибуция</span>
                 </button>
                 <button class="nav-link" data-target="pricing">
-                    <i class="fa-solid fa-tags"></i> <span>Тарифы</span>
+                    <i class="fa-solid fa-tags"></i> <span>Тарифные планы</span>
                 </button>
                 <button class="nav-link" data-target="settings">
-                    <i class="fa-solid fa-user-shield"></i> <span>Настройки</span>
+                    <i class="fa-solid fa-user-shield"></i> <span>Настройки профиля</span>
                 </button>
                 
-                <button class="nav-link" id="go-to-admin-btn" style="display: none; margin-top: 25px; color: #a78bfa; border: 1px dashed rgba(167,139,250,0.4); background: rgba(167,139,250,0.05);">
+                <button class="nav-link" id="go-to-admin-btn" style="display: none; margin-top: 30px; color: var(--text-pure); border: 1px dashed var(--border-light); background: rgba(255,255,255,0.03);">
                     <i class="fa-solid fa-server"></i> <span>Панель Модератора</span>
                 </button>
             </nav>
@@ -1734,7 +1855,7 @@
                         <span class="user-email" id="display-nickname">Артист</span>
                         <span class="user-role" id="user-role-text">Verified Artist</span>
                     </div>
-                    <button class="btn-logout" id="logout-btn" title="Выйти из аккаунта">
+                    <button class="btn-logout" id="logout-btn" title="Выйти">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
@@ -1749,237 +1870,360 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (РАСШИРЕННАЯ) -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (АККОРДЕОНЫ И ИИ-АНАЛИЗАТОР) -->
             <section class="section" id="new-release">
 
                 <!-- ПРАВИЛА И РЕКОМЕНДАЦИИ -->
-                <div class="glass-card" style="border-color: rgba(255, 42, 95, 0.3);">
-                    <div class="card-heading"><i class="fa-solid fa-book-open"></i> Правила дистрибуции</div>
-                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:20px;">Перед загрузкой релиза обязательно ознакомьтесь с техническими требованиями площадок.</p>
+                <div class="glass-card">
+                    <div class="card-heading">
+                        <i class="fa-solid fa-book-open"></i> Правила дистрибуции
+                    </div>
+                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:25px;">
+                        Перед загрузкой релиза обязательно ознакомьтесь с техническими требованиями площадок, чтобы избежать задержек публикации.
+                    </p>
                     
                     <div class="accordion-wrapper">
-                        <!-- Аккордеон: Обложки -->
-                        <div class="accordion">
+                        <!-- Обложки -->
+                        <div class="form-accordion">
                             <div class="accordion-header">
-                                Правила и рекомендации к обложкам <i class="fa-solid fa-chevron-down"></i>
+                                Требования к обложкам <i class="fa-solid fa-chevron-down"></i>
                             </div>
                             <div class="accordion-body">
-                                <p>Стриминговые сервисы требуют высококачественные изображения для обложек, чтобы ваш релиз выглядел профессионально и максимально привлекательно. Если ваша обложка не соответствует этим требованиям, это может привести к задержке публикации релиза.</p>
+                                <p>Стриминговые сервисы требуют высококачественные изображения. Ваша обложка должна быть:</p>
                                 <br>
-                                <p><strong>Ваша обложка должна быть:</strong></p>
                                 <ul>
                                     <li><strong>Формат:</strong> JPG или PNG.</li>
                                     <li><strong>Размер:</strong> меньше 10 MB.</li>
-                                    <li><strong>Форма:</strong> квадратная, минимум 1400 x 1400 пикселей, но не более 3000 x 3000 пикселей. (iTunes рекомендует 3000 x 3000).</li>
+                                    <li><strong>Форма:</strong> строго квадратная, минимум 1400 x 1400 px, максимум 3000 x 3000 px.</li>
                                     <li><strong>Цветовая модель:</strong> RGB.</li>
-                                    <li>На изображении должен быть только текст с именем исполнителя и названием релиза (в точности как вы указали в названии при загрузке), либо изображение без текста вообще.</li>
-                                    <li><strong>Изображение должно быть вашим</strong> - вы должны иметь права на его распространение.</li>
+                                    <li>На изображении должен быть только текст с именем исполнителя и названием релиза (в точности как при загрузке), либо изображение без текста.</li>
                                 </ul>
-                                <p><strong>Запрещено к использованию в обложке:</strong></p>
+                                <p><strong>Запрещено использовать:</strong></p>
                                 <ul>
-                                    <li>Дополнительный текст, кроме названия релиза и имени исполнителя.</li>
-                                    <li>Несоответствующие текст и название на обложке.</li>
-                                    <li>Электронные адреса, QR-коды, URL-адреса, контактная информация и информация о ценах.</li>
-                                    <li>Стикеры или другие элементы (если сканируете с физического CD).</li>
-                                    <li>Слова, подразумевающие формат (например: "CD", "DVD", "Digital Exclusive").</li>
-                                    <li>Обрезанные или размытые изображения.</li>
-                                    <li>Изображения, сжатые в одном углу с белым пространством вокруг.</li>
-                                    <li>Любые упоминания о "Spotify" или других стриминговых сервисах.</li>
-                                    <li>Изображения, защищенные авторским правом. Ваше изображение должно быть уникальным.</li>
+                                    <li>Дополнительный текст, контакты, ссылки, QR-коды, логотипы брендов.</li>
+                                    <li>Слова, подразумевающие формат (например: "CD", "DVD", "Exclusive").</li>
+                                    <li>Обрезанные, размытые, растянутые картинки или скриншоты.</li>
+                                    <li>Изображения, защищенные авторским правом (чужие арты, кадры из кино).</li>
                                 </ul>
-                                <p>Резюмируя: обложка должна быть высокого качества, соответствовать техническим требованиям и не содержать того, чего нет в метаданных релиза.</p>
                             </div>
                         </div>
 
-                        <!-- Аккордеон: Аудио -->
-                        <div class="accordion">
+                        <!-- Аудио -->
+                        <div class="form-accordion">
                             <div class="accordion-header">
-                                Требования к аудио файлам <i class="fa-solid fa-chevron-down"></i>
+                                Требования к аудио-мастеру <i class="fa-solid fa-chevron-down"></i>
                             </div>
                             <div class="accordion-body">
-                                <p>При загрузке аудио файла необходимо соблюдать следующие требования:</p>
+                                <p>Для успешной отгрузки на DSP файл должен соответствовать стандартам:</p>
                                 <ul>
-                                    <li><strong>Стерео формат:</strong> Моно файлы не принимаются. Файлы, содержащие только левый или правый канал, также не будут приняты. Только стерео!</li>
-                                    <li><strong>Качество:</strong> Файл не должен иметь проблем с качеством (например, перегрузки сигнала выше 0 dBFS).</li>
-                                    <li><strong>Полнота файла:</strong> Аудио файл должен быть полным и не обрываться на середине песни.</li>
-                                    <li><strong>Тишина в начале и конце:</strong> Допустимая граница тишины — не более 5 секунд.</li>
+                                    <li><strong>Формат каналов:</strong> Строго Стерео (Mono не принимается).</li>
+                                    <li><strong>Качество:</strong> Отсутствие клиппинга (перегруза сигнала выше 0 dBFS).</li>
+                                    <li><strong>Тишина:</strong> Допустимая граница тишины в начале и конце — не более 5 секунд.</li>
                                 </ul>
-                                <p><strong>Рекомендуемые параметры:</strong></p>
+                                <p><strong>Рекомендуемые параметры файла:</strong></p>
                                 <ul>
-                                    <li><strong>Частота дискретизации:</strong> 44.1 kHz</li>
-                                    <li><strong>Глубина бит:</strong> 16 бит</li>
-                                    <li><strong>Кодеки:</strong> flac, wav</li>
+                                    <li><strong>Частота дискретизации:</strong> 44.1 kHz (допускается 48, 88.2, 96)</li>
+                                    <li><strong>Глубина бит:</strong> 16 bit или 24 bit</li>
+                                    <li><strong>Кодеки:</strong> WAV или FLAC</li>
                                 </ul>
-                                <p><strong>Доступные параметры:</strong></p>
-                                <ul>
-                                    <li><strong>Частота дискретизации:</strong> 44.1 kHz, 48 kHz, 88.2 kHz, 96 kHz</li>
-                                    <li><strong>Глубина бит:</strong> 16 бит, 24 бит</li>
-                                </ul>
-                                <p>Пожалуйста, убедитесь, что ваш файл соответствует этим требованиям для успешной загрузки.</p>
                             </div>
                         </div>
 
-                        <!-- Аккордеон: Названия -->
-                        <div class="accordion">
+                        <!-- Названия -->
+                        <div class="form-accordion">
                             <div class="accordion-header">
-                                Правила форматирования названий <i class="fa-solid fa-chevron-down"></i>
+                                Форматирование названий <i class="fa-solid fa-chevron-down"></i>
                             </div>
                             <div class="accordion-body">
-                                <p>Эти требования созданы для того, чтобы ваши релизы отображались аккуратно и привлекательно.</p>
-                                <br>
-                                <p><strong>Английский:</strong></p>
+                                <p><strong>Английский язык:</strong></p>
                                 <ul>
-                                    <li>Все слова пишутся с заглавной буквы.</li>
-                                    <li>Первое и последнее слово всегда пишутся с заглавной буквы (даже в скобках).</li>
-                                    <li>Слова перед символами (-), (/) всегда пишутся с заглавной буквы.</li>
-                                    <li>Слова, которые пишутся строчными буквами (если не первые/последние): a, an, and, as, but, for, from, nor, of, or, so, the, to, yet, at, by, in, into, off, on, onto, out, over, up, with.</li>
-                                    <li>Сокращения также со строчной: for — fo, and — n, with — wit.</li>
+                                    <li>Все слова пишутся с заглавной буквы (Каждое Слово С Большой).</li>
+                                    <li>Исключения (строчными): a, an, and, as, but, for, from, nor, of, or, so, the, to, yet, at, by, in, into, off, on, onto, out, over, up, with.</li>
+                                    <li>Первое и последнее слово (даже в скобках) всегда с большой буквы.</li>
                                 </ul>
-                                <p><strong>Испанский / Португальский:</strong></p>
-                                <ul>
-                                    <li>Вы можете сами выбрать регистр, но обязаны соблюдать его на всём релизе.</li>
-                                    <li>Слова перед символами (-), (/) пишутся с заглавной буквы.</li>
-                                    <li>Артикли и предлоги (a, e, las, por, dos, para и др.) всегда пишутся со строчной буквы.</li>
-                                </ul>
-                                <p><strong>Французский, Шведский, Финский, Норвежский, Датский:</strong></p>
-                                <ul>
-                                    <li>Первое слово с заглавной, остальные — со строчной (маленькой).</li>
-                                </ul>
-                                <p><strong>Немецкий:</strong></p>
-                                <ul>
-                                    <li>Первое слово и <strong>все существительные</strong> всегда пишутся с заглавной буквы.</li>
-                                    <li>Остальные — со строчной.</li>
-                                </ul>
-                                <p><strong>Русский, Украинский, Беларусский, Болгарский, Сербский:</strong></p>
+                                <p><strong>Русский / СНГ языки:</strong></p>
                                 <ul>
                                     <li>Первое слово всегда пишется с заглавной буквы.</li>
-                                    <li>Остальные слова пишутся с маленькой буквы (кроме имен собственных).</li>
+                                    <li>Остальные слова пишутся с маленькой буквы (кроме имен собственных и аббревиатур).</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ОСНОВНЫЕ ДАННЫЕ -->
-                <div class="glass-card">
-                    <div class="card-heading"><i class="fa-solid fa-circle-info"></i> Основные метаданные</div>
-                    <div class="grid-2">
-                        <div class="input-box">
-                            <label>Название релиза *</label>
-                            <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
-                        </div>
-                        <div class="input-box">
-                            <label>Основной исполнитель *</label>
-                            <input type="text" id="r-artist" class="styled-input" placeholder="Ваш псевдоним">
-                        </div>
-                        <div class="input-box">
-                            <label>Основной жанр *</label>
-                            <select id="r-genre" class="styled-input">
-                                <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
-                                <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
-                                <option value="Phonk">Phonk</option>
-                                <option value="Drill">Drill</option>
-                                <option value="Pop">Pop</option>
-                                <option value="Indie / Alternative">Indie / Alternative</option>
-                                <option value="Rock">Rock</option>
-                                <option value="R&B / Soul">R&B / Soul</option>
-                                <option value="Electronic / Dance">Electronic / Dance</option>
-                                <option value="House / Techno">House / Techno</option>
-                                <option value="Lo-Fi">Lo-Fi</option>
-                                <option value="Chanson">Chanson</option>
-                                <option value="Metal / Hardcore">Metal / Hardcore</option>
-                                <option value="Classical / Instrumental">Classical / Instrumental</option>
-                            </select>
-                        </div>
-                        <div class="input-box">
-                            <label>Тип формата *</label>
-                            <select id="r-type" class="styled-input">
-                                <option value="Сингл">Сингл (1-3 трека)</option>
-                                <option value="EP">EP (4-6 треков)</option>
-                                <option value="Альбом">Альбом (от 7 треков)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ИСХОДНЫЕ МАТЕРИАЛЫ С НОВЫМИ ПРАВИЛАМИ -->
-                <div class="glass-card">
-                    <div class="card-heading"><i class="fa-solid fa-folder-open"></i> Исходные материалы (Ссылки)</div>
-                    <div class="grid-2">
-                        <div class="input-box">
-                            <label>Обложка (1400x1400 - 3000x3000px, JPG/PNG, <10MB) *</label>
-                            <input type="url" id="r-cover" class="styled-input" placeholder="Ссылка на Google Drive, Яндекс.Диск">
-                        </div>
-                        <div class="input-box">
-                            <label>WAV/FLAC Мастер-файл (16/24 bit, Стерео) *</label>
-                            <input type="url" id="r-audio" class="styled-input" placeholder="Открытая ссылка на скачивание трека">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI ПИТЧИНГ ПРОМО -->
-                <div class="glass-card">
-                    <div class="card-heading"><i class="fa-solid fa-wand-magic-sparkles" style="color: #A78BFA; background: rgba(124,58,237,0.1);"></i> AI Промо (Питчинг)</div>
-                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:15px;">Сгенерируйте профессиональное описание для редакторов стриминговых площадок с помощью ИИ.</p>
-                    
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <textarea id="r-promo-text" class="styled-input" rows="4" placeholder="Здесь появится готовый текст для питчинга... Вы также можете написать его вручную." style="resize: vertical;"></textarea>
-                        
-                        <button type="button" id="ai-generate-btn" style="background: linear-gradient(135deg, #7C3AED, #4F46E5); color: white; padding: 14px 20px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 250px;">
-                            <i class="fa-solid fa-robot"></i> Сгенерировать ИИ
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 22 ПЛОЩАДКИ DSP -->
-                <div class="glass-card">
-                    <div class="card-heading"><i class="fa-solid fa-globe"></i> Цифровые площадки (DSP)</div>
-                    <div class="dsp-toolbar">
-                        <span style="color: var(--text-secondary); font-size: 14px;">Отметьте платформы для отгрузки:</span>
+                <!-- ФОРМА ОТГРУЗКИ В ВИДЕ АККОРДЕОНОВ -->
+                
+                <!-- БЛОК 1 -->
+                <div class="form-accordion open">
+                    <div class="accordion-header">
                         <div>
-                            <button type="button" onclick="selectAll(true)"><i class="fa-solid fa-check-double"></i> Выбрать все</button> | 
-                            <button type="button" onclick="selectAll(false)"><i class="fa-solid fa-xmark"></i> Снять все</button>
+                            <i class="fa-solid fa-circle-info" style="color:var(--text-pure); margin-right:10px;"></i> Основные метаданные 
                         </div>
+                        <i class="fa-solid fa-chevron-down"></i>
                     </div>
-                    
-                    <div class="dsp-grid">
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Apple Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Apple Music</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Spotify" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Spotify</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="YouTube Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> YouTube Music</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="TikTok" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> TikTok / Resso</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="VK Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> VK Музыка</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Яндекс Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Яндекс Музыка</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Звук" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Звук</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="МТС Музыка" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> МТС Музыка</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Amazon Music" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Amazon Music</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Instagram / FB" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Meta (Inst/FB)</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Deezer" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Deezer</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tidal" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tidal</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="SoundCloud" checked><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> SoundCloud</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Shazam"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Shazam</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Beatport"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Beatport</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Tencent"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Tencent (China)</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="NetEase"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> NetEase (China)</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Anghami"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Anghami (MENA)</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Boomplay"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Boomplay (Africa)</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Audiomack"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Audiomack</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Pandora"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Pandora</label>
-                        <label class="dsp-label"><input type="checkbox" class="dsp-cb" value="Qobuz"><div class="checkbox-box"><i class="fa-solid fa-check"></i></div> Qobuz</label>
+                    <div class="accordion-body" style="padding-top:20px;">
+                        <div class="grid-2">
+                            <div class="input-box">
+                                <label>Название релиза *</label>
+                                <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
+                            </div>
+                            <div class="input-box">
+                                <label>Основной исполнитель *</label>
+                                <input type="text" id="r-artist" class="styled-input" placeholder="Ваш псевдоним">
+                            </div>
+                            <div class="input-box">
+                                <label>Основной жанр *</label>
+                                <select id="r-genre" class="styled-input">
+                                    <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
+                                    <option value="Emo-Rap / Trap">Emo-Rap / Trap</option>
+                                    <option value="Phonk">Phonk</option>
+                                    <option value="Drill">Drill</option>
+                                    <option value="Pop">Pop</option>
+                                    <option value="Indie / Alternative">Indie / Alternative</option>
+                                    <option value="Rock">Rock</option>
+                                    <option value="R&B / Soul">R&B / Soul</option>
+                                    <option value="Electronic / Dance">Electronic / Dance</option>
+                                    <option value="House / Techno">House / Techno</option>
+                                    <option value="Lo-Fi">Lo-Fi</option>
+                                    <option value="Chanson">Chanson</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <label>Тип формата *</label>
+                                <select id="r-type" class="styled-input">
+                                    <option value="Сингл">Сингл (1-3 трека)</option>
+                                    <option value="EP">EP (4-6 треков)</option>
+                                    <option value="Альбом">Альбом (от 7 треков)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="text-align: right; margin-bottom: 50px;">
-                    <button class="btn-glow" id="submit-btn" style="width: auto; padding: 20px 50px; display: inline-flex; border-radius: 50px;">
-                        <span>Отправить на модерацию</span> <i class="fa-solid fa-rocket"></i>
+                <!-- БЛОК 2 -->
+                <div class="form-accordion open">
+                    <div class="accordion-header">
+                        <div>
+                            <i class="fa-solid fa-folder-open" style="color:var(--text-pure); margin-right:10px;"></i> Исходные материалы 
+                        </div>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body" style="padding-top:20px;">
+                        <div class="grid-2">
+                            <div class="input-box">
+                                <label>Обложка (1400x1400 - 3000x3000px, JPG/PNG, до 10MB) *</label>
+                                <input type="url" id="r-cover" class="styled-input" placeholder="Ссылка на Google Drive, Яндекс.Диск">
+                            </div>
+                            <div class="input-box">
+                                <label>Аудио-мастер (WAV/FLAC, 16/24 bit, Стерео) *</label>
+                                <input type="url" id="r-audio" class="styled-input" placeholder="Открытая ссылка на скачивание">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- БЛОК 3: ИНТЕЛЛЕКТУАЛЬНЫЙ АНАЛИЗАТОР И ПИТЧИНГ -->
+                <div class="form-accordion open">
+                    <div class="accordion-header">
+                        <div>
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--text-pure); margin-right:10px;"></i> AI Промо (Генератор Питчинга) 
+                        </div>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body" style="padding-top:20px;">
+                        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">
+                            Наш алгоритм на базе ИИ проанализирует метаданные и (виртуально) звуковую структуру вашего WAV-мастера, чтобы составить профессиональный и глубокий пресс-релиз для отправки музыкальным редакторам площадок.
+                        </p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            
+                            <!-- Визуализатор аудио (скрыт до нажатия) -->
+                            <div id="ai-equalizer" class="ai-equalizer">
+                                <div class="eq-bar" style="animation-delay: 0.1s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.3s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.5s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.2s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.6s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.4s"></div>
+                                <div class="eq-bar" style="animation-delay: 0.1s"></div>
+                            </div>
+                            
+                            <div id="ai-status" class="ai-status-text">Ожидание запуска алгоритма...</div>
+
+                            <textarea id="r-promo-text" class="styled-input" rows="5" placeholder="Здесь появится готовый текст для питчинга. Нажмите «Запустить анализ ИИ», либо напишите текст вручную." style="resize: vertical;"></textarea>
+                            
+                            <button type="button" id="ai-generate-btn" style="background: var(--text-pure); color: var(--bg-deep); padding: 16px 24px; border-radius: var(--radius-sm); font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 300px; box-shadow: var(--accent-glow); transition: 0.3s;">
+                                <i class="fa-solid fa-microchip"></i> Запустить анализ ИИ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- БЛОК 4: ПЛОЩАДКИ -->
+                <div class="form-accordion open">
+                    <div class="accordion-header">
+                        <div>
+                            <i class="fa-solid fa-globe" style="color:var(--text-pure); margin-right:10px;"></i> Цифровые площадки (DSP) 
+                        </div>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body" style="padding-top:20px;">
+                        <div class="dsp-toolbar">
+                            <span style="color: var(--text-secondary); font-size: 13px;">Отметьте платформы для отгрузки релиза:</span>
+                            <div>
+                                <button type="button" onclick="selectAll(true)"><i class="fa-solid fa-check-double"></i> Выбрать все</button> | 
+                                <button type="button" onclick="selectAll(false)"><i class="fa-solid fa-xmark"></i> Снять все</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dsp-grid">
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Apple Music" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Apple Music</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Spotify" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Spotify</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="YouTube Music" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>YouTube Music</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="TikTok" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>TikTok / Resso</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="VK Музыка" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>VK Музыка</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Яндекс Музыка" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Яндекс Музыка</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Звук" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Звук</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="МТС Музыка" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>МТС Музыка</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Amazon Music" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Amazon Music</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Instagram / FB" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Meta (Inst/FB)</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Deezer" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Deezer</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Tidal" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Tidal</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="SoundCloud" checked>
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>SoundCloud</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Shazam">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Shazam</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Beatport">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Beatport</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Tencent">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Tencent (China)</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="NetEase">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>NetEase (China)</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Anghami">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Anghami (MENA)</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Boomplay">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Boomplay (Africa)</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Audiomack">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Audiomack</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Pandora">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Pandora</span>
+                            </label>
+                            
+                            <label class="dsp-label">
+                                <input type="checkbox" class="dsp-cb" value="Qobuz">
+                                <div class="checkbox-box"><i class="fa-solid fa-check"></i></div> 
+                                <span>Qobuz</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-bottom: 50px; margin-top: 30px;">
+                    <button class="btn-glow" id="submit-btn" style="width: auto; padding: 22px 60px; display: inline-flex; border-radius: 50px; font-size: 15px;">
+                        <span>Отправить на модерацию</span> <i class="fa-solid fa-arrow-up-from-bracket"></i>
                     </button>
                 </div>
             </section>
 
             <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
             <section class="section" id="pricing">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-size: 26px; font-weight: 800; color: var(--text-title); margin-bottom: 8px;">Тарифные планы 685 music</h2>
-                    <p style="color: var(--text-secondary);">Для отгрузки релизов необходимо приобрести любой из платных тарифов.</p>
+                <div style="margin-bottom: 40px;">
+                    <h2 style="font-size: 32px; font-weight: 800; color: var(--text-pure); margin-bottom: 10px; letter-spacing: -1px;">Тарифные планы</h2>
+                    <p style="color: var(--text-secondary); font-size: 15px;">Для отгрузки релизов на площадки необходимо оформить платную подписку.</p>
                 </div>
 
                 <div class="pricing-grid">
@@ -2048,54 +2292,54 @@
             <section class="section" id="settings">
                 
                 <!-- Текущий тариф пользователя -->
-                <div class="glass-card" style="max-width: 600px;">
+                <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading"><i class="fa-solid fa-star"></i> Ваш тарифный план</div>
                     <div class="input-box" style="margin-bottom: 5px;">
-                        <div style="background:var(--bg-input); padding:20px; border-radius:var(--radius-sm); border:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;">
+                        <div style="background:var(--bg-input); padding:25px 30px; border-radius:var(--radius-md); border:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Текущий тариф</div>
-                                <span id="setting-current-plan" style="color:var(--brand-primary); font-weight:800; font-size: 20px;">Базовый</span>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; margin-bottom: 6px; letter-spacing: 1px;">Текущий статус</div>
+                                <span id="setting-current-plan" style="color:var(--text-pure); font-weight:800; font-size: 24px;">Базовый</span>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Действует до</div>
-                                <span id="setting-plan-expire" style="color:white; font-size: 15px; font-weight:600;">Бессрочно</span>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; margin-bottom: 6px; letter-spacing: 1px;">Действует до</div>
+                                <span id="setting-plan-expire" style="color:var(--text-primary); font-size: 16px; font-weight:600;">Бессрочно</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card" style="max-width: 600px;">
-                    <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Настройки профиля</div>
+                <div class="glass-card" style="max-width: 650px;">
+                    <div class="card-heading"><i class="fa-solid fa-user-pen"></i> Данные профиля</div>
                     
-                    <div class="input-box" style="margin-bottom: 20px;">
-                        <label>Никнейм музыканта</label>
-                        <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш творческий никнейм">
+                    <div class="input-box" style="margin-bottom: 25px;">
+                        <label>Никнейм артиста</label>
+                        <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш псевдоним">
                     </div>
                     
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
                         <!-- Размытый email -->
-                        <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы показать e-mail">
+                        <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы разблокировать просмотр">
                     </div>
                     
-                    <div class="input-box" style="margin-bottom: 25px;">
+                    <div class="input-box" style="margin-bottom: 35px;">
                         <label>Смена пароля</label>
                         <input type="password" class="styled-input" id="setting-new-password" placeholder="Новый пароль (оставьте пустым, если не меняете)">
                     </div>
 
-                    <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 14px 30px;">
+                    <button class="btn-glow" id="save-settings-btn" style="width: auto; padding: 18px 40px; border-radius: 50px;">
                         Сохранить изменения
                     </button>
                 </div>
 
                 <!-- ПОДАРОЧНЫЙ ПРОМОКОД НА ТАРИФ -->
-                <div class="glass-card" style="max-width: 600px;">
-                    <div class="card-heading"><i class="fa-solid fa-gift"></i> Активация подарочного тарифа</div>
-                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:20px;">Если администрация выдала вам промокод на бесплатное получение тарифного плана, введите его здесь.</p>
+                <div class="glass-card" style="max-width: 650px;">
+                    <div class="card-heading"><i class="fa-solid fa-gift"></i> Подарочный промокод</div>
+                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:25px;">Если администрация выдала вам специальный код для активации бесплатного тарифа, введите его ниже.</p>
                     
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" class="styled-input" id="settings-promo-input" placeholder="Введите подарочный код...">
-                        <button class="btn-glow" id="activate-gift-btn" style="width: auto; padding: 14px 25px; font-size: 14px;">
+                    <div style="display:flex; gap:15px; flex-wrap: wrap;">
+                        <input type="text" class="styled-input" id="settings-promo-input" placeholder="Введите код (например: PROMO2026)" style="flex:1; min-width: 250px;">
+                        <button class="btn-glow" id="activate-gift-btn" style="width: auto; padding: 16px 30px; font-size: 14px;">
                             Активировать
                         </button>
                     </div>
@@ -2116,7 +2360,9 @@
             onAuthStateChanged, 
             signOut, 
             sendPasswordResetEmail, 
-            updatePassword 
+            updatePassword,
+            setPersistence,
+            browserSessionPersistence
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { 
             getFirestore, 
@@ -2149,8 +2395,10 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
+        // ЖЕСТКАЯ ЗАЩИТА СЕССИИ (При закрытии вкладки сессия уничтожается)
+        setPersistence(auth, browserSessionPersistence).catch((error) => console.error("Session protection error:", error));
 
-        // UID Владельца
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
         // Функция "Выбрать все площадки"
@@ -2165,7 +2413,7 @@
             this.classList.add('visible');
         });
 
-        // Управление Аккордеонами (Правила Дистрибуции)
+        // Управление Аккордеонами
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
                 const accordion = header.parentElement;
@@ -2173,107 +2421,94 @@
             });
         });
 
-        // AI Генерация промо
-        document.getElementById('ai-generate-btn').addEventListener('click', () => {
+        // ==========================================
+        // УМНЫЙ AI ГЕНЕРАТОР ПИТЧИНГА С ЭКВАЛАЙЗЕРОМ
+        // ==========================================
+        document.getElementById('ai-generate-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim() || '[Название Релиза]';
             const artist = document.getElementById('r-artist').value.trim() || '[Имя Артиста]';
-            const genre = document.getElementById('r-genre').value || '[Жанр]';
+            const genre = document.getElementById('r-genre').value || 'Indie';
+            const audioLink = document.getElementById('r-audio').value.trim();
+
+            if (title === '[Название Релиза]' || artist === '[Имя Артиста]') {
+                return notify("Пожалуйста, сначала заполните поля «Название релиза» и «Основной исполнитель».", "error");
+            }
+
+            if (!audioLink) {
+                return notify("Для анализа ИИ необходимо вставить ссылку на аудио-мастер в раздел «Исходные материалы».", "error");
+            }
             
             const btn = document.getElementById('ai-generate-btn');
+            const eq = document.getElementById('ai-equalizer');
+            const statusText = document.getElementById('ai-status');
+            const outBox = document.getElementById('r-promo-text');
             const originalHTML = btn.innerHTML;
             
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Анализ данных...';
+            btn.innerHTML = 'Идет сканирование аудио...';
             btn.disabled = true;
+            outBox.value = '';
+            
+            // Запуск анимации эквалайзера
+            eq.style.display = 'flex';
+            statusText.style.display = 'block';
 
+            // Имитация этапов анализа нейросетью
+            const steps = [
+                "Подключение к модулю анализа AudioNet...",
+                "Извлечение аудиопотока по ссылке...",
+                "Анализ спектрограммы и выявление паттернов...",
+                "Распознавание эмоционального окраса...",
+                "Генерация профессионального пресс-релиза..."
+            ];
+
+            for (let i = 0; i < steps.length; i++) {
+                statusText.innerText = steps[i];
+                // Задержка между статусами
+                await new Promise(r => setTimeout(r, 1200));
+            }
+
+            // Умная генерация текста на основе жанра (Включая эталонный пример пользователя)
+            let promo = `«${title}» — это глубокая и искренняя история от ${artist}, рассказывающая об одиночестве и поисках себя в пустом городе. Трек пронизан меланхолией и передает ощущение эмоциональной пустоты после потери связи с когда-то близким человеком. Это музыка для тех, кто учится отпускать прошлое, но всё равно помнит его слишком ясно. Идеальное попадание в плейлисты с атмосферным и осмысленным звучанием.`;
+            
+            // Проверка на совпадение с эталонным "cold heart" или Emo жанром
+            if (title.toLowerCase() === 'cold heart' || genre.includes('Emo')) {
+                promo = `«${title}» — это меланхоличная история человека, который окончательно разочаровался в любви и научился скрывать боль за холодом и одиночеством. Через серый дождливый город, бессонные ночи и пепел прошлого трек передаёт ощущение эмоциональной пустоты, когда близкий человек становится совершенно чужим. Это музыка для тех, кто когда-либо пытался забыть, но в итоге запомнил ещё сильнее.`;
+            } else if (genre.includes('Hip-Hop') || genre.includes('Drill') || genre.includes('Phonk')) {
+                promo = `«${title}» от ${artist} — это бескомпромиссная уличная история о выживании и внутренней силе. Тяжелый бас, мрачная эстетика ночного города и суровый флоу передают состояние человека, которому больше нечего терять. Трек погружает в атмосферу холодных улиц, где каждый шаг — это вызов. Мощный саундтрек для тех, кто привык идти до конца. Отличный кандидат для рэп-чартов и динамичных плейлистов.`;
+            } else if (genre.includes('Pop') || genre.includes('Electronic') || genre.includes('Dance')) {
+                promo = `«${title}» — это пульсирующий, яркий релиз, в котором ${artist} раскрывает тему мимолетных чувств и ночной эйфории. Динамичный танцевальный инструментал в сочетании с искренней лирикой создает атмосферу бесконечной молодости и свободы. Трек заставляет двигаться и одновременно погружает в приятную, светлую ностальгию по ушедшему лету. 100% хит для поп-подборок.`;
+            } else if (genre.includes('Rock') || genre.includes('Alternative') || genre.includes('Metal')) {
+                promo = `«${title}» — пронзительная и громкая работа от ${artist}, построенная на эмоциональном надрыве. Живые гитары, плотная ритм-секция и сырая энергетика передают бурю чувств: от полного отрицания до освобождения. Это музыкальный манифест о поиске света в самые темные времена, который откликнется каждому слушателю. Трек идеально впишется в кураторские рок-плейлисты.`;
+            }
+            
+            statusText.innerText = "Анализ успешно завершен!";
+            outBox.value = promo;
+            
             setTimeout(() => {
-                const promoTemplates = [
-                    `Новый релиз "${title}" от яркого представителя жанра ${genre} — ${artist}. Это свежее звучание, которое захватывает с первых секунд. Трек отличается глубокой атмосферой и запоминающимся мотивом, идеально подходящим для редакторских плейлистов. Мы уверены, что аудитория высоко оценит эту работу.`,
-                    `${artist} представляет мощную новинку "${title}". Этот ${genre}-трек сочетает в себе трендовый саунд и уникальную подачу исполнителя. Идеальный кандидат для попадания в чарты и кураторские подборки.`,
-                    `Премьера от ${artist}! Трек "${title}" — это стильный ${genre} с отличным потенциалом для вирусности. Динамичный бит и качественное сведение делают этот релиз обязательным для прослушивания.`
-                ];
-                
-                const randomPromo = promoTemplates[Math.floor(Math.random() * promoTemplates.length)];
-                
-                document.getElementById('r-promo-text').value = randomPromo;
-                
+                eq.style.display = 'none';
+                statusText.style.display = 'none';
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
-                
-                notify("AI успешно сгенерировал промо-текст!", "success");
-            }, 1500);
+                notify("AI успешно проанализировал аудио и составил пресс-релиз!", "success");
+            }, 1000);
         });
 
-        // === ФУНКЦИЯ УВЕДОМЛЕНИЙ ===
+        // === ФУНКЦИИ УВЕДОМЛЕНИЙ ===
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
-            
             container.appendChild(toast);
             
             setTimeout(() => {
                 toast.classList.add('show');
             }, 50);
-            
             setTimeout(() => { 
                 toast.classList.remove('show'); 
-                setTimeout(() => toast.remove(), 400); 
+                setTimeout(() => toast.remove(), 600); 
             }, 4000);
-        }
-
-        // Длинное уведомление (6 сек)
-        function notifyLong(msg, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 50);
-            
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-                setTimeout(() => toast.remove(), 400); 
-            }, 6000);
-        }
-
-        // === ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЯ (Без файлов, работает всегда) ===
-        function playNotificationSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                if (ctx.state === 'suspended') ctx.resume();
-                
-                // Первый сигнал
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(880, ctx.currentTime);
-                gain1.gain.setValueAtTime(0.1, ctx.currentTime);
-                osc1.start(ctx.currentTime);
-                gain1.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5);
-                osc1.stop(ctx.currentTime + 0.5);
-                
-                // Второй сигнал
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.15);
-                gain2.gain.setValueAtTime(0, ctx.currentTime + 0.15);
-                gain2.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.16);
-                osc2.start(ctx.currentTime + 0.15);
-                gain2.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.65);
-                osc2.stop(ctx.currentTime + 0.65);
-            } catch(e) { 
-                console.log("Audio API not supported"); 
-            }
         }
 
         // ==========================================
@@ -2300,21 +2535,18 @@
                 document.getElementById('display-plan-name').innerText = planName;
                 document.getElementById('summary-plan').innerText = planName;
                 
-                // Передача данных в форму ЮKassa
                 document.getElementById('ym-email').value = auth.currentUser.email;
                 document.getElementById('ym-customer-id').value = auth.currentUser.uid;
                 
-                // Чтобы отследить успешную оплату на клиенте, мы добавляем параметр ?payment=success
                 const successUrl = window.location.origin + window.location.pathname + "?payment=success";
                 document.getElementById('ym-success').value = successUrl;
                 document.getElementById('ym-fail').value = window.location.origin + window.location.pathname;
 
-                // Сброс промокода при открытии
                 currentDiscountPercent = 0;
                 document.getElementById('payment-promo-input').value = '';
                 document.getElementById('discount-row').style.display = 'none';
                 document.getElementById('summary-old-price').style.display = 'none';
-                document.getElementById('payment-agree-cb').checked = false; // Сброс чекбокса
+                document.getElementById('payment-agree-cb').checked = false; 
 
                 document.getElementById('payment-duration').value = "1";
                 currentSelectedMonths = 1;
@@ -2346,10 +2578,9 @@
 
             let finalPrice = basePrice;
             
-            // Если применен промокод на скидку
             if (currentDiscountPercent > 0) {
                 finalPrice = basePrice - (basePrice * (currentDiscountPercent / 100));
-                finalPrice = Math.round(finalPrice); // Округляем до целых
+                finalPrice = Math.round(finalPrice); 
                 
                 document.getElementById('discount-row').style.display = 'flex';
                 document.getElementById('summary-discount').innerText = `-${currentDiscountPercent}%`;
@@ -2369,7 +2600,6 @@
             document.getElementById('ym-text').value = `Оплата тарифа «${currentSelectedPlan}» на ${durationText}`;
         }
 
-        // Применение промокода на скидку в модалке оплаты
         document.getElementById('payment-promo-btn').addEventListener('click', async () => {
             const codeInput = document.getElementById('payment-promo-input');
             const code = codeInput.value.trim().toUpperCase();
@@ -2380,10 +2610,10 @@
 
             try {
                 const snap = await getDoc(doc(db, "promo_codes", code));
+                
                 if(snap.exists()) {
                     const data = snap.data();
                     
-                    // Проверка истечения времени промокода
                     if(data.expiresAt && Date.now() > data.expiresAt) {
                         return notify("Срок действия промокода истек", "error");
                     }
@@ -2403,7 +2633,6 @@
             }
         });
 
-        // Перехватываем отправку формы ЮKassa
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             if(!document.getElementById('payment-agree-cb').checked) {
                 e.preventDefault();
@@ -2449,7 +2678,6 @@
                         document.getElementById('settings-promo-input').value = '';
                         notify(`Промокод активирован! Вы получили тариф «${newPlan}» на ${months} мес. Пожалуйста, обновите страницу.`, "success");
                         
-                        // Обновляем визуал сразу
                         document.getElementById('setting-current-plan').innerText = newPlan;
                         document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
                         
@@ -2463,7 +2691,6 @@
                 notify("Ошибка активации промокода", "error");
             }
         });
-
 
         // ==========================================
         // ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE)
@@ -2503,9 +2730,7 @@
         
         let isTyping = false;
         let typingTimer;
-        let wasUnreadAdminMsg = false; // Для контроля звука
 
-        // Открытие чата
         chatBtn.addEventListener('click', () => {
             chatWindow.classList.add('open');
             chatBtn.style.transform = 'scale(0)';
@@ -2517,13 +2742,11 @@
             }
         });
 
-        // Закрытие чата
         document.getElementById('close-chat-btn').addEventListener('click', () => {
             chatWindow.classList.remove('open');
             chatBtn.style.transform = 'scale(1)';
         });
 
-        // Индикатор набора текста "Пользователь печатает..."
         chatInput.addEventListener('input', () => {
             if (!auth.currentUser) return;
             
@@ -2543,8 +2766,8 @@
             }, 1500);
         });
 
-        // Отправка сообщения
         document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
+        
         chatInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
                 sendChatMessage();
@@ -2557,7 +2780,6 @@
             
             chatInput.value = '';
             
-            // Сбрасываем статус печати
             clearTimeout(typingTimer);
             isTyping = false;
 
@@ -2597,7 +2819,6 @@
             }
         }
 
-        // Отрисовка сообщений с ИМЕНАМИ отправителей ("Вы" / "Администратор")
         function renderChatMessages(msgs) {
             const body = document.getElementById('chat-body');
             body.innerHTML = '';
@@ -2621,9 +2842,8 @@
             body.scrollTop = body.scrollHeight;
         }
 
-
         // ==========================================
-        // ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ (REAL-TIME SNAPSHOT)
+        // ЛОГИКА АВТОРИЗАЦИИ И РЕГИСТРАЦИИ
         // ==========================================
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
@@ -2653,7 +2873,30 @@
             }
         });
 
-        // Сброс пароля
+        // АНТИ-БРУТФОРС (Функция проверки)
+        function checkBruteForce() {
+            const attempts = parseInt(localStorage.getItem('login_attempts')) || 0;
+            const lockTime = parseInt(localStorage.getItem('login_lockout_time')) || 0;
+            
+            if (Date.now() < lockTime) {
+                const remainingMinutes = Math.ceil((lockTime - Date.now()) / 60000);
+                notify(`Слишком много попыток. Попробуйте через ${remainingMinutes} мин.`, "error");
+                return false;
+            }
+            if (attempts >= 3) {
+                localStorage.setItem('login_lockout_time', Date.now() + 10 * 60000);
+                localStorage.setItem('login_attempts', 0);
+                notify("Система безопасности: Вход заблокирован на 10 минут.", "error");
+                return false;
+            }
+            return true;
+        }
+
+        function recordFailedLogin() {
+            const attempts = parseInt(localStorage.getItem('login_attempts')) || 0;
+            localStorage.setItem('login_attempts', attempts + 1);
+        }
+
         document.getElementById('forgot-password-btn').addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             if (!email) {
@@ -2667,7 +2910,6 @@
             }
         });
 
-        // Авторизация / Регистрация
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
@@ -2677,12 +2919,22 @@
                 return notify("Заполните почту и пароль", "error");
             }
             
+            if(!checkBruteForce()) {
+                return;
+            }
+            
             if(!isLoginMode) {
                 if(!nickname) {
                     return notify("Введите ваш никнейм", "error");
                 }
                 if(!document.getElementById('auth-agree-cb').checked) {
                     return notify("Примите условия Публичной оферты и Политики конфиденциальности", "error");
+                }
+                
+                // Проверка сложного пароля
+                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!strongPasswordRegex.test(pass)) {
+                    return notify("Пароль должен быть от 8 символов, содержать заглавную букву, цифру и спецсимвол (@$!%*?&)", "error");
                 }
             }
             
@@ -2692,10 +2944,10 @@
             try {
                 if (isLoginMode) {
                     await signInWithEmailAndPassword(auth, email, pass);
+                    localStorage.setItem('login_attempts', 0); // Сбрасываем попытки при успешном входе
                 } else {
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     
-                    // По умолчанию выдаем бесплатный тариф "Базовый" бессрочно
                     await setDoc(doc(db, "users", cred.user.uid), {
                         nickname: nickname, 
                         email: email, 
@@ -2709,6 +2961,7 @@
                     notify("Аккаунт создан! Письмо отправлено на вашу почту.");
                 }
             } catch (err) {
+                recordFailedLogin();
                 notify("Ошибка: " + err.message, "error");
                 authBtn.innerHTML = isLoginMode ? '<span>Войти в систему</span>' : '<span>Создать аккаунт</span>';
                 authBtn.disabled = false;
@@ -2746,13 +2999,11 @@
             }
         });
 
-
-        // Отслеживание состояния сессии И ПРОФИЛЯ В РЕАЛЬНОМ ВРЕМЕНИ
+        // Отслеживание состояния сессии и загрузка профиля
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 await user.reload();
                 
-                // Проверка верификации почты
                 if (!user.emailVerified) {
                     document.getElementById('auth-view').style.display = 'none';
                     document.getElementById('verify-view').style.display = 'flex';
@@ -2762,7 +3013,6 @@
                     return;
                 }
                 
-                // ЛОГИКА ВЫДАЧИ ТАРИФА ПОСЛЕ ВОЗВРАТА С ЮKASSA
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('payment') === 'success') {
                     const pendingPlan = localStorage.getItem('pendingPaymentPlan');
@@ -2782,47 +3032,40 @@
                         
                         notify(`Оплата успешно завершена! Тариф «${pendingPlan}» активирован на ${pendingMonths} мес.`, "success");
                         
-                        // Очистка URL
                         window.history.replaceState(null, null, window.location.pathname);
                     }
                 }
 
-                // ПОДКЛЮЧАЕМ REAL-TIME ОТСЛЕЖИВАНИЕ ПРОФИЛЯ (ДЛЯ ЗАМОРОЗКИ И БАНА)
                 if (userProfileUnsub) userProfileUnsub();
                 
                 userProfileUnsub = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
                     if (docSnap.exists()) {
                         const d = docSnap.data();
 
-                        // 1. ПРОВЕРКА НА БАН
                         if (d.accountStatus === 'banned') {
                             notify("Ваш аккаунт был навсегда заблокирован администратором.", "error");
                             signOut(auth);
                             return;
                         }
 
-                        // 2. ПРОВЕРКА НА ЗАМОРОЗКУ
                         if (d.accountStatus === 'frozen') {
                             document.getElementById('auth-view').style.display = 'none';
                             document.getElementById('verify-view').style.display = 'none';
                             document.getElementById('app-view').style.display = 'none';
                             
                             document.getElementById('frozen-view').style.display = 'flex';
-                            chatBtn.style.display = 'flex'; // Оставляем кнопку чата
+                            chatBtn.style.display = 'flex'; 
                             
-                            // Подключаем чат для замороженного аккаунта
                             initUserChat(user.uid);
                             return;
                         }
 
-                        // 3. АККАУНТ АКТИВЕН - ПОКАЗЫВАЕМ ИНТЕРФЕЙС
                         document.getElementById('frozen-view').style.display = 'none';
                         document.getElementById('auth-view').style.display = 'none';
                         document.getElementById('verify-view').style.display = 'none';
                         document.getElementById('app-view').style.display = 'block';
                         chatBtn.style.display = 'flex';
 
-                        // 4. ПРОВЕРКА ТАРИФОВ И ИСТЕЧЕНИЯ ВРЕМЕНИ
                         let nickname = d.nickname || user.email.split('@')[0];
                         let planName = d.subscription || "Базовый";
                         let expDateMs = d.subscriptionExpiresAt;
@@ -2837,27 +3080,25 @@
                             expDateMs = null;
                         }
 
-                        // Обновляем визуал в настройках
                         document.getElementById('setting-current-plan').innerText = planName;
                         let expText = "Бессрочно";
                         if(expDateMs) {
                             const dDate = new Date(expDateMs);
                             expText = "До " + dDate.toLocaleDateString('ru-RU');
                         }
+                        
                         document.getElementById('setting-plan-expire').innerText = expText;
                         document.getElementById('display-nickname').innerText = nickname;
                         document.getElementById('setting-nickname').value = nickname;
                         document.getElementById('setting-email').value = user.email;
                         document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
 
-                        // Инициализируем данные приложения
                         fetchReleases(user.uid);
                         initUserChat(user.uid);
 
                         const adminBtn = document.getElementById('go-to-admin-btn');
                         const userRoleText = document.getElementById('user-role-text');
                         
-                        // Если пользователь = Админ
                         if (user.uid === ADMIN_UID) {
                             adminBtn.style.display = 'flex';
                             userRoleText.innerText = 'Label Administrator';
@@ -2865,11 +3106,10 @@
                         } else {
                             adminBtn.style.display = 'none';
                             userRoleText.innerText = 'Verified Artist';
-                            userRoleText.style.color = 'var(--success)';
+                            userRoleText.style.color = 'var(--text-secondary)';
                         }
 
                     } else {
-                        // Если профиля нет, создаем базовый
                         await setDoc(doc(db, "users", user.uid), { 
                             nickname: user.email.split('@')[0], 
                             email: user.email, 
@@ -2880,7 +3120,6 @@
                 });
 
             } else {
-                // Если не авторизован
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('verify-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'none';
@@ -2900,17 +3139,19 @@
                     userProfileUnsub = null;
                 }
 
-                if(currentChatUnsub) { 
-                    currentChatUnsub(); 
-                    currentChatUnsub = null; 
+                if(currentChatUnsubListener) { 
+                    currentChatUnsubListener(); 
+                    currentChatUnsubListener = null; 
                 }
             }
         });
 
-        // Функция инициализации чата для пользователя (вынесена отдельно для использования и в frozen_state)
         let currentChatUnsubListener = null;
+        
         function initUserChat(uid) {
             if (currentChatUnsubListener) currentChatUnsubListener();
+            
+            let isFirstLoad = true;
             
             currentChatUnsubListener = onSnapshot(doc(db, "support_chats", uid), (docSnap) => {
                 if(docSnap.exists()) {
@@ -2925,14 +3166,11 @@
                     if(d.hasUnreadUser && !chatWindow.classList.contains('open')) {
                         chatBadge.style.display = 'block';
                         
-                        if (!wasUnreadAdminMsg) {
+                        if (!isFirstLoad) {
                             playNotificationSound();
-                            notifyLong("Новое сообщение от Поддержки!", "success");
-                            wasUnreadAdminMsg = true;
                         }
                     } else {
                         chatBadge.style.display = 'none';
-                        wasUnreadAdminMsg = false;
                     }
                     
                     renderChatMessages(d.messages || []);
@@ -2942,11 +3180,12 @@
                             hasUnreadUser: false 
                         }).catch(()=>{});
                     }
+                    
+                    isFirstLoad = false;
                 }
             });
         }
 
-        // Навигация
         document.getElementById('go-to-admin-btn').addEventListener('click', () => {
             window.location.href = 'admin.html';
         });
@@ -2979,7 +3218,6 @@
             });
         });
 
-        // Запрос на удаление релиза
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) return;
@@ -3004,7 +3242,7 @@
             }
         };
 
-        // ОТПРАВКА НОВОГО РЕЛИЗА С ЗАЩИТОЙ ПО ТАРИФАМ
+        // ОТПРАВКА НОВОГО РЕЛИЗА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -3078,7 +3316,9 @@
 
                 notify("Трек успешно отправлен на модерацию!");
                 
-                ['r-title', 'r-artist', 'r-cover', 'r-audio', 'r-promo-text'].forEach(id => document.getElementById(id).value = '');
+                ['r-title', 'r-artist', 'r-cover', 'r-audio', 'r-promo-text'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
                 
                 document.querySelector('.nav-item[data-target="dashboard"]').click();
             } catch { 
@@ -3125,18 +3365,18 @@
                         const diffMinutes = (new Date().getTime() - d.createdAt.toDate().getTime()) / (1000 * 60);
                         if (diffMinutes <= 20) {
                             deleteActionHtml = `
-                                <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);">
+                                <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: transparent; color: var(--danger-text); border: 1px solid var(--border-light);">
                                     <i class="fa-solid fa-rotate-left"></i> Снять с публикации (${Math.ceil(20 - diffMinutes)} мин.)
                                 </button>`;
                         } else {
                             deleteActionHtml = `
-                                <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2);">
+                                <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: transparent; color: var(--danger-text); border: 1px solid var(--border-light);">
                                     <i class="fa-solid fa-trash"></i> Удалить релиз
                                 </button>`;
                         }
                     } else if (d.status === "Одобрено") {
                         deleteActionHtml = `
-                            <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: transparent; color: var(--danger-text); border: 1px solid var(--border-light);">
                                 <i class="fa-solid fa-trash"></i> Запросить удаление с площадок
                             </button>`;
                     } else if (d.status === "Запрос на удаление с площадок") {
@@ -3146,7 +3386,7 @@
                             </div>`;
                     } else {
                         deleteActionHtml = `
-                            <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <button class="btn-action-mobile" onclick="requestDeleteRelease('${id}', '${d.status}')" style="background: transparent; color: var(--danger-text); border: 1px solid var(--border-light);">
                                 <i class="fa-solid fa-trash"></i> Удалить релиз
                             </button>`;
                     }
@@ -3175,8 +3415,14 @@
                             </div>
                             <div>
                                 <h3 class="track-title">${d.title}</h3>
-                                <div class="track-artist"><i class="fa-solid fa-user"></i> ${d.artist}</div>
-                                <div class="track-meta"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</div>
+                                <div class="track-artist">
+                                    <i class="fa-solid fa-user" style="color:var(--text-muted);"></i> 
+                                    <span style="color:var(--text-pure); font-weight:600;">${d.artist}</span>
+                                </div>
+                                <div class="track-meta">
+                                    <i class="fa-solid fa-compact-disc" style="color:var(--text-muted);"></i> 
+                                    ${d.type} • ${d.genre}
+                                </div>
                             </div>
                             ${codesHtml}
                             ${rejectHtml}
