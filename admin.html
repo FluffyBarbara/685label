@@ -158,15 +158,13 @@
             }
         }
 
-        #app-view, 
-        #auth-view, 
-        #toast-container { 
+        #app-view, #auth-view, #toast-container {
             position: relative;
-            z-index: 10; 
+            z-index: 10;
         }
 
         ::-webkit-scrollbar { 
-            width: 6px; 
+            width: 8px; 
         }
         
         ::-webkit-scrollbar-track { 
@@ -343,8 +341,7 @@
             padding: 40px 50px; 
             max-width: 1700px; 
             margin: 0 auto; 
-            height: 100vh;
-            overflow-y: hidden; 
+            /* Восстановлен нормальный скролл страницы */
         }
         
         .header {
@@ -378,7 +375,6 @@
             letter-spacing: 1px;
         }
 
-        /* Почта удалена, только кнопка "Выйти" */
         #logout-btn {
             background: transparent; 
             color: var(--text-secondary); 
@@ -432,18 +428,11 @@
         .admin-section { 
             display: none; 
             animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-            height: calc(100vh - 180px);
-            overflow-y: auto;
             padding-bottom: 50px;
         }
         
         .admin-section.active { 
             display: block; 
-        }
-
-        .admin-section::-webkit-scrollbar {
-            width: 0px;
-            display: none;
         }
 
         .styled-input { 
@@ -799,12 +788,48 @@
             color: var(--text-pure); 
             border-color: rgba(255,255,255,0.3); 
         }
+        
+        .del-badge {
+            color: var(--bg-deep); 
+            background: var(--text-pure); 
+            font-size: 10px; 
+            font-weight: 800; 
+            padding: 4px 8px; 
+            border-radius: 50px; 
+            margin-left: 10px; 
+            text-transform: uppercase; 
+            vertical-align: middle;
+        }
 
         /* ==========================================
-           ПОЛЬЗОВАТЕЛИ
+           ВКЛАДКА ПОЛЬЗОВАТЕЛИ
         ========================================== */
+        .users-layout {
+            display: grid; 
+            grid-template-columns: 1.5fr 1fr; 
+            gap: 30px; 
+            align-items: start;
+        }
+
+        .panel-box {
+            background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--border-light); 
+            padding: 35px; 
+            border-radius: var(--radius-md);
+        }
+
+        .panel-title {
+            font-size: 22px; 
+            color: var(--text-pure); 
+            margin-bottom: 20px; 
+            font-weight: 800; 
+            letter-spacing: -0.5px;
+        }
+
         .users-list-wrapper { 
-            height: calc(100vh - 280px); /* Список до конца безопасной зоны */
+            max-height: calc(100vh - 250px); /* Список до конца экрана */
+            min-height: 500px;
             overflow-y: auto; 
             padding-right: 15px; 
             display: flex; 
@@ -1030,7 +1055,7 @@
             display: grid; 
             grid-template-columns: 380px 1fr; 
             gap: 30px; 
-            height: calc(100vh - 180px);
+            height: 70vh; 
             min-height: 600px; 
         }
         
@@ -1173,7 +1198,7 @@
         @media(max-width: 1400px) {
             .admin-card { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            #tab-users > div { grid-template-columns: 1fr !important; }
+            .users-layout { grid-template-columns: 1fr; }
         }
         
         @media(max-width: 900px) {
@@ -1253,7 +1278,6 @@
                 <span class="badge-root">Root Access</span>
             </div>
             
-            <!-- Почта удалена, только кнопка "Выйти" -->
             <div style="display: flex; align-items: center; gap: 20px;">
                 <button id="logout-btn">
                     Выйти <i class="fa-solid fa-right-from-bracket" style="margin-left: 5px;"></i>
@@ -1331,11 +1355,11 @@
 
         <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И ПРОМОКОДЫ -->
         <div class="admin-section" id="tab-users">
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
+            <div class="users-layout">
                 
                 <!-- Список пользователей -->
-                <div style="background:var(--bg-surface); backdrop-filter:blur(30px); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md); display: flex; flex-direction: column; height: calc(100vh - 180px);">
-                    <h3 style="font-size:22px; color:var(--text-pure); margin-bottom:20px; font-weight:800; letter-spacing: -0.5px;">
+                <div class="panel-box">
+                    <h3 class="panel-title">
                         Управление артистами <span id="users-count" style="color:var(--text-secondary); font-size:16px; font-weight:600; margin-left:5px;">(0)</span>
                     </h3>
                     
@@ -1350,11 +1374,11 @@
                 </div>
 
                 <!-- Правая колонка: E-mail и Промокоды -->
-                <div style="display: flex; flex-direction: column; gap: 30px; height: calc(100vh - 180px); overflow-y: auto; padding-right: 10px;">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
                     
                     <!-- Почтовый клиент -->
-                    <div style="background:var(--bg-surface); backdrop-filter:blur(30px); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
-                        <h3 style="font-size:22px; color:var(--text-pure); margin-bottom:10px; font-weight:800; letter-spacing: -0.5px;">E-mail Рассылка</h3>
+                    <div class="panel-box">
+                        <h3 class="panel-title">E-mail Рассылка</h3>
                         <p style="color:var(--text-secondary); margin-bottom:25px; font-size: 13px;">Отправка системных уведомлений пользователям.</p>
                         
                         <div style="margin-bottom:15px;">
@@ -1372,14 +1396,14 @@
                             <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." class="styled-input" style="resize: vertical; font-family:inherit;"></textarea>
                         </div>
                         
-                        <button id="send-mail-btn" style="background:var(--text-pure); color:var(--bg-deep); width:100%; padding:16px; border-radius:12px; font-weight:800; border:none; cursor: pointer; transition: 0.3s; box-shadow: var(--accent-glow);">
+                        <button id="send-mail-btn" class="btn-main" style="margin-top:0;">
                             Отправить письмо <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>
                         </button>
                     </div>
 
                     <!-- Модуль Промокодов -->
-                    <div style="background:var(--bg-surface); backdrop-filter:blur(30px); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
-                        <h3 style="font-size:22px; color:var(--text-pure); margin-bottom:10px; font-weight:800; letter-spacing: -0.5px;">Генератор промокодов</h3>
+                    <div class="panel-box">
+                        <h3 class="panel-title">Генератор промокодов</h3>
                         <p style="color:var(--text-secondary); margin-bottom:25px; font-size: 13px;">Создание кодов на скидку ЮKassa или бесплатный тариф.</p>
                         
                         <div style="display:flex; flex-direction:column; gap:15px; margin-bottom:25px;">
@@ -1460,7 +1484,7 @@
         <!-- ОСТАЛЬНЫЕ ВКЛАДКИ -->
         <div class="admin-section" id="tab-pitching">
             <div class="module-card">
-                <h3 style="font-size:24px; font-weight:800; color:var(--text-pure); margin-bottom:15px; letter-spacing:-0.5px;">Модуль питчинга треков</h3>
+                <h3 class="panel-title">Модуль питчинга треков</h3>
                 <p style="color:var(--text-secondary); margin-bottom:25px;">Генерация заявок на добавление одобренных треков в редакторские плейлисты (ВК, Яндекс, Звук, Сбер).</p>
                 <div id="pitching-list" style="display:grid; gap:15px;"></div>
             </div>
@@ -1469,18 +1493,18 @@
         <!-- ИНДИВИДУАЛЬНОЕ РОЯЛТИ -->
         <div class="admin-section" id="tab-finance">
             <div class="module-card">
-                <h3 style="font-size:24px; font-weight:800; color:var(--text-pure); margin-bottom:15px; letter-spacing:-0.5px;">Начисление роялти артистам</h3>
+                <h3 class="panel-title">Начисление роялти артистам</h3>
                 <p style="color:var(--text-secondary); margin-bottom:30px;">Выберите конкретного артиста из базы и укажите сумму его дохода от дистрибьютора. Средства моментально зачислятся на его личный баланс.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin-bottom: 30px;">
-                    <div class="input-box">
-                        <label>Выберите артиста</label>
+                    <div>
+                        <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:8px; display:block; letter-spacing: 1px;">Выберите артиста</label>
                         <select id="royalty-artist-select" class="styled-input" style="cursor:pointer; appearance: none;">
                             <option value="">Загрузка артистов...</option>
                         </select>
                     </div>
-                    <div class="input-box">
-                        <label>Сумма начисления (₽)</label>
+                    <div>
+                        <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:8px; display:block; letter-spacing: 1px;">Сумма начисления (₽)</label>
                         <input type="number" id="royalty-amount" placeholder="Например: 5000" class="styled-input" style="font-size:16px;">
                     </div>
                 </div>
@@ -1493,7 +1517,7 @@
 
         <div class="admin-section" id="tab-calendar">
             <div class="module-card">
-                <h3 style="font-size:24px; font-weight:800; color:var(--text-pure); margin-bottom:15px; letter-spacing:-0.5px;">График выхода релизов</h3>
+                <h3 class="panel-title">График выхода релизов</h3>
                 <p style="color:var(--text-secondary); margin-bottom:25px;">Общий календарь запланированных премьер лейбла.</p>
                 <div id="calendar-list" style="display:grid; gap:15px;"></div>
             </div>
@@ -1501,7 +1525,7 @@
 
         <div class="admin-section" id="tab-smartlinks">
             <div class="module-card">
-                <h3 style="font-size:24px; font-weight:800; color:var(--text-pure); margin-bottom:15px; letter-spacing:-0.5px;">Генератор Smart-ссылок</h3>
+                <h3 class="panel-title">Генератор Smart-ссылок</h3>
                 <p style="color:var(--text-secondary); margin-bottom:25px;">Управление едиными промо-страницами (BandLink/SmartLink) для каждого одобренного релиза.</p>
                 <div id="smartlinks-list" style="display:grid; gap:15px;"></div>
             </div>
@@ -1547,6 +1571,8 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
+        // UID ГЛАВНОГО ВЛАДЕЛЬЦА
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
         
         let allSubmissions = [];
