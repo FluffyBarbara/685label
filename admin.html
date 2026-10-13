@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Название вкладки и Иконка (Favicon) -->
-    <title>685 music label</title>
+    <title>685 music label | Панель Модератора</title>
+    
+    <!-- Строго заданная иконка -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     
@@ -33,9 +34,11 @@
                 'debugger',
                 'constructor'
             ];
+            
             document[_0x3b1c[2]](_0x3b1c[1], function(e) { 
                 e[_0x3b1c[0]](); 
             });
+            
             document[_0x3b1c[2]](_0x3b1c[3], function(e) {
                 if (
                     e[_0x3b1c[4]] === _0x3b1c[5] || 
@@ -50,6 +53,7 @@
                     e[_0x3b1c[0]]();
                 }
             });
+            
             setInterval(function() { 
                 (function() {
                     return false;
@@ -73,12 +77,14 @@
             --text-pure: #ffffff;
             --text-primary: #e5e5e5;
             --text-secondary: #888888;
+            --text-muted: #555555;
             
             --accent-glow: 0 0 25px rgba(255, 255, 255, 0.1);
             
             --success: #ffffff;
             --warning: #aaaaaa;
-            --danger: #555555;
+            --danger: #444444;
+            --danger-text: #ff6b6b;
             
             --radius-lg: 20px;
             --radius-md: 14px;
@@ -90,20 +96,19 @@
         /* ==========================================
            ГЛОБАЛЬНЫЕ СТИЛИ
         ========================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
         }
         
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            line-height: 1.6; 
             position: relative;
         }
 
@@ -125,50 +130,35 @@
             position: absolute;
             bottom: -100px;
             fill: none;
-            stroke: rgba(255, 255, 255, 0.4);
+            stroke: rgba(255, 255, 255, 0.35);
             stroke-width: 1;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
             animation: floatUp linear infinite;
         }
 
         @keyframes floatUp {
             0% { 
                 transform: translateY(0) translateX(0) rotate(0deg) scale(0.6); 
-                opacity: 0;
+                opacity: 0; 
             }
-            15% {
-                opacity: var(--target-opacity);
+            15% { 
+                opacity: var(--target-opacity); 
             }
             50% { 
                 transform: translateY(-55vh) translateX(var(--drift)) rotate(var(--rot)) scale(1); 
             }
-            85% {
-                opacity: var(--target-opacity);
+            85% { 
+                opacity: var(--target-opacity); 
             }
             100% { 
                 transform: translateY(-120vh) translateX(calc(var(--drift) * -1)) rotate(calc(var(--rot) * -1)) scale(1.2); 
-                opacity: 0;
+                opacity: 0; 
             }
         }
 
         #app-view, #auth-view, #toast-container {
             position: relative;
             z-index: 10;
-        }
-
-        button { 
-            cursor: pointer; 
-            border: none; 
-            background: none; 
-            color: inherit; 
-            outline: none; 
-            transition: var(--transition); 
-        }
-        
-        input, select, textarea { 
-            font-family: inherit; 
-            outline: none; 
-            border: none; 
         }
 
         ::-webkit-scrollbar { 
@@ -188,15 +178,30 @@
             background: #666666; 
         }
 
-        @keyframes fadeUp {
+        button { 
+            cursor: pointer; 
+            border: none; 
+            background: none; 
+            color: inherit; 
+            outline: none; 
+            transition: var(--transition); 
+        }
+        
+        input, select, textarea { 
+            font-family: inherit; 
+            outline: none; 
+            border: none; 
+        }
+
+        @keyframes fadeUp { 
             from { 
                 opacity: 0; 
                 transform: translateY(30px); 
-            }
+            } 
             to { 
                 opacity: 1; 
                 transform: translateY(0); 
-            }
+            } 
         }
 
         @keyframes spin { 
@@ -208,114 +213,121 @@
         /* ==========================================
            УВЕДОМЛЕНИЯ (TOASTS)
         ========================================== */
-        #toast-container {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        #toast-container { 
+            position: fixed; 
+            top: 30px; 
+            right: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
         }
-        
-        .toast {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-left: 3px solid var(--text-pure);
-            padding: 18px 24px;
-            border-radius: var(--radius-sm);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 600;
-            color: var(--text-pure);
-            transform: translateX(120%);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 14px;
+
+        .toast { 
+            background: rgba(10, 10, 10, 0.85); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-light); 
+            border-left: 3px solid var(--text-pure); 
+            padding: 18px 24px; 
+            border-radius: var(--radius-sm); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            color: var(--text-pure); 
+            transform: translateX(120%); 
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
         }
-        
+
         .toast.show { 
             transform: translateX(0); 
         }
         
         .toast.error { 
-            border-left-color: var(--danger); 
+            border-left-color: var(--danger-text); 
         }
 
         /* ==========================================
-           ЭКРАН АВТОРИЗАЦИИ
+           ЭКРАН АВТОРИЗАЦИИ АДМИНА
         ========================================== */
-        #auth-view {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .auth-card {
-            background: var(--bg-surface);
-            backdrop-filter: blur(40px);
-            padding: 50px 45px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        .auth-view-container { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            position: relative; 
+            z-index: 10;
         }
 
-        .auth-logo {
-            font-size: 38px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--text-pure);
-            letter-spacing: -2px;
-        }
-        
-        .auth-desc {
-            color: var(--text-secondary);
-            margin-bottom: 35px;
-            font-size: 13px;
+        .auth-card { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(40px); 
+            padding: 50px 45px; 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center; 
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
-        .auth-input {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 15px;
-            font-size: 14px;
-            transition: var(--transition);
+        .auth-logo { 
+            font-size: 38px; 
+            font-weight: 800; 
+            margin-bottom: 10px; 
+            color: var(--text-pure); 
+            letter-spacing: -2px; 
         }
-        
+
+        .auth-desc { 
+            color: var(--text-secondary); 
+            margin-bottom: 35px; 
+            font-size: 13px; 
+        }
+
+        .auth-input { 
+            width: 100%; 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 16px 20px; 
+            border-radius: var(--radius-sm); 
+            margin-bottom: 15px; 
+            font-size: 14px; 
+            transition: var(--transition); 
+        }
+
         .auth-input:focus { 
             border-color: var(--border-glow); 
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(255,255,255,0.05); 
         }
-        
-        .btn-main {
-            width: 100%;
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            font-weight: 800;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .btn-main { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: var(--radius-sm); 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            font-weight: 800; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            box-shadow: var(--accent-glow); 
+            transition: var(--transition); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
             margin-top: 10px;
-            box-shadow: var(--accent-glow);
         }
-        
+
         .btn-main:hover { 
-            background: #d4d4d8;
+            background: #d4d4d8; 
             transform: translateY(-2px); 
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 10px 25px rgba(255,255,255,0.2); 
         }
 
         /* ==========================================
@@ -979,25 +991,28 @@
 </head>
 <body>
 
-    <!-- ГЕНЕРАТОР БАБОЧЕК -->
+    <!-- ГЕНЕРАТОР БАБОЧЕК В ФОНЕ -->
     <div id="butterflies-container"></div>
     <script>
-        // Создаем 35 бабочек со случайными параметрами для эффекта парения
         const container = document.getElementById('butterflies-container');
-        const bfSVG = `<svg viewBox="0 0 24 24"><path d="M12 13V20M12 13C12 13 8 9 4 10C4 10 3 14 6 17C9 20 12 13 12 13ZM12 13C12 13 16 9 20 10C20 10 21 14 18 17C15 20 12 13 12 13Z"/></svg>`;
+        const bfSVG = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 13V20M12 13C12 13 8 9 4 10C4 10 3 14 6 17C9 20 12 13 12 13ZM12 13C12 13 16 9 20 10C20 10 21 14 18 17C15 20 12 13 12 13Z"/>
+            </svg>
+        `;
         
-        for(let i = 0; i < 35; i++) {
+        for (let i = 0; i < 40; i++) {
             const div = document.createElement('div');
             div.className = 'butterfly';
             div.innerHTML = bfSVG;
             
-            const size = Math.random() * 45 + 20; 
+            const size = Math.random() * 50 + 20; 
             const startX = Math.random() * 100;
-            const duration = Math.random() * 25 + 20; 
-            const delay = Math.random() * -30; 
-            const opacity = Math.random() * 0.3 + 0.05;
-            const drift = (Math.random() * 100 - 50) + 'px';
-            const rot = (Math.random() * 30 - 15) + 'deg';
+            const duration = Math.random() * 30 + 20; 
+            const delay = Math.random() * -40; 
+            const opacity = Math.random() * 0.4 + 0.1;
+            const drift = (Math.random() * 120 - 60) + 'px';
+            const rot = (Math.random() * 40 - 20) + 'deg';
             
             div.style.width = size + 'px';
             div.style.left = startX + 'vw';
@@ -1011,21 +1026,28 @@
         }
     </script>
 
-    <!-- УВЕДОМЛЕНИЯ -->
+    <!-- Уведомления (Toasts) -->
     <div id="toast-container"></div>
 
     <!-- ЭКРАН ВХОДА ДЛЯ АДМИНА -->
-    <div id="auth-view">
+    <div id="auth-view" class="auth-view-container">
         <div class="auth-card">
-            <div style="font-size:38px; font-weight:800; margin-bottom:10px; color:white; letter-spacing: -2px;">
+            <div class="auth-logo">
                 685 <span style="font-weight: 300; color: var(--text-secondary);">ADMIN</span>
             </div>
-            <p style="color:var(--text-secondary); margin-bottom: 35px; font-size: 13px; font-weight: 500;">Система управления музыкальным лейблом</p>
+            <p class="auth-desc">Система управления музыкальным лейблом</p>
             
-            <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
-            <input type="password" id="auth-password" class="auth-input" placeholder="Ключ доступа (Пароль)">
+            <div class="input-wrapper">
+                <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
+            </div>
             
-            <button class="btn-main" id="auth-btn">Войти в панель</button>
+            <div class="input-wrapper">
+                <input type="password" id="auth-password" class="auth-input" placeholder="Ключ доступа (Пароль)">
+            </div>
+            
+            <button class="btn-glow" id="auth-btn">
+                Войти в панель
+            </button>
         </div>
     </div>
 
@@ -1045,7 +1067,7 @@
             </div>
         </header>
 
-        <!-- НАВИГАЦИЯ (Старые названия) -->
+        <!-- НАВИГАЦИЯ -->
         <div class="admin-nav">
             <button class="admin-tab-btn active" data-tab="tab-releases">Модерация релизов</button>
             <button class="admin-tab-btn" data-tab="tab-users">Пользователи & E-mail</button>
@@ -1154,12 +1176,12 @@
                             <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." class="styled-input" style="resize: vertical; font-family:inherit;"></textarea>
                         </div>
                         
-                        <button id="send-mail-btn" style="background:var(--text-pure); color:var(--bg-deep); width:100%; padding:16px; border-radius:12px; font-weight:800; border:none; cursor: pointer; transition: 0.3s; box-shadow: var(--accent-glow-box);">
+                        <button id="send-mail-btn" style="background:var(--text-pure); color:var(--bg-deep); width:100%; padding:16px; border-radius:12px; font-weight:800; border:none; cursor: pointer; transition: 0.3s; box-shadow: var(--accent-glow);">
                             Отправить письмо <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>
                         </button>
                     </div>
 
-                    <!-- Модуль Промокодов -->
+                    <!-- Модуль Промокодов с надежной генерацией -->
                     <div style="background:var(--bg-surface); backdrop-filter:blur(30px); border:1px solid var(--border-light); padding:35px; border-radius:var(--radius-md);">
                         <h3 style="font-size:22px; color:var(--text-pure); margin-bottom:10px; font-weight:800; letter-spacing: -0.5px;">Генератор промокодов</h3>
                         <p style="color:var(--text-secondary); margin-bottom:25px; font-size: 13px;">Создание кодов на скидку ЮKassa или бесплатный тариф.</p>
@@ -1231,7 +1253,7 @@
                     
                     <div style="padding:20px 25px; border-top:1px solid var(--border-light); display:flex; gap:15px; background:rgba(10,10,12,0.8); align-items: center;">
                         <input type="text" id="admin-chat-input" disabled style="flex:1; background:var(--bg-input); border:1px solid var(--border-light); color:var(--text-pure); padding:16px 20px; border-radius:50px; font-size:14px; outline:none; transition:0.3s;" placeholder="Напишите ответ артисту...">
-                        <button id="admin-chat-send" disabled style="width:55px; height:55px; border-radius:50%; background:var(--text-pure); color:var(--bg-deep); border:none; cursor:pointer; flex-shrink:0; transition: transform 0.3s; font-size: 18px; box-shadow: var(--accent-glow-box);">
+                        <button id="admin-chat-send" disabled style="width:55px; height:55px; border-radius:50%; background:var(--text-pure); color:var(--bg-deep); border:none; cursor:pointer; flex-shrink:0; transition: transform 0.3s; font-size: 18px; box-shadow: var(--accent-glow);">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -1267,7 +1289,7 @@
                     </div>
                 </div>
                 
-                <button id="add-royalty-btn" style="background:var(--text-pure); color:var(--bg-deep); border:none; padding:16px 35px; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:0.3s; box-shadow: var(--accent-glow-box);">
+                <button id="add-royalty-btn" style="background:var(--text-pure); color:var(--bg-deep); border:none; padding:16px 35px; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; transition:0.3s; box-shadow: var(--accent-glow);">
                     Начислить средства
                 </button>
             </div>
@@ -1293,8 +1315,27 @@
     <!-- СКРИПТЫ, FIREBASE И ЛОГИКА АДМИНКИ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, setDoc, getDoc, serverTimestamp, orderBy, query, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            doc, 
+            deleteDoc, 
+            addDoc, 
+            setDoc, 
+            getDoc, 
+            serverTimestamp, 
+            orderBy, 
+            query, 
+            onSnapshot, 
+            arrayUnion 
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
         const firebaseConfig = {
@@ -1665,7 +1706,7 @@
                 snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
                 renderUsersList(allUsers);
             } catch (e) {
-                container.innerHTML = '<div style="color:var(--danger-soft); text-align:center; padding:20px;">Ошибка загрузки базы пользователей</div>';
+                container.innerHTML = '<div style="color:var(--danger-text); text-align:center; padding:20px;">Ошибка загрузки базы пользователей</div>';
             }
         }
 
@@ -1764,7 +1805,7 @@
             renderUsersList(allUsers.filter(u => (u.email && u.email.toLowerCase().includes(val)) || (u.nickname && u.nickname.toLowerCase().includes(val))));
         });
 
-        // ------------------ E-MAIL И ПРОМОКОДЫ ------------------
+        // ------------------ E-MAIL И ПРОМОКОДЫ С ЖЕСТКИМИ ПРОВЕРКАМИ ------------------
         document.getElementById('send-mail-btn').addEventListener('click', async () => {
             const to = document.getElementById('mail-to').value.trim();
             const subject = document.getElementById('mail-subject').value.trim();
@@ -1805,38 +1846,68 @@
             }
         });
 
+        // ЖЕСТКИЙ ПЕРЕХВАТ ОШИБОК ДЛЯ ПРОМОКОДОВ
         document.getElementById('create-promo-btn').addEventListener('click', async () => {
-            const code = document.getElementById('promo-code-name').value.trim().toUpperCase();
-            const type = document.getElementById('promo-type').value;
-            const val = parseInt(document.getElementById('promo-val').value.trim());
-            const plan = document.getElementById('promo-plan').value;
-            const expireDateStr = document.getElementById('promo-expire').value;
-            
-            if (!code || isNaN(val)) return notify("Укажите код и значение!", "error");
-            
-            let expTimestamp = null;
-            if (expireDateStr) {
-                const dateObj = new Date(expireDateStr);
-                dateObj.setHours(23, 59, 59);
-                expTimestamp = dateObj.getTime();
-            }
-
             try {
-                await setDoc(doc(db, "promo_codes", code), { 
-                    type, 
-                    value: val, 
-                    plan: type === 'gift' ? plan : null, 
-                    isActive: true, 
-                    expiresAt: expTimestamp, 
-                    createdAt: serverTimestamp() 
+                const codeInput = document.getElementById('promo-code-name');
+                const typeInput = document.getElementById('promo-type');
+                const valInput = document.getElementById('promo-val');
+                const planInput = document.getElementById('promo-plan');
+                const expireInput = document.getElementById('promo-expire');
+
+                const code = codeInput.value.trim().toUpperCase();
+                const promoType = typeInput.value;
+                const val = parseInt(valInput.value.trim());
+                const plan = planInput.value;
+                const expireDateStr = expireInput.value;
+
+                if (!code) {
+                    return notify("Укажите название промокода (Код)!", "error");
+                }
+                
+                if (isNaN(val) || val <= 0) {
+                    return notify("Укажите корректное Значение (число больше нуля)!", "error");
+                }
+                
+                let expTimestamp = null;
+                if (expireDateStr) {
+                    const dateObj = new Date(expireDateStr);
+                    dateObj.setHours(23, 59, 59);
+                    expTimestamp = dateObj.getTime();
+                }
+
+                const btn = document.getElementById('create-promo-btn');
+                const origText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Создание...';
+                btn.disabled = true;
+
+                await setDoc(doc(db, "promo_codes", code), {
+                    type: promoType,
+                    value: val,
+                    plan: promoType === 'gift' ? plan : null,
+                    isActive: true,
+                    expiresAt: expTimestamp,
+                    createdAt: serverTimestamp()
                 });
                 
-                notify(`Промокод создан!`, "success");
-                document.getElementById('promo-code-name').value = '';
-                document.getElementById('promo-val').value = '';
-                document.getElementById('promo-expire').value = '';
+                notify(`Промокод ${code} успешно создан!`, "success");
+                
+                codeInput.value = '';
+                valInput.value = '';
+                expireInput.value = '';
+                
+                btn.innerHTML = origText;
+                btn.disabled = false;
+
                 loadPromos();
-            } catch(e) { notify("Ошибка", "error"); }
+            } catch(e) {
+                console.error("Ошибка генерации промокода:", e);
+                notify("Ошибка БД: " + e.message, "error");
+                
+                const btn = document.getElementById('create-promo-btn');
+                btn.innerHTML = 'Сгенерировать код';
+                btn.disabled = false;
+            }
         });
 
         async function loadPromos() {
@@ -1860,7 +1931,7 @@
                     if (data.expiresAt) {
                         const dateObj = new Date(data.expiresAt);
                         expText = `До: ${dateObj.toLocaleDateString('ru-RU')}`;
-                        if (Date.now() > data.expiresAt) expText = `<span style="color:var(--danger-soft)">Истек</span>`;
+                        if (Date.now() > data.expiresAt) expText = `<span style="color:var(--danger-text)">Истек</span>`;
                     }
                     
                     list.innerHTML += `
@@ -1912,21 +1983,21 @@
                         approvedCount++;
                         
                         pitchingHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b> — ${data.artist}<br><span style="font-size:12px; color:var(--text-secondary);">Жанр: ${data.genre}</span></div>
-                                <button class="btn-action" style="background:white; color:black; border:none; padding:10px 20px; font-weight:800;" onclick="alert('Отправлено!')">Отправить</button>
+                            <div style="background:rgba(255,255,255,0.02); padding:25px; border-radius:16px; border: 1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; transition:0.3s;">
+                                <div><b style="font-size:18px; color:var(--text-pure); letter-spacing:-0.5px;">${data.title}</b> <span style="color:var(--text-secondary);">— ${data.artist}</span> <br><span style="color:var(--text-secondary); font-size:13px; margin-top:8px; display:inline-block;">Жанр: <span style="color:var(--text-primary);">${data.genre}</span></span></div>
+                                <button class="btn-action" style="background:var(--text-pure); color:var(--bg-deep); border:none; font-weight:800; border-radius:50px; padding:14px 24px;" onclick="alert('Заявка на промо в редакции сформирована!')">Отправить питч</button>
                             </div>`;
                             
                         calendarHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b> <span style="font-size:12px; color:var(--text-secondary);">(${data.artist})</span></div>
-                                <span style="color:white; font-size:12px; font-weight:800; padding:6px 12px; background:rgba(255,255,255,0.1); border-radius:50px;"><i class="fa-solid fa-check"></i> Премьера</span>
+                            <div style="background:rgba(255,255,255,0.02); padding:25px; border-radius:16px; border: 1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;">
+                                <div><b style="font-size:18px; color:var(--text-pure); letter-spacing:-0.5px;">${data.title}</b> <span style="color:var(--text-secondary); font-size:14px; margin-left:8px;">(${data.artist})</span></div>
+                                <span style="color:var(--text-pure); font-weight:800; font-size:13px; padding:8px 16px; border-radius:50px; background:rgba(255,255,255,0.1);"><i class="fa-solid fa-check" style="margin-right:8px;"></i> Готов к премьере</span>
                             </div>`;
                             
                         smartLinksHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b><br><code style="font-size:12px; color:var(--text-secondary);">link/${data.id.slice(0,6)}</code></div>
-                                <button class="btn-action" style="background:transparent; border:1px dashed white; color:white; padding:10px 20px;" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); notify('Скопировано!')"><i class="fa-solid fa-copy"></i></button>
+                            <div style="background:rgba(255,255,255,0.02); padding:25px; border-radius:16px; border: 1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+                                <div><b style="font-size:18px; color:var(--text-pure); letter-spacing:-0.5px;">${data.title}</b><br><code style="color:var(--text-secondary); font-size:14px; margin-top:8px; display:inline-block; font-family:monospace;">https://685music.link/${data.id.slice(0,6)}</code></div>
+                                <button class="btn-action" style="background:transparent; color:var(--text-pure); border:1px solid var(--border-light); font-weight:700; border-radius:50px; padding:14px 24px;" onmouseover="this.style.background='white'; this.style.color='black';" onmouseout="this.style.background='transparent'; this.style.color='white';" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); notify('Смарт-ссылка скопирована в буфер обмена!', 'success')"><i class="fa-solid fa-copy" style="margin-right:8px;"></i> Копировать</button>
                             </div>`;
                     }
                 });
@@ -1936,13 +2007,13 @@
                 document.getElementById('stat-approved').innerText = approvedCount;
                 document.getElementById('stat-delete').innerText = deletesCount;
 
-                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
-                document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
-                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
+                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary); padding: 30px; text-align: center; border: 1px dashed var(--border-light); border-radius: 16px;">Нет релизов, готовых к питчингу.</p>';
+                document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary); padding: 30px; text-align: center; border: 1px dashed var(--border-light); border-radius: 16px;">Календарь релизов пуст.</p>';
+                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary); padding: 30px; text-align: center; border: 1px dashed var(--border-light); border-radius: 16px;">Нет активных смарт-ссылок.</p>';
 
                 renderList(allSubmissions);
             } catch (e) { 
-                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger-soft);">Ошибка базы.</div>'; 
+                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger-text);">Ошибка базы.</div>'; 
             }
         }
 
@@ -1951,7 +2022,7 @@
             container.innerHTML = '';
             
             if (items.length === 0) { 
-                container.innerHTML = '<div style="text-align:center; padding: 50px; color: var(--text-secondary);">Заявок нет</div>'; 
+                container.innerHTML = '<div style="text-align:center; padding: 80px; color: var(--text-secondary); background: rgba(255,255,255,0.02); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1); font-size: 16px;">Заявок на релизы не найдено</div>'; 
                 return; 
             }
 
@@ -1972,42 +2043,42 @@
                 container.innerHTML += `
                     <div class="admin-card" id="card-${d.id}">
                         <div class="rel-details">
-                            <h3>${d.title} ${d.status === 'Запрос на удаление с площадок' ? '<span style="color:black; background:white; font-size:10px; font-weight:800; padding:4px 8px; border-radius:50px; margin-left:10px; text-transform:uppercase;">Удаление!</span>' : ''}</h3>
-                            <p><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span></p>
+                            <h3>${d.title} ${d.status === 'Запрос на удаление с площадок' ? '<span style="color:var(--bg-deep); background:var(--text-pure); font-size:11px; font-weight:800; padding:6px 12px; border-radius:50px; margin-left:12px; text-transform:uppercase; vertical-align: middle;">Удаление!</span>' : ''}</h3>
+                            <p><i class="fa-solid fa-user-astronaut"></i> <span style="color:var(--text-pure); font-weight:600;">${d.artist}</span></p>
                             <p><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
-                            <div class="artist-badge"><i class="fa-solid fa-envelope" style="margin-right: 6px;"></i> ${d.userEmail || 'Неизвестный'}</div>
+                            <div class="artist-badge"><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> ${d.userEmail || 'Неизвестный'}</div>
                             <div class="dsp-tags">${dspHtml}</div>
                         </div>
 
                         <div class="rel-files">
-                            <a href="${d.audioUrl}" target="_blank" class="file-link"><i class="fa-solid fa-file-audio"></i> WAV Мастер</a>
-                            <a href="${d.coverUrl}" target="_blank" class="file-link"><i class="fa-solid fa-image"></i> Обложка</a>
+                            <a href="${d.audioUrl}" target="_blank" class="file-link audio"><i class="fa-solid fa-file-audio fa-lg"></i> WAV Мастер-файл</a>
+                            <a href="${d.coverUrl}" target="_blank" class="file-link cover"><i class="fa-solid fa-image fa-lg"></i> Исходник обложки</a>
                         </div>
 
                         <div class="rel-codes">
                             <div class="code-input-group">
-                                <label>UPC Код</label>
-                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="195081234567">
+                                <label>UPC Код (Штрихкод)</label>
+                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Например: 195081234567">
                             </div>
                             <div class="code-input-group">
-                                <label>ISRC Код</label>
-                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="RU-XXX-26-00001">
+                                <label>ISRC Код (Идентификатор трека)</label>
+                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="Например: RU-XXX-26-00001">
                             </div>
                             <div class="code-input-group">
-                                <label>Причина отклонения</label>
-                                <textarea id="reason-${d.id}" rows="2" placeholder="Опишите ошибки...">${d.rejectReason || ''}</textarea>
+                                <label>Причина отклонения (Для артиста)</label>
+                                <textarea id="reason-${d.id}" rows="2" placeholder="Опишите ошибки, если релиз отклонен...">${d.rejectReason || ''}</textarea>
                             </div>
                         </div>
 
                         <div class="rel-actions">
                             <select id="status-${d.id}" onchange="handleStatusChange('${d.id}')">
                                 <option value="Ожидает модерации" ${isPending}>Ожидает модерации</option>
-                                <option value="Одобрено" ${isApproved}>Одобрено (На DSP)</option>
-                                <option value="Отклонено" ${isRejected}>Отклонено (Правки)</option>
+                                <option value="Одобрено" ${isApproved}>Одобрено (Ушло на DSP)</option>
+                                <option value="Отклонено" ${isRejected}>Отклонено (Требует правок)</option>
                                 <option value="Запрос на удаление с площадок" ${isDelRequest}>Запрос на удаление</option>
                             </select>
                             <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
-                            <button class="btn-delete" data-id="${d.id}">Удалить из БД</button>
+                            <button class="btn-delete" data-id="${d.id}">Удалить из базы</button>
                         </div>
                     </div>`;
             });
