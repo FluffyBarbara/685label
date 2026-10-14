@@ -6,7 +6,7 @@
     
     <title>685 music label</title>
     
-    <!-- Строго заданная иконка -->
+    <!-- Жесткий сброс кэша для иконки -->
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=3">
     
@@ -231,6 +231,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            /* Максимальный приоритет поверх всех окон */
             z-index: 9999999 !important;
             pointer-events: none;
         }
@@ -261,7 +262,7 @@
         .toast.error {
             border-left-color: var(--danger-text);
         }
-
+        
         .toast.success {
             border-left-color: var(--text-pure);
         }
@@ -557,7 +558,7 @@
 
         .user-role {
             font-size: 11px;
-            color: var(--text-pure);
+            color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -1651,6 +1652,7 @@
         
         for (let i = 0; i < 40; i++) {
             const div = document.createElement('div');
+            
             div.className = 'butterfly';
             div.innerHTML = bfSVG;
             
@@ -1674,7 +1676,7 @@
         }
     </script>
 
-    <!-- Уведомления (Toasts) поверх всех окон -->
+    <!-- Уведомления (Toasts) -->
     <div id="toast-container"></div>
 
     <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ ЮKASSA -->
@@ -1724,12 +1726,10 @@
                 </div>
             </div>
 
-            <!-- Уведомление об оферте -->
             <div style="margin-bottom: 25px; text-align: center; font-size: 13px; color: var(--text-secondary);">
                 <span>Нажимая кнопку оплаты, вы принимаете условия <a href="offer.html" target="_blank" style="color:var(--text-pure); font-weight:600; text-decoration:underline;">Публичной оферты</a>.</span>
             </div>
 
-            <!-- ВСТРОЕННАЯ ФОРМА ЮKASSA -->
             <form id="main-payment-form" class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
                 <div class="ym-products ym-display-none">
                     <div class="ym-product">
@@ -1857,7 +1857,7 @@
         </div>
     </div>
 
-    <!-- ЭКРАН ЗАМОРОЖЕННОАККАУНТА -->
+    <!-- ЭКРАН ЗАМОРОЖЕННОГО АККАУНТА -->
     <div id="frozen-view" class="auth-view-container" style="display: none;">
         <div class="auth-card" style="border-color: rgba(255,255,255,0.2); box-shadow: 0 0 50px rgba(255,255,255,0.05);">
             <i class="fa-solid fa-snowflake" style="font-size: 56px; color: var(--text-secondary); margin-bottom: 25px;"></i>
@@ -1943,7 +1943,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (ДИСТРИБУЦИЯ С НОВЫМИ ПОЛЯМИ) -->
             <section class="section" id="new-release">
 
                 <!-- ПРАВИЛА И РЕКОМЕНДАЦИИ -->
@@ -2032,9 +2032,7 @@
                     </div>
                 </div>
 
-                <!-- ФОРМА ОТГРУЗКИ В ВИДЕ АККОРДЕОНОВ -->
-                
-                <!-- БЛОК 1 -->
+                <!-- ФОРМА ОТГРУЗКИ (БЛОК 1) -->
                 <div class="form-accordion open">
                     <div class="accordion-header">
                         <div>
@@ -2042,8 +2040,11 @@
                         </div>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
+                    
                     <div class="accordion-body" style="padding-top:20px;">
                         <div class="grid-2">
+                            
+                            <!-- Левая колонка / Правая колонка -->
                             <div class="input-box">
                                 <label>Название релиза *</label>
                                 <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
@@ -2052,6 +2053,11 @@
                             <div class="input-box">
                                 <label>Основной исполнитель *</label>
                                 <input type="text" id="r-artist" class="styled-input" placeholder="Ваш псевдоним">
+                            </div>
+                            
+                            <div class="input-box">
+                                <label>Совместный исполнитель (feat.)</label>
+                                <input type="text" id="r-feat" class="styled-input" placeholder="Оставьте пустым, если нет">
                             </div>
                             
                             <div class="input-box">
@@ -2081,28 +2087,59 @@
                                 </select>
                             </div>
                             
-                            <!-- НОВОЕ ПОЛЕ: Версия трека -->
-                            <div class="input-box" style="grid-column: 1 / -1;">
+                            <div class="input-box">
                                 <label>Версия трека (Remix, Cover by, Prod. by)</label>
-                                <input type="text" id="r-version" class="styled-input" placeholder="Например: prod. by 685 / sped up">
-                                <span style="font-size: 11px; color: var(--text-secondary); margin-top: -5px;">
-                                    Внимание: указание версии не гарантирует, что текст будет серым. Это напрямую зависит от редакторов музыкальных площадок.
+                                <input type="text" id="r-version" class="styled-input" placeholder="Например: prod. by 685">
+                                <span style="font-size: 10px; color: var(--text-secondary); margin-top: -5px; line-height: 1.3;">
+                                    Указание версии не гарантирует серый цвет шрифта (зависит от редакторов площадок).
                                 </span>
+                            </div>
+                            
+                            <div class="input-box">
+                                <label>Ненормативная лексика (Explicit) *</label>
+                                <select id="r-explicit" class="styled-input">
+                                    <option value="Нет (Чистая версия)">Нет (Чистая версия)</option>
+                                    <option value="Да (Есть мат)">Да (Есть мат)</option>
+                                    <option value="Инструментал">Инструментальный трек</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-box">
+                                <label>Использование ИИ *</label>
+                                <select id="r-ai" class="styled-input">
+                                    <option value="Не использовался">Не использовался</option>
+                                    <option value="Только в музыке / вокале">Только в музыке / вокале</option>
+                                    <option value="Только при создании обложки">Только при создании обложки</option>
+                                    <option value="В музыке и обложке">В музыке и обложке</option>
+                                </select>
                             </div>
 
-                            <!-- Выбор даты релиза -->
-                            <div class="input-box" style="grid-column: 1 / -1;">
+                            <div class="input-box">
+                                <label>Таймкод для TikTok (секунды) *</label>
+                                <input type="number" id="r-tiktok" class="styled-input" placeholder="Например: 60 (для старта с 1:00)">
+                            </div>
+                            
+                            <div class="input-box">
                                 <label>Дата выхода (Отложенная публикация)</label>
                                 <input type="date" id="r-date" class="styled-input">
-                                <span style="font-size: 11px; color: var(--text-secondary); margin-top: -5px;">
-                                    Оставьте поле пустым, чтобы трек вышел на площадки сразу после успешной модерации.
-                                </span>
                             </div>
+                            
+                            <!-- Поля на всю ширину (grid-column: 1 / -1) -->
+                            <div class="input-box" style="grid-column: 1 / -1; margin-top: 10px;">
+                                <label>ФИО авторов (через запятую) *</label>
+                                <input type="text" id="r-authors" class="styled-input" placeholder="Например: Иванов Иван Иванович, Смирнов Алексей">
+                            </div>
+                            
+                            <div class="input-box" style="grid-column: 1 / -1; margin-top: 10px;">
+                                <label>Текст песни *</label>
+                                <textarea id="r-lyrics" class="styled-input" rows="6" placeholder="Вставьте полный текст песни. Если это инструментальный трек, напишите слово «Инструментал»." style="resize: vertical;"></textarea>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
 
-                <!-- БЛОК 2 -->
+                <!-- БЛОК 2: ИСХОДНИКИ -->
                 <div class="form-accordion open">
                     <div class="accordion-header">
                         <div>
@@ -2113,7 +2150,7 @@
                     <div class="accordion-body" style="padding-top:20px;">
                         <div class="grid-2">
                             <div class="input-box">
-                                <label>Обложка (1400x1400 - 3000x3000px, JPG/PNG, до 10MB) *</label>
+                                <label>Обложка (1400x1400 - 3000x3000px, JPG/PNG) *</label>
                                 <input type="url" id="r-cover" class="styled-input" placeholder="Ссылка на Google Drive, Яндекс.Диск">
                             </div>
                             <div class="input-box">
@@ -2139,7 +2176,6 @@
                         
                         <div style="display: flex; flex-direction: column; gap: 15px;">
                             
-                            <!-- Визуализатор аудио (скрыт до нажатия) -->
                             <div id="ai-equalizer" class="ai-equalizer">
                                 <div class="eq-bar" style="animation-delay: 0.1s"></div>
                                 <div class="eq-bar" style="animation-delay: 0.3s"></div>
@@ -2327,7 +2363,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 40px;">
                     <h2 style="font-size: 32px; font-weight: 800; color: var(--text-pure); margin-bottom: 10px; letter-spacing: -1px;">
@@ -2356,7 +2392,6 @@
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг и смарт-ссылки</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Приоритетная поддержка</li>
                         </ul>
-                        <!-- Все кнопки переименованы в ВЫБРАТЬ ТАРИФ -->
                         <button class="btn-glow yk-buy-btn" data-plan="Стартовый" data-p1="299" data-p3="897" data-p12="1973">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2379,7 +2414,6 @@
                             <li><i class="fa-solid fa-check"></i> Видеошоты (Яндекс) и караоке-текст</li>
                             <li><i class="fa-solid fa-check"></i> Приоритетная поддержка (ответ до 48ч)</li>
                         </ul>
-                        <!-- Кнопка переименована в ВЫБРАТЬ ТАРИФ -->
                         <button class="btn-glow yk-buy-btn" data-plan="Расширенный" data-p1="699" data-p3="2097" data-p12="4613">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2401,7 +2435,6 @@
                             <li><i class="fa-solid fa-check"></i> Возможность указывать свой лейбл (копирайт)</li>
                             <li><i class="fa-solid fa-check"></i> Весь функционал расширенного тарифа</li>
                         </ul>
-                        <!-- Кнопка переименована в ВЫБРАТЬ ТАРИФ -->
                         <button class="btn-glow yk-buy-btn" data-plan="Профессиональный" data-p1="999" data-p3="2997" data-p12="6593">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2435,7 +2468,30 @@
                     </div>
                 </div>
 
-                <!-- Блок Юридических документов (ПЕРЕДЕЛАНО В КНОПКИ) -->
+                <!-- БАЛАНС И ВЫВОД СРЕДСТВ -->
+                <div class="glass-card" style="max-width: 650px;">
+                    <div class="card-heading">
+                        <i class="fa-solid fa-wallet"></i> Баланс роялти
+                    </div>
+                    <div style="background:var(--bg-input); padding:25px 30px; border-radius:var(--radius-md); border:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; margin-bottom: 6px; letter-spacing: 1px;">
+                                Доступно к выводу
+                            </div>
+                            <span id="setting-balance" style="color:var(--text-pure); font-weight:800; font-size: 32px;">0 ₽</span>
+                        </div>
+                    </div>
+                    
+                    <p id="withdrawal-info" style="color: var(--text-secondary); font-size: 12px; margin-bottom: 20px;">
+                        Минимальная сумма вывода для вашего тарифа: <strong id="setting-min-withdraw" style="color:var(--text-primary);">3 000 ₽</strong>.
+                    </p>
+                    
+                    <button class="btn-glow" id="withdraw-btn" style="width: auto; padding: 16px 30px; font-size: 14px;">
+                        <i class="fa-solid fa-money-bill-transfer" style="margin-right: 8px;"></i> Вывести средства
+                    </button>
+                </div>
+
+                <!-- Блок Юридических документов (КНОПКИ) -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-file-contract"></i> Юридические документы
@@ -2480,7 +2536,7 @@
                         Сохранить изменения
                     </button>
                     
-                    <!-- Кнопка перехода в панель модератора (Только для Владельца). -->
+                    <!-- Кнопка перехода в панель модератора -->
                     <button class="btn-glow" id="settings-admin-btn" style="display: none; background: transparent; color: var(--text-pure); border: 1px solid var(--border-light); margin-top: 20px;">
                         <i class="fa-solid fa-server" style="margin-right: 8px;"></i> Панель Модератора
                     </button>
@@ -2573,7 +2629,7 @@
             this.classList.add('visible');
         });
 
-        // Управление Аккордеонами (теперь только для Дистрибуции, так как из настроек они убраны)
+        // Управление Аккордеонами (теперь только для Дистрибуции)
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
                 const accordion = header.parentElement;
@@ -3020,6 +3076,8 @@
         const authTerms = document.getElementById('auth-terms');
         
         let userProfileUnsub = null;
+        let currentUserBalance = 0; 
+        let currentUserMinWithdraw = 3000; 
 
         toggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
@@ -3121,6 +3179,7 @@
                         subscription: "Базовый", 
                         subscriptionExpiresAt: null, 
                         accountStatus: "Активен",
+                        balance: 0,
                         createdAt: serverTimestamp()
                     });
                     
@@ -3293,6 +3352,21 @@
                             document.getElementById('setting-email').value = user.email;
                             document.getElementById('user-avatar').innerText = nickname.charAt(0).toUpperCase();
 
+                            // Загружаем текущий баланс
+                            currentUserBalance = d.balance || 0;
+                            document.getElementById('setting-balance').innerText = currentUserBalance.toLocaleString('ru-RU') + ' ₽';
+                            
+                            // Определяем минимальную сумму вывода
+                            if (planName === "Профессиональный") {
+                                currentUserMinWithdraw = 500;
+                            } else if (planName === "Расширенный") {
+                                currentUserMinWithdraw = 1500;
+                            } else {
+                                currentUserMinWithdraw = 3000;
+                            }
+                            
+                            document.getElementById('setting-min-withdraw').innerText = currentUserMinWithdraw.toLocaleString('ru-RU') + ' ₽';
+
                             fetchReleases(user.uid);
                             initUserChat(user.uid);
 
@@ -3324,6 +3398,7 @@
                                 nickname: user.email.split('@')[0], 
                                 email: user.email, 
                                 subscription: "Базовый",
+                                balance: 0,
                                 accountStatus: "Активен"
                             }, { merge: true });
                         }
@@ -3361,6 +3436,76 @@
                     currentChatUnsubListener(); 
                     currentChatUnsubListener = null; 
                 }
+            }
+        });
+
+        // ==========================================
+        // ЛОГИКА ВЫВОДА СРЕДСТВ
+        // ==========================================
+        document.getElementById('withdraw-btn').addEventListener('click', async () => {
+            if (currentUserBalance < currentUserMinWithdraw) {
+                return notify(`Минимальная сумма вывода для вашего тарифа — ${currentUserMinWithdraw.toLocaleString('ru-RU')} ₽. На балансе недостаточно средств.`, "error");
+            }
+            
+            if (!confirm(`Вы подтверждаете запрос на вывод средств в размере ${currentUserBalance.toLocaleString('ru-RU')} ₽?`)) {
+                return;
+            }
+            
+            const btn = document.getElementById('withdraw-btn');
+            const origText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
+            btn.disabled = true;
+
+            try {
+                // Обнуляем баланс юзера
+                await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                    balance: 0
+                });
+
+                // Создаем системное сообщение в чате поддержки
+                const msgObj = { 
+                    sender: 'user', 
+                    text: `[СИСТЕМНОЕ СООБЩЕНИЕ] Запрос на вывод роялти.\nСумма к выплате: ${currentUserBalance} ₽.\n\nПрошу связаться со мной для уточнения платежных реквизитов.`, 
+                    time: Date.now() 
+                };
+                
+                const ref = doc(db, "support_chats", auth.currentUser.uid);
+                const snap = await getDoc(ref);
+                
+                if(snap.exists()) {
+                    await updateDoc(ref, { 
+                        messages: arrayUnion(msgObj), 
+                        lastUpdated: serverTimestamp(), 
+                        hasUnreadAdmin: true,
+                        userTyping: false
+                    });
+                } else {
+                    const uDoc = await getDoc(doc(db, "users", auth.currentUser.uid));
+                    await setDoc(ref, {
+                        userId: auth.currentUser.uid,
+                        userEmail: auth.currentUser.email,
+                        userNickname: uDoc.data()?.nickname || 'Артист',
+                        messages: [msgObj],
+                        lastUpdated: serverTimestamp(),
+                        hasUnreadAdmin: true,
+                        hasUnreadUser: false,
+                        userTyping: false,
+                        adminTyping: false
+                    });
+                }
+
+                notify("Заявка успешно создана! Менеджер свяжется с вами в чате поддержки.", "success");
+                
+                // Автоматически открываем окно чата
+                document.getElementById('chat-window').classList.add('open');
+                document.getElementById('chat-widget-btn').style.transform = 'scale(0)';
+                
+            } catch(e) {
+                notify("Произошла ошибка при создании заявки на вывод.", "error");
+            } finally {
+                btn.innerHTML = origText;
+                btn.disabled = false;
             }
         });
 
@@ -3475,7 +3620,7 @@
             }
         };
 
-        // ОТПРАВКА НОВОГО РЕЛИЗА И ПИТЧИНГА В БАЗУ ДАННЫХ
+        // ОТПРАВКА НОВОГО РЕЛИЗА
         document.getElementById('submit-btn').addEventListener('click', async () => {
             const title = document.getElementById('r-title').value.trim();
             const artist = document.getElementById('r-artist').value.trim();
@@ -3485,14 +3630,21 @@
             const audio = document.getElementById('r-audio').value.trim();
             const promo = document.getElementById('r-promo-text').value.trim();
             
-            // Получение новых полей (Версия и Дата)
+            // Новые поля
             const releaseDate = document.getElementById('r-date') ? document.getElementById('r-date').value : '';
             const trackVersion = document.getElementById('r-version') ? document.getElementById('r-version').value.trim() : '';
+            const feat = document.getElementById('r-feat') ? document.getElementById('r-feat').value.trim() : '';
+            const authors = document.getElementById('r-authors') ? document.getElementById('r-authors').value.trim() : '';
+            const explicit = document.getElementById('r-explicit') ? document.getElementById('r-explicit').value : '';
+            const aiUsage = document.getElementById('r-ai') ? document.getElementById('r-ai').value : '';
+            const tiktok = document.getElementById('r-tiktok') ? document.getElementById('r-tiktok').value.trim() : '';
+            const lyrics = document.getElementById('r-lyrics') ? document.getElementById('r-lyrics').value.trim() : '';
             
             const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
-            if (!title || !artist || !cover || !audio) {
-                return notify("Заполните все данные и ссылки!", "error");
+            // Проверка обязательных полей
+            if (!title || !artist || !cover || !audio || !authors || !tiktok || !lyrics) {
+                return notify("Заполните все обязательные поля, отмеченные звездочкой (*)", "error");
             }
             
             if (platforms.length === 0) {
@@ -3533,17 +3685,23 @@
                     }
                 }
 
-                // Сохранение в базу данных Firestore, включая версию трека, дату и питчинг
+                // Сохранение в базу данных Firestore, включая все новые поля
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid, 
                     userEmail: auth.currentUser.email, 
                     userNickname: currentNick,
                     artist, 
+                    feat,
+                    authors,
                     title, 
                     genre, 
                     type, 
                     releaseDate,
                     trackVersion,
+                    explicit,
+                    aiUsage,
+                    tiktokTimecode: tiktok,
+                    lyrics,
                     platforms, 
                     coverUrl: cover, 
                     audioUrl: audio,
@@ -3557,7 +3715,7 @@
 
                 notify("Трек успешно отправлен на модерацию!", "success");
                 
-                ['r-title', 'r-artist', 'r-cover', 'r-audio', 'r-promo-text', 'r-date', 'r-version'].forEach(id => {
+                ['r-title', 'r-artist', 'r-feat', 'r-authors', 'r-lyrics', 'r-tiktok', 'r-cover', 'r-audio', 'r-promo-text', 'r-date', 'r-version'].forEach(id => {
                     const el = document.getElementById(id);
                     if(el) {
                         el.value = '';
