@@ -2,66 +2,289 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Публичная оферта | 685 Music</title>
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: transparent; 
-            color: #888888; 
-            margin: 0; 
-            padding: 10px; 
-            line-height: 1.6; 
-            font-size: 13px; 
+        :root {
+            --bg-deep: #000000;
+            --bg-surface: rgba(15, 15, 15, 0.45);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --text-pure: #ffffff;
+            --text-primary: #e5e5e5;
+            --text-secondary: #888888;
         }
-        h1 { font-size: 18px; color: #ffffff; margin-bottom: 20px; font-weight: 800; letter-spacing: -0.5px; }
-        h2 { font-size: 14px; color: #ffffff; margin-top: 25px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        p { margin-bottom: 12px; }
-        ul { margin-left: 20px; margin-bottom: 15px; }
-        li { margin-bottom: 6px; }
-        strong { color: #e5e5e5; font-weight: 600; }
-        .highlight { color: #ffffff; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #butterflies-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .butterfly {
+            position: absolute;
+            bottom: -100px;
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.6); opacity: 0; }
+            15% { opacity: var(--target-opacity); }
+            50% { transform: translateY(-55vh) translateX(var(--drift)) rotate(var(--rot)) scale(1); }
+            85% { opacity: var(--target-opacity); }
+            100% { transform: translateY(-120vh) translateX(calc(var(--drift) * -1)) rotate(calc(var(--rot) * -1)) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 15px;
+        }
+
+        .header-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-pure);
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .document-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .doc-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-pure);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .doc-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        h2 {
+            font-size: 18px;
+            color: var(--text-pure);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--text-pure);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--text-pure);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            font-size: 14px;
+        }
+
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media(max-width: 768px) {
+            .document-card {
+                padding: 30px 20px;
+            }
+            .doc-title {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Публичная оферта на оказание услуг по цифровой дистрибуции музыкального контента</h1>
+    <!-- ГЕНЕРАТОР БАБОЧЕК -->
+    <div id="butterflies-container"></div>
+    <script>
+        const container = document.getElementById('butterflies-container');
+        const bfSVG = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 13V20M12 13C12 13 8 9 4 10C4 10 3 14 6 17C9 20 12 13 12 13ZM12 13C12 13 16 9 20 10C20 10 21 14 18 17C15 20 12 13 12 13Z"/>
+            </svg>
+        `;
+        
+        for (let i = 0; i < 20; i++) {
+            const div = document.createElement('div');
+            div.className = 'butterfly';
+            div.innerHTML = bfSVG;
+            
+            const size = Math.random() * 40 + 20; 
+            const startX = Math.random() * 100;
+            const duration = Math.random() * 40 + 30; 
+            const delay = Math.random() * -40; 
+            const opacity = Math.random() * 0.3 + 0.1;
+            const drift = (Math.random() * 80 - 40) + 'px';
+            const rot = (Math.random() * 30 - 15) + 'deg';
+            
+            div.style.width = size + 'px';
+            div.style.left = startX + 'vw';
+            div.style.animationDuration = duration + 's';
+            div.style.animationDelay = delay + 's';
+            div.style.setProperty('--target-opacity', opacity);
+            div.style.setProperty('--drift', drift);
+            div.style.setProperty('--rot', rot);
+            
+            container.appendChild(div);
+        }
+    </script>
 
-    <p>Настоящий документ является официальным предложением (публичной офертой) музыкального лейбла <strong>«685 Music»</strong> в лице плательщика налога на профессиональный доход (НПД) <strong>Гонцовского Никиты Руслановича</strong> (ИНН: 272305443924, г. Хабаровск)[cite: 8], далее именуемого <strong>«Лицензиат»</strong> или <strong>«Лейбл»</strong>, заключить договор на оказание услуг по размещению цифрового контента на условиях, изложенных ниже.</p>
-    <p>Регистрация на сайте и оплата выбранного тарифного плана признаются полным и безоговорочным акцептом настоящей оферты со стороны пользователя (далее — <strong>«Лицензиар»</strong> или <strong>«Артист»</strong>).</p>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <i class="fa-solid fa-compact-disc"></i> 685music
+            </div>
+        </div>
 
-    <h2>1. Предмет договора</h2>
-    <p>1.1. Лицензиар предоставляет Лицензиату право использования Музыкальных произведений (фонограмм) на условиях простой (неисключительной) лицензии для их доведения до всеобщего сведения через цифровые стриминговые платформы (DSP), включая, но не ограничиваясь: VK Музыка, Яндекс Музыка, Звук, Apple Music, Spotify и другие.</p>
-    <p>1.2. Обязательным условием оказания услуг является наличие у Лицензиара активной платной подписки (Тарифного плана), оформленной на сайте Лейбла.</p>
+        <div class="document-card">
+            <h1 class="doc-title">Публичная оферта</h1>
+            <div class="doc-subtitle">На оказание услуг по цифровой дистрибуции музыкального контента</div>
 
-    <h2>2. Гарантии и ответственность Артиста</h2>
-    <p>2.1. Лицензиар гарантирует, что обладает всеми необходимыми авторскими и смежными правами на загружаемые фонограммы, тексты и обложки, и что их использование не нарушает прав третьих лиц.</p>
-    <p>2.2. В случае предъявления претензий к Лейблу со стороны третьих лиц, касающихся нарушения авторских прав, Лицензиар обязуется самостоятельно и за свой счет урегулировать такие претензии, а также возместить Лейблу понесенные убытки.</p>
-    <p>2.3. Запрещено размещать контент, содержащий призывы к насилию, экстремизму, а также материалы, нарушающие законодательство РФ.</p>
+            <p>Настоящий документ является официальным предложением (публичной офертой) музыкального лейбла <strong>«685 Music»</strong> в лице плательщика налога на профессиональный доход (НПД) <strong>Гонцовского Никиты Руслановича</strong> (ИНН: 272305443924, г. Хабаровск), далее именуемого <strong>«Лицензиат»</strong> или <strong>«Лейбл»</strong>, заключить договор на оказание услуг по размещению цифрового контента на условиях, изложенных ниже.</p>
+            
+            <p>Регистрация на сайте и оплата выбранного тарифного плана признаются полным и безоговорочным акцептом настоящей оферты со стороны пользователя (далее — <strong>«Лицензиар»</strong> или <strong>«Артист»</strong>).</p>
 
-    <h2>3. Права и обязанности Лейбла</h2>
-    <p>3.1. Лейбл обязуется осуществить модерацию и последующую отгрузку контента на DSP в сроки, предусмотренные выбранным Тарифным планом.</p>
-    <p>3.2. Лейбл вправе <strong>отказать</strong> в публикации контента, если он не соответствует техническим требованиям площадок (низкое качество аудио, ненормативное оформление обложки) или нарушает п. 2.1 – 2.3 настоящей Оферты.</p>
-    <p>3.3. Лейбл оставляет за собой право в одностороннем порядке заблокировать или заморозить аккаунт Артиста в случае выявления мошеннических действий с прослушиваниями (накрутки) или кражи интеллектуальной собственности.</p>
+            <h2>1. Предмет договора</h2>
+            <p>1.1. Лицензиар предоставляет Лицензиату право использования Музыкальных произведений (фонограмм) на условиях простой (неисключительной) лицензии для их доведения до всеобщего сведения через цифровые стриминговые платформы (DSP), включая, но не ограничиваясь: VK Музыка, Яндекс Музыка, Звук, Apple Music, Spotify и другие.</p>
+            <p>1.2. Обязательным условием оказания услуг является наличие у Лицензиара активной платной подписки (Тарифного плана), оформленной на сайте Лейбла.</p>
 
-    <h2>4. Финансовые условия и Роялти</h2>
-    <p>4.1. Доход от стриминга (роялти) начисляется на внутренний баланс Артиста по факту получения отчетов от стриминговых платформ (обычно с задержкой в 2–3 месяца после завершения отчетного периода).</p>
-    <p>4.2. Распределение дохода осуществляется согласно активному тарифу Артиста: <strong>80%</strong>, <strong>85%</strong> или <strong>90%</strong> в пользу Лицензиара.</p>
-    <p>4.3. Вывод средств осуществляется по запросу Артиста при достижении минимального порога выплат, установленного для его Тарифного плана (3000 ₽, 1500 ₽ или 500 ₽ соответственно).</p>
-    <p>4.4. Оплата тарифных планов производится через платежный сервис ЮKassa. Лейбл не хранит и не обрабатывает реквизиты банковских карт Лицензиара.</p>
+            <h2>2. Гарантии и ответственность Артиста</h2>
+            <p>2.1. Лицензиар гарантирует, что обладает всеми необходимыми авторскими и смежными правами на загружаемые фонограммы, тексты и обложки, и что их использование не нарушает прав третьих лиц.</p>
+            <p>2.2. В случае предъявления претензий к Лейблу со стороны третьих лиц, касающихся нарушения авторских прав, Лицензиар обязуется самостоятельно и за свой счет урегулировать такие претензии, а также возместить Лейблу понесенные убытки.</p>
+            <p>2.3. Запрещено размещать контент, содержащий призывы к насилию, экстремизму, а также материалы, нарушающие законодательство РФ.</p>
 
-    <h2>5. Отказ от услуг и возврат средств</h2>
-    <p>5.1. Услуги по предоставлению доступа к функционалу платформы (подписка) считаются оказанными в полном объеме с момента активации тарифа.</p>
-    <p>5.2. Возврат средств за оплаченный период не производится, за исключением случаев, предусмотренных законодательством РФ о защите прав потребителей, когда услуга не была оказана по вине Лейбла.</p>
-    <p>5.3. Артист вправе в любой момент направить Лейблу запрос на удаление (Takedown) своих релизов со стриминговых площадок.</p>
+            <h2>3. Права и обязанности Лейбла</h2>
+            <p>3.1. Лейбл обязуется осуществить модерацию и последующую отгрузку контента на DSP в сроки, предусмотренные выбранным Тарифным планом.</p>
+            <p>3.2. Лейбл вправе <strong>отказать</strong> в публикации контента, если он не соответствует техническим требованиям площадок (низкое качество аудио, ненормативное оформление обложки) или нарушает п. 2.1 – 2.3 настоящей Оферты.</p>
+            <p>3.3. Лейбл оставляет за собой право в одностороннем порядке заблокировать или заморозить аккаунт Артиста в случае выявления мошеннических действий с прослушиваниями (накрутки) или кражи интеллектуальной собственности.</p>
 
-    <h2>6. Форс-мажор</h2>
-    <p>6.1. Стороны освобождаются от ответственности за неисполнение обязательств, если оно стало следствием непреодолимой силы (сбои на стороне DSP, блокировки сервисов, технические аварии в дата-центрах).</p>
+            <h2>4. Финансовые условия и Роялти</h2>
+            <p>4.1. Доход от стриминга (роялти) начисляется на внутренний баланс Артиста по факту получения отчетов от стриминговых платформ (обычно с задержкой в 2–3 месяца после завершения отчетного периода).</p>
+            <p>4.2. Распределение дохода осуществляется согласно активному тарифу Артиста: <strong>80%</strong>, <strong>85%</strong> или <strong>90%</strong> в пользу Лицензиара.</p>
+            <p>4.3. Вывод средств осуществляется по запросу Артиста при достижении минимального порога выплат, установленного для его Тарифного плана (3000 ₽, 1500 ₽ или 500 ₽ соответственно).</p>
+            <p>4.4. Оплата тарифных планов производится через интегрированный платежный сервис ЮKassa. Лейбл не хранит и не обрабатывает реквизиты банковских карт Лицензиара.</p>
 
-    <h2>7. Заключительные положения</h2>
-    <p>7.1. Настоящий договор действует с момента акцепта и до полного исполнения сторонами своих обязательств.</p>
-    <p>7.2. Все споры разрешаются в претензионном порядке (срок ответа — 30 дней), а при недостижении согласия — в суде по месту нахождения Лицензиата (г. Хабаровск)[cite: 8].</p>
-    <p>7.3. Контактный адрес для направления претензий и обращений: <span class="highlight">685musiclabel@list.ru</span>[cite: 8].</p>
+            <h2>5. Отказ от услуг и возврат средств</h2>
+            <p>5.1. Услуги по предоставлению доступа к функционалу платформы (подписка) считаются оказанными в полном объеме с момента активации тарифа на аккаунте.</p>
+            <p>5.2. Возврат средств за оплаченный период не производится, за исключением случаев, предусмотренных законодательством РФ о защите прав потребителей, когда услуга не была оказана по прямой вине Лейбла.</p>
+            <p>5.3. Артист вправе в любой момент направить Лейблу запрос через Личный кабинет на удаление (Takedown) своих релизов со стриминговых площадок.</p>
 
+            <h2>6. Форс-мажор</h2>
+            <p>6.1. Стороны освобождаются от ответственности за неисполнение обязательств, если оно стало следствием непреодолимой силы (сбои на стороне DSP, блокировки сервисов, технические аварии в дата-центрах).</p>
+
+            <h2>7. Заключительные положения</h2>
+            <p>7.1. Настоящий договор действует с момента акцепта и до полного исполнения сторонами своих обязательств.</p>
+            <p>7.2. Все споры разрешаются в претензионном порядке (срок ответа — 30 дней), а при недостижении согласия — в суде по месту нахождения Лицензиата (г. Хабаровск).</p>
+            
+            <div class="highlight-box">
+                <p><strong>Официальные контакты Лейбла:</strong></p>
+                <p>Оператор: Гонцовский Никита Русланович (НПД)</p>
+                <p>ИНН: 272305443924</p>
+                <p>E-mail для связи и обращений: <strong>685musiclabel@list.ru</strong></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
