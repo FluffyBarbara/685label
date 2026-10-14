@@ -1949,6 +1949,7 @@
                     <i class="fa-solid fa-user-shield"></i> <span>Настройки профиля</span>
                 </button>
                 
+                <!-- Кнопка перехода в панель администратора -->
                 <button class="nav-link" id="go-to-admin-btn-side" style="display: none; margin-top: 30px; color: var(--text-pure); border: 1px dashed var(--border-light); background: rgba(255,255,255,0.03);">
                     <i class="fa-solid fa-server"></i> <span>Панель Модератора</span>
                 </button>
@@ -1979,7 +1980,7 @@
                     <div class="user-avatar" id="user-avatar">A</div>
                     <div class="user-info">
                         <span class="user-email" id="display-nickname">Артист</span>
-                        <span class="user-role" id="user-role-text">Verified Artist</span>
+                        <span class="user-role" id="user-role-text">ТАРИФ: БАЗОВЫЙ</span>
                     </div>
                     <button class="btn-logout" id="logout-btn" title="Выйти">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -1996,9 +1997,10 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (ДИСТРИБУЦИЯ С НОВЫМИ ПОЛЯМИ) -->
             <section class="section" id="new-release">
 
+                <!-- ПРАВИЛА И РЕКОМЕНДАЦИИ -->
                 <div class="glass-card">
                     <div class="card-heading">
                         <i class="fa-solid fa-book-open"></i> Правила дистрибуции
@@ -2096,6 +2098,7 @@
                     <div class="accordion-body" style="padding-top:20px;">
                         <div class="grid-2">
                             
+                            <!-- Левая колонка / Правая колонка -->
                             <div class="input-box">
                                 <label>Название релиза *</label>
                                 <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
@@ -2498,6 +2501,7 @@
             <!-- СЕКЦИЯ: НАСТРОЙКИ -->
             <section class="section" id="settings">
                 
+                <!-- Текущий тариф пользователя -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-star"></i> Ваш тарифный план
@@ -2543,6 +2547,17 @@
                     </button>
                 </div>
 
+                <!-- ИСТОРИЯ ТРАНЗАКЦИЙ (НОВАЯ КАРТОЧКА) -->
+                <div class="glass-card" style="max-width: 650px;">
+                    <div class="card-heading">
+                        <i class="fa-solid fa-clock-rotate-left"></i> История транзакций
+                    </div>
+                    
+                    <div id="transactions-list" style="display: flex; flex-direction: column;">
+                        <div style="color:var(--text-secondary); font-size:13px; text-align:center;">Загрузка...</div>
+                    </div>
+                </div>
+
                 <!-- Юридические документы -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
@@ -2573,7 +2588,7 @@
                     </div>
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
-                        <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы разблокировать просмотр">
+                        <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы показать">
                     </div>
                     <div class="input-box" style="margin-bottom: 35px;">
                         <label>Смена пароля</label>
@@ -2584,6 +2599,7 @@
                         Сохранить изменения
                     </button>
                     
+                    <!-- Кнопка перехода в панель модератора -->
                     <button class="btn-glow" id="settings-admin-btn" style="display: none; background: transparent; color: var(--text-pure); border: 1px solid var(--border-light); margin-top: 20px;">
                         <i class="fa-solid fa-server" style="margin-right: 8px;"></i> Панель Модератора
                     </button>
@@ -2663,9 +2679,23 @@
 
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
-        // Размытие Email
+        // Функция "Выбрать все площадки"
+        window.selectAll = (state) => {
+            document.querySelectorAll('.dsp-cb').forEach(cb => {
+                cb.checked = state;
+            });
+        };
+
+        // Размытие Email (снятие по клику на 10 сек)
         document.getElementById('setting-email').addEventListener('click', function() {
-            this.classList.add('visible');
+            const el = this;
+            if(!el.classList.contains('visible')) {
+                el.classList.add('visible');
+                // Плавно возвращаем блюр через 10 секунд
+                setTimeout(() => {
+                    el.classList.remove('visible');
+                }, 10000);
+            }
         });
 
         // Управление Аккордеонами
@@ -2675,12 +2705,114 @@
                 accordion.classList.toggle('open');
             });
         });
-        
-        window.selectAll = (state) => {
-            document.querySelectorAll('.dsp-cb').forEach(cb => {
-                cb.checked = state;
-            });
-        };
+
+        // ==========================================
+        // ИСТОРИЯ ТРАНЗАКЦИЙ (ЗАГРУЗКА И ВЫВОД)
+        // ==========================================
+        async function loadUserTransactions(uid) {
+            const container = document.getElementById('transactions-list');
+            container.innerHTML = '<div class="spinner" style="width:25px;height:25px;border-width:2px;margin:20px auto;"></div>';
+            
+            try {
+                // Забираем платежи и зачисления (если будут добавлены модератором)
+                const qT = query(collection(db, "transactions"), where("userId", "==", uid));
+                const snapT = await getDocs(qT);
+                
+                // Забираем выводы средств
+                const qW = query(collection(db, "withdrawal_requests"), where("userId", "==", uid));
+                const snapW = await getDocs(qW);
+                
+                let combined = [];
+                
+                snapT.forEach(d => {
+                    const data = d.data();
+                    combined.push({
+                        id: d.id,
+                        title: data.title || 'Транзакция',
+                        amount: data.amount,
+                        date: data.createdAt ? data.createdAt.toMillis() : Date.now(),
+                        type: data.type || 'other'
+                    });
+                });
+                
+                snapW.forEach(d => {
+                    const data = d.data();
+                    let statusText = '';
+                    let amt = -data.amount; 
+                    
+                    if (data.status === 'Ожидает выплаты') {
+                        statusText = ' (В обработке)';
+                    } else if (data.status === 'Отклонено') {
+                        statusText = ' (Возврат)';
+                        amt = 0; 
+                    }
+                    
+                    combined.push({
+                        id: d.id,
+                        title: `Вывод роялти${statusText}`,
+                        amount: amt,
+                        originalAmount: data.amount,
+                        date: data.createdAt ? data.createdAt.toMillis() : Date.now(),
+                        type: 'withdrawal',
+                        status: data.status
+                    });
+                });
+                
+                combined.sort((a, b) => b.date - a.date);
+                
+                if (combined.length === 0) {
+                    container.innerHTML = '<div style="color:var(--text-secondary); font-size:13px; text-align:center;">У вас пока нет транзакций.</div>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                combined.forEach(item => {
+                    const d = new Date(item.date);
+                    const dateStr = d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+                    
+                    let amountColor = 'var(--text-pure)';
+                    let amountPrefix = '';
+                    if (item.amount > 0) {
+                        amountColor = 'var(--success)';
+                        amountPrefix = '+';
+                    } else if (item.amount < 0) {
+                        amountColor = 'var(--danger-text)';
+                    }
+                    
+                    let amountText = `${amountPrefix}${item.amount.toLocaleString('ru-RU')} ₽`;
+                    
+                    // Если вывод отклонили, зачеркиваем сумму и пишем Возврат
+                    if (item.type === 'withdrawal' && item.status === 'Отклонено') {
+                        amountColor = 'var(--text-secondary)';
+                        amountText = `<span style="text-decoration:line-through;">-${item.originalAmount.toLocaleString('ru-RU')} ₽</span> Возврат`;
+                    }
+
+                    let icon = 'fa-money-bill-transfer';
+                    if (item.type === 'payment') icon = 'fa-credit-card';
+                    
+                    container.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--border-light); padding:15px; border-radius:12px; margin-bottom:10px;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="background:rgba(255,255,255,0.05); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);">
+                                    <i class="fa-solid ${icon}"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size:14px; font-weight:700; color:var(--text-pure);">${item.title}</div>
+                                    <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${dateStr}</div>
+                                </div>
+                            </div>
+                            <div style="font-size:15px; font-weight:800; color:${amountColor}; text-align:right;">
+                                ${item.amount === 0 && item.type !== 'withdrawal' ? '0 ₽' : amountText}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+            } catch(e) {
+                container.innerHTML = '<div style="color:var(--danger-text); font-size:13px; text-align:center;">Ошибка загрузки истории.</div>';
+            }
+        }
 
         // ==========================================
         // УМНЫЙ AI ГЕНЕРАТОР ПИТЧИНГА С ЭКВАЛАЙЗЕРОМ
@@ -2893,13 +3025,15 @@
             }
         });
 
+        // Сохраняем цену перед отправкой в ЮKassa, чтобы записать ее в транзакции
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             localStorage.setItem('pendingPaymentPlan', currentSelectedPlan);
             localStorage.setItem('pendingPaymentMonths', currentSelectedMonths);
+            localStorage.setItem('pendingPaymentPrice', document.getElementById('ym-sum').value);
         });
 
         // ==========================================
-        // ЛОГИКА АКТИВАЦИИ ПОДАРОЧНЫХ ПРОМОКОДОВ
+        // ЛОГИКА АКТИВАЦИИ ПОДАРОЧНЫХ ПРОМОКОДОВ В НАСТРОЙКАХ
         // ==========================================
         document.getElementById('activate-gift-btn').addEventListener('click', async () => {
             const code = document.getElementById('settings-promo-input').value.trim().toUpperCase();
@@ -2935,6 +3069,9 @@
                         document.getElementById('setting-current-plan').innerText = newPlan;
                         document.getElementById('setting-plan-expire').innerText = "До " + expDate.toLocaleDateString('ru-RU');
                         
+                        // Загружаем транзакции снова (подарок не записывается как финансовая транзакция, но можно обновить UI)
+                        loadUserTransactions(auth.currentUser.uid);
+                        
                     } else {
                         notify("Этот промокод не предназначен для выдачи тарифа или неактивен", "error");
                     }
@@ -2948,7 +3085,7 @@
 
 
         // ==========================================
-        // ЛОГИКА ЧАТА ПОДДЕРЖКИ
+        // ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE)
         // ==========================================
         function formatChatTime(ts) {
             if (!ts) {
@@ -3105,7 +3242,7 @@
         }
 
         // ==========================================
-        // АВТОРИЗАЦИЯ И ДАННЫЕ ПРОФИЛЯ
+        // ЛОГИКА АВТОРИЗАЦИИ С ЖЕСТКИМ ОТЛОВОМ ОШИБОК
         // ==========================================
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
@@ -3137,6 +3274,7 @@
             }
         });
 
+        // АНТИ-БРУТФОРС
         function checkBruteForce() {
             const attempts = parseInt(localStorage.getItem('login_attempts')) || 0;
             const lockTime = parseInt(localStorage.getItem('login_lockout_time')) || 0;
@@ -3178,6 +3316,7 @@
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
+            // Проверка никнейма только если он виден
             const nicknameElement = document.getElementById('auth-nickname');
             const nickname = nicknameElement ? nicknameElement.value.trim() : '';
 
@@ -3226,6 +3365,7 @@
             } catch (err) {
                 recordFailedLogin();
                 
+                // Перевод системных ошибок на русский
                 let errorMsg = "Ошибка авторизации";
                 if(err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
                     errorMsg = "Неверный E-mail или пароль";
@@ -3276,6 +3416,7 @@
             }
         });
 
+        // Отслеживание состояния сессии и профиля
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
@@ -3296,23 +3437,38 @@
                     return;
                 }
                 
+                // Обработка успешной оплаты ЮKassa
                 try {
                     const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams.get('payment') === 'success') {
                         const pendingPlan = localStorage.getItem('pendingPaymentPlan');
                         const pendingMonths = parseInt(localStorage.getItem('pendingPaymentMonths'));
+                        const pendingPrice = localStorage.getItem('pendingPaymentPrice');
                         
                         if (pendingPlan && pendingMonths) {
                             const expDate = new Date();
                             expDate.setMonth(expDate.getMonth() + pendingMonths); 
                             
+                            // Обновление профиля
                             await setDoc(doc(db, "users", user.uid), {
                                 subscription: pendingPlan,
                                 subscriptionExpiresAt: expDate.getTime()
                             }, { merge: true });
                             
+                            // Запись транзакции в историю
+                            if (pendingPrice) {
+                                await addDoc(collection(db, "transactions"), {
+                                    userId: user.uid,
+                                    type: 'payment',
+                                    title: `Оплата тарифа «${pendingPlan}» на ${pendingMonths} мес.`,
+                                    amount: -parseFloat(pendingPrice),
+                                    createdAt: serverTimestamp()
+                                });
+                            }
+                            
                             localStorage.removeItem('pendingPaymentPlan');
                             localStorage.removeItem('pendingPaymentMonths');
+                            localStorage.removeItem('pendingPaymentPrice');
                             
                             notify(`Оплата успешно завершена! Тариф «${pendingPlan}» активирован на ${pendingMonths} мес.`, "success");
                             window.history.replaceState(null, null, window.location.pathname);
@@ -3326,6 +3482,7 @@
                     userProfileUnsub();
                 }
                 
+                // Жесткий отлов ошибок при чтении базы данных
                 userProfileUnsub = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
                     try {
                         if (docSnap.exists()) {
@@ -3347,6 +3504,7 @@
                                 return;
                             }
 
+                            // ВСЁ УСПЕШНО - СБРАСЫВАЕМ КНОПКУ И ОТКРЫВАЕМ САЙТ
                             authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
                             authBtn.disabled = false;
 
@@ -3389,6 +3547,7 @@
                             currentUserBalance = d.balance || 0;
                             document.getElementById('setting-balance').innerText = currentUserBalance.toLocaleString('ru-RU') + ' ₽';
                             
+                            // Определяем минимальную сумму вывода
                             if (planName === "Профессиональный") {
                                 currentUserMinWithdraw = 500;
                             } else if (planName === "Расширенный") {
@@ -3401,7 +3560,9 @@
 
                             fetchReleases(user.uid);
                             initUserChat(user.uid);
+                            loadUserTransactions(user.uid);
 
+                            // Кнопки для Админа и отображение роли
                             const adminBtnSide = document.getElementById('go-to-admin-btn-side');
                             const adminBtnSettings = document.getElementById('settings-admin-btn');
                             const userRoleText = document.getElementById('user-role-text');
@@ -3420,7 +3581,8 @@
                                 if(adminBtnSide) adminBtnSide.style.display = 'none';
                                 if(adminBtnSettings) adminBtnSettings.style.display = 'none';
                                 
-                                userRoleText.innerText = 'Verified Artist';
+                                // ДИНАМИЧЕСКИЙ ВЫВОД ТАРИФА В ШАПКУ (Пункт 2 из запроса)
+                                userRoleText.innerText = `ТАРИФ: ${planName.toUpperCase()}`;
                                 userRoleText.style.color = 'var(--text-secondary)';
                             }
 
@@ -3441,6 +3603,7 @@
                     }
 
                 }, (error) => {
+                    // ЕСЛИ FIREBASE БЛОКИРУЕТ ДОСТУП ИЛИ НЕТ ИНТЕРНЕТА
                     console.error("Firebase Snapshot Error:", error);
                     notify("Отказано в доступе к базе данных. Проверьте права", "error");
                     authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
@@ -3470,7 +3633,7 @@
         });
 
         // ==========================================
-        // ЛОГИКА ВЫВОДА СРЕДСТВ И ВЫБОР РЕКВИЗИТОВ
+        // ЛОГИКА ВЫВОДА СРЕДСТВ
         // ==========================================
         document.getElementById('withdraw-btn').addEventListener('click', () => {
             if (currentUserBalance < currentUserMinWithdraw) {
@@ -3521,7 +3684,6 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
             btn.disabled = true;
 
-            // ФИКС ОШИБКИ НУЛЕВОГО БАЛАНСА: 
             // Сохраняем текущий баланс до того, как его обнулит база!
             const amountToWithdraw = currentUserBalance; 
 
@@ -3553,6 +3715,9 @@
                 document.getElementById('w-sbp-bank').value = '';
                 document.getElementById('w-acc-bik').value = '';
                 document.getElementById('w-acc-number').value = '';
+                
+                // Обновляем список транзакций пользователя
+                loadUserTransactions(auth.currentUser.uid);
                 
             } catch(e) {
                 console.error(e);
@@ -3641,7 +3806,7 @@
             });
         });
 
-        // Запрос на удаление со стороны юзера
+        // Запрос на удаление со стороны юзера (если одобрено - запрос модератору, иначе удаляет сразу)
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) {
