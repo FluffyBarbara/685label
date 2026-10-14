@@ -2096,7 +2096,7 @@
                             </div>
                             
                             <div class="input-box">
-                                <label>Ненормативная лексика (Explicit) *</label>
+                                <label>Маркировки *</label>
                                 <select id="r-explicit" class="styled-input">
                                     <option value="Нет (Чистая версия)">Нет (Чистая версия)</option>
                                     <option value="Да (Есть мат)">Да (Есть мат)</option>
@@ -2124,10 +2124,15 @@
                                 <input type="date" id="r-date" class="styled-input">
                             </div>
                             
-                            <!-- Поля на всю ширину (grid-column: 1 / -1) -->
+                            <!-- НОВЫЕ ПОЛЯ (Автор текста и Автор музыки) на всю ширину -->
                             <div class="input-box" style="grid-column: 1 / -1; margin-top: 10px;">
-                                <label>ФИО авторов (через запятую) *</label>
-                                <input type="text" id="r-authors" class="styled-input" placeholder="Например: Иванов Иван Иванович, Смирнов Алексей">
+                                <label>ФИО Автора текста (через запятую) *</label>
+                                <input type="text" id="r-authors-text" class="styled-input" placeholder="Например: Иванов Иван Иванович">
+                            </div>
+                            
+                            <div class="input-box" style="grid-column: 1 / -1; margin-top: 10px;">
+                                <label>ФИО Автора музыки (через запятую) *</label>
+                                <input type="text" id="r-authors-music" class="styled-input" placeholder="Например: Смирнов Алексей">
                             </div>
                             
                             <div class="input-box" style="grid-column: 1 / -1; margin-top: 10px;">
@@ -2491,7 +2496,7 @@
                     </button>
                 </div>
 
-                <!-- Блок Юридических документов (КНОПКИ) -->
+                <!-- Блок Юридических документов -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-file-contract"></i> Юридические документы
@@ -3634,16 +3639,19 @@
             const releaseDate = document.getElementById('r-date') ? document.getElementById('r-date').value : '';
             const trackVersion = document.getElementById('r-version') ? document.getElementById('r-version').value.trim() : '';
             const feat = document.getElementById('r-feat') ? document.getElementById('r-feat').value.trim() : '';
-            const authors = document.getElementById('r-authors') ? document.getElementById('r-authors').value.trim() : '';
             const explicit = document.getElementById('r-explicit') ? document.getElementById('r-explicit').value : '';
             const aiUsage = document.getElementById('r-ai') ? document.getElementById('r-ai').value : '';
             const tiktok = document.getElementById('r-tiktok') ? document.getElementById('r-tiktok').value.trim() : '';
             const lyrics = document.getElementById('r-lyrics') ? document.getElementById('r-lyrics').value.trim() : '';
             
+            // РАЗДЕЛЕННЫЕ ФИО АВТОРОВ
+            const authorsText = document.getElementById('r-authors-text') ? document.getElementById('r-authors-text').value.trim() : '';
+            const authorsMusic = document.getElementById('r-authors-music') ? document.getElementById('r-authors-music').value.trim() : '';
+            
             const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
-            // Проверка обязательных полей
-            if (!title || !artist || !cover || !audio || !authors || !tiktok || !lyrics) {
+            // Проверка обязательных полей (включая новых авторов)
+            if (!title || !artist || !cover || !audio || !authorsText || !authorsMusic || !tiktok || !lyrics) {
                 return notify("Заполните все обязательные поля, отмеченные звездочкой (*)", "error");
             }
             
@@ -3685,14 +3693,15 @@
                     }
                 }
 
-                // Сохранение в базу данных Firestore, включая все новые поля
+                // Сохранение в базу данных Firestore
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid, 
                     userEmail: auth.currentUser.email, 
                     userNickname: currentNick,
                     artist, 
                     feat,
-                    authors,
+                    authorsText,
+                    authorsMusic,
                     title, 
                     genre, 
                     type, 
@@ -3715,7 +3724,8 @@
 
                 notify("Трек успешно отправлен на модерацию!", "success");
                 
-                ['r-title', 'r-artist', 'r-feat', 'r-authors', 'r-lyrics', 'r-tiktok', 'r-cover', 'r-audio', 'r-promo-text', 'r-date', 'r-version'].forEach(id => {
+                // Очистка полей
+                ['r-title', 'r-artist', 'r-feat', 'r-authors-text', 'r-authors-music', 'r-lyrics', 'r-tiktok', 'r-cover', 'r-audio', 'r-promo-text', 'r-date', 'r-version'].forEach(id => {
                     const el = document.getElementById(id);
                     if(el) {
                         el.value = '';
