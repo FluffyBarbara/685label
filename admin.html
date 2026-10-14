@@ -185,6 +185,12 @@
             transition: var(--transition); 
         }
         
+        input, select, textarea { 
+            font-family: inherit; 
+            outline: none; 
+            border: none; 
+        }
+
         @keyframes fadeUp { 
             from { 
                 opacity: 0; 
@@ -1885,7 +1891,7 @@
         }
 
         // ==========================================
-        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ
+        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ И РОЯЛТИ
         // ==========================================
         function loadUsers() {
             const container = document.getElementById('users-list-container');
@@ -1925,16 +1931,77 @@
                 return;
             }
             
+            // СОХРАНЯЕМ ТЕКУЩИЙ ВЫБОР (защита от сброса при обновлениях базы)
+            const currentUid = hiddenInput.value;
+            const currentText = triggerValue.innerText;
+            
             optionsContainer.innerHTML = '';
-            triggerValue.innerText = 'Выберите музыканта...';
-            hiddenInput.value = '';
+            let found = false;
             
             usersList.forEach(u => {
                 if (u.id !== ADMIN_UID) { 
-                    optionsContainer.innerHTML += `<div class="custom-option" data-value="${u.id}">${u.nickname || u.email}</div>`;
+                    const isSelected = (u.id === currentUid);
+                    if (isSelected) found = true;
+                    
+                    optionsContainer.innerHTML += `<div class="custom-option ${isSelected ? 'selected' : ''}" data-value="${u.id}">${u.nickname || u.email}</div>`;
                 }
             });
+            
+            // Если выбранный артист все еще существует, оставляем его, иначе сбрасываем
+            if (found) {
+                triggerValue.innerText = currentText;
+                hiddenInput.value = currentUid;
+            } else {
+                triggerValue.innerText = 'Выберите музыканта...';
+                hiddenInput.value = '';
+            }
         }
+
+        // КНОПКА НАЧИСЛЕНИЯ СРЕДСТВ
+        document.getElementById('add-royalty-btn').addEventListener('click', async () => {
+            const uid = document.getElementById('royalty-artist-select').value;
+            const amount = parseFloat(document.getElementById('royalty-amount').value);
+
+            if (!uid) {
+                return notify("Выберите артиста из списка!", "error");
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                return notify("Укажите корректную сумму для начисления!", "error");
+            }
+
+            const btn = document.getElementById('add-royalty-btn');
+            const origText = btn.innerText;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
+            btn.disabled = true;
+
+            try {
+                const userRef = doc(db, "users", uid);
+                const snap = await getDoc(userRef);
+                
+                if (snap.exists()) {
+                    const currentBalance = snap.data().balance || 0;
+                    
+                    await setDoc(userRef, { 
+                        balance: currentBalance + amount 
+                    }, { merge: true });
+                    
+                    notify(`Успешно начислено ${amount} ₽ артисту!`, "success");
+                    
+                    // Полностью очищаем форму
+                    document.getElementById('royalty-amount').value = '';
+                    document.getElementById('royalty-artist-select').value = '';
+                    document.getElementById('royalty-artist-trigger-val').innerText = 'Выберите музыканта...';
+                    document.querySelectorAll('#royalty-artist-options .custom-option').forEach(o => o.classList.remove('selected'));
+                }
+            } catch(e) { 
+                notify("Ошибка начисления роялти", "error"); 
+            } finally { 
+                btn.innerText = origText; 
+                btn.disabled = false; 
+            }
+        });
 
         function renderUsersList(users) {
             const container = document.getElementById('users-list-container');
@@ -1947,6 +2014,8 @@
 
             users.forEach(u => {
                 const status = u.accountStatus || 'Активен';
+                const balance = u.balance || 0;
+                
                 let statusBadge = `<span class="badge-active">Активен</span>`;
                 
                 if (status === 'banned') {
@@ -1962,6 +2031,7 @@
                     actionButtons = `<div class="btn-owner"><i class="fa-solid fa-crown" style="margin-right:5px;"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
+                        <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
                         <button class="btn-wipe" onclick="deleteUserAccount('${u.id}')">
                             <i class="fa-solid fa-trash" style="margin-right:5px;"></i> Удалить аккаунт
                         </button>
@@ -1975,7 +2045,6 @@
 
                 const tariffHtml = u.id !== ADMIN_UID ? `
                     <div class="tariff-box">
-                        
                         <div class="custom-select" style="width: 200px;">
                             <div class="custom-select-trigger" style="padding: 10px 14px; border-radius: 12px;">
                                 <span class="custom-select-value">Сброс до Базового</span>
@@ -1989,8 +2058,11 @@
                             </div>
                             <input type="hidden" id="tariff-select-${u.id}" value="Базовый">
                         </div>
-                        
                         <button class="btn-issue" onclick="issueTariff('${u.id}')">Выдать</button>
+                    </div>
+                    
+                    <div style="margin-top: 15px; font-size: 13px; color: var(--text-primary);">
+                        <i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> Баланс роялти: <strong style="color:var(--text-pure); font-size: 15px;">${balance.toLocaleString('ru-RU')} ₽</strong>
                     </div>
                 ` : '';
 
@@ -2591,9 +2663,6 @@
             ));
         });
 
-        // ==========================================
-        // ОБНОВЛЕННЫЙ ЭКСПОРТ В CSV
-        // ==========================================
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) {
                 return notify("Нет данных", "error");
