@@ -2,67 +2,295 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Политика конфиденциальности | 685 Music</title>
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: transparent; 
-            color: #888888; 
-            margin: 0; 
-            padding: 10px; 
-            line-height: 1.6; 
-            font-size: 13px; 
+        /* ==========================================
+           ПРЕМИАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        ========================================== */
+        :root {
+            --bg-deep: #000000;
+            --bg-surface: rgba(15, 15, 15, 0.45);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --text-pure: #ffffff;
+            --text-primary: #e5e5e5;
+            --text-secondary: #888888;
         }
-        h1 { font-size: 18px; color: #ffffff; margin-bottom: 20px; font-weight: 800; letter-spacing: -0.5px; }
-        h2 { font-size: 14px; color: #ffffff; margin-top: 25px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        p { margin-bottom: 12px; }
-        ul { margin-left: 20px; margin-bottom: 15px; }
-        li { margin-bottom: 6px; }
-        strong { color: #e5e5e5; font-weight: 600; }
-        .highlight { color: #ffffff; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ==========================================
+           АНИМАЦИЯ БАБОЧЕК
+        ========================================== */
+        #butterflies-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .butterfly {
+            position: absolute;
+            bottom: -100px;
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.6); opacity: 0; }
+            15% { opacity: var(--target-opacity); }
+            50% { transform: translateY(-55vh) translateX(var(--drift)) rotate(var(--rot)) scale(1); }
+            85% { opacity: var(--target-opacity); }
+            100% { transform: translateY(-120vh) translateX(calc(var(--drift) * -1)) rotate(calc(var(--rot) * -1)) scale(1.2); opacity: 0; }
+        }
+
+        /* ==========================================
+           СТРУКТУРА ДОКУМЕНТА
+        ========================================== */
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 15px;
+        }
+
+        .header-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-pure);
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .document-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .doc-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-pure);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .doc-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        h2 {
+            font-size: 18px;
+            color: var(--text-pure);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--text-pure);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--text-pure);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            font-size: 14px;
+        }
+
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media(max-width: 768px) {
+            .document-card {
+                padding: 30px 20px;
+            }
+            .doc-title {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Политика конфиденциальности и обработки персональных данных</h1>
+    <!-- ГЕНЕРАТОР БАБОЧЕК -->
+    <div id="butterflies-container"></div>
+    <script>
+        const container = document.getElementById('butterflies-container');
+        const bfSVG = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 13V20M12 13C12 13 8 9 4 10C4 10 3 14 6 17C9 20 12 13 12 13ZM12 13C12 13 16 9 20 10C20 10 21 14 18 17C15 20 12 13 12 13Z"/>
+            </svg>
+        `;
+        
+        for (let i = 0; i < 20; i++) {
+            const div = document.createElement('div');
+            div.className = 'butterfly';
+            div.innerHTML = bfSVG;
+            
+            const size = Math.random() * 40 + 20; 
+            const startX = Math.random() * 100;
+            const duration = Math.random() * 40 + 30; 
+            const delay = Math.random() * -40; 
+            const opacity = Math.random() * 0.3 + 0.1;
+            const drift = (Math.random() * 80 - 40) + 'px';
+            const rot = (Math.random() * 30 - 15) + 'deg';
+            
+            div.style.width = size + 'px';
+            div.style.left = startX + 'vw';
+            div.style.animationDuration = duration + 's';
+            div.style.animationDelay = delay + 's';
+            div.style.setProperty('--target-opacity', opacity);
+            div.style.setProperty('--drift', drift);
+            div.style.setProperty('--rot', rot);
+            
+            container.appendChild(div);
+        }
+    </script>
 
-    <h2>1. Общие положения</h2>
-    <p>1.1. Настоящая Политика определяет порядок обработки и защиты персональных данных пользователей сайта <strong>685 Music</strong>. Оператором персональных данных является плательщик НПД <strong>Гонцовский Никита Русланович</strong> (ИНН: 272305443924, г. Хабаровск)[cite: 8], далее — <strong>«Оператор»</strong>.</p>
-    <p>1.2. Использование сайта и сервисов Лейбла означает безоговорочное согласие Пользователя с настоящей Политикой и условиями обработки его персональных данных в соответствии с Федеральным законом №152-ФЗ «О персональных данных».</p>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <i class="fa-solid fa-compact-disc"></i> 685music
+            </div>
+        </div>
 
-    <h2>2. Состав собираемых данных</h2>
-    <p>2.1. В рамках функционирования личного кабинета Оператор собирает минимально необходимый объем данных:</p>
-    <ul>
-        <li>Адрес электронной почты (E-mail) — для идентификации пользователя, восстановления пароля и системных рассылок.</li>
-        <li>Никнейм (Псевдоним артиста) — для корректного формирования метаданных релиза и отображения в личном кабинете.</li>
-    </ul>
-    <p>2.2. <strong>Финансовые данные:</strong> Оператор <strong>не собирает, не хранит и не обрабатывает</strong> данные банковских карт Пользователей. Все платежные транзакции осуществляются исключительно на стороне защищенного сервиса ЮKassa (ООО НКО «ЮМани»), обладающего сертификатом PCI DSS.</p>
+        <div class="document-card">
+            <h1 class="doc-title">Политика конфиденциальности</h1>
+            <div class="doc-subtitle">В отношении обработки и защиты персональных данных</div>
 
-    <h2>3. Цели обработки информации</h2>
-    <p>3.1. Данные Пользователя обрабатываются исключительно для:</p>
-    <ul>
-        <li>Создания и обеспечения работы Личного кабинета артиста.</li>
-        <li>Идентификации правообладателя при отгрузке музыкальных релизов на стриминговые платформы.</li>
-        <li>Связи с Пользователем (уведомления об успешной модерации, запросы правок, ответы службы поддержки).</li>
-        <li>Формирования отчетности и начисления роялти на внутренний баланс.</li>
-    </ul>
+            <h2>1. Общие положения</h2>
+            <p>1.1. Настоящая Политика определяет порядок обработки и защиты персональных данных пользователей экосистемы <strong>685 Music</strong>. Оператором персональных данных является плательщик налога на профессиональный доход (НПД) <strong>Гонцовский Никита Русланович</strong> (ИНН: 272305443924, г. Хабаровск), далее — <strong>«Оператор»</strong>.</p>
+            <p>1.2. Использование сайта и сервисов Лейбла означает безоговорочное согласие Пользователя с настоящей Политикой и условиями обработки его персональных данных в соответствии с Федеральным законом №152-ФЗ «О персональных данных».</p>
 
-    <h2>4. Передача данных третьим лицам</h2>
-    <p>4.1. Оператор обязуется не разглашать полученную от Пользователя информацию сторонним компаниям, за исключением случаев, прямо необходимых для исполнения обязательств Лейбла.</p>
-    <p>4.2. Пользователь дает согласие на передачу своего Псевдонима (Никнейма) и метаданных релизов цифровым музыкальным площадкам (VK Музыка, Яндекс Музыка, Apple Music, Spotify и др.) в рамках оказания услуг дистрибуции.</p>
-    <p>4.3. Данные могут быть переданы правоохранительным органам Российской Федерации исключительно по официальному и законному запросу в порядке, предусмотренном действующим законодательством.</p>
+            <h2>2. Состав собираемых данных</h2>
+            <p>2.1. В рамках функционирования личного кабинета Оператор собирает минимально необходимый объем данных:</p>
+            <ul>
+                <li>Адрес электронной почты (E-mail) — для идентификации пользователя, восстановления доступа и системных рассылок.</li>
+                <li>Никнейм (Псевдоним артиста) — для корректного формирования метаданных релизов.</li>
+            </ul>
+            <p>2.2. <strong>Финансовые данные:</strong> Оператор <strong>не собирает, не хранит и не обрабатывает</strong> данные банковских карт Пользователей. Все платежные транзакции осуществляются исключительно на стороне защищенного сервиса ЮKassa (ООО НКО «ЮМани»), обладающего сертификатом безопасности PCI DSS.</p>
 
-    <h2>5. Защита персональных данных</h2>
-    <p>5.1. Оператор принимает необходимые организационные и технические меры (в том числе средства криптографической защиты, предоставляемые Firebase) для защиты данных Пользователя от неправомерного доступа, копирования, распространения и уничтожения.</p>
-    <p>5.2. Пароли Пользователей хранятся в зашифрованном виде. Оператор не имеет доступа к паролям в открытом виде.</p>
+            <h2>3. Цели обработки информации</h2>
+            <p>3.1. Данные Пользователя обрабатываются исключительно для:</p>
+            <ul>
+                <li>Создания и обеспечения работы Личного кабинета артиста.</li>
+                <li>Идентификации правообладателя при отгрузке музыкальных релизов на стриминговые платформы.</li>
+                <li>Связи с Пользователем (уведомления об успешной модерации, запросы правок, ответы службы поддержки).</li>
+                <li>Формирования отчетности и начисления роялти.</li>
+            </ul>
 
-    <h2>6. Права Пользователя</h2>
-    <p>6.1. Пользователь вправе в любой момент актуализировать или изменить свои данные в разделе «Настройки профиля».</p>
-    <p>6.2. Пользователь вправе отозвать свое согласие на обработку персональных данных и потребовать полного удаления аккаунта и связанной с ним информации из базы данных Лейбла, направив соответствующий запрос через встроенный чат поддержки или на электронную почту.</p>
+            <h2>4. Передача данных третьим лицам</h2>
+            <p>4.1. Оператор обязуется не разглашать полученную от Пользователя информацию сторонним компаниям, за исключением случаев, прямо необходимых для исполнения обязательств Лейбла.</p>
+            <p>4.2. Пользователь дает согласие на передачу своего Псевдонима (Никнейма) и метаданных релизов цифровым музыкальным площадкам (VK Музыка, Яндекс Музыка, Apple Music, Spotify и др.) в рамках оказания услуг дистрибуции.</p>
+            <p>4.3. Данные могут быть переданы правоохранительным органам Российской Федерации исключительно по официальному и законному запросу в порядке, предусмотренном действующим законодательством.</p>
 
-    <h2>7. Контактная информация</h2>
-    <p>7.1. По всем вопросам, касающимся обработки персональных данных, Пользователь может обратиться по электронной почте: <span class="highlight">685musiclabel@list.ru</span>[cite: 8].</p>
+            <h2>5. Защита персональных данных</h2>
+            <p>5.1. Оператор принимает необходимые организационные и технические меры (в том числе средства криптографической защиты инфраструктуры Firebase) для защиты данных Пользователя от неправомерного доступа, копирования, распространения и уничтожения.</p>
+            <p>5.2. Пароли Пользователей хранятся в зашифрованном виде. Оператор не имеет доступа к паролям в открытом виде.</p>
 
+            <h2>6. Права Пользователя</h2>
+            <p>6.1. Пользователь вправе в любой момент актуализировать или изменить свои данные в разделе «Настройки профиля».</p>
+            <p>6.2. Пользователь вправе отозвать свое согласие на обработку персональных данных и потребовать полного удаления аккаунта и связанной с ним информации из базы данных Лейбла, направив запрос через встроенный чат поддержки или на электронную почту.</p>
+
+            <div class="highlight-box">
+                <p><strong>Реквизиты и контакты:</strong></p>
+                <p>Оператор: Гонцовский Никита Русланович (НПД)</p>
+                <p>ИНН: 272305443924</p>
+                <p>E-mail: <strong>685musiclabel@list.ru</strong></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
