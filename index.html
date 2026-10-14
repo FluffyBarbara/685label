@@ -10,7 +10,6 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     
-    <!-- Подключение шрифтов, иконок и стилей ЮKassa -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://yookassa.ru/integration/simplepay/css/yookassa_construct_form.css?v=1.35.0">
@@ -36,12 +35,10 @@
                 'constructor'
             ];
             
-            // Блокировка правой кнопки мыши
             document[_0x3b1c[2]](_0x3b1c[1], function(e) { 
                 e[_0x3b1c[0]](); 
             });
             
-            // Блокировка F12, Ctrl+Shift+I, Ctrl+U
             document[_0x3b1c[2]](_0x3b1c[3], function(e) {
                 if (
                     e[_0x3b1c[4]] === _0x3b1c[5] || 
@@ -57,7 +54,6 @@
                 }
             });
             
-            // Капкан консоли
             setInterval(function() { 
                 (function() {
                     return false;
@@ -263,6 +259,10 @@
         
         .toast.success {
             border-left-color: var(--text-pure);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
         }
 
         /* ==========================================
@@ -552,7 +552,7 @@
 
         .user-role {
             font-size: 11px;
-            color: var(--text-secondary);
+            color: var(--text-pure);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -1379,7 +1379,6 @@
             height: 100%;
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(15px);
-            /* Важно! Z-index должен быть ниже, чем у toast-container (9999999) */
             z-index: 100000;
             align-items: center;
             justify-content: center;
@@ -1670,7 +1669,7 @@
         }
     </script>
 
-    <!-- Уведомления (Toasts) теперь физически внизу, но с высоким z-index -->
+    <!-- Уведомления (Toasts) поверх всех окон -->
     <div id="toast-container"></div>
 
     <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ ЮKASSA -->
@@ -1921,7 +1920,6 @@
                 <div class="user-menu">
                     <div class="user-avatar" id="user-avatar">A</div>
                     <div class="user-info">
-                        <!-- Почта убрана. Оставлен никнейм и роль -->
                         <span class="user-email" id="display-nickname">Артист</span>
                         <span class="user-role" id="user-role-text">Verified Artist</span>
                     </div>
@@ -2075,7 +2073,7 @@
                                 </select>
                             </div>
                             
-                            <!-- Добавлен выбор даты релиза -->
+                            <!-- Выбор даты релиза -->
                             <div class="input-box" style="grid-column: 1 / -1;">
                                 <label>Дата выхода (Отложенная публикация)</label>
                                 <input type="date" id="r-date" class="styled-input">
@@ -2312,7 +2310,7 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: ТАРИФЫ (АКТУАЛЬНЫЕ) -->
+            <!-- СЕКЦИЯ: ТАРИФЫ -->
             <section class="section" id="pricing">
                 <div style="margin-bottom: 40px;">
                     <h2 style="font-size: 32px; font-weight: 800; color: var(--text-pure); margin-bottom: 10px; letter-spacing: -1px;">
@@ -2341,7 +2339,7 @@
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Питчинг и смарт-ссылки</li>
                             <li class="disabled"><i class="fa-solid fa-xmark"></i> Приоритетная поддержка</li>
                         </ul>
-                        <!-- Кнопка изменена на ВЫБРАТЬ ТАРИФ -->
+                        <!-- Кнопка изменена -->
                         <button class="btn-glow yk-buy-btn" data-plan="Стартовый" data-p1="299" data-p3="897" data-p12="1973">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2364,7 +2362,7 @@
                             <li><i class="fa-solid fa-check"></i> Видеошоты (Яндекс) и караоке-текст</li>
                             <li><i class="fa-solid fa-check"></i> Приоритетная поддержка (ответ до 48ч)</li>
                         </ul>
-                        <!-- Кнопка изменена на ВЫБРАТЬ ТАРИФ -->
+                        <!-- Кнопка изменена -->
                         <button class="btn-glow yk-buy-btn" data-plan="Расширенный" data-p1="699" data-p3="2097" data-p12="4613">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2386,7 +2384,7 @@
                             <li><i class="fa-solid fa-check"></i> Возможность указывать свой лейбл (копирайт)</li>
                             <li><i class="fa-solid fa-check"></i> Весь функционал расширенного тарифа</li>
                         </ul>
-                        <!-- Кнопка изменена на ВЫБРАТЬ ТАРИФ -->
+                        <!-- Кнопка изменена -->
                         <button class="btn-glow yk-buy-btn" data-plan="Профессиональный" data-p1="999" data-p3="2997" data-p12="6593">
                             ВЫБРАТЬ ТАРИФ
                         </button>
@@ -2799,7 +2797,7 @@
             }
         });
 
-        // Отправка формы ЮKassa (Обязательное согласие убрано)
+        // Отправка формы ЮKassa
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             localStorage.setItem('pendingPaymentPlan', currentSelectedPlan);
             localStorage.setItem('pendingPaymentMonths', currentSelectedMonths);
@@ -3097,6 +3095,10 @@
                     return notify("Введите ваш никнейм", "error");
                 }
                 
+                if(!document.getElementById('auth-agree-cb').checked) {
+                    return notify("Примите условия Публичной оферты и Политики конфиденциальности", "error");
+                }
+                
                 // Проверка сложного пароля
                 const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
                 if (!strongPasswordRegex.test(pass)) {
@@ -3367,6 +3369,7 @@
                         
                         if (!isFirstLoad) {
                             playNotificationSound();
+                            notifyLong("У вас новое сообщение от службы поддержки!", "success");
                         }
                     } else {
                         chatBadge.style.display = 'none';
