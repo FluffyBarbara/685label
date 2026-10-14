@@ -711,7 +711,7 @@
             border-radius: 20px; 
             padding: 30px; 
             display: grid; 
-            grid-template-columns: 2fr 1.2fr 1fr 1.2fr; 
+            grid-template-columns: 2.2fr 1.5fr 2fr 1.3fr; 
             gap: 30px; 
             align-items: start; 
             transition: var(--transition); 
@@ -2130,6 +2130,54 @@
             }
         }
 
+        // ==========================================
+        // ЛОГИКА НАЧИСЛЕНИЯ РОЯЛТИ
+        // ==========================================
+        document.getElementById('add-royalty-btn').addEventListener('click', async () => {
+            const uid = document.getElementById('royalty-artist-select').value;
+            const amount = parseFloat(document.getElementById('royalty-amount').value);
+
+            if (!uid) {
+                return notify("Выберите артиста из списка!", "error");
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                return notify("Укажите корректную сумму для начисления!", "error");
+            }
+
+            const btn = document.getElementById('add-royalty-btn');
+            const origHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
+            btn.disabled = true;
+
+            try {
+                const userRef = doc(db, "users", uid);
+                const snap = await getDoc(userRef);
+                
+                if (snap.exists()) {
+                    const currentBalance = snap.data().balance || 0;
+                    
+                    await setDoc(userRef, { 
+                        balance: currentBalance + amount 
+                    }, { merge: true });
+                    
+                    notify(`Успешно начислено ${amount} ₽ артисту!`, "success");
+                    
+                    // Полностью очищаем форму
+                    document.getElementById('royalty-amount').value = '';
+                    document.getElementById('royalty-artist-select').value = '';
+                    document.getElementById('royalty-artist-trigger-val').innerText = 'Выберите музыканта...';
+                    document.querySelectorAll('#royalty-artist-options .custom-option').forEach(o => o.classList.remove('selected'));
+                }
+            } catch(e) { 
+                notify("Ошибка начисления роялти", "error"); 
+            } finally { 
+                btn.innerHTML = origHTML; 
+                btn.disabled = false; 
+            }
+        });
+
         function renderUsersList(users) {
             const container = document.getElementById('users-list-container');
             container.innerHTML = '';
@@ -2207,6 +2255,7 @@
             });
         }
 
+        // ЛОГИКА ПОЛНОГО УДАЛЕНИЯ АККАУНТА (WIPE)
         window.deleteUserAccount = async (uid) => {
             if (uid === ADMIN_UID) {
                 return notify("Ошибка: Нельзя удалить аккаунт владельца!", "error");
