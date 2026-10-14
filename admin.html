@@ -2038,6 +2038,7 @@
                     actionButtons = `<div class="btn-owner"><i class="fa-solid fa-crown" style="margin-right:5px;"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
+                        <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
                         <button class="btn-wipe" onclick="deleteUserAccount('${u.id}')">
                             <i class="fa-solid fa-trash" style="margin-right:5px;"></i> Удалить аккаунт
                         </button>
@@ -2499,7 +2500,7 @@
                             
                             <p class="rel-p"><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span>${featHtml}</p>
                             <p class="rel-p"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
-                            <p class="rel-p"><i class="fa-solid fa-microphone-lines"></i> Explicit: <span style="color:var(--text-pure); font-weight:600;">${d.explicit || 'Не указано'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-microphone-lines"></i> Маркировки: <span style="color:var(--text-pure); font-weight:600;">${d.explicit || 'Не указано'}</span></p>
                             <p class="rel-p"><i class="fa-solid fa-robot"></i> ИИ: <span style="color:var(--text-pure); font-weight:600;">${d.aiUsage || 'Не указано'}</span></p>
                             <p class="rel-p"><i class="fa-brands fa-tiktok"></i> TikTok: <span style="color:var(--text-pure); font-weight:600;">${d.tiktokTimecode ? d.tiktokTimecode + ' сек' : 'Не указано'}</span></p>
                             
@@ -2516,8 +2517,13 @@
                             <a href="${d.coverUrl}" target="_blank" class="file-link"><i class="fa-solid fa-image"></i> Обложка</a>
                             
                             <div class="code-input-group" style="margin-top: 15px;">
-                                <label class="code-label"><i class="fa-solid fa-users" style="color:var(--text-pure); margin-right:5px;"></i> ФИО Авторов</label>
-                                <textarea readonly rows="2" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authors || 'Не указано'}</textarea>
+                                <label class="code-label"><i class="fa-solid fa-pen-nib" style="color:var(--text-pure); margin-right:5px;"></i> Авторы текста</label>
+                                <textarea readonly rows="1" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authorsText || 'Не указано'}</textarea>
+                            </div>
+                            
+                            <div class="code-input-group" style="margin-top: 10px;">
+                                <label class="code-label"><i class="fa-solid fa-music" style="color:var(--text-pure); margin-right:5px;"></i> Авторы музыки</label>
+                                <textarea readonly rows="1" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authorsMusic || 'Не указано'}</textarea>
                             </div>
                             
                             <div class="code-input-group" style="margin-top: 10px;">
@@ -2654,21 +2660,24 @@
             renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
         });
 
+        // ==========================================
+        // ОБНОВЛЕННЫЙ ЭКСПОРТ В CSV
+        // ==========================================
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) {
                 return notify("Нет данных", "error");
             }
             
-            let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Feat,Авторы,Email Аккаунта,Жанр,Статус,Explicit,ИИ,TikTok,UPC,ISRC\n";
+            let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Feat,Автор текста,Автор музыки,Email Аккаунта,Жанр,Статус,Маркировки,ИИ,TikTok,UPC,ISRC\n";
             
             allSubmissions.forEach(row => { 
-                // Базовое экранирование кавычек для CSV формата
                 let safeTitle = (row.title || '').replace(/"/g, '""');
                 let safeArtist = (row.artist || '').replace(/"/g, '""');
                 let safeFeat = (row.feat || '').replace(/"/g, '""');
-                let safeAuthors = (row.authors || '').replace(/"/g, '""');
+                let safeAuthorsText = (row.authorsText || '').replace(/"/g, '""');
+                let safeAuthorsMusic = (row.authorsMusic || '').replace(/"/g, '""');
                 
-                csvContent += `"${row.id}","${safeTitle}","${safeArtist}","${safeFeat}","${safeAuthors}","${row.userEmail || ''}","${row.genre}","${row.status}","${row.explicit || ''}","${row.aiUsage || ''}","${row.tiktokTimecode || ''}","${row.upc || ''}","${row.isrc || ''}"\n`; 
+                csvContent += `"${row.id}","${safeTitle}","${safeArtist}","${safeFeat}","${safeAuthorsText}","${safeAuthorsMusic}","${row.userEmail || ''}","${row.genre}","${row.status}","${row.explicit || ''}","${row.aiUsage || ''}","${row.tiktokTimecode || ''}","${row.upc || ''}","${row.isrc || ''}"\n`; 
             });
             
             const encodedUri = encodeURI(csvContent);
