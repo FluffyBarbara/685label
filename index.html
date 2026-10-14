@@ -1374,9 +1374,9 @@
         }
 
         /* ==========================================
-           ЮKASSA МОДАЛЬНОЕ ОКНО
+           МОДАЛЬНЫЕ ОКНА (ЮKASSA / ВЫВОД СРЕДСТВ)
         ========================================== */
-        #payment-modal {
+        #payment-modal, #withdraw-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -1652,7 +1652,6 @@
         
         for (let i = 0; i < 40; i++) {
             const div = document.createElement('div');
-            
             div.className = 'butterfly';
             div.innerHTML = bfSVG;
             
@@ -1678,6 +1677,61 @@
 
     <!-- Уведомления (Toasts) -->
     <div id="toast-container"></div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВЫВОДА СРЕДСТВ -->
+    <div id="withdraw-modal">
+        <div class="payment-card">
+            <i class="fa-solid fa-xmark payment-close" onclick="document.getElementById('withdraw-modal').style.display='none'"></i>
+            
+            <div class="payment-title">Заявка на вывод</div>
+            <div class="payment-subtitle">Сумма к выводу: <span id="withdraw-amount-display" style="color:var(--text-pure); font-weight:800;"></span> ₽</div>
+            
+            <div class="input-box" style="margin-bottom: 25px;">
+                <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Способ вывода</label>
+                <select id="withdraw-method" class="styled-input">
+                    <option value="card">Банковская карта (РФ)</option>
+                    <option value="sbp">СБП (По номеру телефона)</option>
+                    <option value="account">Банковский счет (По реквизитам)</option>
+                </select>
+            </div>
+
+            <!-- Поля для Банковской карты -->
+            <div id="w-card-fields" style="display: block;">
+                <div class="input-box" style="margin-bottom: 25px;">
+                    <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Номер карты</label>
+                    <input type="text" id="w-card-number" class="styled-input" placeholder="0000 0000 0000 0000">
+                </div>
+            </div>
+
+            <!-- Поля для СБП -->
+            <div id="w-sbp-fields" style="display: none;">
+                <div class="input-box" style="margin-bottom: 15px;">
+                    <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Номер телефона</label>
+                    <input type="text" id="w-sbp-phone" class="styled-input" placeholder="+7 (999) 000-00-00">
+                </div>
+                <div class="input-box" style="margin-bottom: 25px;">
+                    <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Название банка</label>
+                    <input type="text" id="w-sbp-bank" class="styled-input" placeholder="Например: Сбербанк, Т-Банк (Тинькофф)">
+                </div>
+            </div>
+
+            <!-- Поля для Счета -->
+            <div id="w-account-fields" style="display: none;">
+                <div class="input-box" style="margin-bottom: 15px;">
+                    <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">БИК банка</label>
+                    <input type="text" id="w-acc-bik" class="styled-input" placeholder="9 цифр">
+                </div>
+                <div class="input-box" style="margin-bottom: 25px;">
+                    <label style="color:var(--text-secondary); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">Номер счета</label>
+                    <input type="text" id="w-acc-number" class="styled-input" placeholder="20 цифр">
+                </div>
+            </div>
+
+            <button class="btn-glow" id="confirm-withdraw-btn" style="margin-top: 10px;">
+                Отправить заявку
+            </button>
+        </div>
+    </div>
 
     <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ ЮKASSA -->
     <div id="payment-modal">
@@ -1895,7 +1949,6 @@
                     <i class="fa-solid fa-user-shield"></i> <span>Настройки профиля</span>
                 </button>
                 
-                <!-- Кнопка перехода в панель администратора -->
                 <button class="nav-link" id="go-to-admin-btn-side" style="display: none; margin-top: 30px; color: var(--text-pure); border: 1px dashed var(--border-light); background: rgba(255,255,255,0.03);">
                     <i class="fa-solid fa-server"></i> <span>Панель Модератора</span>
                 </button>
@@ -1943,10 +1996,9 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ (ДИСТРИБУЦИЯ С НОВЫМИ ПОЛЯМИ) -->
+            <!-- СЕКЦИЯ: НОВЫЙ РЕЛИЗ -->
             <section class="section" id="new-release">
 
-                <!-- ПРАВИЛА И РЕКОМЕНДАЦИИ -->
                 <div class="glass-card">
                     <div class="card-heading">
                         <i class="fa-solid fa-book-open"></i> Правила дистрибуции
@@ -2044,7 +2096,6 @@
                     <div class="accordion-body" style="padding-top:20px;">
                         <div class="grid-2">
                             
-                            <!-- Левая колонка / Правая колонка -->
                             <div class="input-box">
                                 <label>Название релиза *</label>
                                 <input type="text" id="r-title" class="styled-input" placeholder="Например: Сияние">
@@ -2380,7 +2431,6 @@
                 </div>
 
                 <div class="pricing-grid">
-                    <!-- Тариф 1: Стартовый -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Стартовый</h3>
@@ -2402,7 +2452,6 @@
                         </button>
                     </div>
 
-                    <!-- Тариф 2: Расширенный -->
                     <div class="price-card popular">
                         <div class="price-header">
                             <h3>Расширенный</h3>
@@ -2424,7 +2473,6 @@
                         </button>
                     </div>
 
-                    <!-- Тариф 3: Профессиональный -->
                     <div class="price-card">
                         <div class="price-header">
                             <h3>Профессиональный</h3>
@@ -2450,7 +2498,6 @@
             <!-- СЕКЦИЯ: НАСТРОЙКИ -->
             <section class="section" id="settings">
                 
-                <!-- Текущий тариф пользователя -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-star"></i> Ваш тарифный план
@@ -2496,7 +2543,7 @@
                     </button>
                 </div>
 
-                <!-- Блок Юридических документов -->
+                <!-- Юридические документы -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-file-contract"></i> Юридические документы
@@ -2504,12 +2551,10 @@
                     <p style="color:var(--text-secondary); font-size:14px; margin-bottom:25px;">
                         Ознакомьтесь с актуальными версиями наших правовых документов.
                     </p>
-                    
                     <div style="display: flex; flex-direction: column; gap: 15px;">
                         <a href="offer.html" target="_blank" class="btn-glow" style="text-decoration: none; width: 100%; box-sizing: border-box;">
                             <i class="fa-solid fa-file-signature" style="margin-right: 8px;"></i> Публичная оферта
                         </a>
-                        
                         <a href="privacy.html" target="_blank" class="btn-glow" style="text-decoration: none; width: 100%; box-sizing: border-box; background: transparent; color: var(--text-pure); border: 1px solid var(--border-light);">
                             <i class="fa-solid fa-user-shield" style="margin-right: 8px;"></i> Политика конфиденциальности
                         </a>
@@ -2526,12 +2571,10 @@
                         <label>Никнейм артиста</label>
                         <input type="text" class="styled-input" id="setting-nickname" placeholder="Ваш псевдоним">
                     </div>
-                    
                     <div class="input-box" style="margin-bottom: 25px;">
                         <label>E-mail (Логин)</label>
                         <input type="text" class="styled-input blurred-text" id="setting-email" disabled title="Нажмите, чтобы разблокировать просмотр">
                     </div>
-                    
                     <div class="input-box" style="margin-bottom: 35px;">
                         <label>Смена пароля</label>
                         <input type="password" class="styled-input" id="setting-new-password" placeholder="Новый пароль (оставьте пустым, если не меняете)">
@@ -2541,13 +2584,12 @@
                         Сохранить изменения
                     </button>
                     
-                    <!-- Кнопка перехода в панель модератора -->
                     <button class="btn-glow" id="settings-admin-btn" style="display: none; background: transparent; color: var(--text-pure); border: 1px solid var(--border-light); margin-top: 20px;">
                         <i class="fa-solid fa-server" style="margin-right: 8px;"></i> Панель Модератора
                     </button>
                 </div>
 
-                <!-- ПОДАРОЧНЫЙ ПРОМОКОД НА ТАРИФ -->
+                <!-- ПОДАРОЧНЫЙ ПРОМОКОД -->
                 <div class="glass-card" style="max-width: 650px;">
                     <div class="card-heading">
                         <i class="fa-solid fa-gift"></i> Подарочный промокод
@@ -2555,7 +2597,6 @@
                     <p style="color:var(--text-secondary); font-size:14px; margin-bottom:25px;">
                         Если администрация выдала вам специальный код для активации бесплатного тарифа, введите его ниже.
                     </p>
-                    
                     <div style="display:flex; gap:15px; flex-wrap: wrap;">
                         <input type="text" class="styled-input" id="settings-promo-input" placeholder="Введите код (например: PROMO2026)" style="flex:1; min-width: 250px;">
                         <button class="btn-glow" id="activate-gift-btn" style="width: auto; padding: 16px 30px; font-size: 14px;">
@@ -2622,25 +2663,24 @@
 
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
 
-        // Функция "Выбрать все площадки"
-        window.selectAll = (state) => {
-            document.querySelectorAll('.dsp-cb').forEach(cb => {
-                cb.checked = state;
-            });
-        };
-
-        // Размытие Email (снятие по клику)
+        // Размытие Email
         document.getElementById('setting-email').addEventListener('click', function() {
             this.classList.add('visible');
         });
 
-        // Управление Аккордеонами (теперь только для Дистрибуции)
+        // Управление Аккордеонами
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
                 const accordion = header.parentElement;
                 accordion.classList.toggle('open');
             });
         });
+        
+        window.selectAll = (state) => {
+            document.querySelectorAll('.dsp-cb').forEach(cb => {
+                cb.checked = state;
+            });
+        };
 
         // ==========================================
         // УМНЫЙ AI ГЕНЕРАТОР ПИТЧИНГА С ЭКВАЛАЙЗЕРОМ
@@ -2669,11 +2709,9 @@
             btn.disabled = true;
             outBox.value = '';
             
-            // Запуск анимации эквалайзера
             eq.style.display = 'flex';
             statusText.style.display = 'block';
 
-            // Имитация этапов анализа нейросетью
             const steps = [
                 "Подключение к модулю анализа AudioNet...",
                 "Извлечение аудиопотока по ссылке...",
@@ -2684,11 +2722,9 @@
 
             for (let i = 0; i < steps.length; i++) {
                 statusText.innerText = steps[i];
-                // Задержка между статусами
                 await new Promise(r => setTimeout(r, 1200));
             }
 
-            // Умная генерация текста на основе жанра
             let promo = `«${title}» — это глубокая и искренняя история от ${artist}, рассказывающая об одиночестве и поисках себя в пустом городе. Трек пронизан меланхолией и передает ощущение эмоциональной пустоты после потери связи с когда-то близким человеком. Это музыка для тех, кто учится отпускать прошлое, но всё равно помнит его слишком ясно. Идеальное попадание в плейлисты с атмосферным и осмысленным звучанием.`;
             
             if (title.toLowerCase() === 'cold heart' || genre.includes('Emo')) {
@@ -2773,7 +2809,6 @@
                 document.getElementById('discount-row').style.display = 'none';
                 document.getElementById('summary-old-price').style.display = 'none';
 
-                // Сбрасываем длительность на 1 месяц по умолчанию
                 document.getElementById('payment-duration').value = "1";
                 currentSelectedMonths = 1;
                 updateYookassaPrice(1);
@@ -2858,14 +2893,13 @@
             }
         });
 
-        // Отправка формы ЮKassa
         document.getElementById('main-payment-form').addEventListener('submit', (e) => {
             localStorage.setItem('pendingPaymentPlan', currentSelectedPlan);
             localStorage.setItem('pendingPaymentMonths', currentSelectedMonths);
         });
 
         // ==========================================
-        // ЛОГИКА АКТИВАЦИИ ПОДАРОЧНЫХ ПРОМОКОДОВ В НАСТРОЙКАХ
+        // ЛОГИКА АКТИВАЦИИ ПОДАРОЧНЫХ ПРОМОКОДОВ
         // ==========================================
         document.getElementById('activate-gift-btn').addEventListener('click', async () => {
             const code = document.getElementById('settings-promo-input').value.trim().toUpperCase();
@@ -2914,7 +2948,7 @@
 
 
         // ==========================================
-        // ЛОГИКА ЧАТА ПОДДЕРЖКИ (USER SIDE)
+        // ЛОГИКА ЧАТА ПОДДЕРЖКИ
         // ==========================================
         function formatChatTime(ts) {
             if (!ts) {
@@ -3071,7 +3105,7 @@
         }
 
         // ==========================================
-        // ЛОГИКА АВТОРИЗАЦИИ С ЖЕСТКИМ ОТЛОВОМ ОШИБОК
+        // АВТОРИЗАЦИЯ И ДАННЫЕ ПРОФИЛЯ
         // ==========================================
         let isLoginMode = true;
         const authBtn = document.getElementById('auth-btn');
@@ -3103,7 +3137,6 @@
             }
         });
 
-        // АНТИ-БРУТФОРС
         function checkBruteForce() {
             const attempts = parseInt(localStorage.getItem('login_attempts')) || 0;
             const lockTime = parseInt(localStorage.getItem('login_lockout_time')) || 0;
@@ -3145,7 +3178,6 @@
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-password').value;
-            // Проверка никнейма только если он виден
             const nicknameElement = document.getElementById('auth-nickname');
             const nickname = nicknameElement ? nicknameElement.value.trim() : '';
 
@@ -3194,7 +3226,6 @@
             } catch (err) {
                 recordFailedLogin();
                 
-                // Перевод системных ошибок на русский
                 let errorMsg = "Ошибка авторизации";
                 if(err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
                     errorMsg = "Неверный E-mail или пароль";
@@ -3245,7 +3276,6 @@
             }
         });
 
-        // Отслеживание состояния сессии и профиля
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
@@ -3296,7 +3326,6 @@
                     userProfileUnsub();
                 }
                 
-                // Жесткий отлов ошибок при чтении базы данных
                 userProfileUnsub = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
                     try {
                         if (docSnap.exists()) {
@@ -3318,7 +3347,6 @@
                                 return;
                             }
 
-                            // ВСЁ УСПЕШНО - СБРАСЫВАЕМ КНОПКУ И ОТКРЫВАЕМ САЙТ
                             authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
                             authBtn.disabled = false;
 
@@ -3361,7 +3389,6 @@
                             currentUserBalance = d.balance || 0;
                             document.getElementById('setting-balance').innerText = currentUserBalance.toLocaleString('ru-RU') + ' ₽';
                             
-                            // Определяем минимальную сумму вывода
                             if (planName === "Профессиональный") {
                                 currentUserMinWithdraw = 500;
                             } else if (planName === "Расширенный") {
@@ -3375,7 +3402,6 @@
                             fetchReleases(user.uid);
                             initUserChat(user.uid);
 
-                            // Кнопки для Админа (Владельца)
                             const adminBtnSide = document.getElementById('go-to-admin-btn-side');
                             const adminBtnSettings = document.getElementById('settings-admin-btn');
                             const userRoleText = document.getElementById('user-role-text');
@@ -3415,7 +3441,6 @@
                     }
 
                 }, (error) => {
-                    // ЕСЛИ FIREBASE БЛОКИРУЕТ ДОСТУП ИЛИ НЕТ ИНТЕРНЕТА
                     console.error("Firebase Snapshot Error:", error);
                     notify("Отказано в доступе к базе данных. Проверьте права", "error");
                     authBtn.innerHTML = '<span>Войти в систему</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
@@ -3445,68 +3470,92 @@
         });
 
         // ==========================================
-        // ЛОГИКА ВЫВОДА СРЕДСТВ
+        // ЛОГИКА ВЫВОДА СРЕДСТВ И ВЫБОР РЕКВИЗИТОВ
         // ==========================================
-        document.getElementById('withdraw-btn').addEventListener('click', async () => {
+        document.getElementById('withdraw-btn').addEventListener('click', () => {
             if (currentUserBalance < currentUserMinWithdraw) {
                 return notify(`Минимальная сумма вывода для вашего тарифа — ${currentUserMinWithdraw.toLocaleString('ru-RU')} ₽. На балансе недостаточно средств.`, "error");
             }
             
-            if (!confirm(`Вы подтверждаете запрос на вывод средств в размере ${currentUserBalance.toLocaleString('ru-RU')} ₽?`)) {
-                return;
+            document.getElementById('withdraw-amount-display').innerText = currentUserBalance.toLocaleString('ru-RU');
+            document.getElementById('withdraw-modal').style.display = 'flex';
+        });
+
+        document.getElementById('withdraw-method').addEventListener('change', function() {
+            document.getElementById('w-card-fields').style.display = 'none';
+            document.getElementById('w-sbp-fields').style.display = 'none';
+            document.getElementById('w-account-fields').style.display = 'none';
+            
+            if (this.value === 'card') {
+                document.getElementById('w-card-fields').style.display = 'block';
+            } else if (this.value === 'sbp') {
+                document.getElementById('w-sbp-fields').style.display = 'block';
+            } else if (this.value === 'account') {
+                document.getElementById('w-account-fields').style.display = 'block';
+            }
+        });
+
+        document.getElementById('confirm-withdraw-btn').addEventListener('click', async () => {
+            const method = document.getElementById('withdraw-method').value;
+            let details = "";
+            
+            if (method === 'card') {
+                const card = document.getElementById('w-card-number').value.trim();
+                if (!card) return notify("Введите номер карты", "error");
+                details = `Карта: ${card}`;
+            } else if (method === 'sbp') {
+                const phone = document.getElementById('w-sbp-phone').value.trim();
+                const bank = document.getElementById('w-sbp-bank').value.trim();
+                if (!phone || !bank) return notify("Заполните номер телефона и название банка", "error");
+                details = `СБП: ${phone}, Банк: ${bank}`;
+            } else if (method === 'account') {
+                const bik = document.getElementById('w-acc-bik').value.trim();
+                const acc = document.getElementById('w-acc-number').value.trim();
+                if (!bik || !acc) return notify("Заполните БИК и номер счета", "error");
+                details = `БИК: ${bik}, Счет: ${acc}`;
             }
             
-            const btn = document.getElementById('withdraw-btn');
+            const btn = document.getElementById('confirm-withdraw-btn');
             const origText = btn.innerHTML;
             
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
             btn.disabled = true;
 
+            // ФИКС ОШИБКИ НУЛЕВОГО БАЛАНСА: 
+            // Сохраняем текущий баланс до того, как его обнулит база!
+            const amountToWithdraw = currentUserBalance; 
+
             try {
-                // Обнуляем баланс юзера
+                // 1. Создаем заявку в отдельной коллекции withdrawal_requests
+                await addDoc(collection(db, "withdrawal_requests"), {
+                    userId: auth.currentUser.uid,
+                    userEmail: auth.currentUser.email,
+                    userNickname: document.getElementById('display-nickname').innerText,
+                    amount: amountToWithdraw,
+                    method: method,
+                    details: details,
+                    status: "Ожидает выплаты",
+                    createdAt: serverTimestamp()
+                });
+                
+                // 2. Только после создания заявки обнуляем баланс юзера
                 await updateDoc(doc(db, "users", auth.currentUser.uid), {
                     balance: 0
                 });
 
-                // Создаем системное сообщение в чате поддержки
-                const msgObj = { 
-                    sender: 'user', 
-                    text: `[СИСТЕМНОЕ СООБЩЕНИЕ] Запрос на вывод роялти.\nСумма к выплате: ${currentUserBalance} ₽.\n\nПрошу связаться со мной для уточнения платежных реквизитов.`, 
-                    time: Date.now() 
-                };
+                notify("Заявка успешно создана! Ожидайте поступления средств.", "success");
                 
-                const ref = doc(db, "support_chats", auth.currentUser.uid);
-                const snap = await getDoc(ref);
+                document.getElementById('withdraw-modal').style.display = 'none';
                 
-                if(snap.exists()) {
-                    await updateDoc(ref, { 
-                        messages: arrayUnion(msgObj), 
-                        lastUpdated: serverTimestamp(), 
-                        hasUnreadAdmin: true,
-                        userTyping: false
-                    });
-                } else {
-                    const uDoc = await getDoc(doc(db, "users", auth.currentUser.uid));
-                    await setDoc(ref, {
-                        userId: auth.currentUser.uid,
-                        userEmail: auth.currentUser.email,
-                        userNickname: uDoc.data()?.nickname || 'Артист',
-                        messages: [msgObj],
-                        lastUpdated: serverTimestamp(),
-                        hasUnreadAdmin: true,
-                        hasUnreadUser: false,
-                        userTyping: false,
-                        adminTyping: false
-                    });
-                }
-
-                notify("Заявка успешно создана! Менеджер свяжется с вами в чате поддержки.", "success");
-                
-                // Автоматически открываем окно чата
-                document.getElementById('chat-window').classList.add('open');
-                document.getElementById('chat-widget-btn').style.transform = 'scale(0)';
+                // Очистка полей
+                document.getElementById('w-card-number').value = '';
+                document.getElementById('w-sbp-phone').value = '';
+                document.getElementById('w-sbp-bank').value = '';
+                document.getElementById('w-acc-bik').value = '';
+                document.getElementById('w-acc-number').value = '';
                 
             } catch(e) {
+                console.error(e);
                 notify("Произошла ошибка при создании заявки на вывод.", "error");
             } finally {
                 btn.innerHTML = origText;
@@ -3592,7 +3641,7 @@
             });
         });
 
-        // Запрос на удаление со стороны юзера (если одобрено - запрос модератору, иначе удаляет сразу)
+        // Запрос на удаление со стороны юзера
         window.requestDeleteRelease = async (id, currentStatus) => {
             if (currentStatus === "Одобрено") {
                 if (!confirm("Релиз уже одобрен и направлен на площадки. Запросить у модератора снятие трека со стримингов?")) {
@@ -3650,7 +3699,7 @@
             
             const platforms = Array.from(document.querySelectorAll('.dsp-cb:checked')).map(cb => cb.value);
 
-            // Проверка обязательных полей (включая новых авторов)
+            // Проверка обязательных полей
             if (!title || !artist || !cover || !audio || !authorsText || !authorsMusic || !tiktok || !lyrics) {
                 return notify("Заполните все обязательные поля, отмеченные звездочкой (*)", "error");
             }
@@ -3693,7 +3742,7 @@
                     }
                 }
 
-                // Сохранение в базу данных Firestore
+                // Сохранение в базу данных
                 await addDoc(collection(db, "track_submissions"), {
                     userId: auth.currentUser.uid, 
                     userEmail: auth.currentUser.email, 
