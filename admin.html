@@ -1800,8 +1800,26 @@
                     `;
                 } else if (req.status === 'Выплачено') {
                     statusBadge = `<span style="display:inline-block; padding: 4px 10px; background: var(--text-pure); color: var(--bg-deep); border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Средства переведены</span>`;
+                    
+                    // Кнопка удаления для закрытой заявки
+                    actionButtons = `
+                        <div style="margin-top: 10px;">
+                            <button onclick="deleteWithdrawal('${req.id}')" class="btn-action" style="width: 100%; justify-content: center; color: var(--danger-text); border-color: rgba(255, 107, 107, 0.3); background: transparent;">
+                                <i class="fa-solid fa-trash" style="margin-right: 5px;"></i> Удалить заявку из истории
+                            </button>
+                        </div>
+                    `;
                 } else if (req.status === 'Отклонено') {
                     statusBadge = `<span style="display:inline-block; padding: 4px 10px; border: 1px dashed var(--danger-text); color: var(--danger-text); border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Отклонено (Возврат)</span>`;
+                    
+                    // Кнопка удаления для закрытой заявки
+                    actionButtons = `
+                        <div style="margin-top: 10px;">
+                            <button onclick="deleteWithdrawal('${req.id}')" class="btn-action" style="width: 100%; justify-content: center; color: var(--danger-text); border-color: rgba(255, 107, 107, 0.3); background: transparent;">
+                                <i class="fa-solid fa-trash" style="margin-right: 5px;"></i> Удалить заявку из истории
+                            </button>
+                        </div>
+                    `;
                 }
                 
                 container.innerHTML += `
@@ -1870,6 +1888,18 @@
                 notify("Заявка отклонена. Средства возвращены артисту.", "success");
             } catch(e) {
                 notify("Ошибка при возврате средств.", "error");
+            }
+        };
+        
+        window.deleteWithdrawal = async (id) => {
+            if(!confirm("Вы уверены, что хотите навсегда удалить эту заявку из истории?")) {
+                return;
+            }
+            try {
+                await deleteDoc(doc(db, "withdrawal_requests", id));
+                notify("Заявка успешно удалена.", "success");
+            } catch(e) {
+                notify("Ошибка удаления заявки.", "error");
             }
         };
 
@@ -2131,7 +2161,7 @@
         }
 
         // ==========================================
-        // ЛОГИКА НАЧИСЛЕНИЯ РОЯЛТИ
+        // ЛОГИКА НАЧИСЛЕНИЯ РОЯЛТИ С ТРАНЗАКЦИЕЙ
         // ==========================================
         document.getElementById('add-royalty-btn').addEventListener('click', async () => {
             const uid = document.getElementById('royalty-artist-select').value;
@@ -2158,9 +2188,19 @@
                 if (snap.exists()) {
                     const currentBalance = snap.data().balance || 0;
                     
+                    // Обновляем баланс пользователя
                     await setDoc(userRef, { 
                         balance: currentBalance + amount 
                     }, { merge: true });
+                    
+                    // ДОБАВЛЯЕМ ЗАПИСЬ В ИСТОРИЮ ТРАНЗАКЦИЙ ДЛЯ ПОЛЬЗОВАТЕЛЯ
+                    await addDoc(collection(db, "transactions"), {
+                        userId: uid,
+                        type: 'royalty',
+                        title: 'Начисление роялти от лейбла',
+                        amount: amount,
+                        createdAt: serverTimestamp()
+                    });
                     
                     notify(`Успешно начислено ${amount} ₽ артисту!`, "success");
                     
