@@ -6,15 +6,13 @@
     
     <title>685 music label | Панель Модератора</title>
     
-    <!-- Строго заданная иконка -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2">
     
-    <!-- Подключение шрифтов и иконок -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- АКТИВНАЯ ЗАЩИТА КЛИЕНТСКОЙ ЧАСТИ (SHIELD) -->
+    <!-- АКТИВНАЯ ЗАЩИТА -->
     <script type="text/javascript">
         (function() {
             const _0x3b1c = [
@@ -35,12 +33,10 @@
                 'constructor'
             ];
             
-            // Блокировка правой кнопки мыши
             document[_0x3b1c[2]](_0x3b1c[1], function(e) { 
                 e[_0x3b1c[0]](); 
             });
             
-            // Блокировка F12, Ctrl+Shift+I, Ctrl+U
             document[_0x3b1c[2]](_0x3b1c[3], function(e) {
                 if (
                     e[_0x3b1c[4]] === _0x3b1c[5] || 
@@ -56,7 +52,6 @@
                 }
             });
             
-            // Капкан консоли
             setInterval(function() { 
                 (function() {
                     return false;
@@ -67,7 +62,7 @@
 
     <style>
         /* ==========================================
-           ПРЕМИАЛЬНЫЕ ПЕРЕМЕННЫЕ (DARK MONOCHROME)
+           ПЕРЕМЕННЫЕ
         ========================================== */
         :root {
             --bg-deep: #000000;
@@ -96,9 +91,6 @@
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ==========================================
-           ГЛОБАЛЬНЫЕ СТИЛИ
-        ========================================== */
         * { 
             margin: 0; 
             padding: 0; 
@@ -116,7 +108,7 @@
         }
 
         /* ==========================================
-           ГЕНЕРАТОР БАБОЧЕК (BUTTERFLIES SYSTEM)
+           АНИМАЦИЯ ФОНА (БАБОЧКИ)
         ========================================== */
         #butterflies-container {
             position: fixed;
@@ -159,7 +151,6 @@
             }
         }
 
-        /* Слоистая структура для избежания багов z-index */
         #app-view, 
         #auth-view, 
         #toast-container { 
@@ -167,7 +158,6 @@
             z-index: 10; 
         }
 
-        /* Кастомизация скроллбара */
         ::-webkit-scrollbar { 
             width: 6px; 
         }
@@ -185,7 +175,6 @@
             background: #666666; 
         }
 
-        /* Базовые элементы */
         button { 
             cursor: pointer; 
             border: none; 
@@ -195,9 +184,7 @@
             transition: var(--transition); 
         }
         
-        input, 
-        select, 
-        textarea { 
+        input, select, textarea { 
             font-family: inherit; 
             outline: none; 
             border: none; 
@@ -221,7 +208,7 @@
         }
 
         /* ==========================================
-           УВЕДОМЛЕНИЯ (TOASTS)
+           УВЕДОМЛЕНИЯ
         ========================================== */
         #toast-container { 
             position: fixed; 
@@ -230,11 +217,12 @@
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
-            z-index: 999999;
+            z-index: 9999999;
+            pointer-events: none;
         }
 
         .toast { 
-            background: rgba(10, 10, 10, 0.85); 
+            background: rgba(10, 10, 10, 0.95); 
             backdrop-filter: blur(20px); 
             border: 1px solid var(--border-light); 
             border-left: 3px solid var(--text-pure); 
@@ -249,6 +237,7 @@
             color: var(--text-pure); 
             transform: translateX(120%); 
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+            pointer-events: auto;
         }
 
         .toast.show { 
@@ -259,12 +248,16 @@
             border-left-color: var(--danger-text); 
         }
         
-        .toast.warning { 
-            border-left-color: var(--warning); 
+        .toast.success {
+            border-left-color: var(--text-pure);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
         }
 
         /* ==========================================
-           ЭКРАН АВТОРИЗАЦИИ АДМИНА
+           АВТОРИЗАЦИЯ
         ========================================== */
         .auth-view-container { 
             min-height: 100vh; 
@@ -346,7 +339,7 @@
         }
 
         /* ==========================================
-           ГЛАВНЫЙ ИНТЕРФЕЙС АДМИНКИ
+           ГЛАВНАЯ ПАНЕЛЬ АДМИНА
         ========================================== */
         #app-view { 
             display: none; 
@@ -642,7 +635,7 @@
             letter-spacing: -0.5px; 
         }
         
-        .rel-details p { 
+        .rel-details p.rel-p { 
             color: var(--text-secondary); 
             font-size: 13px; 
             margin-bottom: 6px; 
@@ -803,7 +796,6 @@
         }
 
         .users-list-wrapper { 
-            /* Вытягиваем список пользователей до конца экрана */
             max-height: calc(100vh - 250px); 
             min-height: 500px; 
             overflow-y: auto; 
@@ -1313,6 +1305,7 @@
                     <span id="stat-delete-request">0</span>
                 </div>
             </div>
+            <!-- НОВАЯ КАРТОЧКА КОРЗИНЫ -->
             <div class="stat-card" style="border-color: var(--danger-text);">
                 <div class="stat-icon" style="color: var(--danger-text);"><i class="fa-solid fa-box-archive"></i></div>
                 <div class="stat-info">
@@ -1464,9 +1457,7 @@
                         </div>
                     </div>
                     
-                    <div id="user-typing-indicator" style="font-size: 13px; color: var(--text-secondary); padding: 10px 30px 15px; font-style: italic; display: none;">
-                        Пользователь печатает...
-                    </div>
+                    <div id="user-typing-indicator" style="font-size: 13px; color: var(--text-secondary); padding: 10px 30px 15px; font-style: italic; display: none;">Пользователь печатает...</div>
                     
                     <div style="padding:20px 25px; border-top:1px solid var(--border-light); display:flex; gap:15px; background:rgba(10,10,12,0.8); align-items: center;">
                         <input type="text" id="admin-chat-input" disabled class="styled-input" style="border-radius:50px; font-size:14px;" placeholder="Напишите ответ артисту...">
@@ -1487,7 +1478,6 @@
             </div>
         </div>
 
-        <!-- ИНДИВИДУАЛЬНОЕ РОЯЛТИ -->
         <div class="admin-section" id="tab-finance">
             <div class="panel-box">
                 <h3 class="panel-title">Начисление роялти артистам</h3>
@@ -1531,7 +1521,7 @@
 
     <!-- СКРИПТЫ, FIREBASE И ЛОГИКА АДМИНКИ -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { 
             getAuth, 
             signInWithEmailAndPassword, 
@@ -1539,7 +1529,7 @@
             signOut,
             setPersistence,
             browserLocalPersistence
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { 
             getFirestore, 
             collection, 
@@ -1554,7 +1544,7 @@
             query, 
             onSnapshot, 
             arrayUnion 
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
         const firebaseConfig = {
@@ -1750,7 +1740,7 @@
                 initAdminChat();
                 loadUsersForRoyalty();
             } else {
-                if (user) {
+                if(user) {
                     signOut(auth);
                 }
                 document.getElementById('auth-view').style.display = 'flex';
@@ -2015,6 +2005,7 @@
                     allUsers.push({ id: doc.id, ...doc.data() });
                 });
                 
+                // Обновление счетчика зарегистрированных пользователей
                 document.getElementById('users-count').innerText = `(${allUsers.length})`;
                 
                 renderUsersList(allUsers);
@@ -2036,10 +2027,10 @@
                 const status = u.accountStatus || 'Активен';
                 let statusBadge = `<span class="badge-active">Активен</span>`;
                 
-                if(status === 'banned') {
+                if (status === 'banned') {
                     statusBadge = `<span class="badge-banned">Заблокирован</span>`;
                 }
-                if(status === 'frozen') {
+                if (status === 'frozen') {
                     statusBadge = `<span class="badge-frozen">Заморожен</span>`;
                 }
 
@@ -2093,7 +2084,7 @@
                 'Активен': 'Снятие ограничений' 
             };
             
-            if(!confirm(`Действие: ${statusNames[status]}. Продолжить?`)) {
+            if (!confirm(`Действие: ${statusNames[status]}. Продолжить?`)) {
                 return;
             }
             
@@ -2112,7 +2103,7 @@
         window.issueTariff = async (uid) => {
             const plan = document.getElementById(`tariff-select-${uid}`).value;
             
-            if(!confirm(`Выдать тариф «${plan}» пользователю?`)) {
+            if (!confirm(`Выдать тариф «${plan}» пользователю?`)) {
                 return;
             }
             
@@ -2149,7 +2140,7 @@
             const subject = document.getElementById('mail-subject').value.trim();
             const body = document.getElementById('mail-body').value.trim();
             
-            if(!to || !subject || !body) {
+            if (!to || !subject || !body) {
                 return notify("Заполните все поля", "error");
             }
             
@@ -2253,6 +2244,7 @@
             } catch(e) {
                 console.error("Ошибка генерации промокода:", e);
                 notify("Ошибка БД: " + e.message, "error");
+                
                 const btn = document.getElementById('create-promo-btn');
                 btn.innerHTML = 'Сгенерировать код';
                 btn.disabled = false;
@@ -2301,9 +2293,10 @@
         }
 
         window.deletePromo = async (code) => {
-            if(!confirm(`Удалить промокод ${code}?`)) {
+            if (!confirm(`Удалить промокод ${code}?`)) {
                 return;
             }
+            
             try { 
                 await deleteDoc(doc(db, "promo_codes", code)); 
                 notify("Удален", "success"); 
@@ -2414,7 +2407,9 @@
                             </h3>
                             <p class="rel-p"><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span></p>
                             <p class="rel-p"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
-                            <p class="rel-p"><i class="fa-solid fa-calendar-alt"></i> Дата выхода: <span style="color:var(--text-pure); font-weight:600;">${d.releaseDate || 'Сразу после модерации'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-code-branch"></i> Версия трека: <span style="color:var(--text-pure); font-weight:600;">${d.trackVersion ? d.trackVersion : 'Оригинальная'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-calendar-alt"></i> Дата выхода: <span style="color:var(--text-pure); font-weight:600;">${d.releaseDate ? d.releaseDate : 'Сразу после модерации'}</span></p>
+                            
                             <div class="artist-badge"><i class="fa-solid fa-envelope" style="margin-right: 6px;"></i> ${d.userEmail || 'Неизвестный'}</div>
                             <div class="dsp-tags">${dspHtml}</div>
                         </div>
@@ -2437,8 +2432,10 @@
                                 <label class="code-label">Причина отклонения</label>
                                 <textarea id="reason-${d.id}" rows="2" placeholder="Опишите ошибки...">${d.rejectReason || ''}</textarea>
                             </div>
+                            
+                            <!-- НОВОЕ: ТЕКСТ ИИ ПИТЧИНГА ДЛЯ МОДЕРАТОРА -->
                             <div class="code-input-group" style="margin-top: 5px;">
-                                <label class="code-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:white; margin-right:5px;"></i> AI Питчинг (Промо)</label>
+                                <label class="code-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--text-pure); margin-right:5px;"></i> AI Питчинг (Промо)</label>
                                 <textarea readonly rows="3" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
                             </div>
                         </div>
@@ -2451,8 +2448,13 @@
                                 <option value="Запрос на удаление с площадок" ${isDelRequest}>Запрос на удаление</option>
                                 <option value="Удалено" ${isDeletedState}>Удалено (Корзина)</option>
                             </select>
+                            
                             <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
-                            <button class="btn-delete" data-id="${d.id}"><i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;"></i>Удалить навсегда из БД</button>
+                            
+                            <!-- НОВАЯ КНОПКА ПОЛНОГО УДАЛЕНИЯ -->
+                            <button class="btn-delete" data-id="${d.id}">
+                                <i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;"></i>Удалить навсегда из БД
+                            </button>
                         </div>
                     </div>
                 `;
@@ -2482,7 +2484,7 @@
                         }, { merge: true });
                         
                         notify("Сохранено!", "success");
-                        loadReleases(); // Перезагружаем список
+                        loadReleases();
                     } catch(err) { 
                         notify("Ошибка", "error"); 
                     }
@@ -2494,6 +2496,7 @@
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
+                    
                     if (!confirm("ВНИМАНИЕ! Этот трек будет удален из базы данных навсегда и безвозвратно. Продолжить?")) {
                         return;
                     }
@@ -2502,7 +2505,9 @@
                         await deleteDoc(doc(db, "track_submissions", id)); 
                         notify("Удален навсегда!", "success"); 
                         loadReleases(); 
-                    } catch(err) {}
+                    } catch(err) {
+                        notify("Ошибка удаления из БД", "error"); 
+                    }
                 });
             });
         }
@@ -2550,6 +2555,7 @@
             
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
+            
             link.setAttribute("href", encodedUri);
             link.setAttribute("download", "685_Music_Releases.csv");
             
