@@ -69,7 +69,6 @@
         :root {
             --bg-deep: #000000;
             --bg-surface: rgba(15, 15, 15, 0.45);
-            --bg-input: rgba(5, 5, 5, 0.8);
             
             --border-light: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(255, 255, 255, 0.3);
@@ -90,7 +89,7 @@
             --radius-md: 14px;
             --radius-sm: 8px;
             
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { 
@@ -186,12 +185,6 @@
             transition: var(--transition); 
         }
         
-        input, select, textarea { 
-            font-family: inherit; 
-            outline: none; 
-            border: none; 
-        }
-
         @keyframes fadeUp { 
             from { 
                 opacity: 0; 
@@ -207,6 +200,131 @@
             100% { 
                 transform: rotate(360deg); 
             } 
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================
+           СТИЛИ ПОЛЕЙ ВВОДА (ГЛУБОКИЙ РЕДИЗАЙН)
+        ========================================== */
+        .styled-input { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 14px 18px; 
+            border-radius: 12px; 
+            font-size: 13px; 
+            transition: var(--transition); 
+            width: 100%; 
+            outline: none; 
+            font-family: inherit;
+        }
+
+        .styled-input:focus { 
+            background: rgba(255, 255, 255, 0.05); 
+            border-color: rgba(255, 255, 255, 0.3); 
+        }
+        
+        .styled-input[readonly],
+        .styled-input:disabled {
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: text;
+        }
+
+        /* ==========================================
+           НОВЫЕ КАСТОМНЫЕ МЕНЮ (CUSTOM SELECTS)
+        ========================================== */
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select-trigger {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-light);
+            color: var(--text-pure);
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .custom-select-trigger:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-select-trigger i {
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select.open .custom-select-trigger {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-select.open .custom-select-trigger i {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-options {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            z-index: 999;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            padding: 6px;
+        }
+
+        .custom-select.open .custom-select-options {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .custom-option {
+            padding: 12px 15px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.2s;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .custom-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-pure);
+        }
+
+        .custom-option.selected {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-pure);
+            font-weight: 700;
         }
 
         /* ==========================================
@@ -296,23 +414,6 @@
             color: var(--text-secondary); 
             margin-bottom: 35px; 
             font-size: 13px; 
-        }
-
-        .auth-input { 
-            width: 100%; 
-            background: var(--bg-input); 
-            border: 1px solid var(--border-light); 
-            color: var(--text-pure); 
-            padding: 16px 20px; 
-            border-radius: var(--radius-sm); 
-            margin-bottom: 15px; 
-            font-size: 14px; 
-            transition: var(--transition); 
-        }
-
-        .auth-input:focus { 
-            border-color: var(--border-glow); 
-            box-shadow: 0 0 15px rgba(255,255,255,0.05); 
         }
 
         .btn-main { 
@@ -441,22 +542,6 @@
             display: block; 
         }
 
-        .styled-input { 
-            background: var(--bg-input); 
-            border: 1px solid var(--border-light); 
-            color: var(--text-pure); 
-            padding: 15px 18px; 
-            border-radius: var(--radius-sm); 
-            font-size: 13px; 
-            transition: var(--transition); 
-            width: 100%; 
-            outline: none; 
-        }
-
-        .styled-input:focus { 
-            border-color: var(--border-glow); 
-        }
-
         /* ==========================================
            СТАТИСТИКА
         ========================================== */
@@ -551,10 +636,12 @@
             border-radius: 50px; 
             font-size: 13px; 
             outline: none; 
+            transition: var(--transition);
         }
         
         .search-box input:focus { 
-            border-color: var(--border-glow); 
+            border-color: rgba(255,255,255,0.3); 
+            background: rgba(255,255,255,0.05);
         }
 
         .filters-group { 
@@ -562,24 +649,6 @@
             gap: 12px; 
             align-items: center; 
             flex-wrap: wrap; 
-        }
-        
-        .filter-select { 
-            background: var(--bg-surface); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid var(--border-light); 
-            color: var(--text-primary); 
-            padding: 14px 22px; 
-            border-radius: 50px; 
-            font-weight: 600; 
-            font-size: 13px; 
-            cursor: pointer; 
-            outline: none; 
-            appearance: none; 
-        }
-        
-        .filter-select option { 
-            background: var(--bg-input); 
         }
         
         .btn-action { 
@@ -615,10 +684,10 @@
             background: var(--bg-surface); 
             backdrop-filter: blur(24px); 
             border: 1px solid var(--border-light); 
-            border-radius: var(--radius-md); 
+            border-radius: 20px; 
             padding: 30px; 
             display: grid; 
-            grid-template-columns: 2.2fr 1.5fr 2fr 1.3fr; 
+            grid-template-columns: 1fr 1.2fr 1fr 1fr; 
             gap: 30px; 
             align-items: start; 
             transition: var(--transition); 
@@ -632,7 +701,7 @@
         .rel-details h3 { 
             font-size: 20px; 
             color: var(--text-pure); 
-            margin-bottom: 8px; 
+            margin-bottom: 12px; 
             font-weight: 800; 
             letter-spacing: -0.5px; 
         }
@@ -640,20 +709,21 @@
         .rel-details p.rel-p { 
             color: var(--text-secondary); 
             font-size: 13px; 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             display: flex; 
             align-items: center; 
             gap: 8px; 
         }
         
         .artist-badge { 
-            display: inline-block; 
+            display: inline-flex; 
+            align-items: center;
             background: rgba(255,255,255,0.03); 
             padding: 6px 12px; 
             border-radius: 50px; 
             font-size: 11px; 
             color: var(--text-primary); 
-            margin-top: 10px; 
+            margin-top: 15px; 
             font-weight: 600; 
             border: 1px solid var(--border-light); 
         }
@@ -688,7 +758,7 @@
             gap: 10px; 
             background: rgba(255,255,255,0.02); 
             padding: 14px; 
-            border-radius: var(--radius-sm); 
+            border-radius: 12px; 
             border: 1px dashed rgba(255,255,255,0.15); 
             font-size: 12px; 
             font-weight: 700; 
@@ -707,12 +777,12 @@
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
-            background: var(--bg-input); 
-            padding: 20px; 
-            border-radius: var(--radius-sm); 
-            border: 1px solid var(--border-light); 
         }
         
+        .code-input-group {
+            width: 100%;
+        }
+
         .code-label { 
             font-size: 10px; 
             font-weight: 800; 
@@ -733,10 +803,11 @@
             background: var(--text-pure); 
             color: var(--bg-deep); 
             padding: 14px; 
-            border-radius: var(--radius-sm); 
+            border-radius: 12px; 
             font-weight: 800; 
             font-size: 13px; 
             box-shadow: var(--accent-glow); 
+            margin-bottom: 15px;
         }
         
         .btn-save:hover { 
@@ -747,9 +818,9 @@
         .btn-delete { 
             background: transparent; 
             color: var(--danger-text); 
-            border: 1px solid var(--border-light); 
+            border: 1px solid var(--danger-text); 
             padding: 14px; 
-            border-radius: var(--radius-sm); 
+            border-radius: 12px; 
             font-weight: 600; 
             font-size: 13px; 
             transition: 0.3s; 
@@ -757,7 +828,8 @@
         
         .btn-delete:hover { 
             background: rgba(255, 107, 107, 0.1); 
-            border-color: var(--danger-text); 
+            border-color: #ff8585;
+            color: #ff8585; 
         }
         
         .del-badge { 
@@ -787,7 +859,7 @@
             backdrop-filter: blur(30px); 
             border: 1px solid var(--border-light); 
             padding: 35px; 
-            border-radius: var(--radius-md); 
+            border-radius: 20px; 
         }
 
         .panel-title { 
@@ -855,339 +927,75 @@
         .user-card-actions { 
             display: flex; 
             flex-direction: column; 
-            width: 150px; 
+            width: 220px; 
         }
         
-        .badge-active { 
-            color: var(--bg-deep); 
-            background: var(--text-pure); 
-            font-weight: 800; 
-            font-size: 10px; 
-            padding: 4px 10px; 
-            border-radius: 50px; 
-            text-transform: uppercase; 
-        }
+        .badge-active { color: var(--bg-deep); background: var(--text-pure); font-weight: 800; font-size: 10px; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
+        .badge-banned { color: var(--text-primary); font-weight: 800; font-size: 10px; padding: 4px 10px; border: 1px dashed var(--border-light); border-radius: 50px; text-transform: uppercase; }
+        .badge-frozen { color: var(--text-primary); font-weight: 800; font-size: 10px; padding: 4px 10px; border: 1px solid var(--text-secondary); border-radius: 50px; text-transform: uppercase; }
         
-        .badge-banned { 
-            color: var(--text-primary); 
-            font-weight: 800; 
-            font-size: 10px; 
-            padding: 4px 10px; 
-            border: 1px dashed var(--border-light); 
-            border-radius: 50px; 
-            text-transform: uppercase; 
-        }
+        .btn-owner { color: var(--text-pure); font-size: 12px; font-weight: 700; text-align: center; padding: 12px; border-radius: 12px; border: 1px solid var(--border-light); width: 100%; }
         
-        .badge-frozen { 
-            color: var(--text-primary); 
-            font-weight: 800; 
-            font-size: 10px; 
-            padding: 4px 10px; 
-            border: 1px solid var(--text-secondary); 
-            border-radius: 50px; 
-            text-transform: uppercase; 
-        }
-        
-        .btn-owner { 
-            color: var(--text-pure); 
-            font-size: 12px; 
-            font-weight: 700; 
-            text-align: center; 
-            padding: 12px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border-light); 
-            width: 100%; 
-        }
-        
-        /* Кнопка полного удаления (WIPE) */
-        .btn-wipe { 
-            background: transparent; 
-            color: var(--danger-text); 
-            border: 1px solid var(--danger-text); 
-            padding: 10px 14px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            width: 100%; 
-            margin-bottom: 8px; 
-            transition: 0.3s; 
-        }
-        
-        .btn-wipe:hover { 
-            background: rgba(255, 107, 107, 0.1); 
-            color: #ff8585; 
-        }
+        .btn-wipe { background: transparent; color: var(--danger-text); border: 1px solid var(--danger-text); padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 600; width: 100%; margin-bottom: 8px; transition: 0.3s; }
+        .btn-wipe:hover { background: rgba(255, 107, 107, 0.1); color: #ff8585; }
 
-        .btn-ban { 
-            background: transparent; 
-            color: var(--text-secondary); 
-            border: 1px solid var(--border-light); 
-            padding: 10px 14px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            width: 100%; 
-            margin-bottom: 8px; 
-            transition: 0.3s; 
-        }
+        .btn-ban { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-light); padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 600; width: 100%; margin-bottom: 8px; transition: 0.3s; }
+        .btn-ban:hover { color: white; border-color: white; }
         
-        .btn-ban:hover { 
-            color: white; 
-            border-color: white; 
-        }
+        .btn-freeze { background: transparent; color: var(--text-primary); border: 1px dashed var(--border-light); padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 600; width: 100%; margin-bottom: 8px; transition: 0.3s; }
+        .btn-freeze:hover { background: rgba(255,255,255,0.05); }
         
-        .btn-freeze { 
-            background: transparent; 
-            color: var(--text-primary); 
-            border: 1px dashed var(--border-light); 
-            padding: 10px 14px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            width: 100%; 
-            margin-bottom: 8px; 
-            transition: 0.3s; 
-        }
+        .btn-unblock { background: var(--text-pure); color: var(--bg-deep); border: none; padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; width: 100%; margin-bottom: 8px; transition: 0.3s; }
+        .btn-unblock:hover { background: #d4d4d8; }
         
-        .btn-freeze:hover { 
-            background: rgba(255,255,255,0.05); 
-        }
+        .btn-mail { background: rgba(255,255,255,0.05); color: var(--text-pure); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 600; width: 100%; transition: 0.3s; }
+        .btn-mail:hover { background: rgba(255,255,255,0.1); }
         
-        .btn-unblock { 
-            background: var(--text-pure); 
-            color: var(--bg-deep); 
-            border: none; 
-            padding: 10px 14px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 800; 
-            width: 100%; 
-            margin-bottom: 8px; 
-            transition: 0.3s; 
-        }
-        
-        .btn-unblock:hover { 
-            background: #d4d4d8; 
-        }
-        
-        .btn-mail { 
-            background: rgba(255,255,255,0.05); 
-            color: var(--text-pure); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            padding: 10px 14px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            width: 100%; 
-            transition: 0.3s; 
-        }
-        
-        .btn-mail:hover { 
-            background: rgba(255,255,255,0.1); 
-        }
-        
-        .tariff-box { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 15px; 
-        }
-        
-        .btn-issue { 
-            background: var(--text-pure); 
-            color: var(--bg-deep); 
-            border-radius: 50px; 
-            padding: 10px 20px; 
-            font-size: 12px; 
-            font-weight: 800; 
-            transition: 0.3s; 
-            border: none; 
-            box-shadow: var(--accent-glow); 
-        }
-        
-        .btn-issue:hover { 
-            transform: translateY(-2px); 
-        }
+        .tariff-box { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-issue { background: var(--text-pure); color: var(--bg-deep); border-radius: 12px; padding: 10px 20px; font-size: 12px; font-weight: 800; transition: 0.3s; border: none; box-shadow: var(--accent-glow); }
+        .btn-issue:hover { transform: translateY(-2px); }
 
-        .promo-list-item { 
-            background: rgba(255,255,255,0.02); 
-            border: 1px dashed rgba(255,255,255,0.1); 
-            padding: 18px; 
-            border-radius: var(--radius-sm); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-            transition: var(--transition); 
-        }
-        
-        .promo-list-item:hover { 
-            border-color: rgba(255,255,255,0.3); 
-            background: rgba(255,255,255,0.04); 
-        }
+        .promo-list-item { background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); padding: 18px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; transition: var(--transition); }
+        .promo-list-item:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
 
         /* ==========================================
            ЧАТ
         ========================================== */
-        .support-grid { 
-            display: grid; 
-            grid-template-columns: 380px 1fr; 
-            gap: 30px; 
-            height: 70vh; 
-            min-height: 600px; 
-        }
+        .support-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; height: 70vh; min-height: 600px; }
+        .chat-list-panel { background: var(--bg-surface); backdrop-filter: blur(30px); border: 1px solid var(--border-light); border-radius: 20px; overflow-y: auto; padding: 20px; }
+        .chat-view-panel { background: var(--bg-surface); backdrop-filter: blur(30px); border: 1px solid var(--border-light); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        .chat-item { padding: 16px; border-radius: 12px; cursor: pointer; transition: var(--transition); border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: rgba(255,255,255,0.01); }
+        .chat-item:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); }
+        .chat-item.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+        .chat-unread-dot { width: 10px; height: 10px; background: var(--text-pure); border-radius: 50%; box-shadow: 0 0 10px rgba(255,255,255,0.8); }
         
-        .chat-list-panel { 
-            background: var(--bg-surface); 
-            backdrop-filter: blur(30px); 
-            border: 1px solid var(--border-light); 
-            border-radius: var(--radius-md); 
-            overflow-y: auto; 
-            padding: 20px; 
-        }
-        
-        .chat-view-panel { 
-            background: var(--bg-surface); 
-            backdrop-filter: blur(30px); 
-            border: 1px solid var(--border-light); 
-            border-radius: var(--radius-md); 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-        }
-        
-        .chat-item { 
-            padding: 16px; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            border: 1px solid transparent; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 10px; 
-            background: rgba(255,255,255,0.01); 
-        }
-        
-        .chat-item:hover { 
-            background: rgba(255,255,255,0.03); 
-            border-color: rgba(255,255,255,0.05); 
-        }
-        
-        .chat-item.active { 
-            background: rgba(255,255,255,0.08); 
-            border-color: rgba(255,255,255,0.2); 
-        }
-        
-        .chat-unread-dot { 
-            width: 10px; 
-            height: 10px; 
-            background: var(--text-pure); 
-            border-radius: 50%; 
-            box-shadow: 0 0 10px rgba(255,255,255,0.8); 
-        }
-        
-        .chat-msg-container { 
-            display: flex; 
-            flex-direction: column; 
-            max-width: 75%; 
-        }
-        
-        .chat-msg-container.admin { 
-            align-self: flex-end; 
-            align-items: flex-end; 
-        }
-        
-        .chat-msg-container.user { 
-            align-self: flex-start; 
-            align-items: flex-start; 
-        }
-        
-        .chat-sender-name { 
-            font-size: 10px; 
-            font-weight: 800; 
-            color: var(--text-secondary); 
-            margin-bottom: 6px; 
-            padding: 0 5px; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-        }
-        
-        .chat-msg { 
-            padding: 14px 20px; 
-            border-radius: 18px; 
-            font-size: 14px; 
-            line-height: 1.5; 
-            word-break: break-word; 
-        }
-        
-        .chat-msg-container.admin .chat-msg { 
-            background: var(--text-pure); 
-            color: var(--bg-deep); 
-            border-bottom-right-radius: 6px; 
-            font-weight: 500; 
-        }
-        
-        .chat-msg-container.user .chat-msg { 
-            background: rgba(255,255,255,0.05); 
-            color: var(--text-pure); 
-            border-bottom-left-radius: 6px; 
-            border: 1px solid var(--border-light); 
-        }
-        
-        .chat-time { 
-            font-size: 10px; 
-            color: var(--text-muted); 
-            margin-top: 6px; 
-            font-weight: 500; 
-        }
+        .chat-msg-container { display: flex; flex-direction: column; max-width: 75%; }
+        .chat-msg-container.admin { align-self: flex-end; align-items: flex-end; }
+        .chat-msg-container.user { align-self: flex-start; align-items: flex-start; }
+        .chat-sender-name { font-size: 10px; font-weight: 800; color: var(--text-secondary); margin-bottom: 6px; padding: 0 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .chat-msg { padding: 14px 20px; border-radius: 18px; font-size: 14px; line-height: 1.5; word-break: break-word; }
+        .chat-msg-container.admin .chat-msg { background: var(--text-pure); color: var(--bg-deep); border-bottom-right-radius: 6px; font-weight: 500; }
+        .chat-msg-container.user .chat-msg { background: rgba(255,255,255,0.05); color: var(--text-pure); border-bottom-left-radius: 6px; border: 1px solid var(--border-light); }
+        .chat-time { font-size: 10px; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
 
-        .spinner { 
-            width: 45px; 
-            height: 45px; 
-            border: 3px solid rgba(255,255,255,0.05); 
-            border-top-color: var(--text-pure); 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            margin: 60px auto; 
-        }
+        .spinner { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.05); border-top-color: var(--text-pure); border-radius: 50%; animation: spin 1s linear infinite; margin: 60px auto; }
 
         @media(max-width: 1400px) {
-            .rel-card { 
-                grid-template-columns: 1fr; 
-            }
-            .users-layout { 
-                grid-template-columns: 1fr; 
-            }
+            .rel-card { grid-template-columns: 1fr; }
+            .users-layout { grid-template-columns: 1fr; }
         }
         
         @media(max-width: 900px) {
-            #app-view { 
-                padding: 20px; 
-            }
-            .support-grid { 
-                grid-template-columns: 1fr; 
-                height: auto; 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .chat-list-panel { 
-                max-height: 300px; 
-            }
-            .chat-view-panel { 
-                height: 500px; 
-            }
-            .admin-nav { 
-                padding-bottom: 5px; 
-            }
-            .stats-grid { 
-                grid-template-columns: 1fr 1fr; 
-            }
+            #app-view { padding: 20px; }
+            .support-grid { grid-template-columns: 1fr; height: auto; display: flex; flex-direction: column; }
+            .chat-list-panel { max-height: 300px; }
+            .chat-view-panel { height: 500px; }
+            .admin-nav { padding-bottom: 5px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
         
         @media(max-width: 600px) {
-            .stats-grid { 
-                grid-template-columns: 1fr; 
-            }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1240,8 +1048,8 @@
             </div>
             <p class="auth-desc">Система управления музыкальным лейблом</p>
             
-            <input type="email" id="auth-email" class="auth-input" placeholder="E-mail администратора">
-            <input type="password" id="auth-password" class="auth-input" placeholder="Ключ доступа (Пароль)">
+            <input type="email" id="auth-email" class="styled-input" style="margin-bottom: 15px;" placeholder="E-mail администратора">
+            <input type="password" id="auth-password" class="styled-input" style="margin-bottom: 15px;" placeholder="Ключ доступа (Пароль)">
             
             <button class="btn-main" id="auth-btn">Войти в панель</button>
         </div>
@@ -1322,18 +1130,27 @@
             <div class="toolbar">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" placeholder="Поиск по названию трека, артисту или email...">
+                    <input type="text" id="search-input" class="styled-input" style="padding-left: 45px; border-radius: 50px;" placeholder="Поиск по названию трека, артисту или email...">
                 </div>
                 
                 <div class="filters-group">
-                    <select id="status-filter" class="filter-select">
-                        <option value="all">Все статусы</option>
-                        <option value="Ожидает модерации">Ожидают проверки</option>
-                        <option value="Одобрено">Одобренные (На DSP)</option>
-                        <option value="Отклонено">Отклоненные (Ошибки)</option>
-                        <option value="Запрос на удаление с площадок">Запросы на удаление</option>
-                        <option value="Удалено">Удаленные (Корзина)</option>
-                    </select>
+                    
+                    <!-- КАСТОМНЫЙ ВЫБОР ФИЛЬТРА СТАТУСОВ -->
+                    <div class="custom-select" id="status-filter-wrap" style="width: 250px;">
+                        <div class="custom-select-trigger" style="border-radius: 50px; background: rgba(255,255,255,0.03);">
+                            <span class="custom-select-value">Все статусы</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-select-options">
+                            <div class="custom-option selected" data-value="all">Все статусы</div>
+                            <div class="custom-option" data-value="Ожидает модерации">Ожидают проверки</div>
+                            <div class="custom-option" data-value="Одобрено">Одобренные (На DSP)</div>
+                            <div class="custom-option" data-value="Отклонено">Отклоненные (Ошибки)</div>
+                            <div class="custom-option" data-value="Запрос на удаление с площадок">Запросы на удаление</div>
+                            <div class="custom-option" data-value="Удалено">Удаленные (Корзина)</div>
+                        </div>
+                        <input type="hidden" id="status-filter" value="all">
+                    </div>
                     
                     <button class="btn-action" id="export-csv-btn">
                         <i class="fa-solid fa-download" style="margin-right: 8px;"></i> Экспорт базы
@@ -1358,7 +1175,7 @@
                     
                     <div style="margin-bottom: 25px; position: relative;">
                         <i class="fa-solid fa-search" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
-                        <input type="text" id="user-search-input" placeholder="Поиск по E-mail или никнейму..." class="styled-input" style="padding-left: 50px; border-radius: 50px;">
+                        <input type="text" id="user-search-input" placeholder="Поиск по E-mail или никнейму..." class="styled-input" style="padding-left: 45px; border-radius: 50px;">
                     </div>
                     
                     <div id="users-list-container" class="users-list-wrapper">
@@ -1386,7 +1203,7 @@
                         
                         <div style="margin-bottom:25px;">
                             <label style="font-size:11px; color:var(--text-secondary); margin-bottom:8px; display:block; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Сообщение</label>
-                            <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." class="styled-input" style="resize: vertical; font-family:inherit;"></textarea>
+                            <textarea id="mail-body" rows="4" placeholder="Здравствуйте! Ваш релиз..." class="styled-input" style="resize: vertical;"></textarea>
                         </div>
                         
                         <button id="send-mail-btn" class="btn-main" style="margin-top:0;">
@@ -1407,22 +1224,41 @@
                             
                             <div>
                                 <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; letter-spacing: 1px;">Тип промокода</label>
-                                <select id="promo-type" class="styled-input" style="cursor:pointer; appearance:none;">
-                                    <option value="discount">Скидка в % (Для ЮKassa)</option>
-                                    <option value="gift">Подарочный (Бесплатный тариф)</option>
-                                </select>
+                                <!-- КАСТОМНЫЙ ВЫБОР -->
+                                <div class="custom-select" id="promo-type-wrap">
+                                    <div class="custom-select-trigger">
+                                        <span class="custom-select-value">Скидка в % (Для ЮKassa)</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="custom-select-options">
+                                        <div class="custom-option selected" data-value="discount">Скидка в % (Для ЮKassa)</div>
+                                        <div class="custom-option" data-value="gift">Подарочный (Бесплатный тариф)</div>
+                                    </div>
+                                    <input type="hidden" id="promo-type" value="discount">
+                                </div>
                             </div>
 
                             <div>
                                 <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; letter-spacing: 1px;">Значение</label>
-                                <input type="number" id="promo-val" placeholder="Процент скидки / Кол-во месяцев" class="styled-input">
+                                <input type="number" id="promo-val" placeholder="Процент скидки (Например: 50)" class="styled-input">
                             </div>
                             
-                            <select id="promo-plan" class="styled-input" style="display:none; cursor:pointer; appearance:none;">
-                                <option value="Стартовый">Выдать тариф: Стартовый</option>
-                                <option value="Расширенный">Выдать тариф: Расширенный</option>
-                                <option value="Профессиональный">Выдать тариф: Профессиональный</option>
-                            </select>
+                            <div id="promo-plan-container" style="display: none;">
+                                <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; letter-spacing: 1px;">Тариф для подарка</label>
+                                <!-- КАСТОМНЫЙ ВЫБОР ТАРИФА -->
+                                <div class="custom-select" id="promo-plan-wrap">
+                                    <div class="custom-select-trigger">
+                                        <span class="custom-select-value">Выдать тариф: Стартовый</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="custom-select-options">
+                                        <div class="custom-option selected" data-value="Стартовый">Выдать тариф: Стартовый</div>
+                                        <div class="custom-option" data-value="Расширенный">Выдать тариф: Расширенный</div>
+                                        <div class="custom-option" data-value="Профессиональный">Выдать тариф: Профессиональный</div>
+                                    </div>
+                                    <input type="hidden" id="promo-plan" value="Стартовый">
+                                </div>
+                            </div>
 
                             <div>
                                 <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; letter-spacing: 1px;">Действует до (пусто = навсегда)</label>
@@ -1493,10 +1329,20 @@
                 <div style="display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin-bottom: 30px;">
                     <div>
                         <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:8px; display:block; letter-spacing: 1px;">Выберите артиста</label>
-                        <select id="royalty-artist-select" class="styled-input" style="cursor:pointer; appearance: none;">
-                            <option value="">Загрузка артистов...</option>
-                        </select>
+                        
+                        <!-- КАСТОМНЫЙ ВЫБОР ДЛЯ РОЯЛТИ -->
+                        <div class="custom-select" id="royalty-select-wrap">
+                            <div class="custom-select-trigger">
+                                <span class="custom-select-value" id="royalty-artist-trigger-val">Загрузка артистов...</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="custom-select-options" id="royalty-artist-options">
+                                <!-- Опции генерируются через JS -->
+                            </div>
+                            <input type="hidden" id="royalty-artist-select" value="">
+                        </div>
                     </div>
+                    
                     <div>
                         <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:8px; display:block; letter-spacing: 1px;">Сумма начисления (₽)</label>
                         <input type="number" id="royalty-amount" placeholder="Например: 5000" class="styled-input" style="font-size:16px;">
@@ -1592,6 +1438,80 @@
         let isAdminTyping = false;
         let adminTypingTimer;
         let prevUnreadCount = 0; 
+
+        // ==========================================
+        // ЛОГИКА ДЛЯ CUSTOM SELECTS (КРАСИВЫХ МЕНЮ)
+        // ==========================================
+        document.addEventListener('click', (e) => {
+            
+            // Если кликнули мимо селекта - закрываем все
+            if (!e.target.closest('.custom-select')) {
+                document.querySelectorAll('.custom-select').forEach(s => {
+                    s.classList.remove('open');
+                });
+            }
+
+            // Открытие/закрытие по клику
+            const trigger = e.target.closest('.custom-select-trigger');
+            if (trigger) {
+                const select = trigger.closest('.custom-select');
+                const isOpen = select.classList.contains('open');
+                
+                // Сначала закрываем все остальные
+                document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+                
+                if (!isOpen) {
+                    select.classList.add('open');
+                }
+            }
+
+            // Клик по конкретной опции (option)
+            const option = e.target.closest('.custom-option');
+            if (option) {
+                const select = option.closest('.custom-select');
+                const valueSpan = select.querySelector('.custom-select-value');
+                const hiddenInput = select.querySelector('input[type="hidden"]');
+                
+                // Меняем UI
+                select.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                valueSpan.innerText = option.innerText;
+                hiddenInput.value = option.getAttribute('data-value');
+                
+                select.classList.remove('open');
+                
+                // ТРИГГЕРЫ СОБЫТИЙ ДЛЯ РАЗНЫХ СЕЛЕКТОВ
+                const inputId = hiddenInput.id;
+                
+                // Если это статус карточки релиза
+                if (inputId && inputId.startsWith('status-') && inputId !== 'status-filter') {
+                    const id = inputId.replace('status-', '');
+                    window.handleStatusChange(id);
+                } 
+                
+                // Если это главный фильтр поисковика
+                else if (inputId === 'status-filter') {
+                    const val = hiddenInput.value;
+                    renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
+                }
+                
+                // Если это выбор типа промокода
+                else if (inputId === 'promo-type') {
+                    const val = hiddenInput.value;
+                    const planSelect = document.getElementById('promo-plan-container');
+                    const valInput = document.getElementById('promo-val');
+                    
+                    if (val === 'gift') { 
+                        planSelect.style.display = 'block'; 
+                        valInput.placeholder = 'Кол-во месяцев'; 
+                    } else { 
+                        planSelect.style.display = 'none'; 
+                        valInput.placeholder = 'Процент скидки (Например: 50)'; 
+                    }
+                }
+            }
+        });
+
 
         // --- ГЕНЕРАЦИЯ ЗВУКА УВЕДОМЛЕНИЙ ---
         function playNotificationSound() {
@@ -1997,17 +1917,21 @@
         }
 
         function updateRoyaltySelect(usersList) {
-            const select = document.getElementById('royalty-artist-select');
+            const optionsContainer = document.getElementById('royalty-artist-options');
+            const triggerValue = document.getElementById('royalty-artist-trigger-val');
+            const hiddenInput = document.getElementById('royalty-artist-select');
             
-            if (!select) {
+            if (!optionsContainer) {
                 return;
             }
             
-            select.innerHTML = '<option value="">Выберите музыканта...</option>';
+            optionsContainer.innerHTML = '';
+            triggerValue.innerText = 'Выберите музыканта...';
+            hiddenInput.value = '';
             
             usersList.forEach(u => {
                 if (u.id !== ADMIN_UID) { 
-                    select.innerHTML += `<option value="${u.id}">${u.nickname || u.email}</option>`;
+                    optionsContainer.innerHTML += `<div class="custom-option" data-value="${u.id}">${u.nickname || u.email}</div>`;
                 }
             });
         }
@@ -2038,7 +1962,6 @@
                     actionButtons = `<div class="btn-owner"><i class="fa-solid fa-crown" style="margin-right:5px;"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
-                        <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
                         <button class="btn-wipe" onclick="deleteUserAccount('${u.id}')">
                             <i class="fa-solid fa-trash" style="margin-right:5px;"></i> Удалить аккаунт
                         </button>
@@ -2052,12 +1975,21 @@
 
                 const tariffHtml = u.id !== ADMIN_UID ? `
                     <div class="tariff-box">
-                        <select id="tariff-select-${u.id}" class="styled-input" style="padding:10px 14px; font-size:12px; margin-bottom:0; cursor:pointer; border-radius:50px;">
-                            <option value="Стартовый">Стартовый (1 мес)</option>
-                            <option value="Расширенный">Расширенный (1 мес)</option>
-                            <option value="Профессиональный">Профессиональный (1 мес)</option>
-                            <option value="Базовый">Сброс до Базового</option>
-                        </select>
+                        
+                        <div class="custom-select" style="width: 200px;">
+                            <div class="custom-select-trigger" style="padding: 10px 14px; border-radius: 12px;">
+                                <span class="custom-select-value">Сброс до Базового</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="custom-select-options">
+                                <div class="custom-option" data-value="Стартовый">Стартовый (1 мес)</div>
+                                <div class="custom-option" data-value="Расширенный">Расширенный (1 мес)</div>
+                                <div class="custom-option" data-value="Профессиональный">Профессиональный (1 мес)</div>
+                                <div class="custom-option selected" data-value="Базовый">Сброс до Базового</div>
+                            </div>
+                            <input type="hidden" id="tariff-select-${u.id}" value="Базовый">
+                        </div>
+                        
                         <button class="btn-issue" onclick="issueTariff('${u.id}')">Выдать</button>
                     </div>
                 ` : '';
@@ -2211,20 +2143,6 @@
                 notify("Ошибка", "error"); 
                 btn.innerHTML = origHTML; 
                 btn.disabled = false; 
-            }
-        });
-
-        document.getElementById('promo-type').addEventListener('change', (e) => {
-            const val = e.target.value;
-            const planSelect = document.getElementById('promo-plan');
-            const valInput = document.getElementById('promo-val');
-            
-            if (val === 'gift') { 
-                planSelect.style.display = 'block'; 
-                valInput.placeholder = 'Кол-во месяцев'; 
-            } else { 
-                planSelect.style.display = 'none'; 
-                valInput.placeholder = 'Процент скидки (Например: 50)'; 
             }
         });
 
@@ -2471,12 +2389,22 @@
             }
 
             items.forEach(d => {
+                
+                const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
                 const isApproved = d.status === 'Одобрено' ? 'selected' : '';
                 const isRejected = d.status === 'Отклонено' ? 'selected' : '';
-                const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
                 const isDelRequest = d.status === 'Запрос на удаление с площадок' ? 'selected' : '';
                 const isDeletedState = d.status === 'Удалено' ? 'selected' : '';
                 
+                const statusDisplay = {
+                    'Ожидает модерации': 'Ожидает модерации',
+                    'Одобрено': 'Одобрено (На DSP)',
+                    'Отклонено': 'Отклонено (Правки)',
+                    'Запрос на удаление с площадок': 'Запрос на удаление',
+                    'Удалено': 'Удалено (Корзина)'
+                };
+                
+                const currentStatusText = statusDisplay[d.status] || d.status;
                 const isRejectedUI = d.status === 'Отклонено';
 
                 const featHtml = d.feat ? ` <span style="color:var(--text-secondary); font-size:12px;">feat. ${d.feat}</span>` : '';
@@ -2491,6 +2419,7 @@
 
                 container.innerHTML += `
                     <div class="rel-card" id="card-${d.id}">
+                        
                         <div class="rel-details">
                             <h3 class="rel-title">
                                 ${d.title} 
@@ -2518,55 +2447,63 @@
                             
                             <div class="code-input-group" style="margin-top: 15px;">
                                 <label class="code-label"><i class="fa-solid fa-pen-nib" style="color:var(--text-pure); margin-right:5px;"></i> Авторы текста</label>
-                                <textarea readonly rows="1" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authorsText || 'Не указано'}</textarea>
+                                <textarea class="styled-input" readonly rows="1" style="resize:vertical;">${d.authorsText || 'Не указано'}</textarea>
                             </div>
                             
                             <div class="code-input-group" style="margin-top: 10px;">
                                 <label class="code-label"><i class="fa-solid fa-music" style="color:var(--text-pure); margin-right:5px;"></i> Авторы музыки</label>
-                                <textarea readonly rows="1" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authorsMusic || 'Не указано'}</textarea>
+                                <textarea class="styled-input" readonly rows="1" style="resize:vertical;">${d.authorsMusic || 'Не указано'}</textarea>
                             </div>
                             
                             <div class="code-input-group" style="margin-top: 10px;">
                                 <label class="code-label"><i class="fa-solid fa-align-left" style="color:var(--text-pure); margin-right:5px;"></i> Текст песни</label>
-                                <textarea readonly rows="4" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.lyrics || 'Не указано'}</textarea>
+                                <textarea class="styled-input" readonly rows="4" style="resize:vertical;">${d.lyrics || 'Не указано'}</textarea>
                             </div>
                         </div>
 
                         <div class="rel-codes">
                             <div class="code-input-group">
                                 <label class="code-label">UPC Код</label>
-                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="195081234567">
+                                <input type="text" class="styled-input" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="195081234567">
                             </div>
                             
-                            <div class="code-input-group">
+                            <div class="code-input-group" style="margin-top: 10px;">
                                 <label class="code-label">ISRC Код</label>
-                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="RU-XXX-26-00001">
+                                <input type="text" class="styled-input" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="RU-XXX-26-00001">
                             </div>
                             
-                            <div class="code-input-group">
+                            <div class="code-input-group" style="margin-top: 10px;">
                                 <label class="code-label">Причина отклонения</label>
-                                <textarea id="reason-${d.id}" rows="2" placeholder="Опишите ошибки...">${d.rejectReason || ''}</textarea>
+                                <textarea class="styled-input" id="reason-${d.id}" rows="2" placeholder="Опишите ошибки...">${d.rejectReason || ''}</textarea>
                             </div>
                             
                             <!-- ТЕКСТ ИИ ПИТЧИНГА ДЛЯ МОДЕРАТОРА -->
-                            <div class="code-input-group" style="margin-top: 5px;">
+                            <div class="code-input-group" style="margin-top: 10px;">
                                 <label class="code-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--text-pure); margin-right:5px;"></i> AI Питчинг (Промо)</label>
-                                <textarea readonly rows="3" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
+                                <textarea class="styled-input" readonly rows="3" style="resize:vertical;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
                             </div>
                         </div>
 
                         <div class="rel-actions">
-                            <select id="status-${d.id}" onchange="handleStatusChange('${d.id}')">
-                                <option value="Ожидает модерации" ${isPending}>Ожидает модерации</option>
-                                <option value="Одобрено" ${isApproved}>Одобрено (На DSP)</option>
-                                <option value="Отклонено" ${isRejected}>Отклонено (Правки)</option>
-                                <option value="Запрос на удаление с площадок" ${isDelRequest}>Запрос на удаление</option>
-                                <option value="Удалено" ${isDeletedState}>Удалено (Корзина)</option>
-                            </select>
+                            
+                            <!-- КАСТОМНОЕ МЕНЮ СТАТУСА РЕЛИЗА -->
+                            <div class="custom-select" id="status-wrap-${d.id}">
+                                <div class="custom-select-trigger">
+                                    <span class="custom-select-value">${currentStatusText}</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="custom-select-options">
+                                    <div class="custom-option ${isPending}" data-value="Ожидает модерации">Ожидает модерации</div>
+                                    <div class="custom-option ${isApproved}" data-value="Одобрено">Одобрено (На DSP)</div>
+                                    <div class="custom-option ${isRejected}" data-value="Отклонено">Отклонено (Правки)</div>
+                                    <div class="custom-option ${isDelRequest}" data-value="Запрос на удаление с площадок">Запрос на удаление</div>
+                                    <div class="custom-option ${isDeletedState}" data-value="Удалено">Удалено (Корзина)</div>
+                                </div>
+                                <input type="hidden" id="status-${d.id}" value="${d.status}">
+                            </div>
                             
                             <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
                             
-                            <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ИЗ БАЗЫ ДАННЫХ -->
                             <button class="btn-delete" data-id="${d.id}">
                                 <i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;"></i>Удалить навсегда из БД
                             </button>
@@ -2654,12 +2591,6 @@
             ));
         });
 
-        document.getElementById('status-filter').addEventListener('change', (e) => {
-            const val = e.target.value;
-            
-            renderList(val === 'all' ? allSubmissions : allSubmissions.filter(i => i.status === val));
-        });
-
         // ==========================================
         // ОБНОВЛЕННЫЙ ЭКСПОРТ В CSV
         // ==========================================
@@ -2671,6 +2602,7 @@
             let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Feat,Автор текста,Автор музыки,Email Аккаунта,Жанр,Статус,Маркировки,ИИ,TikTok,UPC,ISRC\n";
             
             allSubmissions.forEach(row => { 
+                // Базовое экранирование кавычек для CSV формата
                 let safeTitle = (row.title || '').replace(/"/g, '""');
                 let safeArtist = (row.artist || '').replace(/"/g, '""');
                 let safeFeat = (row.feat || '').replace(/"/g, '""');
