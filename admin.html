@@ -69,6 +69,7 @@
         :root {
             --bg-deep: #000000;
             --bg-surface: rgba(15, 15, 15, 0.45);
+            --bg-input: rgba(5, 5, 5, 0.8);
             
             --border-light: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(255, 255, 255, 0.3);
@@ -422,6 +423,23 @@
             font-size: 13px; 
         }
 
+        .auth-input { 
+            width: 100%; 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 16px 20px; 
+            border-radius: var(--radius-sm); 
+            margin-bottom: 15px; 
+            font-size: 14px; 
+            transition: var(--transition); 
+        }
+
+        .auth-input:focus { 
+            border-color: var(--border-glow); 
+            box-shadow: 0 0 15px rgba(255,255,255,0.05); 
+        }
+
         .btn-main { 
             width: 100%; 
             padding: 16px; 
@@ -693,7 +711,7 @@
             border-radius: 20px; 
             padding: 30px; 
             display: grid; 
-            grid-template-columns: 1fr 1.2fr 1fr 1fr; 
+            grid-template-columns: 2fr 1.2fr 1fr 1.2fr; 
             gap: 30px; 
             align-items: start; 
             transition: var(--transition); 
@@ -1079,6 +1097,7 @@
         <!-- НАВИГАЦИЯ -->
         <div class="admin-nav">
             <button class="admin-tab-btn active" data-tab="tab-releases">Модерация релизов</button>
+            <button class="admin-tab-btn" data-tab="tab-withdrawals">Заявки на выплату</button>
             <button class="admin-tab-btn" data-tab="tab-users">Пользователи & E-mail</button>
             <button class="admin-tab-btn" data-tab="tab-support">Поддержка (Чат)</button>
             <button class="admin-tab-btn" data-tab="tab-pitching">Питчинг в плейлисты</button>
@@ -1169,6 +1188,17 @@
             </div>
         </div>
 
+        <!-- НОВАЯ ВКЛАДКА: ЗАЯВКИ НА ВЫПЛАТУ -->
+        <div class="admin-section" id="tab-withdrawals">
+            <div class="panel-box">
+                <h3 class="panel-title">Заявки на выплату роялти</h3>
+                <p style="color:var(--text-secondary); margin-bottom:25px;">Запросы артистов на вывод средств с внутреннего баланса на реальные реквизиты.</p>
+                <div id="withdrawals-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap:20px;">
+                    <!-- Карточки с заявками генерируются здесь -->
+                </div>
+            </div>
+        </div>
+
         <!-- ВКЛАДКА 2: ПОЛЬЗОВАТЕЛИ И ПРОМОКОДЫ -->
         <div class="admin-section" id="tab-users">
             <div class="users-layout">
@@ -1246,7 +1276,7 @@
 
                             <div>
                                 <label style="font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; letter-spacing: 1px;">Значение</label>
-                                <input type="number" id="promo-val" placeholder="Процент скидки (Например: 50)" class="styled-input">
+                                <input type="number" id="promo-val" placeholder="Процент скидки / Кол-во месяцев" class="styled-input">
                             </div>
                             
                             <div id="promo-plan-container" style="display: none;">
@@ -1403,6 +1433,7 @@
             query, 
             onSnapshot, 
             where,
+            updateDoc,
             arrayUnion 
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1432,6 +1463,7 @@
         let allSubmissions = [];
         let allUsers = [];
         let allSupportChats = [];
+        let allWithdrawals = [];
         let selectedChatUid = null;
         
         // Переменные для Real-time Listener (Слушателей БД)
@@ -1439,8 +1471,10 @@
         let releasesUnsub = null;
         let usersUnsub = null;
         let promosUnsub = null;
+        let withdrawalsUnsub = null;
         
         let isFirstReleasesLoad = true;
+        let isFirstWithdrawalsLoad = true;
         let isAdminTyping = false;
         let adminTypingTimer;
         let prevUnreadCount = 0; 
@@ -1677,6 +1711,7 @@
                 initAdminChat();
                 loadUsers();
                 loadPromos();
+                loadWithdrawals();
                 
             } else {
                 if (user) {
@@ -1686,20 +1721,158 @@
                 document.getElementById('app-view').style.display = 'none';
                 
                 // Отключение слушателей при выходе
-                if (adminChatUnsub) {
-                    adminChatUnsub();
-                }
-                if (releasesUnsub) {
-                    releasesUnsub();
-                }
-                if (usersUnsub) {
-                    usersUnsub();
-                }
-                if (promosUnsub) {
-                    promosUnsub();
-                }
+                if (adminChatUnsub) adminChatUnsub();
+                if (releasesUnsub) releasesUnsub();
+                if (usersUnsub) usersUnsub();
+                if (promosUnsub) promosUnsub();
+                if (withdrawalsUnsub) withdrawalsUnsub();
             }
         });
+
+        // ==========================================
+        // РЕАЛЬНОЕ ВРЕМЯ: ЗАЯВКИ НА ВЫПЛАТУ (ВЫВОД СРЕДСТВ)
+        // ==========================================
+        function loadWithdrawals() {
+            const container = document.getElementById('withdrawals-list');
+            
+            if (allWithdrawals.length === 0) {
+                container.innerHTML = '<div class="spinner"></div>';
+            }
+            
+            if (withdrawalsUnsub) {
+                withdrawalsUnsub();
+            }
+            
+            const q = query(collection(db, "withdrawal_requests"), orderBy("createdAt", "desc"));
+            
+            withdrawalsUnsub = onSnapshot(q, (snap) => {
+                
+                if (!isFirstWithdrawalsLoad) {
+                    snap.docChanges().forEach(change => {
+                        if(change.type === 'added') {
+                            playNotificationSound();
+                            notifyLong("Поступила новая заявка на выплату роялти!", "success");
+                        }
+                    });
+                }
+                isFirstWithdrawalsLoad = false;
+                
+                allWithdrawals = [];
+                snap.forEach(docSnap => {
+                    allWithdrawals.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                renderWithdrawals();
+            });
+        }
+
+        function renderWithdrawals() {
+            const container = document.getElementById('withdrawals-list');
+            container.innerHTML = '';
+            
+            if (allWithdrawals.length === 0) {
+                container.innerHTML = '<div style="color:var(--text-secondary); text-align:center; padding: 40px; grid-column: 1/-1;">Новых заявок на выплату нет.</div>';
+                return;
+            }
+            
+            allWithdrawals.forEach(req => {
+                
+                // Перевод методов
+                let methodName = req.method;
+                if (methodName === 'card') methodName = 'Банковская карта';
+                if (methodName === 'sbp') methodName = 'СБП (По номеру)';
+                if (methodName === 'account') methodName = 'Банковский счет';
+                
+                const dateStr = req.createdAt ? new Date(req.createdAt.toDate()).toLocaleString('ru-RU') : 'Недавно';
+                
+                // Оформление статусов
+                let statusBadge = '';
+                let actionButtons = '';
+                
+                if (req.status === 'Ожидает выплаты') {
+                    statusBadge = `<span style="display:inline-block; padding: 4px 10px; background: rgba(255,255,255,0.05); border: 1px dashed var(--border-light); color: var(--text-primary); border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Ожидает перевода</span>`;
+                    
+                    actionButtons = `
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button onclick="payWithdrawal('${req.id}')" class="btn-action" style="flex: 1; justify-content: center; background: var(--text-pure); color: var(--bg-deep); border: none;">Выплачено</button>
+                            <button onclick="rejectWithdrawal('${req.id}', '${req.userId}', ${req.amount})" class="btn-action" style="flex: 1; justify-content: center; color: var(--danger-text); border-color: var(--border-light); background: transparent;">Отклонить</button>
+                        </div>
+                    `;
+                } else if (req.status === 'Выплачено') {
+                    statusBadge = `<span style="display:inline-block; padding: 4px 10px; background: var(--text-pure); color: var(--bg-deep); border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Средства переведены</span>`;
+                } else if (req.status === 'Отклонено') {
+                    statusBadge = `<span style="display:inline-block; padding: 4px 10px; border: 1px dashed var(--danger-text); color: var(--danger-text); border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Отклонено (Возврат)</span>`;
+                }
+                
+                container.innerHTML += `
+                    <div class="user-card" style="flex-direction: column; align-items: stretch; border-radius: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <h4 style="color:var(--text-pure); font-size:18px; margin-bottom:4px; font-weight:800; letter-spacing:-0.5px;">${req.userNickname}</h4>
+                                <div style="color:var(--text-secondary); font-size:13px;"><i class="fa-solid fa-envelope" style="margin-right: 5px;"></i> ${req.userEmail}</div>
+                                <div style="color:var(--text-muted); font-size:11px; margin-top:4px;"><i class="fa-solid fa-clock" style="margin-right: 5px;"></i> ${dateStr}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size:24px; font-weight:800; color:var(--text-pure);">${req.amount.toLocaleString('ru-RU')} ₽</div>
+                                <div style="margin-top: 5px;">${statusBadge}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; font-size: 13px; color: var(--text-primary); border: 1px solid var(--border-light); margin-bottom: 10px;">
+                            <div style="color:var(--text-secondary); font-size:10px; text-transform:uppercase; font-weight:800; margin-bottom:6px; letter-spacing:1px;">Метод перевода</div>
+                            <div style="margin-bottom: 15px; font-weight: 600; font-size: 14px;"><i class="fa-solid fa-credit-card" style="margin-right: 5px;"></i> ${methodName}</div>
+                            
+                            <div style="color:var(--text-secondary); font-size:10px; text-transform:uppercase; font-weight:800; margin-bottom:6px; letter-spacing:1px;">Реквизиты артиста</div>
+                            <div style="font-family: monospace; font-size: 14px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px dashed var(--border-light);">${req.details}</div>
+                        </div>
+                        
+                        ${actionButtons}
+                    </div>
+                `;
+            });
+        }
+
+        window.payWithdrawal = async (id) => {
+            if(!confirm("Вы подтверждаете, что перевели средства артисту на указанные реквизиты?")) {
+                return;
+            }
+            try {
+                await updateDoc(doc(db, "withdrawal_requests", id), { 
+                    status: "Выплачено" 
+                });
+                notify("Статус заявки успешно обновлен на «Выплачено»!", "success");
+            } catch(e) {
+                notify("Ошибка обновления заявки.", "error");
+            }
+        };
+
+        window.rejectWithdrawal = async (id, uid, amount) => {
+            if(!confirm(`Отклонить эту заявку и вернуть ${amount.toLocaleString('ru-RU')} ₽ обратно на баланс артиста?`)) {
+                return;
+            }
+            try {
+                // 1. Возвращаем деньги
+                const userRef = doc(db, "users", uid);
+                const userSnap = await getDoc(userRef);
+                
+                if (userSnap.exists()) {
+                    const currentBalance = userSnap.data().balance || 0;
+                    await updateDoc(userRef, { 
+                        balance: currentBalance + amount 
+                    });
+                }
+                
+                // 2. Меняем статус заявки
+                await updateDoc(doc(db, "withdrawal_requests", id), { 
+                    status: "Отклонено" 
+                });
+                
+                notify("Заявка отклонена. Средства возвращены артисту.", "success");
+            } catch(e) {
+                notify("Ошибка при возврате средств.", "error");
+            }
+        };
+
 
         // ==========================================
         // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ЧАТОВ
@@ -1957,52 +2130,6 @@
             }
         }
 
-        // КНОПКА НАЧИСЛЕНИЯ СРЕДСТВ
-        document.getElementById('add-royalty-btn').addEventListener('click', async () => {
-            const uid = document.getElementById('royalty-artist-select').value;
-            const amount = parseFloat(document.getElementById('royalty-amount').value);
-
-            if (!uid) {
-                return notify("Выберите артиста из списка!", "error");
-            }
-            
-            if (isNaN(amount) || amount <= 0) {
-                return notify("Укажите корректную сумму для начисления!", "error");
-            }
-
-            const btn = document.getElementById('add-royalty-btn');
-            const origText = btn.innerText;
-            
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
-            btn.disabled = true;
-
-            try {
-                const userRef = doc(db, "users", uid);
-                const snap = await getDoc(userRef);
-                
-                if (snap.exists()) {
-                    const currentBalance = snap.data().balance || 0;
-                    
-                    await setDoc(userRef, { 
-                        balance: currentBalance + amount 
-                    }, { merge: true });
-                    
-                    notify(`Успешно начислено ${amount} ₽ артисту!`, "success");
-                    
-                    // Полностью очищаем форму
-                    document.getElementById('royalty-amount').value = '';
-                    document.getElementById('royalty-artist-select').value = '';
-                    document.getElementById('royalty-artist-trigger-val').innerText = 'Выберите музыканта...';
-                    document.querySelectorAll('#royalty-artist-options .custom-option').forEach(o => o.classList.remove('selected'));
-                }
-            } catch(e) { 
-                notify("Ошибка начисления роялти", "error"); 
-            } finally { 
-                btn.innerText = origText; 
-                btn.disabled = false; 
-            }
-        });
-
         function renderUsersList(users) {
             const container = document.getElementById('users-list-container');
             container.innerHTML = '';
@@ -2080,7 +2207,6 @@
             });
         }
 
-        // ЛОГИКА ПОЛНОГО УДАЛЕНИЯ АККАУНТА (WIPE)
         window.deleteUserAccount = async (uid) => {
             if (uid === ADMIN_UID) {
                 return notify("Ошибка: Нельзя удалить аккаунт владельца!", "error");
@@ -2215,6 +2341,20 @@
                 notify("Ошибка", "error"); 
                 btn.innerHTML = origHTML; 
                 btn.disabled = false; 
+            }
+        });
+
+        document.getElementById('promo-type').addEventListener('change', (e) => {
+            const val = e.target.value;
+            const planSelect = document.getElementById('promo-plan');
+            const valInput = document.getElementById('promo-val');
+            
+            if (val === 'gift') { 
+                planSelect.style.display = 'block'; 
+                valInput.placeholder = 'Кол-во месяцев'; 
+            } else { 
+                planSelect.style.display = 'none'; 
+                valInput.placeholder = 'Процент скидки (Например: 50)'; 
             }
         });
 
@@ -2576,6 +2716,7 @@
                             
                             <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
                             
+                            <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ИЗ БАЗЫ ДАННЫХ -->
                             <button class="btn-delete" data-id="${d.id}">
                                 <i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;"></i>Удалить навсегда из БД
                             </button>
@@ -2663,6 +2804,9 @@
             ));
         });
 
+        // ==========================================
+        // ОБНОВЛЕННЫЙ ЭКСПОРТ В CSV
+        // ==========================================
         document.getElementById('export-csv-btn').addEventListener('click', () => {
             if (allSubmissions.length === 0) {
                 return notify("Нет данных", "error");
