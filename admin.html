@@ -99,20 +99,19 @@
         /* ==========================================
            ГЛОБАЛЬНЫЕ СТИЛИ
         ========================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
         }
         
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            line-height: 1.6; 
             position: relative;
         }
 
@@ -163,1066 +162,1043 @@
         /* Слоистая структура для избежания багов z-index */
         #app-view, 
         #auth-view, 
-        #toast-container {
-            position: relative;
-            z-index: 10;
+        #toast-container { 
+            position: relative; 
+            z-index: 10; 
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
+        /* Кастомизация скроллбара */
+        ::-webkit-scrollbar { 
+            width: 6px; 
         }
         
-        ::-webkit-scrollbar-track {
-            background: var(--bg-deep);
+        ::-webkit-scrollbar-track { 
+            background: var(--bg-deep); 
         }
         
-        ::-webkit-scrollbar-thumb {
-            background: #333333;
-            border-radius: 10px;
+        ::-webkit-scrollbar-thumb { 
+            background: #333333; 
+            border-radius: 10px; 
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: #666666;
+        ::-webkit-scrollbar-thumb:hover { 
+            background: #666666; 
         }
 
-        button {
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: inherit;
-            outline: none;
-            transition: var(--transition);
+        /* Базовые элементы */
+        button { 
+            cursor: pointer; 
+            border: none; 
+            background: none; 
+            color: inherit; 
+            outline: none; 
+            transition: var(--transition); 
         }
         
-        input, select, textarea {
-            font-family: inherit;
-            outline: none;
-            border: none;
+        input, 
+        select, 
+        textarea { 
+            font-family: inherit; 
+            outline: none; 
+            border: none; 
         }
 
-        @keyframes fadeUp {
+        @keyframes fadeUp { 
             from { 
                 opacity: 0; 
                 transform: translateY(30px); 
-            }
+            } 
             to { 
                 opacity: 1; 
                 transform: translateY(0); 
-            }
+            } 
         }
 
-        @keyframes spin {
+        @keyframes spin { 
             100% { 
                 transform: rotate(360deg); 
-            }
+            } 
         }
 
         /* ==========================================
-           УВЕДОМЛЕНИЯ (ИСПРАВЛЕНО ПРОВАЛИВАНИЕ)
+           УВЕДОМЛЕНИЯ (TOASTS)
         ========================================== */
-        #toast-container {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            /* Максимальный приоритет поверх всех окон */
-            z-index: 999999 !important;
-            pointer-events: none;
+        #toast-container { 
+            position: fixed; 
+            top: 30px; 
+            right: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            z-index: 999999;
         }
 
-        .toast {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-left: 3px solid var(--text-pure);
-            padding: 18px 24px;
-            border-radius: var(--radius-sm);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-pure);
-            transform: translateX(120%);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: auto;
-            z-index: 999999 !important;
+        .toast { 
+            background: rgba(10, 10, 10, 0.85); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-light); 
+            border-left: 3px solid var(--text-pure); 
+            padding: 18px 24px; 
+            border-radius: var(--radius-sm); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            color: var(--text-pure); 
+            transform: translateX(120%); 
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            border-left-color: var(--danger-text);
+        .toast.show { 
+            transform: translateX(0); 
         }
         
-        .toast.success {
-            border-left-color: var(--text-pure);
+        .toast.error { 
+            border-left-color: var(--danger-text); 
+        }
+        
+        .toast.warning { 
+            border-left-color: var(--warning); 
         }
 
         /* ==========================================
            ЭКРАН АВТОРИЗАЦИИ АДМИНА
         ========================================== */
-        .auth-view-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
+        .auth-view-container { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            position: relative; 
+            z-index: 10; 
         }
 
-        .auth-card {
-            background: var(--bg-surface);
-            backdrop-filter: blur(40px);
-            padding: 50px 45px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        .auth-card { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(40px); 
+            padding: 50px 45px; 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center; 
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
-        .auth-logo {
-            font-size: 38px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--text-pure);
-            letter-spacing: -2px;
+        .auth-logo { 
+            font-size: 38px; 
+            font-weight: 800; 
+            margin-bottom: 10px; 
+            color: var(--text-pure); 
+            letter-spacing: -2px; 
         }
 
-        .auth-desc {
-            color: var(--text-secondary);
-            margin-bottom: 35px;
-            font-size: 13px;
+        .auth-desc { 
+            color: var(--text-secondary); 
+            margin-bottom: 35px; 
+            font-size: 13px; 
         }
 
-        .auth-input {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 15px;
-            font-size: 14px;
-            transition: var(--transition);
+        .auth-input { 
+            width: 100%; 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 16px 20px; 
+            border-radius: var(--radius-sm); 
+            margin-bottom: 15px; 
+            font-size: 14px; 
+            transition: var(--transition); 
         }
 
-        .auth-input:focus {
-            border-color: var(--border-glow);
-            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        .auth-input:focus { 
+            border-color: var(--border-glow); 
+            box-shadow: 0 0 15px rgba(255,255,255,0.05); 
         }
 
-        .btn-main {
-            width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            font-weight: 800;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: var(--accent-glow);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .btn-main { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: var(--radius-sm); 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            font-weight: 800; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            box-shadow: var(--accent-glow); 
+            transition: var(--transition); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
             margin-top: 10px;
         }
 
-        .btn-main:hover {
-            background: #d4d4d8;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
-        }
-
-        .btn-main:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
+        .btn-main:hover { 
+            background: #d4d4d8; 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(255,255,255,0.2); 
         }
 
         /* ==========================================
            ГЛАВНЫЙ ИНТЕРФЕЙС АДМИНКИ
         ========================================== */
-        #app-view {
-            display: none;
-            padding: 40px 50px;
-            max-width: 1700px;
-            margin: 0 auto;
+        #app-view { 
+            display: none; 
+            padding: 40px 50px; 
+            max-width: 1700px; 
+            margin: 0 auto; 
         }
         
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-light);
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px; 
+            padding-bottom: 25px; 
+            border-bottom: 1px solid var(--border-light); 
         }
         
-        .header-title {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-pure);
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .header-title { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: var(--text-pure); 
+            letter-spacing: -1px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
         }
         
-        .badge-root {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-primary);
-            padding: 6px 12px;
-            border-radius: 50px;
-            font-size: 10px;
-            font-weight: 800;
-            border: 1px solid rgba(255,255,255,0.15);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .badge-root { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-primary); 
+            padding: 6px 12px; 
+            border-radius: 50px; 
+            font-size: 10px; 
+            font-weight: 800; 
+            border: 1px solid rgba(255,255,255,0.15); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
         }
 
-        /* Кнопка выхода (без почты) */
-        #logout-btn {
+        #logout-btn { 
             background: transparent; 
             color: var(--text-secondary); 
             padding: 10px 20px; 
             border-radius: 50px; 
             font-weight: 600; 
-            font-size: 13px;
+            font-size: 13px; 
             border: 1px solid var(--border-light); 
-            transition: 0.3s;
-        }
-
-        #logout-btn:hover {
-            color: var(--text-pure);
-            border-color: var(--text-pure);
-        }
-
-        .admin-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            overflow-x: auto;
+            transition: 0.3s; 
         }
         
-        .admin-nav::-webkit-scrollbar {
-            display: none;
+        #logout-btn:hover { 
+            color: var(--text-pure); 
+            border-color: var(--text-pure); 
+        }
+
+        .admin-nav { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 40px; 
+            padding-bottom: 10px; 
+            overflow-x: auto; 
         }
         
-        .admin-tab-btn {
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            padding: 14px 22px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            transition: var(--transition);
+        .admin-nav::-webkit-scrollbar { 
+            display: none; 
+        }
+        
+        .admin-tab-btn { 
+            background: rgba(255,255,255,0.02); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-light); 
+            padding: 14px 22px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            font-size: 13px; 
+            color: var(--text-secondary); 
+            white-space: nowrap; 
+            transition: var(--transition); 
         }
         
         .admin-tab-btn.active, 
-        .admin-tab-btn:hover {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            border-color: var(--text-pure);
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        .admin-tab-btn:hover { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-color: var(--text-pure); 
+            font-weight: 700; 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15); 
         }
 
-        .admin-section {
-            display: none;
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            padding-bottom: 50px;
+        .admin-section { 
+            display: none; 
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
+            padding-bottom: 50px; 
         }
         
-        .admin-section.active {
-            display: block;
+        .admin-section.active { 
+            display: block; 
         }
 
-        .styled-input {
-            background: var(--bg-input);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 15px 18px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            transition: var(--transition);
-            width: 100%;
-            outline: none;
+        .styled-input { 
+            background: var(--bg-input); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 15px 18px; 
+            border-radius: var(--radius-sm); 
+            font-size: 13px; 
+            transition: var(--transition); 
+            width: 100%; 
+            outline: none; 
         }
 
-        .styled-input:focus {
-            border-color: var(--border-glow);
+        .styled-input:focus { 
+            border-color: var(--border-glow); 
         }
 
         /* ==========================================
            СТАТИСТИКА
         ========================================== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 20px; 
+            margin-bottom: 40px; 
         }
         
-        .stat-card {
-            background: var(--bg-surface);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: var(--transition);
+        .stat-card { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(24px); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            padding: 25px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            transition: var(--transition); 
         }
 
-        .stat-card:hover {
-            border-color: var(--border-glow);
-            transform: translateY(-3px);
+        .stat-card:hover { 
+            border-color: var(--border-glow); 
+            transform: translateY(-3px); 
         }
         
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
+        .stat-icon { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 20px; 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
         }
         
-        .stat-info h4 {
-            font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
+        .stat-info h4 { 
+            font-size: 11px; 
+            color: var(--text-secondary); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 4px; 
         }
         
-        .stat-info span {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--text-pure);
-            line-height: 1;
-            letter-spacing: -1px;
+        .stat-info span { 
+            font-size: 32px; 
+            font-weight: 800; 
+            color: var(--text-pure); 
+            line-height: 1; 
+            letter-spacing: -1px; 
         }
 
         /* ==========================================
            ИНСТРУМЕНТЫ (ПОИСК, ФИЛЬТРЫ)
         ========================================== */
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 20px;
-            flex-wrap: wrap;
+        .toolbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            gap: 20px; 
+            flex-wrap: wrap; 
         }
         
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
+        .search-box { 
+            position: relative; 
+            flex: 1; 
+            max-width: 400px; 
         }
         
-        .search-box i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 14px;
+        .search-box i { 
+            position: absolute; 
+            left: 18px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--text-secondary); 
+            font-size: 14px; 
         }
         
-        .search-box input {
-            width: 100%;
-            background: var(--bg-surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 15px 15px 15px 45px;
-            border-radius: 50px;
-            font-size: 13px;
-            outline: none;
+        .search-box input { 
+            width: 100%; 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-pure); 
+            padding: 15px 15px 15px 45px; 
+            border-radius: 50px; 
+            font-size: 13px; 
+            outline: none; 
         }
         
-        .search-box input:focus {
-            border-color: var(--border-glow);
+        .search-box input:focus { 
+            border-color: var(--border-glow); 
+        }
+
+        .filters-group { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            flex-wrap: wrap; 
         }
         
-        .filters-group {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
+        .filter-select { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-primary); 
+            padding: 14px 22px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            font-size: 13px; 
+            cursor: pointer; 
+            outline: none; 
+            appearance: none; 
         }
         
-        .filter-select {
-            background: var(--bg-surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
-            padding: 14px 22px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-            appearance: none;
+        .filter-select option { 
+            background: var(--bg-input); 
         }
         
-        .filter-select option {
-            background: var(--bg-input);
+        .btn-action { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid var(--border-light); 
+            padding: 14px 24px; 
+            border-radius: 50px; 
+            font-weight: 700; 
+            font-size: 13px; 
+            color: var(--text-primary); 
+            backdrop-filter: blur(10px); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            transition: 0.3s;
         }
         
-        .btn-action {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-light);
-            padding: 14px 24px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-action:hover {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            border-color: var(--text-pure);
+        .btn-action:hover { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-color: var(--text-pure); 
         }
 
         /* ==========================================
            КАРТОЧКИ РЕЛИЗОВ
         ========================================== */
-        .admin-releases-grid {
-            display: grid;
-            gap: 20px;
+        .admin-releases-grid { 
+            display: grid; 
+            gap: 20px; 
         }
         
-        .admin-card {
-            background: var(--bg-surface);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 30px;
-            display: grid;
-            grid-template-columns: 2fr 1.5fr 2fr 1.5fr;
-            gap: 30px;
-            align-items: start;
-            transition: var(--transition);
+        .rel-card { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(24px); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            padding: 30px; 
+            display: grid; 
+            grid-template-columns: 2fr 1.5fr 2fr 1.5fr; 
+            gap: 30px; 
+            align-items: start; 
+            transition: var(--transition); 
         }
         
-        .admin-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        .rel-card:hover { 
+            border-color: rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+        }
+        
+        .rel-details h3 { 
+            font-size: 20px; 
+            color: var(--text-pure); 
+            margin-bottom: 8px; 
+            font-weight: 800; 
+            letter-spacing: -0.5px; 
+        }
+        
+        .rel-details p { 
+            color: var(--text-secondary); 
+            font-size: 13px; 
+            margin-bottom: 6px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        .artist-badge { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.03); 
+            padding: 6px 12px; 
+            border-radius: 50px; 
+            font-size: 11px; 
+            color: var(--text-primary); 
+            margin-top: 10px; 
+            font-weight: 600; 
+            border: 1px solid var(--border-light); 
+        }
+        
+        .dsp-tags { 
+            margin-top: 15px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 6px; 
+        }
+        
+        .dsp-tag { 
+            background: transparent; 
+            color: var(--text-secondary); 
+            font-size: 10px; 
+            padding: 4px 10px; 
+            border-radius: 50px; 
+            font-weight: 700; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            text-transform: uppercase; 
         }
 
-        .rel-details h3 {
-            font-size: 20px;
-            color: var(--text-pure);
-            margin-bottom: 8px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+        .rel-files { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
         }
         
-        .rel-details p {
-            color: var(--text-secondary);
-            font-size: 13px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .file-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            background: rgba(255,255,255,0.02); 
+            padding: 14px; 
+            border-radius: var(--radius-sm); 
+            border: 1px dashed rgba(255,255,255,0.15); 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: var(--text-primary); 
+            text-decoration: none; 
+            transition: var(--transition); 
         }
         
-        .artist-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.03);
-            padding: 6px 12px;
-            border-radius: 50px;
-            font-size: 11px;
-            color: var(--text-primary);
-            margin-top: 10px;
-            font-weight: 600;
-            border: 1px solid var(--border-light);
-        }
-        
-        .dsp-tags {
-            margin-top: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        
-        .dsp-tag {
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 10px;
-            padding: 4px 10px;
-            border-radius: 50px;
-            font-weight: 700;
-            border: 1px solid rgba(255,255,255,0.1);
-            text-transform: uppercase;
+        .file-link:hover { 
+            border-color: var(--text-pure); 
+            border-style: solid; 
+            color: var(--text-pure); 
         }
 
-        .rel-files {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .rel-codes { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background: var(--bg-input); 
+            padding: 20px; 
+            border-radius: var(--radius-sm); 
+            border: 1px solid var(--border-light); 
         }
         
-        .file-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.02);
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            border: 1px dashed rgba(255,255,255,0.15);
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .file-link:hover {
-            border-color: var(--text-pure);
-            border-style: solid;
-            color: var(--text-pure);
+        .code-label { 
+            font-size: 10px; 
+            font-weight: 800; 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 6px; 
+            letter-spacing: 1px; 
         }
 
-        .rel-codes {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: var(--bg-input);
-            padding: 20px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-light);
+        .rel-actions { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
         }
         
-        .code-input-group label {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 6px;
-            letter-spacing: 1px;
+        .btn-save { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            padding: 14px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 800; 
+            font-size: 13px; 
+            box-shadow: var(--accent-glow); 
         }
         
-        .code-input-group input, 
-        .code-input-group textarea {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 12px 14px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-family: monospace;
-            outline: none;
+        .btn-save:hover { 
+            background: #d4d4d8; 
+            transform: translateY(-2px); 
         }
         
-        .code-input-group input:focus, 
-        .code-input-group textarea:focus {
-            border-color: var(--border-glow);
-        }
-
-        .rel-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .rel-actions select {
-            width: 100%;
-            background: var(--bg-input);
-            color: var(--text-pure);
-            border: 1px solid var(--border-light);
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 13px;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
+        .btn-delete { 
+            background: transparent; 
+            color: var(--danger-text); 
+            border: 1px solid var(--border-light); 
+            padding: 14px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 600; 
+            font-size: 13px; 
         }
         
-        .rel-actions select option {
-            background: var(--bg-input);
+        .btn-delete:hover { 
+            background: rgba(255, 107, 107, 0.1); 
+            border-color: var(--danger-text); 
         }
         
-        .btn-save {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-weight: 800;
-            font-size: 13px;
-            box-shadow: var(--accent-glow);
-        }
-        
-        .btn-save:hover {
-            background: #d4d4d8;
-            transform: translateY(-2px);
-        }
-        
-        .btn-delete {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-light);
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 13px;
-        }
-        
-        .btn-delete:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-pure);
-            border-color: rgba(255,255,255,0.3);
-        }
-        
-        .del-badge {
-            color: var(--bg-deep);
-            background: var(--text-pure);
-            font-size: 10px;
-            font-weight: 800;
-            padding: 4px 8px;
-            border-radius: 50px;
-            margin-left: 10px;
-            text-transform: uppercase;
-            vertical-align: middle;
+        .del-badge { 
+            color: var(--bg-deep); 
+            background: var(--text-pure); 
+            font-size: 10px; 
+            font-weight: 800; 
+            padding: 4px 8px; 
+            border-radius: 50px; 
+            margin-left: 10px; 
+            text-transform: uppercase; 
+            vertical-align: middle; 
         }
 
         /* ==========================================
-           ВКЛАДКА ПОЛЬЗОВАТЕЛИ
+           ПОЛЬЗОВАТЕЛИ
         ========================================== */
-        .users-layout {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 30px;
-            align-items: start;
+        .users-layout { 
+            display: grid; 
+            grid-template-columns: 1.5fr 1fr; 
+            gap: 30px; 
+            align-items: start; 
         }
 
-        .panel-box {
-            background: var(--bg-surface);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border-light);
-            padding: 35px;
-            border-radius: var(--radius-md);
+        .panel-box { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--border-light); 
+            padding: 35px; 
+            border-radius: var(--radius-md); 
         }
 
-        .panel-title {
-            font-size: 22px;
-            color: var(--text-pure);
-            margin-bottom: 20px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+        .panel-title { 
+            font-size: 22px; 
+            color: var(--text-pure); 
+            margin-bottom: 20px; 
+            font-weight: 800; 
+            letter-spacing: -0.5px; 
         }
 
-        .users-list-wrapper {
-            /* Длинный список до конца безопасной зоны страницы */
-            max-height: calc(100vh - 250px);
-            min-height: 500px;
-            overflow-y: auto;
-            padding-right: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .users-list-wrapper { 
+            /* Вытягиваем список пользователей до конца экрана */
+            max-height: calc(100vh - 250px); 
+            min-height: 500px; 
+            overflow-y: auto; 
+            padding-right: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
         }
         
-        .user-card {
-            background: rgba(255,255,255,0.02);
-            padding: 25px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+        .user-card { 
+            background: rgba(255,255,255,0.02); 
+            padding: 25px; 
+            border-radius: 16px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.3s; 
         }
 
-        .user-card:hover {
-            border-color: rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.04);
+        .user-card:hover { 
+            border-color: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.04); 
         }
 
-        .user-card-info {
-            flex: 1;
-            padding-right: 25px;
+        .user-card-info { 
+            flex: 1; 
+            padding-right: 25px; 
         }
 
-        .user-card-title {
-            font-weight: 800;
-            color: var(--text-pure);
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            letter-spacing: -0.5px;
+        .user-card-title { 
+            font-weight: 800; 
+            color: var(--text-pure); 
+            font-size: 18px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            letter-spacing: -0.5px; 
         }
 
-        .user-card-email {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
+        .user-card-email { 
+            font-size: 14px; 
+            color: var(--text-secondary); 
+            margin-bottom: 8px; 
         }
 
-        .user-card-tariff {
-            font-size: 13px;
-            color: var(--text-primary);
-            font-weight: 600;
+        .user-card-tariff { 
+            font-size: 13px; 
+            color: var(--text-primary); 
+            font-weight: 600; 
         }
 
-        .user-card-actions {
-            display: flex;
-            flex-direction: column;
-            width: 140px;
+        .user-card-actions { 
+            display: flex; 
+            flex-direction: column; 
+            width: 140px; 
         }
         
-        .badge-active {
-            color: var(--bg-deep);
-            background: var(--text-pure);
-            font-weight: 800;
-            font-size: 10px;
-            padding: 4px 10px;
-            border-radius: 50px;
-            text-transform: uppercase;
-        }
-
-        .badge-banned {
-            color: var(--text-primary);
-            font-weight: 800;
-            font-size: 10px;
-            padding: 4px 10px;
-            border: 1px dashed var(--border-light);
-            border-radius: 50px;
-            text-transform: uppercase;
-        }
-
-        .badge-frozen {
-            color: var(--text-primary);
-            font-weight: 800;
-            font-size: 10px;
-            padding: 4px 10px;
-            border: 1px solid var(--text-secondary);
-            border-radius: 50px;
-            text-transform: uppercase;
+        .badge-active { 
+            color: var(--bg-deep); 
+            background: var(--text-pure); 
+            font-weight: 800; 
+            font-size: 10px; 
+            padding: 4px 10px; 
+            border-radius: 50px; 
+            text-transform: uppercase; 
         }
         
-        .btn-owner {
-            color: var(--text-pure);
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            width: 100%;
-        }
-
-        .btn-ban {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-light);
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            width: 100%;
-            margin-bottom: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-ban:hover {
-            color: white;
-            border-color: white;
-        }
-
-        .btn-freeze {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px dashed var(--border-light);
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            width: 100%;
-            margin-bottom: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-freeze:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        .btn-unblock {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            border: none;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 800;
-            width: 100%;
-            margin-bottom: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-unblock:hover {
-            background: #d4d4d8;
-        }
-
-        .btn-mail {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-pure);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .btn-mail:hover {
-            background: rgba(255,255,255,0.1);
+        .badge-banned { 
+            color: var(--text-primary); 
+            font-weight: 800; 
+            font-size: 10px; 
+            padding: 4px 10px; 
+            border: 1px dashed var(--border-light); 
+            border-radius: 50px; 
+            text-transform: uppercase; 
         }
         
-        .tariff-box {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-issue {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 12px;
-            font-weight: 800;
-            transition: 0.3s;
-            border: none;
-            box-shadow: var(--accent-glow);
-        }
-
-        .btn-issue:hover {
-            transform: translateY(-2px);
-        }
-
-        .promo-list-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px dashed rgba(255,255,255,0.1);
-            padding: 18px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            transition: var(--transition);
+        .badge-frozen { 
+            color: var(--text-primary); 
+            font-weight: 800; 
+            font-size: 10px; 
+            padding: 4px 10px; 
+            border: 1px solid var(--text-secondary); 
+            border-radius: 50px; 
+            text-transform: uppercase; 
         }
         
-        .promo-list-item:hover {
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.04);
+        .btn-owner { 
+            color: var(--text-pure); 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-align: center; 
+            padding: 12px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-light); 
+            width: 100%; 
         }
         
-        .promo-list-item h4 {
-            color: var(--text-pure);
-            font-size: 15px;
-            margin-bottom: 4px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+        .btn-ban { 
+            background: transparent; 
+            color: var(--text-secondary); 
+            border: 1px solid var(--border-light); 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            width: 100%; 
+            margin-bottom: 8px; 
+            transition: 0.3s; 
         }
         
-        .promo-list-item p {
-            color: var(--text-secondary);
-            font-size: 12px;
+        .btn-ban:hover { 
+            color: white; 
+            border-color: white; 
+        }
+        
+        .btn-freeze { 
+            background: transparent; 
+            color: var(--text-primary); 
+            border: 1px dashed var(--border-light); 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            width: 100%; 
+            margin-bottom: 8px; 
+            transition: 0.3s; 
+        }
+        
+        .btn-freeze:hover { 
+            background: rgba(255,255,255,0.05); 
+        }
+        
+        .btn-unblock { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border: none; 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            font-size: 12px; 
+            font-weight: 800; 
+            width: 100%; 
+            margin-bottom: 8px; 
+            transition: 0.3s; 
+        }
+        
+        .btn-unblock:hover { 
+            background: #d4d4d8; 
+        }
+        
+        .btn-mail { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-pure); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 10px 14px; 
+            border-radius: 12px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            width: 100%; 
+            transition: 0.3s; 
+        }
+        
+        .btn-mail:hover { 
+            background: rgba(255,255,255,0.1); 
+        }
+        
+        .tariff-box { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 15px; 
+        }
+        
+        .btn-issue { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-radius: 50px; 
+            padding: 10px 20px; 
+            font-size: 12px; 
+            font-weight: 800; 
+            transition: 0.3s; 
+            border: none; 
+            box-shadow: var(--accent-glow); 
+        }
+        
+        .btn-issue:hover { 
+            transform: translateY(-2px); 
+        }
+
+        .promo-list-item { 
+            background: rgba(255,255,255,0.02); 
+            border: 1px dashed rgba(255,255,255,0.1); 
+            padding: 18px; 
+            border-radius: var(--radius-sm); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 12px; 
+            transition: var(--transition); 
+        }
+        
+        .promo-list-item:hover { 
+            border-color: rgba(255,255,255,0.3); 
+            background: rgba(255,255,255,0.04); 
+        }
+        
+        .promo-list-item h4 { 
+            color: var(--text-pure); 
+            font-size: 15px; 
+            margin-bottom: 4px; 
+            font-weight: 800; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .promo-list-item p { 
+            color: var(--text-secondary); 
+            font-size: 12px; 
         }
 
         /* ==========================================
            ЧАТ
         ========================================== */
-        .support-grid {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 30px;
-            height: 70vh;
-            min-height: 600px;
+        .support-grid { 
+            display: grid; 
+            grid-template-columns: 380px 1fr; 
+            gap: 30px; 
+            height: 70vh; 
+            min-height: 600px; 
         }
         
-        .chat-list-panel {
-            background: var(--bg-surface);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            overflow-y: auto;
-            padding: 20px;
+        .chat-list-panel { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            overflow-y: auto; 
+            padding: 20px; 
         }
         
-        .chat-view-panel {
-            background: var(--bg-surface);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        .chat-view-panel { 
+            background: var(--bg-surface); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
         }
         
-        .chat-item {
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid transparent;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.01);
+        .chat-item { 
+            padding: 16px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            border: 1px solid transparent; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+            background: rgba(255,255,255,0.01); 
         }
         
-        .chat-item:hover {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.05);
+        .chat-item:hover { 
+            background: rgba(255,255,255,0.03); 
+            border-color: rgba(255,255,255,0.05); 
         }
         
-        .chat-item.active {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.2);
+        .chat-item.active { 
+            background: rgba(255,255,255,0.08); 
+            border-color: rgba(255,255,255,0.2); 
         }
         
-        .chat-unread-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--text-pure);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        .chat-unread-dot { 
+            width: 10px; 
+            height: 10px; 
+            background: var(--text-pure); 
+            border-radius: 50%; 
+            box-shadow: 0 0 10px rgba(255,255,255,0.8); 
         }
         
-        .chat-msg-container {
-            display: flex;
-            flex-direction: column;
-            max-width: 75%;
+        .chat-msg-container { 
+            display: flex; 
+            flex-direction: column; 
+            max-width: 75%; 
         }
         
-        .chat-msg-container.admin {
-            align-self: flex-end;
-            align-items: flex-end;
+        .chat-msg-container.admin { 
+            align-self: flex-end; 
+            align-items: flex-end; 
         }
         
-        .chat-msg-container.user {
-            align-self: flex-start;
-            align-items: flex-start;
+        .chat-msg-container.user { 
+            align-self: flex-start; 
+            align-items: flex-start; 
         }
         
-        .chat-sender-name {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            padding: 0 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .chat-sender-name { 
+            font-size: 10px; 
+            font-weight: 800; 
+            color: var(--text-secondary); 
+            margin-bottom: 6px; 
+            padding: 0 5px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
         }
         
-        .chat-msg {
-            padding: 14px 20px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.5;
-            word-break: break-word;
+        .chat-msg { 
+            padding: 14px 20px; 
+            border-radius: 18px; 
+            font-size: 14px; 
+            line-height: 1.5; 
+            word-break: break-word; 
         }
         
-        .chat-msg-container.admin .chat-msg {
-            background: var(--text-pure);
-            color: var(--bg-deep);
-            border-bottom-right-radius: 6px;
-            font-weight: 500;
+        .chat-msg-container.admin .chat-msg { 
+            background: var(--text-pure); 
+            color: var(--bg-deep); 
+            border-bottom-right-radius: 6px; 
+            font-weight: 500; 
         }
         
-        .chat-msg-container.user .chat-msg {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-pure);
-            border-bottom-left-radius: 6px;
-            border: 1px solid var(--border-light);
+        .chat-msg-container.user .chat-msg { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-pure); 
+            border-bottom-left-radius: 6px; 
+            border: 1px solid var(--border-light); 
         }
         
-        .chat-time {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 6px;
-            font-weight: 500;
+        .chat-time { 
+            font-size: 10px; 
+            color: var(--text-muted); 
+            margin-top: 6px; 
+            font-weight: 500; 
         }
         
-        #user-typing-indicator {
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 10px 30px 15px;
-            font-style: italic;
-            display: none;
+        #user-typing-indicator { 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            padding: 10px 30px 15px; 
+            font-style: italic; 
+            display: none; 
         }
 
         /* ПРОЧИЕ СТИЛИ */
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 3px solid rgba(255,255,255,0.05);
-            border-top-color: var(--text-pure);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 60px auto;
+        .spinner { 
+            width: 45px; 
+            height: 45px; 
+            border: 3px solid rgba(255,255,255,0.05); 
+            border-top-color: var(--text-pure); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin: 60px auto; 
         }
 
         /* ==========================================
            АДАПТАЦИЯ (МЕДИАЗАПРОСЫ)
         ========================================== */
         @media(max-width: 1400px) {
-            .admin-card { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .users-layout { grid-template-columns: 1fr; }
+            .admin-card { 
+                grid-template-columns: 1fr; 
+            }
+            .users-layout { 
+                grid-template-columns: 1fr; 
+            }
         }
         
         @media(max-width: 900px) {
-            #app-view { padding: 20px; }
-            .support-grid { grid-template-columns: 1fr; height: auto; display: flex; flex-direction: column; }
-            .chat-list-panel { max-height: 300px; }
-            .chat-view-panel { height: 500px; }
-            .admin-nav { padding-bottom: 5px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+            #app-view { 
+                padding: 20px; 
+            }
+            .support-grid { 
+                grid-template-columns: 1fr; 
+                height: auto; 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .chat-list-panel { 
+                max-height: 300px; 
+            }
+            .chat-view-panel { 
+                height: 500px; 
+            }
+            .admin-nav { 
+                padding-bottom: 5px; 
+            }
+            .stats-grid { 
+                grid-template-columns: 1fr 1fr; 
+            }
         }
         
         @media(max-width: 600px) {
-            .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid { 
+                grid-template-columns: 1fr; 
+            }
         }
     </style>
 </head>
@@ -1334,7 +1310,14 @@
                 <div class="stat-icon"><i class="fa-solid fa-trash"></i></div>
                 <div class="stat-info">
                     <h4>Запросы на удаление</h4>
-                    <span id="stat-delete">0</span>
+                    <span id="stat-delete-request">0</span>
+                </div>
+            </div>
+            <div class="stat-card" style="border-color: var(--danger-text);">
+                <div class="stat-icon" style="color: var(--danger-text);"><i class="fa-solid fa-box-archive"></i></div>
+                <div class="stat-info">
+                    <h4 style="color: var(--danger-text);">В Корзине (Удалено)</h4>
+                    <span id="stat-deleted-total">0</span>
                 </div>
             </div>
         </div>
@@ -1353,6 +1336,7 @@
                         <option value="Одобрено">Одобренные (На DSP)</option>
                         <option value="Отклонено">Отклоненные (Ошибки)</option>
                         <option value="Запрос на удаление с площадок">Запросы на удаление</option>
+                        <option value="Удалено">Удаленные (Корзина)</option>
                     </select>
                     <button class="btn-action" id="export-csv-btn">
                         <i class="fa-solid fa-download" style="margin-right: 8px;"></i> Экспорт базы
@@ -1480,7 +1464,9 @@
                         </div>
                     </div>
                     
-                    <div id="user-typing-indicator" style="font-size: 13px; color: var(--text-secondary); padding: 10px 30px 15px; font-style: italic; display: none;">Пользователь печатает...</div>
+                    <div id="user-typing-indicator" style="font-size: 13px; color: var(--text-secondary); padding: 10px 30px 15px; font-style: italic; display: none;">
+                        Пользователь печатает...
+                    </div>
                     
                     <div style="padding:20px 25px; border-top:1px solid var(--border-light); display:flex; gap:15px; background:rgba(10,10,12,0.8); align-items: center;">
                         <input type="text" id="admin-chat-input" disabled class="styled-input" style="border-radius:50px; font-size:14px;" placeholder="Напишите ответ артисту...">
@@ -1550,7 +1536,9 @@
             getAuth, 
             signInWithEmailAndPassword, 
             onAuthStateChanged, 
-            signOut 
+            signOut,
+            setPersistence,
+            browserLocalPersistence
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { 
             getFirestore, 
@@ -1583,6 +1571,11 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
+        // ЖЕСТКАЯ ЗАЩИТА СЕССИИ АДМИНА
+        setPersistence(auth, browserLocalPersistence).catch((error) => {
+            console.error("Session protection error:", error);
+        });
+        
         // UID ГЛАВНОГО ВЛАДЕЛЬЦА
         const ADMIN_UID = "SLRsahb8YufYn4QrlSzmiLXym4x1";
         
@@ -1605,23 +1598,29 @@
                 
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
+                
                 osc1.connect(gain1);
                 gain1.connect(ctx.destination);
+                
                 osc1.type = 'sine';
                 osc1.frequency.setValueAtTime(880, ctx.currentTime);
                 gain1.gain.setValueAtTime(0.05, ctx.currentTime);
+                
                 osc1.start(ctx.currentTime);
                 gain1.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.4);
                 osc1.stop(ctx.currentTime + 0.4);
                 
                 const osc2 = ctx.createOscillator();
                 const gain2 = ctx.createGain();
+                
                 osc2.connect(gain2);
                 gain2.connect(ctx.destination);
+                
                 osc2.type = 'sine';
                 osc2.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.15);
                 gain2.gain.setValueAtTime(0, ctx.currentTime + 0.15);
                 gain2.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.16);
+                
                 osc2.start(ctx.currentTime + 0.15);
                 gain2.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.55);
                 osc2.stop(ctx.currentTime + 0.55);
@@ -1633,7 +1632,9 @@
         function notify(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
+            
             toast.className = `toast ${type}`;
+            
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             
@@ -1654,7 +1655,9 @@
         function notifyLong(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
+            
             toast.className = `toast ${type}`;
+            
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
             toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
             
@@ -1680,6 +1683,7 @@
             const date = new Date(ts);
             const today = new Date();
             const yesterday = new Date(today);
+            
             yesterday.setDate(yesterday.getDate() - 1);
 
             const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
@@ -1690,19 +1694,26 @@
             if (isToday) {
                 return `Сегодня, ${timeStr}`;
             }
+            
             if (isYesterday) {
                 return `Вчера, ${timeStr}`;
             }
             
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
+            
             return `${day}.${month}.${date.getFullYear()}, ${timeStr}`;
         }
 
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.admin-tab-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                document.querySelectorAll('.admin-section').forEach(s => {
+                    s.classList.remove('active');
+                });
                 
                 e.target.classList.add('active');
                 const targetTab = e.target.getAttribute('data-tab');
@@ -1739,13 +1750,13 @@
                 initAdminChat();
                 loadUsersForRoyalty();
             } else {
-                if(user) {
+                if (user) {
                     signOut(auth);
                 }
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
                 
-                if(adminChatUnsub) {
+                if (adminChatUnsub) {
                     adminChatUnsub(); 
                 }
             }
@@ -1772,15 +1783,17 @@
             const uid = document.getElementById('royalty-artist-select').value;
             const amount = parseFloat(document.getElementById('royalty-amount').value);
 
-            if(!uid) {
+            if (!uid) {
                 return notify("Выберите артиста из списка!", "error");
             }
-            if(isNaN(amount) || amount <= 0) {
+            
+            if (isNaN(amount) || amount <= 0) {
                 return notify("Укажите корректную сумму для начисления!", "error");
             }
 
             const btn = document.getElementById('add-royalty-btn');
             const origText = btn.innerText;
+            
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
             btn.disabled = true;
 
@@ -1788,7 +1801,7 @@
                 const userRef = doc(db, "users", uid);
                 const snap = await getDoc(userRef);
                 
-                if(snap.exists()) {
+                if (snap.exists()) {
                     const currentBalance = snap.data().balance || 0;
                     
                     await setDoc(userRef, { 
@@ -1831,7 +1844,7 @@
 
                 renderAdminChatList();
                 
-                if(selectedChatUid) {
+                if (selectedChatUid) {
                     renderAdminChatWindow(selectedChatUid);
                 }
             });
@@ -1841,7 +1854,7 @@
             const list = document.getElementById('admin-chat-list');
             list.innerHTML = '';
             
-            if(allSupportChats.length === 0) {
+            if (allSupportChats.length === 0) {
                 list.innerHTML = '<div style="color:var(--text-secondary); text-align:center; font-size:13px; margin-top:30px;">Нет активных диалогов</div>';
                 return;
             }
@@ -1872,6 +1885,7 @@
             renderAdminChatWindow(uid);
             
             const adminChatInput = document.getElementById('admin-chat-input');
+            
             adminChatInput.disabled = false;
             document.getElementById('admin-chat-send').disabled = false;
             
@@ -1887,12 +1901,15 @@
             const body = document.getElementById('admin-chat-body');
             const header = document.getElementById('admin-chat-header');
             
-            if(!chat) return;
+            if (!chat) {
+                return;
+            }
             
             header.innerHTML = `<i class="fa-solid fa-headset" style="color:var(--text-secondary);"></i> <span>Диалог: ${chat.userNickname}</span>`;
             body.innerHTML = '';
             
             const userTypingIndicator = document.getElementById('user-typing-indicator');
+            
             if (chat.userTyping) { 
                 userTypingIndicator.style.display = 'block'; 
             } else { 
@@ -1901,7 +1918,7 @@
             
             const msgs = chat.messages || [];
             
-            if(msgs.length === 0) {
+            if (msgs.length === 0) {
                 body.innerHTML = '<div style="margin:auto; color:var(--text-secondary); font-size:13px; text-align:center;">Сообщений пока нет</div>';
                 return;
             }
@@ -1917,11 +1934,14 @@
                         <div class="chat-time">${formatChatTime(m.time)}</div>
                     </div>`;
             });
+            
             body.scrollTop = body.scrollHeight;
         }
 
         document.getElementById('admin-chat-input').addEventListener('input', () => {
-            if (!selectedChatUid) return;
+            if (!selectedChatUid) {
+                return;
+            }
             
             if (!isAdminTyping) {
                 isAdminTyping = true;
@@ -1943,16 +1963,22 @@
         document.getElementById('admin-chat-send').addEventListener('click', sendAdminChatMessage);
         
         document.getElementById('admin-chat-input').addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') sendAdminChatMessage();
+            if (e.key === 'Enter') {
+                sendAdminChatMessage();
+            }
         });
 
         async function sendAdminChatMessage() {
-            if(!selectedChatUid) return;
+            if (!selectedChatUid) {
+                return;
+            }
             
             const adminChatInput = document.getElementById('admin-chat-input');
             const val = adminChatInput.value.trim();
             
-            if(!val) return;
+            if (!val) {
+                return;
+            }
             
             adminChatInput.value = '';
             clearTimeout(adminTypingTimer);
@@ -1984,11 +2010,11 @@
             try {
                 const snap = await getDocs(collection(db, "users"));
                 allUsers = [];
+                
                 snap.forEach(doc => {
                     allUsers.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Обновление счетчика зарегистрированных пользователей
                 document.getElementById('users-count').innerText = `(${allUsers.length})`;
                 
                 renderUsersList(allUsers);
@@ -2001,7 +2027,7 @@
             const container = document.getElementById('users-list-container');
             container.innerHTML = '';
             
-            if(users.length === 0) {
+            if (users.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-secondary);">Пользователи не найдены</div>';
                 return;
             }
@@ -2061,8 +2087,15 @@
                 return notify("Ошибка: Нельзя заблокировать владельца!", "error");
             }
             
-            const statusNames = { 'banned': 'Блокировка', 'frozen': 'Заморозка', 'Активен': 'Снятие ограничений' };
-            if(!confirm(`Действие: ${statusNames[status]}. Продолжить?`)) return;
+            const statusNames = { 
+                'banned': 'Блокировка', 
+                'frozen': 'Заморозка', 
+                'Активен': 'Снятие ограничений' 
+            };
+            
+            if(!confirm(`Действие: ${statusNames[status]}. Продолжить?`)) {
+                return;
+            }
             
             try {
                 await setDoc(doc(db, "users", uid), { 
@@ -2078,7 +2111,10 @@
 
         window.issueTariff = async (uid) => {
             const plan = document.getElementById(`tariff-select-${uid}`).value;
-            if(!confirm(`Выдать тариф «${plan}» пользователю?`)) return;
+            
+            if(!confirm(`Выдать тариф «${plan}» пользователю?`)) {
+                return;
+            }
             
             try {
                 let expDate = null;
@@ -2265,7 +2301,9 @@
         }
 
         window.deletePromo = async (code) => {
-            if(!confirm(`Удалить промокод ${code}?`)) return;
+            if(!confirm(`Удалить промокод ${code}?`)) {
+                return;
+            }
             try { 
                 await deleteDoc(doc(db, "promo_codes", code)); 
                 notify("Удален", "success"); 
@@ -2282,7 +2320,7 @@
                 const snap = await getDocs(q);
                 allSubmissions = [];
                 
-                let pendingCount = 0, approvedCount = 0, deletesCount = 0;
+                let pendingCount = 0, approvedCount = 0, deletesCount = 0, deletedTotal = 0;
                 let pitchingHTML = '', calendarHTML = '', smartLinksHTML = '';
 
                 snap.forEach(docSnap => {
@@ -2295,6 +2333,10 @@
                     if (data.status === 'Запрос на удаление с площадок') {
                         deletesCount++;
                     }
+                    if (data.status === 'Удалено') {
+                        deletedTotal++;
+                    }
+                    
                     if (data.status === 'Одобрено') {
                         approvedCount++;
                         
@@ -2324,7 +2366,8 @@
                 document.getElementById('stat-total').innerText = allSubmissions.length;
                 document.getElementById('stat-pending').innerText = pendingCount;
                 document.getElementById('stat-approved').innerText = approvedCount;
-                document.getElementById('stat-delete').innerText = deletesCount;
+                document.getElementById('stat-delete-request').innerText = deletesCount;
+                document.getElementById('stat-deleted-total').innerText = deletedTotal;
 
                 document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
                 document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
@@ -2350,7 +2393,9 @@
                 const isRejected = d.status === 'Отклонено' ? 'selected' : '';
                 const isPending = d.status === 'Ожидает модерации' ? 'selected' : '';
                 const isDelRequest = d.status === 'Запрос на удаление с площадок' ? 'selected' : '';
-                const isRejectedState = d.status === 'Отклонено';
+                const isDeletedState = d.status === 'Удалено' ? 'selected' : '';
+                
+                const isRejectedUI = d.status === 'Отклонено';
 
                 let dspHtml = '';
                 if(d.platforms) {
@@ -2362,9 +2407,14 @@
                 container.innerHTML += `
                     <div class="rel-card" id="card-${d.id}">
                         <div class="rel-details">
-                            <h3 class="rel-title">${d.title} ${d.status === 'Запрос на удаление с площадок' ? '<span class="del-badge">Удаление!</span>' : ''}</h3>
+                            <h3 class="rel-title">
+                                ${d.title} 
+                                ${d.status === 'Запрос на удаление с площадок' ? '<span class="del-badge">Запрос на удаление!</span>' : ''}
+                                ${d.status === 'Удалено' ? '<span class="del-badge" style="background:var(--danger-text);">В Корзине</span>' : ''}
+                            </h3>
                             <p class="rel-p"><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span></p>
                             <p class="rel-p"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
+                            <p class="rel-p"><i class="fa-solid fa-calendar-alt"></i> Дата выхода: <span style="color:var(--text-pure); font-weight:600;">${d.releaseDate || 'Сразу после модерации'}</span></p>
                             <div class="artist-badge"><i class="fa-solid fa-envelope" style="margin-right: 6px;"></i> ${d.userEmail || 'Неизвестный'}</div>
                             <div class="dsp-tags">${dspHtml}</div>
                         </div>
@@ -2377,17 +2427,16 @@
                         <div class="rel-codes">
                             <div class="code-input-group">
                                 <label class="code-label">UPC Код</label>
-                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="195081234567">
+                                <input type="text" id="upc-${d.id}" value="${d.upc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="195081234567">
                             </div>
                             <div class="code-input-group">
                                 <label class="code-label">ISRC Код</label>
-                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedState ? 'disabled' : ''} placeholder="RU-XXX-26-00001">
+                                <input type="text" id="isrc-${d.id}" value="${d.isrc || ''}" ${isRejectedUI ? 'disabled' : ''} placeholder="RU-XXX-26-00001">
                             </div>
                             <div class="code-input-group">
                                 <label class="code-label">Причина отклонения</label>
                                 <textarea id="reason-${d.id}" rows="2" placeholder="Опишите ошибки...">${d.rejectReason || ''}</textarea>
                             </div>
-                            <!-- Вывод текста питчинга -->
                             <div class="code-input-group" style="margin-top: 5px;">
                                 <label class="code-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:white; margin-right:5px;"></i> AI Питчинг (Промо)</label>
                                 <textarea readonly rows="3" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
@@ -2400,9 +2449,10 @@
                                 <option value="Одобрено" ${isApproved}>Одобрено (На DSP)</option>
                                 <option value="Отклонено" ${isRejected}>Отклонено (Правки)</option>
                                 <option value="Запрос на удаление с площадок" ${isDelRequest}>Запрос на удаление</option>
+                                <option value="Удалено" ${isDeletedState}>Удалено (Корзина)</option>
                             </select>
                             <button class="btn-save" data-id="${d.id}">Сохранить изменения</button>
-                            <button class="btn-delete" data-id="${d.id}">Удалить из БД</button>
+                            <button class="btn-delete" data-id="${d.id}"><i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;"></i>Удалить навсегда из БД</button>
                         </div>
                     </div>
                 `;
@@ -2432,6 +2482,7 @@
                         }, { merge: true });
                         
                         notify("Сохранено!", "success");
+                        loadReleases(); // Перезагружаем список
                     } catch(err) { 
                         notify("Ошибка", "error"); 
                     }
@@ -2443,11 +2494,13 @@
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
-                    if (!confirm("Удалить релиз безвозвратно?")) return;
+                    if (!confirm("ВНИМАНИЕ! Этот трек будет удален из базы данных навсегда и безвозвратно. Продолжить?")) {
+                        return;
+                    }
                     
                     try { 
                         await deleteDoc(doc(db, "track_submissions", id)); 
-                        notify("Удален!", "success"); 
+                        notify("Удален навсегда!", "success"); 
                         loadReleases(); 
                     } catch(err) {}
                 });
@@ -2490,6 +2543,7 @@
             }
             
             let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Email Аккаунта,Жанр,Статус,UPC,ISRC\n";
+            
             allSubmissions.forEach(row => { 
                 csvContent += `"${row.id}","${row.title}","${row.artist}","${row.userEmail || ''}","${row.genre}","${row.status}","${row.upc || ''}","${row.isrc || ''}"\n`; 
             });
