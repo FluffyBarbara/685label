@@ -186,9 +186,7 @@
             transition: var(--transition); 
         }
         
-        input, 
-        select, 
-        textarea { 
+        input, select, textarea { 
             font-family: inherit; 
             outline: none; 
             border: none; 
@@ -620,7 +618,7 @@
             border-radius: var(--radius-md); 
             padding: 30px; 
             display: grid; 
-            grid-template-columns: 2fr 1.5fr 2fr 1.5fr; 
+            grid-template-columns: 2.2fr 1.5fr 2fr 1.3fr; 
             gap: 30px; 
             align-items: start; 
             transition: var(--transition); 
@@ -754,7 +752,7 @@
             border-radius: var(--radius-sm); 
             font-weight: 600; 
             font-size: 13px; 
-            transition: 0.3s;
+            transition: 0.3s; 
         }
         
         .btn-delete:hover { 
@@ -1154,7 +1152,7 @@
         }
 
         @media(max-width: 1400px) {
-            .admin-card { 
+            .rel-card { 
                 grid-template-columns: 1fr; 
             }
             .users-layout { 
@@ -2040,7 +2038,6 @@
                     actionButtons = `<div class="btn-owner"><i class="fa-solid fa-crown" style="margin-right:5px;"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
-                        <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
                         <button class="btn-wipe" onclick="deleteUserAccount('${u.id}')">
                             <i class="fa-solid fa-trash" style="margin-right:5px;"></i> Удалить аккаунт
                         </button>
@@ -2378,7 +2375,6 @@
                 
                 releasesUnsub = onSnapshot(q, (snap) => {
                     
-                    // Уведомления о новых треках и запросах на удаление
                     if (!isFirstReleasesLoad) {
                         snap.docChanges().forEach((change) => {
                             if (change.type === "added") {
@@ -2482,6 +2478,8 @@
                 
                 const isRejectedUI = d.status === 'Отклонено';
 
+                const featHtml = d.feat ? ` <span style="color:var(--text-secondary); font-size:12px;">feat. ${d.feat}</span>` : '';
+
                 let dspHtml = '';
                 
                 if(d.platforms) {
@@ -2498,10 +2496,15 @@
                                 ${d.status === 'Запрос на удаление с площадок' ? '<span class="del-badge">Запрос на удаление!</span>' : ''}
                                 ${d.status === 'Удалено' ? '<span class="del-badge" style="background:var(--danger-text);">В Корзине</span>' : ''}
                             </h3>
-                            <p class="rel-p"><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span></p>
+                            
+                            <p class="rel-p"><i class="fa-solid fa-user"></i> <span style="color:white; font-weight:600;">${d.artist}</span>${featHtml}</p>
                             <p class="rel-p"><i class="fa-solid fa-compact-disc"></i> ${d.type} • ${d.genre}</p>
-                            <p class="rel-p"><i class="fa-solid fa-code-branch"></i> Версия трека: <span style="color:var(--text-pure); font-weight:600;">${d.trackVersion ? d.trackVersion : 'Оригинальная'}</span></p>
-                            <p class="rel-p"><i class="fa-solid fa-calendar-alt"></i> Дата выхода: <span style="color:var(--text-pure); font-weight:600;">${d.releaseDate ? d.releaseDate : 'Сразу после модерации'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-microphone-lines"></i> Explicit: <span style="color:var(--text-pure); font-weight:600;">${d.explicit || 'Не указано'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-robot"></i> ИИ: <span style="color:var(--text-pure); font-weight:600;">${d.aiUsage || 'Не указано'}</span></p>
+                            <p class="rel-p"><i class="fa-brands fa-tiktok"></i> TikTok: <span style="color:var(--text-pure); font-weight:600;">${d.tiktokTimecode ? d.tiktokTimecode + ' сек' : 'Не указано'}</span></p>
+                            
+                            <p class="rel-p"><i class="fa-solid fa-code-branch"></i> Версия: <span style="color:var(--text-pure); font-weight:600;">${d.trackVersion ? d.trackVersion : 'Оригинальная'}</span></p>
+                            <p class="rel-p"><i class="fa-solid fa-calendar-alt"></i> Релиз: <span style="color:var(--text-pure); font-weight:600;">${d.releaseDate ? d.releaseDate : 'Сразу после модерации'}</span></p>
                             
                             <div class="artist-badge"><i class="fa-solid fa-envelope" style="margin-right: 6px;"></i> ${d.userEmail || 'Неизвестный'}</div>
                             
@@ -2511,6 +2514,16 @@
                         <div class="rel-files">
                             <a href="${d.audioUrl}" target="_blank" class="file-link"><i class="fa-solid fa-file-audio"></i> WAV Мастер</a>
                             <a href="${d.coverUrl}" target="_blank" class="file-link"><i class="fa-solid fa-image"></i> Обложка</a>
+                            
+                            <div class="code-input-group" style="margin-top: 15px;">
+                                <label class="code-label"><i class="fa-solid fa-users" style="color:var(--text-pure); margin-right:5px;"></i> ФИО Авторов</label>
+                                <textarea readonly rows="2" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.authors || 'Не указано'}</textarea>
+                            </div>
+                            
+                            <div class="code-input-group" style="margin-top: 10px;">
+                                <label class="code-label"><i class="fa-solid fa-align-left" style="color:var(--text-pure); margin-right:5px;"></i> Текст песни</label>
+                                <textarea readonly rows="4" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.lyrics || 'Не указано'}</textarea>
+                            </div>
                         </div>
 
                         <div class="rel-codes">
@@ -2532,7 +2545,7 @@
                             <!-- ТЕКСТ ИИ ПИТЧИНГА ДЛЯ МОДЕРАТОРА -->
                             <div class="code-input-group" style="margin-top: 5px;">
                                 <label class="code-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--text-pure); margin-right:5px;"></i> AI Питчинг (Промо)</label>
-                                <textarea readonly rows="3" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
+                                <textarea readonly rows="3" style="color:var(--text-secondary); background: rgba(0,0,0,0.3); resize:vertical; width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">${d.promoPitch || 'Питчинг не сгенерирован'}</textarea>
                             </div>
                         </div>
 
@@ -2646,10 +2659,16 @@
                 return notify("Нет данных", "error");
             }
             
-            let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Email Аккаунта,Жанр,Статус,UPC,ISRC\n";
+            let csvContent = "data:text/csv;charset=utf-8,ID,Название,Артист,Feat,Авторы,Email Аккаунта,Жанр,Статус,Explicit,ИИ,TikTok,UPC,ISRC\n";
             
             allSubmissions.forEach(row => { 
-                csvContent += `"${row.id}","${row.title}","${row.artist}","${row.userEmail || ''}","${row.genre}","${row.status}","${row.upc || ''}","${row.isrc || ''}"\n`; 
+                // Базовое экранирование кавычек для CSV формата
+                let safeTitle = (row.title || '').replace(/"/g, '""');
+                let safeArtist = (row.artist || '').replace(/"/g, '""');
+                let safeFeat = (row.feat || '').replace(/"/g, '""');
+                let safeAuthors = (row.authors || '').replace(/"/g, '""');
+                
+                csvContent += `"${row.id}","${safeTitle}","${safeArtist}","${safeFeat}","${safeAuthors}","${row.userEmail || ''}","${row.genre}","${row.status}","${row.explicit || ''}","${row.aiUsage || ''}","${row.tiktokTimecode || ''}","${row.upc || ''}","${row.isrc || ''}"\n`; 
             });
             
             const encodedUri = encodeURI(csvContent);
