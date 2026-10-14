@@ -1583,7 +1583,14 @@
         let allUsers = [];
         let allSupportChats = [];
         let selectedChatUid = null;
+        
+        // Переменные для Real-time Listener (Слушателей БД)
         let adminChatUnsub = null;
+        let releasesUnsub = null;
+        let usersUnsub = null;
+        let promosUnsub = null;
+        
+        let isFirstReleasesLoad = true;
         let isAdminTyping = false;
         let adminTypingTimer;
         let prevUnreadCount = 0; 
@@ -1718,11 +1725,6 @@
                 e.target.classList.add('active');
                 const targetTab = e.target.getAttribute('data-tab');
                 document.getElementById(targetTab).classList.add('active');
-
-                if (targetTab === 'tab-users') {
-                    loadUsers();
-                    loadPromos();
-                }
             });
         });
 
@@ -1746,83 +1748,43 @@
                 document.getElementById('auth-view').style.display = 'none';
                 document.getElementById('app-view').style.display = 'block';
                 
+                // Запуск Real-Time прослушивателей базы данных
                 loadReleases();
                 initAdminChat();
-                loadUsersForRoyalty();
+                loadUsers();
+                loadPromos();
+                
             } else {
                 if (user) {
                     signOut(auth);
                 }
-                
                 document.getElementById('auth-view').style.display = 'flex';
                 document.getElementById('app-view').style.display = 'none';
                 
+                // Отключение слушателей при выходе
                 if (adminChatUnsub) {
-                    adminChatUnsub(); 
+                    adminChatUnsub();
+                }
+                if (releasesUnsub) {
+                    releasesUnsub();
+                }
+                if (usersUnsub) {
+                    usersUnsub();
+                }
+                if (promosUnsub) {
+                    promosUnsub();
                 }
             }
         });
 
-        async function loadUsersForRoyalty() {
-            try {
-                const snap = await getDocs(collection(db, "users"));
-                const select = document.getElementById('royalty-artist-select');
-                select.innerHTML = '<option value="">Выберите музыканта...</option>';
-                
-                snap.forEach(doc => {
-                    const u = doc.data();
-                    if (doc.id !== ADMIN_UID) { 
-                        select.innerHTML += `<option value="${doc.id}">${u.nickname || u.email}</option>`;
-                    }
-                });
-            } catch(e) { 
-                console.error("Ошибка загрузки артистов для роялти", e); 
-            }
-        }
-
-        document.getElementById('add-royalty-btn').addEventListener('click', async () => {
-            const uid = document.getElementById('royalty-artist-select').value;
-            const amount = parseFloat(document.getElementById('royalty-amount').value);
-
-            if (!uid) {
-                return notify("Выберите артиста из списка!", "error");
-            }
-            
-            if (isNaN(amount) || amount <= 0) {
-                return notify("Укажите корректную сумму для начисления!", "error");
-            }
-
-            const btn = document.getElementById('add-royalty-btn');
-            const origText = btn.innerText;
-            
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
-            btn.disabled = true;
-
-            try {
-                const userRef = doc(db, "users", uid);
-                const snap = await getDoc(userRef);
-                
-                if (snap.exists()) {
-                    const currentBalance = snap.data().balance || 0;
-                    
-                    await setDoc(userRef, { 
-                        balance: currentBalance + amount 
-                    }, { merge: true });
-                    
-                    notify(`Успешно начислено ${amount} ₽ артисту!`, "success");
-                    
-                    document.getElementById('royalty-amount').value = '';
-                    document.getElementById('royalty-artist-select').value = '';
-                }
-            } catch(e) { 
-                notify("Ошибка начисления роялти", "error"); 
-            } finally { 
-                btn.innerText = origText; 
-                btn.disabled = false; 
-            }
-        });
-
+        // ==========================================
+        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ЧАТОВ
+        // ==========================================
         function initAdminChat() {
+            if (adminChatUnsub) {
+                adminChatUnsub();
+            }
+            
             adminChatUnsub = onSnapshot(query(collection(db, "support_chats"), orderBy("lastUpdated", "desc")), (snap) => {
                 allSupportChats = [];
                 let currentUnreadCount = 0;
@@ -2004,25 +1966,52 @@
             }
         }
 
-        async function loadUsers() {
+        // ==========================================
+        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ
+        // ==========================================
+        function loadUsers() {
             const container = document.getElementById('users-list-container');
-            container.innerHTML = '<div class="spinner"></div>';
+            
+            if (allUsers.length === 0) {
+                container.innerHTML = '<div class="spinner"></div>';
+            }
             
             try {
-                const snap = await getDocs(collection(db, "users"));
-                allUsers = [];
+                if (usersUnsub) {
+                    usersUnsub();
+                }
                 
-                snap.forEach(doc => {
-                    allUsers.push({ id: doc.id, ...doc.data() });
+                usersUnsub = onSnapshot(collection(db, "users"), (snap) => {
+                    allUsers = [];
+                    
+                    snap.forEach(doc => {
+                        allUsers.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    document.getElementById('users-count').innerText = `(${allUsers.length})`;
+                    
+                    renderUsersList(allUsers);
+                    updateRoyaltySelect(allUsers);
                 });
-                
-                // Обновление счетчика зарегистрированных пользователей
-                document.getElementById('users-count').innerText = `(${allUsers.length})`;
-                
-                renderUsersList(allUsers);
             } catch (e) { 
                 container.innerHTML = '<div style="color:var(--danger-text); text-align:center; padding:20px;">Ошибка загрузки базы</div>'; 
             }
+        }
+
+        function updateRoyaltySelect(usersList) {
+            const select = document.getElementById('royalty-artist-select');
+            
+            if (!select) {
+                return;
+            }
+            
+            select.innerHTML = '<option value="">Выберите музыканта...</option>';
+            
+            usersList.forEach(u => {
+                if (u.id !== ADMIN_UID) { 
+                    select.innerHTML += `<option value="${u.id}">${u.nickname || u.email}</option>`;
+                }
+            });
         }
 
         function renderUsersList(users) {
@@ -2051,7 +2040,7 @@
                     actionButtons = `<div class="btn-owner"><i class="fa-solid fa-crown" style="margin-right:5px;"></i> Владелец</div>`;
                 } else {
                     actionButtons = `
-                        <!-- НОВАЯ КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
+                        <!-- КНОПКА ПОЛНОГО УДАЛЕНИЯ ПРОФИЛЯ -->
                         <button class="btn-wipe" onclick="deleteUserAccount('${u.id}')">
                             <i class="fa-solid fa-trash" style="margin-right:5px;"></i> Удалить аккаунт
                         </button>
@@ -2106,7 +2095,7 @@
                 // 2. Удаляем чат поддержки
                 await deleteDoc(doc(db, "support_chats", uid));
                 
-                // 3. Удаляем все релизы артиста (находим и удаляем по одному)
+                // 3. Удаляем все релизы артиста
                 const qReleases = query(collection(db, "track_submissions"), where("userId", "==", uid));
                 const snapReleases = await getDocs(qReleases);
                 
@@ -2119,10 +2108,6 @@
                 await Promise.all(deletePromises);
                 
                 notify("Аккаунт и все данные артиста успешно удалены!", "success");
-                
-                // Обновляем интерфейс
-                loadUsers();
-                loadReleases();
             } catch(e) { 
                 console.error(e);
                 notify("Ошибка при удалении аккаунта из БД.", "error"); 
@@ -2150,7 +2135,6 @@
                 }, { merge: true });
                 
                 notify(`Статус изменен: ${statusNames[status]}`, "success");
-                loadUsers();
             } catch(e) { 
                 notify("Ошибка.", "error"); 
             }
@@ -2165,6 +2149,7 @@
             
             try {
                 let expDate = null;
+                
                 if (plan !== "Базовый") {
                     const date = new Date();
                     date.setMonth(date.getMonth() + 1);
@@ -2177,7 +2162,6 @@
                 }, { merge: true });
                 
                 notify(`Тариф выдан!`, "success");
-                loadUsers();
             } catch(e) { 
                 notify("Ошибка.", "error"); 
             }
@@ -2185,12 +2169,16 @@
 
         document.getElementById('user-search-input').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
+            
             renderUsersList(allUsers.filter(u => 
                 (u.email && u.email.toLowerCase().includes(val)) || 
                 (u.nickname && u.nickname.toLowerCase().includes(val))
             ));
         });
 
+        // ==========================================
+        // ОТПРАВКА E-MAIL ПИСЕМ
+        // ==========================================
         document.getElementById('send-mail-btn').addEventListener('click', async () => {
             const to = document.getElementById('mail-to').value.trim();
             const subject = document.getElementById('mail-subject').value.trim();
@@ -2202,6 +2190,7 @@
             
             const btn = document.getElementById('send-mail-btn');
             const origHTML = btn.innerHTML;
+            
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Отправка...';
             btn.disabled = true;
             
@@ -2267,6 +2256,7 @@
                 }
                 
                 let expTimestamp = null;
+                
                 if (expireDateStr) {
                     const dateObj = new Date(expireDateStr);
                     dateObj.setHours(23, 59, 59);
@@ -2296,8 +2286,6 @@
                 
                 btn.innerHTML = origText;
                 btn.disabled = false;
-
-                loadPromos();
             } catch(e) {
                 console.error("Ошибка генерации промокода:", e);
                 notify("Ошибка БД: " + e.message, "error");
@@ -2308,43 +2296,54 @@
             }
         });
 
-        async function loadPromos() {
+        // ==========================================
+        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ ПРОМОКОДОВ
+        // ==========================================
+        function loadPromos() {
             const list = document.getElementById('promo-list');
-            list.innerHTML = '<div class="spinner" style="width: 25px; height: 25px; border-width: 2px;"></div>';
+            
+            if(list.innerHTML.trim() === '') {
+                list.innerHTML = '<div class="spinner" style="width: 25px; height: 25px; border-width: 2px;"></div>';
+            }
             
             try {
-                const snap = await getDocs(collection(db, "promo_codes"));
-                list.innerHTML = '';
-                
-                if (snap.empty) { 
-                    list.innerHTML = '<div style="color:var(--text-secondary); font-size:12px;">Активных промокодов нет.</div>'; 
-                    return; 
+                if (promosUnsub) {
+                    promosUnsub();
                 }
                 
-                snap.forEach(d => {
-                    const data = d.data();
-                    let desc = data.type === 'discount' ? `Скидка: ${data.value}%` : `Подарок: Тариф «${data.plan}» на ${data.value} мес.`;
-                    let expText = "Бессрочный";
+                promosUnsub = onSnapshot(collection(db, "promo_codes"), (snap) => {
+                    list.innerHTML = '';
                     
-                    if (data.expiresAt) {
-                        const dateObj = new Date(data.expiresAt);
-                        expText = `До: ${dateObj.toLocaleDateString('ru-RU')}`;
-                        
-                        if (Date.now() > data.expiresAt) {
-                            expText = `<span style="color:var(--danger-text)">Истек</span>`;
-                        }
+                    if (snap.empty) { 
+                        list.innerHTML = '<div style="color:var(--text-secondary); font-size:12px;">Активных промокодов нет.</div>'; 
+                        return; 
                     }
                     
-                    list.innerHTML += `
-                        <div class="promo-list-item">
-                            <div>
-                                <h4>${d.id}</h4>
-                                <p>${desc}</p>
-                                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">${expText}</div>
+                    snap.forEach(d => {
+                        const data = d.data();
+                        let desc = data.type === 'discount' ? `Скидка: ${data.value}%` : `Подарок: Тариф «${data.plan}» на ${data.value} мес.`;
+                        let expText = "Бессрочный";
+                        
+                        if (data.expiresAt) {
+                            const dateObj = new Date(data.expiresAt);
+                            expText = `До: ${dateObj.toLocaleDateString('ru-RU')}`;
+                            
+                            if (Date.now() > data.expiresAt) {
+                                expText = `<span style="color:var(--danger-text)">Истек</span>`;
+                            }
+                        }
+                        
+                        list.innerHTML += `
+                            <div class="promo-list-item">
+                                <div>
+                                    <h4>${d.id}</h4>
+                                    <p>${desc}</p>
+                                    <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">${expText}</div>
+                                </div>
+                                <button onclick="deletePromo('${d.id}')" style="background:transparent; color:var(--text-secondary); border:1px solid var(--border-light); padding:8px 12px; border-radius:8px; font-size:12px; transition:0.3s;" onmouseover="this.style.color='white'; this.style.borderColor='white'" onmouseout="this.style.color='var(--text-secondary)'; this.style.borderColor='var(--border-light)'"><i class="fa-solid fa-trash"></i></button>
                             </div>
-                            <button onclick="deletePromo('${d.id}')" style="background:transparent; color:var(--text-secondary); border:1px solid var(--border-light); padding:8px 12px; border-radius:8px; font-size:12px; transition:0.3s;" onmouseover="this.style.color='white'; this.style.borderColor='white'" onmouseout="this.style.color='var(--text-secondary)'; this.style.borderColor='var(--border-light)'"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
+                        `;
+                    });
                 });
             } catch(e) {}
         }
@@ -2357,80 +2356,109 @@
             try { 
                 await deleteDoc(doc(db, "promo_codes", code)); 
                 notify("Удален", "success"); 
-                loadPromos(); 
             } catch(e) {}
         }
 
-        async function loadReleases() {
+        // ==========================================
+        // РЕАЛЬНОЕ ВРЕМЯ ДЛЯ РЕЛИЗОВ
+        // ==========================================
+        function loadReleases() {
             const container = document.getElementById('admin-container');
-            container.innerHTML = '<div class="spinner"></div>';
+            
+            if(allSubmissions.length === 0) {
+                container.innerHTML = '<div class="spinner"></div>';
+            }
             
             try {
                 const q = query(collection(db, "track_submissions"), orderBy("createdAt", "desc"));
-                const snap = await getDocs(q);
                 
-                allSubmissions = [];
+                if (releasesUnsub) {
+                    releasesUnsub();
+                }
                 
-                let pendingCount = 0;
-                let approvedCount = 0;
-                let deletesCount = 0;
-                let deletedTotal = 0;
-                
-                let pitchingHTML = '';
-                let calendarHTML = '';
-                let smartLinksHTML = '';
+                releasesUnsub = onSnapshot(q, (snap) => {
+                    
+                    // Уведомления о новых треках и запросах на удаление
+                    if (!isFirstReleasesLoad) {
+                        snap.docChanges().forEach((change) => {
+                            if (change.type === "added") {
+                                playNotificationSound();
+                                notifyLong("Новый релиз загружен на модерацию!", "success");
+                            }
+                            if (change.type === "modified") {
+                                const newStatus = change.doc.data().status;
+                                if (newStatus === "Запрос на удаление с площадок") {
+                                    playNotificationSound();
+                                    notifyLong("Поступил новый запрос на удаление релиза!", "warning");
+                                }
+                            }
+                        });
+                    }
+                    
+                    isFirstReleasesLoad = false;
+                    allSubmissions = [];
+                    
+                    let pendingCount = 0;
+                    let approvedCount = 0;
+                    let deletesCount = 0;
+                    let deletedTotal = 0;
+                    
+                    let pitchingHTML = '';
+                    let calendarHTML = '';
+                    let smartLinksHTML = '';
 
-                snap.forEach(docSnap => {
-                    const data = { id: docSnap.id, ...docSnap.data() };
-                    allSubmissions.push(data);
-                    
-                    if (data.status === 'Ожидает модерации') {
-                        pendingCount++;
-                    }
-                    if (data.status === 'Запрос на удаление с площадок') {
-                        deletesCount++;
-                    }
-                    if (data.status === 'Удалено') {
-                        deletedTotal++;
-                    }
-                    
-                    if (data.status === 'Одобрено') {
-                        approvedCount++;
+                    snap.forEach(docSnap => {
+                        const data = { id: docSnap.id, ...docSnap.data() };
+                        allSubmissions.push(data);
                         
-                        pitchingHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b> — ${data.artist}<br><span style="font-size:12px; color:var(--text-secondary);">Жанр: ${data.genre}</span></div>
-                                <button class="btn-action" style="background:white; color:black; border:none; padding:10px 20px; font-weight:800;" onclick="alert('Отправлено!')">Отправить</button>
-                            </div>
-                        `;
+                        if (data.status === 'Ожидает модерации') {
+                            pendingCount++;
+                        }
+                        if (data.status === 'Запрос на удаление с площадок') {
+                            deletesCount++;
+                        }
+                        if (data.status === 'Удалено') {
+                            deletedTotal++;
+                        }
                         
-                        calendarHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b> <span style="font-size:12px; color:var(--text-secondary);">(${data.artist})</span></div>
-                                <span style="color:white; font-size:12px; font-weight:800; padding:6px 12px; background:rgba(255,255,255,0.1); border-radius:50px;"><i class="fa-solid fa-check"></i> Премьера</span>
-                            </div>
-                        `;
-                        
-                        smartLinksHTML += `
-                            <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                                <div><b style="color:white;">${data.title}</b><br><code style="font-size:12px; color:var(--text-secondary);">link/${data.id.slice(0,6)}</code></div>
-                                <button class="btn-action" style="background:transparent; border:1px dashed white; color:white; padding:10px 20px;" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); notify('Скопировано!', 'success')"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-                        `;
-                    }
+                        if (data.status === 'Одобрено') {
+                            approvedCount++;
+                            
+                            pitchingHTML += `
+                                <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
+                                    <div><b style="color:white;">${data.title}</b> — ${data.artist}<br><span style="font-size:12px; color:var(--text-secondary);">Жанр: ${data.genre}</span></div>
+                                    <button class="btn-action" style="background:white; color:black; border:none; padding:10px 20px; font-weight:800;" onclick="alert('Отправлено!')">Отправить</button>
+                                </div>
+                            `;
+                            
+                            calendarHTML += `
+                                <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
+                                    <div><b style="color:white;">${data.title}</b> <span style="font-size:12px; color:var(--text-secondary);">(${data.artist})</span></div>
+                                    <span style="color:white; font-size:12px; font-weight:800; padding:6px 12px; background:rgba(255,255,255,0.1); border-radius:50px;"><i class="fa-solid fa-check"></i> Премьера</span>
+                                </div>
+                            `;
+                            
+                            smartLinksHTML += `
+                                <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
+                                    <div><b style="color:white;">${data.title}</b><br><code style="font-size:12px; color:var(--text-secondary);">link/${data.id.slice(0,6)}</code></div>
+                                    <button class="btn-action" style="background:transparent; border:1px dashed white; color:white; padding:10px 20px;" onclick="navigator.clipboard.writeText('https://685music.link/${data.id.slice(0,6)}'); notify('Скопировано!', 'success')"><i class="fa-solid fa-copy"></i></button>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    document.getElementById('stat-total').innerText = allSubmissions.length;
+                    document.getElementById('stat-pending').innerText = pendingCount;
+                    document.getElementById('stat-approved').innerText = approvedCount;
+                    document.getElementById('stat-delete-request').innerText = deletesCount;
+                    document.getElementById('stat-deleted-total').innerText = deletedTotal;
+
+                    document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
+                    document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
+                    document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
+
+                    renderList(allSubmissions);
                 });
-
-                document.getElementById('stat-total').innerText = allSubmissions.length;
-                document.getElementById('stat-pending').innerText = pendingCount;
-                document.getElementById('stat-approved').innerText = approvedCount;
-                document.getElementById('stat-delete-request').innerText = deletesCount;
-                document.getElementById('stat-deleted-total').innerText = deletedTotal;
-
-                document.getElementById('pitching-list').innerHTML = pitchingHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
-                document.getElementById('calendar-list').innerHTML = calendarHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
-                document.getElementById('smartlinks-list').innerHTML = smartLinksHTML || '<p style="color:var(--text-secondary); text-align:center;">Нет данных.</p>';
-
-                renderList(allSubmissions);
             } catch (e) { 
                 container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--danger-text);">Ошибка базы.</div>'; 
             }
@@ -2537,11 +2565,12 @@
                     const isrc = document.getElementById(`isrc-${id}`).value.trim();
                     const rejectReason = document.getElementById(`reason-${id}`).value.trim();
 
-                    if(status === 'Отклонено' && !rejectReason) {
+                    if (status === 'Отклонено' && !rejectReason) {
                         return notify("Укажите причину отклонения!", "error");
                     }
 
                     const originalBtnContent = e.target.innerHTML;
+                    
                     e.target.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...';
                     
                     try {
@@ -2553,7 +2582,6 @@
                         }, { merge: true });
                         
                         notify("Сохранено!", "success");
-                        loadReleases(); // Перезагружаем список
                     } catch(err) { 
                         notify("Ошибка", "error"); 
                     }
@@ -2573,7 +2601,6 @@
                     try { 
                         await deleteDoc(doc(db, "track_submissions", id)); 
                         notify("Удален навсегда!", "success"); 
-                        loadReleases(); 
                     } catch(err) {
                         notify("Ошибка удаления из БД", "error"); 
                     }
